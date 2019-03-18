@@ -1,16 +1,17 @@
-$(document).ready(function() {
-    var unsaved = false;
+// $(document).ready(function() {
+//     var unsaved = false;
 
-    $("input:not(:button,:submit),textarea,select").change(function(){   //triggers change in all input fields including text type
-        unsaved = true;
-    });
+//     $("input:not(:button,:submit),textarea,select").change(function(){   //triggers change in all input fields including text type
+//         unsaved = true;
+//     });
 
-    window.onbeforeunload = function (){
-        if(unsaved){
-            return 'Your data is changed, are you sure you want to complete?';
-        }
-    };
-});
+//     window.onbeforeunload = function (){
+//         if(unsaved){
+//             return 'Your data is changed, are you sure you want to complete?';
+//         }
+//     };
+// });
+
 $(document).ready(function(){
     /**
      *
@@ -170,15 +171,17 @@ function checkDuplicate(){
 }
 function createCase(){
     swal({
-        title: "Are you sure?",
-        text: "Is your duplicate search completed?",
+        title: "Is your duplicate search completed?",
+        text: "",
         icon: "warning",
         buttons: true,
         dangerMode: true,
+        closeOnClickOutside: false,
       })
       .then(() => {
         $(location).attr('href', '/sd-cases/createcase');
       });
+    //confirm ('Is your duplicate search completed?');
     $("select").each(function(){
         $(this).prop("disabled", false);
     });
@@ -226,8 +229,8 @@ $(document).ready(function(){
                         $(location).attr('href', '/sd-cases/caseregistration');
                         break;
 
-                        //   default:
-                        //     swal("cancel");
+                    //   default:
+                    //     swal("cancel");
                 }
             });
         }
