@@ -17,7 +17,7 @@
                         <!-- Add Product -->
                         <div class="form-row">
                             <div class="form-group col-md-3">
-                                <label>Product Name:</label>
+                                <label>Product Name: <i class="fas fa-asterisk reqField"></i></label>
                                 <select type="text" class="form-control" id="product_id">
                                     <option value="">Select Project No</option>
                                     <?php
@@ -27,6 +27,14 @@
                                     <!-- html->form(project_no) -->
                                 </select>
                                 <input name="product_id" type="hidden" id="input_product_id">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>Country: <i class="fas fa-asterisk reqField"></i></label>
+                                <select type="text" class="form-control" id="sd_product_workflow_id">
+                                    <option value="">Select Country:</option>
+                                    <!-- html->form(project_no) -->
+                                </select>
+                                <input name="sd_product_workflow_id" id="input_product_workflow_id" type="hidden">
                             </div>
                             <div class="form-group col-md-3">
                                 <label>Patient Age:</label>
@@ -46,14 +54,6 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label>Country:</label>
-                                <select type="text" class="form-control" id="sd_product_workflow_id">
-                                    <option value="">Select Country:</option>
-                                    <!-- html->form(project_no) -->
-                                </select>
-                                <input name="sd_product_workflow_id" id="input_product_workflow_id" type="hidden">
-                            </div>
                              <div class="form-group col-md-3">
                                 <label>Patient Gender:</label>
                                 <select type="text" class="form-control" name="field_value[93]" id="patient_gender">

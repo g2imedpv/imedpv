@@ -151,7 +151,7 @@ function checkDuplicate(){
                 text +="</table>";
             }else text+="<div class=\"my-3 text-center\"><h3>No Duplicate AER(s) Found</h3></div>"
             //text +="<div class=\"text-center\"> <button onclick=\"clearResult()\" class=\"btn btn-outline-warning mx-2 w-25\">Search Again</button>";
-            text +="<button onclick=\"createCase()\" class=\"btn btn-primary float-right w-25 my-3\">Create This Case</button> </div>";
+            text +="<div onclick=\"createCase()\" class=\"btn btn-primary float-right w-25 my-3\">Create This Case</div> </div>";
             $("#caseTable").html(text);
         },
         error:function(response){
@@ -178,10 +178,12 @@ function createCase(){
         dangerMode: true,
         closeOnClickOutside: false,
       })
-      .then(() => {
-        $(location).attr('href', '/sd-cases/createcase');
+      .then((value) => {
+        if (value) {
+            $(location).attr('href', '/sd-cases/createcase');
+        }
       });
-    //confirm ('Is your duplicate search completed?');
+
     $("select").each(function(){
         $(this).prop("disabled", false);
     });
