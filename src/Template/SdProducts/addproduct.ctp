@@ -351,8 +351,8 @@
                                             <div class="permissionSec my-4">
                                             <!-- TODO LOAD STRUCTURE OF SECTIONS -->
                                             <?php 
-                                            foreach($loadPermissions as $tab){
-                                                echo "<div class=\"row\"><div class=\"col-md-12\"><h5 class=\"text-center\">".$tab['tab_name']."</h5></div></div>";
+                                            foreach($loadPermissions as $tabkey => $tab){
+                                                echo "<div class=\"row\"><div class=\"col-md-12\"><h5 class=\"text-center\">".$tab['tab_name']."</h5></div></div><div class=\"row\">";
                                                 $exsitSectionNo = [];
                                                 foreach($tab['sd_sections'] as $key => $sdSection){
                                                     $exsitSectionNo[$key] = $sdSection['id'];
@@ -361,19 +361,22 @@
                                                     if(!in_array($section['id'], $exsitSectionNo))
                                                     continue;
                                                     if($section['section_level']>1){
-                                                        echo "<div id=\"section-".$sdSection['id']."\">".$section['section_name']."</div>";
+                                                        echo "<div class=\"col-md-12\" id=\"section-".$section['id']."\">".$section['section_name']."</div>";
                                                         // debug($section['child_section']);
                                                         $child_sections = explode(',', $section['child_section']);
-                                                        foreach($child_sections as $child_sections){
-                                                            $sectionKey = array_search($child_sections,$exsitSectionNo);
-                                                            echo "<div id=\"section-".$child_sections."\">".$tab['sectionKey']['section_name']."</div>";
-                                                            $exsitSectionNo[$sectionKey]= null;
+                                                        foreach($child_sections as $child_section){
+                                                            $childSectionKey = array_search($child_section,$exsitSectionNo);
+                                                            echo "<div class=\"col-md-6\" id=\"section-".$child_section."\">".$tab['sd_sections'][$childSectionKey]['section_name'];
+                                                            echo "<label class=\"mx-1\"><input type=\"checkbox\" id=\"write-".$tabkey."-".$childSectionKey."\" class=\"checkItem\" value=\"\">Write</label>";
+                                                            echo "<label class=\"mx-1\"><input type=\"checkbox\" id=\"read-".$tabkey."-".$childSectionKey."\" class=\"checkItem\" value=\"\">Read</label></div>";
+                                                            $exsitSectionNo[$childSectionKey]= null;
                                                         }
                                                     }
                                                 }
+                                                echo "</div><hr class=\"my-2\">";
                                             }
                                             ?>
-                                                <div class="row">
+                                                <!-- <div class="row">
                                                     <div class="col-md-12"><h5 class="text-center">General</h5></div>
                                                 </div>
                                                 <div class="row">
@@ -395,7 +398,7 @@
                                                             <label class="mx-1"><input type="checkbox" class="checkItem" value="">Admin</label>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -581,4 +584,5 @@
 </div>
 <script type="text/javascript">
 var workflowInfo = <?php echo json_encode($workflow_structure);?>;
+var loadPermissions = <?php echo json_encode($loadPermissions);?>;
 </script>

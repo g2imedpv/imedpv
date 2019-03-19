@@ -26,6 +26,7 @@ class SdSectionsTableTest extends TestCase
     public $fixtures = [
         'app.sd_sections',
         'app.sd_tabs',
+        'app.sd_phase_role_section_permissions',
         'app.sd_section_structures'
     ];
 

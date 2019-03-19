@@ -44,7 +44,23 @@ var userId = <?= $this->request->session()->read('Auth.User.id')?>;
         </div>
     </div>
   </div>
-
+  <div class="modal fade versionUpFrame" tabindex="-1" role="dialog" aria-labelledby="versionUpFrame" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body m-3">
+                            <div class="form-group">
+                                <label for="">Reason For Version Up:</label>
+                                <select  class="form-control">
+                                    <option>Select reason for version up</option>
+                                    <option>Data Correction</option>
+                                    <option>Follow Up</option>
+                                </select>
+                            </div>
+                            <div class="form-control btn btn-primary w-50 float-right" id="confirmVersionUp" onclick="">Confirm </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
   <div class="row mt-3" id="pendcase" style="display:none;">
     <div class="col">
@@ -189,23 +205,6 @@ var userId = <?= $this->request->session()->read('Auth.User.id')?>;
                         <option>Female</option>
                         <option>Unknown</option>
                     </select>
-                </div>
-            </div>
-            <div class="modal fade versionUpFrame" tabindex="-1" role="dialog" aria-labelledby="versionUpFrame" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-body m-3">
-                            <div class="form-group">
-                                <label for="">Reason For Version Up:</label>
-                                <select  class="form-control">
-                                    <option>Select reason for version up</option>
-                                    <option>Data Correction</option>
-                                    <option>Follow Up</option>
-                                </select>
-                            </div>
-                            <div class="form-control btn btn-primary w-50 float-right" id="confirmVersionUp" onclick="">Confirm </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="form-row justify-content-center">

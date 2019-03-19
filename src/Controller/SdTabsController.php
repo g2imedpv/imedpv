@@ -1,4 +1,5 @@
 <?php
+      
         namespace App\Controller;
         use Cake\ORM\TableRegistry;
 
@@ -35,6 +36,7 @@
              */
             public function showdetails($caseNo, $version = 1,$tabid = 1)
             {
+
                 $writePermission= 0;
                 $userinfo = $this->request->session()->read('Auth.User');
                 $sdCasesTable = TableRegistry::get('SdCases');
@@ -109,6 +111,11 @@
                     $activitySectionPermissions = null;
                     $writePermission =1;
                 }
+                if($writePermission){
+                    $caseValidation = $this->request->session()->read('caseValidate.'.$caseId);
+                    if($caseValidation==null)
+                    $this->request->session()->write('caseValidate.'.$caseId, $this->validateForm($caseId));
+                }
                 $this->set(compact('activitySectionPermissions'));
                 //For readonly status, donot render layout
                 $readonly = $this->request->getQuery('readonly');
@@ -135,7 +142,7 @@
                     }
                 }
 
-                $this->set(compact('sdSections','caseNo','version','tabid','caseId','product_name','case_versions','writePermission'));
+                $this->set(compact('validatedDatas','sdSections','caseNo','version','tabid','caseId','product_name','case_versions','writePermission'));
             }
             /**
              *
@@ -650,7 +657,124 @@
                 return $value; 
               
             }
- 
+            
+    /**
+     * 
+     * validate each required field
+     */
+    public function validateForm($caseId, $sectionId=null, $tabId=null){
+        $SdFieldValuesTable = TableRegistry::get('SdFieldValues');
+        $allRequiredFieldValues = $SdFieldValuesTable->find()
+        ->select(['SdFieldValues.id','SdFieldValues.set_number','SdFieldValues.sd_field_id','sections.id','tabs.id'])
+        ->join([
+            'ss'=>[
+                'table'=>'sd_section_structures',
+                'type'=>'INNER',
+                'conditions'=>['ss.sd_field_id = SdFieldValues.sd_field_id']
+            ],
+            'sections'=>[
+                'table'=>'sd_sections',
+                'type'=>'INNER',
+                'conditions'=>['sections.id = ss.sd_section_id']
+            ],
+            'tabs'=>[
+                'table'=>'sd_tabs',
+                'type'=>'INNER',
+                'conditions'=>['sections.sd_tab_id = tabs.id']
+            ]
+        ])->distinct()->where(['SdFieldValues.status'=>1,'SdFieldValues.sd_case_id'=>$caseId])->order(['sections.id'=>'ASC', 'SdFieldValues.set_number'=>'ASC']);
+        if($sectionId!=null) $allRequiredFieldValues->where(['sections.id'=>$sectionId]);
+        $SdSectionStructuresTable = TableRegistry::get('SdSectionStructures');
+        $allRequiredFields = $SdSectionStructuresTable->find()
+        ->select(['sd_field_id','sd_section_id','sf.field_label','fv.field_value','sections.section_name','sections.sd_tab_id','tabs.tab_name'])->join([
+            'sf'=>[
+                'table'=>'sd_fields',
+                'type'=>'INNER',
+                'conditions'=>['sf.id = SdSectionStructures.sd_field_id']
+            ],
+            'sections'=>[
+                'table'=>'sd_sections',
+                'type'=>'INNER',
+                'conditions'=>['sections.id = SdSectionStructures.sd_section_id']
+            ],
+            'tabs'=>[
+                'table'=>'sd_tabs',
+                'type'=>'INNER',
+                'conditions'=>['sections.sd_tab_id = tabs.id']
+            ],
+            'fv'=>[
+                'table'=>'sd_field_values',
+                'type'=>'LEFT',
+                'conditions'=>['fv.sd_field_id = SdSectionStructures.sd_field_id','fv.status = 1','fv.sd_case_id ='.$caseId]
+            ]
+        ])->distinct()->where(['SdSectionStructures.is_required'=>'1']);
+        if($sectionId!=null) $allRequiredFields->where(['sd_section_id'=>$sectionId]);
+        $exist_fields = [];
+        $required_field_list = [];
+        foreach($allRequiredFields as $requiredField){
+            if($requiredField['fv']['field_value']==null)
+            $required_field_list[$requiredField['sections']['sd_tab_id']][$requiredField['sd_section_id']][$requiredField['sd_field_id']] = [
+                'sd_field_id'=>$requiredField['sd_field_id'],
+                'set_number'=>'null',
+                'tab_id'=>$requiredField['sections']['sd_tab_id'],
+                'tab_name'=>$requiredField['tabs']['tab_name'],
+                'field_label'=>$requiredField['sf']['field_label'],
+                'section_name'=>$requiredField['sections']['section_name']
+            ];
+        }
+        foreach($allRequiredFieldValues as $key => $allRequiredFieldValue){
+            if(in_array($key,$exist_fields)) continue;
+            array_push($exist_fields,$key);
+            $set_number = $allRequiredFieldValue['set_number'];
+            $section_Id = $allRequiredFieldValue['sections']['id'];
+            $required_field_set = [];
+            foreach($allRequiredFields as $allRequiredField){
+                if(($allRequiredField['sd_section_id']!=$section_Id)||($allRequiredField['sd_field_id']==$allRequiredFieldValue['sd_field_id'])) continue;
+                array_push($required_field_set,[
+                    'sd_field_id'=>$allRequiredField['sd_field_id'],
+                    'field_label'=>$allRequiredField['sf']['field_label'],
+                    'section_id'=>$allRequiredField['sd_section_id'],
+                    'section_name'=>$allRequiredField['sections']['section_name'],
+                    'tab_id'=>$allRequiredField['sections']['sd_tab_id'],
+                    'tab_name'=>$allRequiredField['tabs']['tab_name']
+                    ]);
+
+            }
+            foreach($required_field_set as $required_field){
+                $exist = 0;
+                foreach($allRequiredFieldValues as $researchKey => $relatedSectionField){
+                    if(in_array($researchKey,$exist_fields)) continue;
+                    if(($relatedSectionField['sd_field_id']==$required_field['sd_field_id'])&&($relatedSectionField['set_number']==$set_number)) 
+                    {
+                        array_push($exist_fields,$researchKey);
+                        $exist = 1;
+                        break;
+                    }
+                }
+                if($exist == 0){
+                    if(!array_key_exists($required_field['sd_field_id'],$required_field_list[$required_field['tab_id']][$required_field['section_id']]))
+                    $required_field_list[$required_field['tab_id']][$required_field['section_id']][$required_field['sd_field_id']]=[
+                        'sd_field_id'=>$required_field['sd_field_id'],
+                        'set_number'=>$set_number,
+                        'section_id'=>$required_field['section_id'],
+                        'section_name'=>$required_field['section_name'],
+                        'tab_id'=>$required_field['tab_id'],
+                        'tab_name'=>$required_field['tab_name'],
+                        'field_label'=>$required_field['field_label']
+                    ];
+                }
+            }
+        }
+        if($this->request->is('POST')){
+            if($sectionId!=null)
+            $this->request->session()->write('caseValidate.'.$caseId.'.'.$tabId.'.'.$sectionId, $required_field_list[$tabId][$sectionId]);
+            $this->autoRender = false;
+            echo json_encode($required_field_list);
+            die();
+        }
+        // debug($required_field_list);
+        return $required_field_list;
+    }
             public function genXML($caseId)
             {
                 $this->autoRender = false;

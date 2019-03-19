@@ -16,6 +16,7 @@ use Cake\ORM\Entity;
  * @property bool $status
  *
  * @property \App\Model\Entity\SdTab $sd_tab
+ * @property \App\Model\Entity\SdPhaseRoleSectionPermission[] $sd_phase_role_section_permissions
  * @property \App\Model\Entity\SdSectionStructure[] $sd_section_structures
  */
 class SdSection extends Entity
@@ -39,6 +40,7 @@ class SdSection extends Entity
         'display_order' => true,
         'status' => true,
         'sd_tab' => true,
+        'sd_phase_role_section_permissions' => true,
         'sd_section_structures' => true
     ];
 }

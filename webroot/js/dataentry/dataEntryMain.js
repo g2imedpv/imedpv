@@ -419,34 +419,34 @@ function l2deleteSection(sectionId){
     level2setPageChange(sectionId,pageNo);
     $("[id=section-"+sectionId+"-page_number-"+pageNo+"]").css('font-weight', 'bold');
 }
-function validation(sectionId){
-    var validate = 1;
-    $("div[id^=section-"+sectionId+"-field]").each(function(){
-        var field_value = null;
-        if($(this).find("[name$=\\[field_value\\]]").length){
-            field_type = $(this).find("[name$=\\[field_value\\]]").attr('id').split('-')[2];
-            if((field_type!="radio")&&(field_type!="checkbox")){
-                 field_value = $(this).find("[name$=\\[field_value\\]]").val();
-            }else{
-                if(field_type=="radio"){
-                    $(this).find("[name$=\\[field_value\\]]").each(function(){
-                        if($(this).prop('checked')){
-                            field_value = $(this).val();}
-                    });
-                }else{
-                    field_value = $(this).find("[id$=final]").val();
-                }
-            }
-        }
-        if((parseInt($(this).find("[name$=\\[is_required\\]]").val()))&&(field_value=="")){
-            console.log('required  '+$(this).attr('id'));
-            $(this).find("[id^=section-"+sectionId+"-error_message-]").show();
-            $(this).find("[id^=section-"+sectionId+"-error_message-]").text('is required');
-        }
-        if($(this).find("[id^=section-"+sectionId+"-error_message-]").is(":visible")) validate = 0;
-    });
-    return validate;
-}
+// function validation(sectionId){
+//     var validate = 1;
+//     $("div[id^=section-"+sectionId+"-field]").each(function(){
+//         var field_value = null;
+//         if($(this).find("[name$=\\[field_value\\]]").length){
+//             field_type = $(this).find("[name$=\\[field_value\\]]").attr('id').split('-')[2];
+//             if((field_type!="radio")&&(field_type!="checkbox")){
+//                  field_value = $(this).find("[name$=\\[field_value\\]]").val();
+//             }else{
+//                 if(field_type=="radio"){
+//                     $(this).find("[name$=\\[field_value\\]]").each(function(){
+//                         if($(this).prop('checked')){
+//                             field_value = $(this).val();}
+//                     });
+//                 }else{
+//                     field_value = $(this).find("[id$=final]").val();
+//                 }
+//             }
+//         }
+//         if((parseInt($(this).find("[name$=\\[is_required\\]]").val()))&&(field_value=="")){
+//             console.log('required  '+$(this).attr('id'));
+//             $(this).find("[id^=section-"+sectionId+"-error_message-]").show();
+//             $(this).find("[id^=section-"+sectionId+"-error_message-]").text('is required');
+//         }
+//         if($(this).find("[id^=section-"+sectionId+"-error_message-]").is(":visible")) validate = 0;
+//     });
+//     return validate;
+// }
 function deleteSection(sectionId, pcontrol=false){
 
     var request = {};
@@ -526,14 +526,31 @@ function deleteSection(sectionId, pcontrol=false){
 
         }
     });
+    $.ajax({
+        headers: {
+            'X-CSRF-Token': csrfToken
+        },
+        type:'POST',
+        url:'/sd-tabs/validateForm/'+caseId+'/'+sectionId+'/'+tabId,
+        data:request,
+        success:function(response){
+            console.log(response);
+        },
+        error:function(response){
+            console.log(response.responseText);
+
+        }
+    });
 
 }
 function saveSection(sectionId){
-    if(!validation(sectionId)) return;
+    // if(!validation(sectionId)) return;
     var request = {};
     var savedArray = [];
+    var error = 0;
 
     $("div[id^=section-"+sectionId+"-field]").each(function(){
+        if($(this).find("[id^=section-"+sectionId+"-error_message-]").is(":visible")) error = 1;
         var field_value = null;
         if($(this).find("[name$=\\[field_value\\]]").length){
             field_type = $(this).find("[name$=\\[field_value\\]]").attr('id').split('-')[2];
@@ -561,6 +578,7 @@ function saveSection(sectionId){
         }
 
     });
+        if(error) return;
     console.log(request);
     $.ajax({
         headers: {
@@ -616,7 +634,21 @@ function saveSection(sectionId){
 
         }
     });
+    $.ajax({
+        headers: {
+            'X-CSRF-Token': csrfToken
+        },
+        type:'POST',
+        url:'/sd-tabs/validateForm/'+caseId+'/'+sectionId+'/'+tabId,
+        data:request,
+        success:function(response){
+            console.log(response);
+        },
+        error:function(response){
+            console.log(response.responseText);
 
+        }
+    });
 
 };
 function action(type){
@@ -665,6 +697,31 @@ function action(type){
                 });
                 text +="</select>";
                 text +="</div>";
+                text +="<h3>Field Required</h3>"
+                text +="<table>";
+                text +="<tr>";
+                text +="<th scope=\"col\">Category</th>";
+                text +="<th scope=\"col\">Section</th>";
+                text +="<th scope=\"col\">Field Name</th>";
+                text +="<th scope=\"col\">Set Number</th>";
+                text +="<tr>";
+                var previousTabk = "";
+                $.each(response['caseValidate'],function(tabK,tabDetail){
+                    var previousSectionK ="";
+                    $.each(tabDetail,function(sectionK, sectionDetail){
+                        $.each(sectionDetail,function(fieldId,fieldDetail){
+                            text +="<tr>";
+                            text +="<td>"+fieldDetail.tab_name+"</td>";
+                            text +="<td>"+fieldDetail.section_name+"</td>";
+                            text +="<td>"+fieldDetail.field_label+"</td>";
+                            text +="<td>"+fieldDetail.set_number+"</td>";
+                            text +="</tr>";
+                        });
+                        previousSectionK = sectionK;
+                    });
+                    previousTabk = tabK;
+                });
+                text +="</table>"
                 text +="<div class=\"text-center\"><button class=\"btn btn-primary w-25\" onclick=\"forward()\">Confirm</button></div>";
                 text +="</div>";
                 $('#action-text-hint').html(text);
@@ -763,7 +820,7 @@ function forward(){
         'senderId':userId,
         'next-activity-id':$('#next-activity-id').val(),
         'receiverId':$('#receiverId').val(),
-        'content':$('#query-content').text()
+        'content':$('#query-content').val()
     }
     console.log(request);
     $.ajax({
@@ -775,7 +832,7 @@ function forward(){
         data:request,
         success:function(response){
             console.log(response);
-            window.location.href = "/sd-cases/caselist";
+            // window.location.href = "/sd-cases/caselist";
         },
         error:function(response){
             console.log(response.responseText);
@@ -805,13 +862,4 @@ function backward(){
             console.log(response.responseText);
             }
         });
-}
-
-function submitDataEntry()
-{
-    var validated = 1;
-    $.each(section,function(k,v){
-        if(!validation(v.id)) validated = 0;
-    });
-    if(validated) document.getElementById("dataEntry").submit();
 }
