@@ -76,6 +76,7 @@
 
                         <!-- Advance Search -->
                         <div id="caseRegAdvFields" style="display:none;">
+                            <hr class="my-3">
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label>Reporter First Name:</label>

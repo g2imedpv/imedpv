@@ -151,7 +151,7 @@ function checkDuplicate(){
                 text +="</table>";
             }else text+="<div class=\"my-3 text-center\"><h3>No Duplicate AER(s) Found</h3></div>"
             //text +="<div class=\"text-center\"> <button onclick=\"clearResult()\" class=\"btn btn-outline-warning mx-2 w-25\">Search Again</button>";
-            text +="<div onclick=\"createCase()\" class=\"btn btn-primary float-right w-25 my-3\">Create This Case</div> </div>";
+            text +="<div onclick=\"createCase()\" class=\"btn btn-primary float-right w-25 my-3\" style=\"cursor:pointer;\">Create This Case</div> </div>";
             $("#caseTable").html(text);
         },
         error:function(response){
@@ -174,7 +174,7 @@ function createCase(){
         title: "Is your duplicate search completed?",
         text: "",
         icon: "warning",
-        buttons: true,
+        buttons: ["No", "Yes - Continue"],
         dangerMode: true,
         closeOnClickOutside: false,
       })
@@ -208,7 +208,7 @@ $(document).ready(function(){
     $("#confirmElements").click(function(){
         // IF invalid case
         if ($('#patient').val() == 1) {
-            swal("We think this an invalid case. Do you want to continue creating a new case?","","warning", {
+            swal("This is an invalid case. Do you want to continue creating a new case?","","warning", {
                 buttons: {
                     Yes: true,
                     No: true,
@@ -281,18 +281,20 @@ $(document).ready(function(){
             $(this).prop("readonly", false);
         });
     });
-    $("#confirmPrioritize").click(function(){
-        $('#prioritize').hide();
-        $('#attach').show();
-        // $("#prioritize :input").each(function(){
-        //     $(this).prop("readonly", false);
-        // });
+
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
     });
-    $("#attachBack").click(function(){
-        $('#attach').hide();
-        $('#confirmElements').show();
-        $("#basicInfo :input").each(function(){
-            $(this).prop("readonly", false);
-        });
+
+    // Loop Year and Day
+    $(function(){
+        var $yearSelect = $(".yearSelect");
+        for (i=1900;i<=2050;i++){
+            $yearSelect.append($('<option></option>').val(i).html(i))
+        }
+        var $daySelect = $(".daySelect");
+        for (j=1;j<=31;j++){
+            $daySelect.append($('<option></option>').val(j).html(j))
+        }
     });
 });
