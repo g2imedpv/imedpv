@@ -549,8 +549,10 @@ function saveSection(sectionId){
     // if(!validation(sectionId)) return;
     var request = {};
     var savedArray = [];
+    var error = 0;
 
     $("div[id^=section-"+sectionId+"-field]").each(function(){
+        if($(this).find("[id^=section-"+sectionId+"-error_message-]").is(":visible")) error = 1;
         var field_value = null;
         if($(this).find("[name$=\\[field_value\\]]").length){
             field_type = $(this).find("[name$=\\[field_value\\]]").attr('id').split('-')[2];
@@ -578,6 +580,7 @@ function saveSection(sectionId){
         }
 
     });
+        if(error) return;
     console.log(request);
     $.ajax({
         headers: {
