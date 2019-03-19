@@ -11,7 +11,7 @@
                 <div class="card-header text-center">
                     <h3>Case Registration / Duplicate Detection</h3>
                 </div>
-                <?= $this->Form->create($productInfo,['id'=>'caseRegistration']);?>
+                <?= $this->Form->create($productInfo,['id'=>'caseRegistrationForm']);?>
                 <div class="card-body">
                     <div class="text-center">
                         <!-- Add Product -->
