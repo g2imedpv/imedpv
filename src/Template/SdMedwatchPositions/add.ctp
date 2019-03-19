@@ -19,12 +19,13 @@
         <?php
             echo $this->Form->control('medwatch_no');
             echo $this->Form->control('field_name');
-            echo $this->Form->control('type');
             echo $this->Form->control('position_top');
             echo $this->Form->control('position_left');
             echo $this->Form->control('position_width');
             echo $this->Form->control('position_height');
             echo $this->Form->control('sd_field_id', ['options' => $sdFields]);
+            echo $this->Form->control('set_number');
+            echo $this->Form->control('value_type');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

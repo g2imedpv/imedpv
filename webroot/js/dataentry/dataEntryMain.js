@@ -2,12 +2,6 @@ jQuery(function($) {
     $(document).ready(paginationReady());
 });
 
-// Search Bar
-$(document).ready(function(){
-    function hightlightField (fieldID) {
-        $("div[id*='"+fieldID+"']").css("border", "3px dotted red").delay(2000);
-    };
-});
 
 $(document).ready(function(){
     $('[name$=\\[field_value\\]').change(function(){
@@ -127,6 +121,10 @@ $( function() {
     });
 
 });
+// Search Bar
+    function hightlightField (fieldID) {
+        $("div[id*='"+fieldID+"']").css("border", "3px dotted red").delay(2000);
+    };
 
 $(document).ready(function(){
  if(readonly) {

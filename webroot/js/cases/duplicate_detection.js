@@ -1,19 +1,20 @@
-$(document).ready(function() {
-    var unsaved = false;
+// $(document).ready(function() {
+//     var unsaved = false;
 
-    $("input:not(:button,:submit),textarea,select").change(function(){   //triggers change in all input fields including text type
-        unsaved = true;
-    });
+//     $("input:not(:button,:submit),textarea,select").change(function(){   //triggers change in all input fields including text type
+//         unsaved = true;
+//     });
 
-    window.onbeforeunload = function (){
-        if(unsaved){
-            return 'Your data is changed, are you sure you want to complete?';
-        }
-    };
-});
+//     window.onbeforeunload = function (){
+//         if(unsaved){
+//             return 'Your data is changed, are you sure you want to complete?';
+//         }
+//     };
+// });
+
 $(document).ready(function(){
     /**
-     * 
+     *
      * change Workflow Name according to Product selection
      */
     $('#product_id').change(function(){
@@ -37,7 +38,7 @@ $(document).ready(function(){
 
 
     /**
-     *show caseNo 
+     *show caseNo
      */
     // $('#no_of_sae').change(function(){console.log($('#no_of_sae').val());
     //     var text = "";
@@ -105,8 +106,8 @@ function checkDuplicate(){
                 text +="<h3>Search Results</h3>";
                 text +="<table class=\"table table-hover\">";
                 text +="<thead>";
-                text +="<tr class=\"table-secondary\">";
-                text +="<th scope=\"col\">Caes No.</th>";
+                text +="<tr>";
+                text +="<th class=\"align-middle text-center\" scope=\"col\">Caes No.</th>";
                 text +="<th scope=\"col\">Patient Initial</th>";
                 text +="<th scope=\"col\">Patient Age</th>";
                 text +="<th scope=\"col\">Patient Gender</th>";
@@ -119,9 +120,9 @@ function checkDuplicate(){
                 text +="<tbody>";
                 $.each(result, function(k,caseDetail){
                     text += "<tr>";
-                    text += "<td><a class=\"btn btn-outline-info\" onclick=\"caseDetail(\'"+caseDetail.caseNo+"\')\" data-toggle=\"modal\" data-target=\".CaseDetail\">" + caseDetail.caseNo;
+                    text += "<td><button type=\"button\" class=\"btn btn-outline-info\" onclick=\"caseDetail(\'"+caseDetail.caseNo+"\')\" data-toggle=\"modal\" data-target=\".CaseDetail\">" + caseDetail.caseNo;
                     text += "<div id=\"version-"+ caseDetail.caseNo+"\"></b>(ver:"+caseDetail.versions+")";
-                    text +="</a></td>";
+                    text +="</button></td>";
                     text += "<td>";
                     if(!jQuery.isEmptyObject(caseDetail.patient_initial)) text +=caseDetail.patient_initial;
                     text +=  "</td>";
@@ -148,9 +149,9 @@ function checkDuplicate(){
                 })
                 text +="</tbody>";
                 text +="</table>";
-            }else text+="<div>No Case Matches</div>"
-            text +="<button onclick=\"clearResult()\" class=\"completeBtn btn btn-success d-block m-auto w-25\">Search Again</button>";
-            text +="<button type=\"submit\" onclick=\"createCase()\" class=\"completeBtn btn btn-success d-block m-auto w-25\">Create This Case</button>";
+            }else text+="<div class=\"my-3 text-center\"><h3>No Duplicate AER(s) Found</h3></div>"
+            //text +="<div class=\"text-center\"> <button onclick=\"clearResult()\" class=\"btn btn-outline-warning mx-2 w-25\">Search Again</button>";
+            text +="<div onclick=\"createCase()\" class=\"btn btn-primary float-right w-25 my-3\">Create This Case</div> </div>";
             $("#caseTable").html(text);
         },
         error:function(response){
@@ -164,13 +165,27 @@ function checkDuplicate(){
         $(this).prop('readonly', true);
     });
     $("select").each(function(){
-        $(this).prop("disabled", true);;
+        $(this).prop("disabled", true);
     });
 
 }
 function createCase(){
+    swal({
+        title: "Is your duplicate search completed?",
+        text: "",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+        closeOnClickOutside: false,
+      })
+      .then((value) => {
+        if (value) {
+            $(location).attr('href', '/sd-cases/createcase');
+        }
+      });
+
     $("select").each(function(){
-        $(this).prop("disabled", false);;
+        $(this).prop("disabled", false);
     });
 }
 function clearResult(){
@@ -188,3 +203,96 @@ function caseDetail(caseNo)
     $('#caseLabel').text("Case Detail:"+caseNo);
     $('#iframeDiv').attr('src','/sd-tabs/showdetails/'+caseNo+'/'+$('#version-'+caseNo).val()+'/1?readonly=1');
 }
+
+$(document).ready(function(){
+    $("#confirmElements").click(function(){
+        // IF invalid case
+        if ($('#patient').val() == 1) {
+            swal("We think this an invalid case. Do you want to continue creating a new case?","","warning", {
+                buttons: {
+                    Yes: true,
+                    No: true,
+                    cancel: "Cancel"
+                },
+            })
+            .then((value) => {
+                switch (value) {
+                    case "Yes":
+                        swal("Please Select Reasons in following step","", "success");
+                        $("#basicInfo :input").each(function(){
+                            $(this).prop("readonly", true);
+                        });
+                        $('#confirmElements').hide();
+                        $('#selRea').show();
+                        break;
+
+                    case "No":
+                        swal("Your case has been inactivated","", "warning");
+                        $(location).attr('href', '/sd-cases/caseregistration');
+                        break;
+
+                    //   default:
+                    //     swal("cancel");
+                }
+            });
+        }
+        // ELSE valid case
+        else {
+            $("#basicInfo :input").each(function(){
+                $(this).prop("readonly", true);
+            });
+            $('#confirmElements').hide();
+            $('#prioritize').show();}
+    });
+
+    $("#checkbtn").click(function(){
+        //$(this).hide();
+        $('#clear').show();
+    });
+
+    $("#clear").click(function(){
+        $(this).hide();
+    });
+
+    $("#caseRegAdvBtn").click(function(){
+        $(this).hide();
+        $('#caseRegAdvFields').show();
+    });
+
+    $("#otherCheck").click(function(){
+        $('#othersInput').toggle();
+    });
+
+    $("#selReaBack").click(function(){
+        $('#selRea').hide();
+        $('#confirmElements').show();
+        $("#basicInfo :input").each(function(){
+            $(this).prop("readonly", false);
+        });
+    });
+    $("#confirmRea").click(function(){
+        $('#selRea').hide();
+        $('#prioritize').show();
+    });
+    $("#prioritizeBack").click(function(){
+        $('#prioritize').hide();
+        $('#confirmElements').show();
+        $("#basicInfo :input").each(function(){
+            $(this).prop("readonly", false);
+        });
+    });
+    $("#confirmPrioritize").click(function(){
+        $('#prioritize').hide();
+        $('#attach').show();
+        // $("#prioritize :input").each(function(){
+        //     $(this).prop("readonly", false);
+        // });
+    });
+    $("#attachBack").click(function(){
+        $('#attach').hide();
+        $('#confirmElements').show();
+        $("#basicInfo :input").each(function(){
+            $(this).prop("readonly", false);
+        });
+    });
+});

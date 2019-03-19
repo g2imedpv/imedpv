@@ -122,14 +122,14 @@ class SdCasesController extends AppController
      */
     public function duplicateDetection()
     {
-        if ($this->request->is('post')) {                       
+        if ($this->request->is('post')) {
             $this->autoRender = false;
             try{
-                $searchKey = $this->request->getData();   
-                $user = TableRegistry::get('SdUsers')->get($searchKey['userId']);        
+                $searchKey = $this->request->getData();
+                $user = TableRegistry::get('SdUsers')->get($searchKey['userId']);
                 $searchResult =  $this->SdCases->find()
                                     ->select([
-                                        'versions'=>'SdCases.version_no', 
+                                        'versions'=>'SdCases.version_no',
                                         'SdCases.id',
                                         'SdCases.caseNo',
                                         'patient_initial'=>'pi.field_value',
@@ -299,8 +299,8 @@ class SdCasesController extends AppController
         }
     }
     /**
-     * 
-     * 
+     *
+     *
      * Use when case list
      */
     public function search(){
@@ -372,7 +372,7 @@ class SdCasesController extends AppController
                 $user = TableRegistry::get('SdUsers')->get($searchKey['userId']);
                 $searchResult = $sdCases->find()->select([
                     'SdCases.id',
-                    'versions'=>'SdCases.version_no', 
+                    'versions'=>'SdCases.version_no',
                     'pw.sd_product_id',
                     'submission_due_date'=>'submission_due_date.field_value',
                     'activity_due_date'=>'activity_due_date.field_value',
@@ -396,7 +396,7 @@ class SdCasesController extends AppController
                             'table' => 'sd_products',
                             'type' => 'LEFT',
                             'conditions' => ['pw.sd_product_id = pd.id','pd.sd_company_id ='.$userinfo['company_id']],
-                        ],                                            
+                        ],
                         'wa' => [
                             'table' => 'sd_workflow_activities',
                             'type' => 'LEFT',
@@ -443,7 +443,7 @@ class SdCasesController extends AppController
                                 'conditions' => ['sv.sd_field_id = '.$preferrence_detail['sd_field_id'],'sv.sd_case_id = SdCases.id','SUBSTR(sv.field_value,'.$preferrence_detail['value_at'].','.$preferrence_detail['value_length'].') '.$preferrence_detail['match_value']],
                                 ]
                         ])->where(['SdCases.sd_workflow_activity_id !='=>'9999']);
-                    else  $searchResult = $searchResult->join([         
+                    else  $searchResult = $searchResult->join([
                         'sv' => [
                             'table' => 'sd_field_values',
                             'type' => 'INNER            ',
@@ -496,7 +496,7 @@ class SdCasesController extends AppController
             /**
              * save case
              */
-            
+
             $sdWorkflowActivities = TableRegistry::get('SdWorkflowActivities')
                 ->find()
                 ->select([
@@ -504,7 +504,7 @@ class SdCasesController extends AppController
                     'SdWorkflowActivities.sd_workflow_id',
                     'wf.id',
                     'pwf.id'
-                ])->join([                    
+                ])->join([
                     'wf' =>[
                         'table' =>'sd_workflows',
                         'type'=>'LEFT',
@@ -530,7 +530,7 @@ class SdCasesController extends AppController
                     echo"problem in saving sdCase";
                     return null;
                 }
-               
+
                 /**
                  *
                  * save field into these cases
@@ -550,7 +550,7 @@ class SdCasesController extends AppController
                 if(!$sdFieldValueTable->save($savedFieldValueEntity)){
                     echo "problem in saving product_desc sdfields";
                     return null;
-                } 
+                }
                 $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                 $dataSet = [
                     'sd_case_id' => $savedCase->id,
@@ -560,11 +560,11 @@ class SdCasesController extends AppController
                     'field_value' =>$product_data['study_type'],
                     'status' =>'1',
                 ];
-                $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet); 
+                $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
                 if(!$sdFieldValueTable->save($savedFieldValueEntity)){
                     echo "problem in saving product_desc sdfields";
                     return null;
-                } 
+                }
                 $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                 $dataSet = [
                     'sd_case_id' => $savedCase->id,
@@ -589,7 +589,7 @@ class SdCasesController extends AppController
                     'field_value' =>$product_data['WHODD_decode'],
                     'status' =>'1',
                 ];
-                
+
                 $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
                 // debug($dataSet);
                 if(!$sdFieldValueTable->save($savedFieldValueEntity)){
@@ -640,7 +640,7 @@ class SdCasesController extends AppController
                     return null;
                 }
 
-                //save day 0 
+                //save day 0
                 $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                 $dataSet = [
                     'sd_case_id' => $savedCase->id,
@@ -688,10 +688,10 @@ class SdCasesController extends AppController
                     echo "problem in saving case history";
                     debug($newCaseHistory);
                     return null;
-                } 
+                }
 
-            $this->Flash->success(__('The case number is'.$date_str));
-            return $this->redirect('/sd-tabs/showdetails/'.$date_str);
+            //$this->Flash->success(__('The case number is'.$date_str));
+            return $this->redirect('/sd-cases/createcase/');
         }
         $this->set(compact('productInfo','date_str'));
     }
@@ -717,9 +717,9 @@ class SdCasesController extends AppController
     }
     /**
      * Version Up cases
-     * 
-     * 
-     * 
+     *
+     *
+     *
      */
     public function versionUp(){
         if($this->request->is('POST')){
@@ -730,7 +730,7 @@ class SdCasesController extends AppController
             $newCase = $this->SdCases->newEntity();
             $sdWorkflowActivity = TableRegistry::get('SdWorkflowActivities')
                                 ->find()
-                                ->select(['id', 'wf.id'])    
+                                ->select(['id', 'wf.id'])
                                 ->join([
                                         'wf' =>[
                                             'table' =>'sd_workflows',
@@ -743,7 +743,7 @@ class SdCasesController extends AppController
             $case['version_no'] = (int)$case['version_no'] + 1;
             $patchedCase = $this->SdCases->patchEntity($newCase, $case);
             $savedCase = $this->SdCases->save($patchedCase);
-            if ($savedCase) echo "success"; else echo "error";  
+            if ($savedCase) echo "success"; else echo "error";
             $sdFieldValuesTable = TableRegistry::get('SdFieldValues');
             $sdFieldValues = $sdFieldValuesTable ->find()->where(['status'=>true,'sd_case_id'=>$case['id']]);
             print_r($case['id']);
@@ -761,18 +761,18 @@ class SdCasesController extends AppController
             }
             die();
         }
-    }  
+    }
     /**
-     * 
-     * 
-     * 
-     * 
+     *
+     *
+     *
+     *
      */
     public function forward($caseNo, $version, $operator){
         if($this->request->is('POST')){
             $this->autoRender = false;
             $requstData = $this->request->getData();
-            
+
             //save new activity into case
             $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$version])
                                 ->select(['id','SdCases.sd_product_workflow_id','pd.product_name','sd_workflow_activity_id','sd_user_id'])
@@ -793,7 +793,7 @@ class SdCasesController extends AppController
             $caseCurrentHistory = $caseCurrentHistoryTable->find()
                                             ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$case['sd_workflow_activity_id'],'sd_user_id'=>$case['sd_user_id'],'close_time IS NULL'])
                                             ->order(['enter_time'=>'DESC'])->first();
-            $caseCurrentHistory['comment'] = $requstData['content'];                                          
+            $caseCurrentHistory['comment'] = $requstData['content'];
             $caseCurrentHistory['close_time'] = date("Y-m-d H:i:s");
             if(!$caseCurrentHistoryTable->save($caseCurrentHistory)){
                 echo "error in saving history";
@@ -803,7 +803,7 @@ class SdCasesController extends AppController
             $caseNextHistory = TableRegistry::get('SdCaseHistories')->newEntity();
             $caseNextHistory['sd_case_id'] = $case['id'];
             $caseNextHistory['sd_workflow_activity_id'] = $requstData['next-activity-id'];
-            $caseNextHistory['sd_user_id'] = $requstData['receiverId'];                                       
+            $caseNextHistory['sd_user_id'] = $requstData['receiverId'];
             $caseNextHistory['enter_time'] = date("Y-m-d H:i:s");
             if(!TableRegistry::get('SdCaseHistories')->save($caseNextHistory)){
                 echo "error in saving next history";
@@ -844,15 +844,15 @@ class SdCasesController extends AppController
             echo "success";
             $this->Flash->success(__('You\'ve successfully Signed-Off.'));
             die();
-            
+
         }
     }
 
     /**
     * Close cases
-    * 
-    * 
-    * 
+    *
+    *
+    *
     */
    public function closeCase(){
        if($this->request->is('POST')){
@@ -860,9 +860,21 @@ class SdCasesController extends AppController
            $requstData = $this->request->getData();
            $case = $this->SdCases->find()->where(['caseNo'=>$requstData['caseNo'],'version_no'=>$requstData['version_no']])->first();
            $case['sd_workflow_activity_id'] = 9999;
-           if ($this->SdCases->save($case)) echo "success"; else echo "error";        
+           if ($this->SdCases->save($case)) echo "success"; else echo "error";
            print_r($case);
            die();
        }
    }
+
+   /**
+   * Create cases
+   *
+   *
+   *
+   */
+  public function createcase(){
+    $this->viewBuilder()->layout('main_layout');
+  }
+
+
 }

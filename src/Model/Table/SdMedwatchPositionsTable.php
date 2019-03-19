@@ -57,7 +57,7 @@ class SdMedwatchPositionsTable extends Table
 
         $validator
             ->scalar('medwatch_no')
-            ->maxLength('medwatch_no', 3)
+            ->maxLength('medwatch_no', 4)
             ->requirePresence('medwatch_no', 'create')
             ->notEmpty('medwatch_no');
 
@@ -66,11 +66,6 @@ class SdMedwatchPositionsTable extends Table
             ->maxLength('field_name', 30)
             ->requirePresence('field_name', 'create')
             ->notEmpty('field_name');
-
-        $validator
-            ->integer('type')
-            ->requirePresence('type', 'create')
-            ->notEmpty('type');
 
         $validator
             ->integer('position_top')
@@ -91,6 +86,14 @@ class SdMedwatchPositionsTable extends Table
             ->integer('position_height')
             ->requirePresence('position_height', 'create')
             ->notEmpty('position_height');
+
+        $validator
+            ->allowEmpty('set_number');
+
+        $validator
+            ->scalar('value_type')
+            ->maxLength('value_type', 100)
+            ->allowEmpty('value_type');
 
         return $validator;
     }

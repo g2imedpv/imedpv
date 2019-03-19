@@ -20,12 +20,13 @@
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('medwatch_no') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('field_name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('type') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('position_top') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('position_left') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('position_width') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('position_height') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('sd_field_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('set_number') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('value_type') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -35,12 +36,13 @@
                 <td><?= $this->Number->format($sdMedwatchPosition->id) ?></td>
                 <td><?= h($sdMedwatchPosition->medwatch_no) ?></td>
                 <td><?= h($sdMedwatchPosition->field_name) ?></td>
-                <td><?= $this->Number->format($sdMedwatchPosition->type) ?></td>
                 <td><?= $this->Number->format($sdMedwatchPosition->position_top) ?></td>
                 <td><?= $this->Number->format($sdMedwatchPosition->position_left) ?></td>
                 <td><?= $this->Number->format($sdMedwatchPosition->position_width) ?></td>
                 <td><?= $this->Number->format($sdMedwatchPosition->position_height) ?></td>
                 <td><?= $sdMedwatchPosition->has('sd_field') ? $this->Html->link($sdMedwatchPosition->sd_field->id, ['controller' => 'SdFields', 'action' => 'view', $sdMedwatchPosition->sd_field->id]) : '' ?></td>
+                <td><?= $this->Number->format($sdMedwatchPosition->set_number) ?></td>
+                <td><?= h($sdMedwatchPosition->value_type) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $sdMedwatchPosition->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $sdMedwatchPosition->id]) ?>

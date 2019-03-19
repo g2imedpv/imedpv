@@ -9,12 +9,13 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $medwatch_no
  * @property string $field_name
- * @property int $type
  * @property int $position_top
  * @property int $position_left
  * @property int $position_width
  * @property int $position_height
  * @property int $sd_field_id
+ * @property int $set_number
+ * @property string $value_type
  *
  * @property \App\Model\Entity\SdField $sd_field
  */
@@ -33,12 +34,13 @@ class SdMedwatchPosition extends Entity
     protected $_accessible = [
         'medwatch_no' => true,
         'field_name' => true,
-        'type' => true,
         'position_top' => true,
         'position_left' => true,
         'position_width' => true,
         'position_height' => true,
         'sd_field_id' => true,
+        'set_number' => true,
+        'value_type' => true,
         'sd_field' => true
     ];
 }

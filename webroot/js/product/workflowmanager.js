@@ -36,8 +36,8 @@ $(document).ready(function($){
             $(this).append($(ui.draggable).clone());
             var workactivityID = ui.draggable.attr("id");
             console.log(workactivityID);
-            // if (workactivityID.filter(distinct) == true ) {
-            //     $(this).droppable( "disable" );
+            // if ($(workactivityID).length > 0) {
+            //     //$(this).droppable( "disable" );
             // }
         }
     });

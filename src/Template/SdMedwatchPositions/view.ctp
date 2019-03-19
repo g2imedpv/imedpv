@@ -31,12 +31,12 @@
             <td><?= $sdMedwatchPosition->has('sd_field') ? $this->Html->link($sdMedwatchPosition->sd_field->id, ['controller' => 'SdFields', 'action' => 'view', $sdMedwatchPosition->sd_field->id]) : '' ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($sdMedwatchPosition->id) ?></td>
+            <th scope="row"><?= __('Value Type') ?></th>
+            <td><?= h($sdMedwatchPosition->value_type) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Type') ?></th>
-            <td><?= $this->Number->format($sdMedwatchPosition->type) ?></td>
+            <th scope="row"><?= __('Id') ?></th>
+            <td><?= $this->Number->format($sdMedwatchPosition->id) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Position Top') ?></th>
@@ -53,6 +53,10 @@
         <tr>
             <th scope="row"><?= __('Position Height') ?></th>
             <td><?= $this->Number->format($sdMedwatchPosition->position_height) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Set Number') ?></th>
+            <td><?= $this->Number->format($sdMedwatchPosition->set_number) ?></td>
         </tr>
     </table>
 </div>

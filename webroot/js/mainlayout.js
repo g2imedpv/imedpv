@@ -132,7 +132,7 @@ function onQueryClicked(preferrenceId = null){
             var text = "";
             text +="<table id=\"caseTable\" class=\"table table-striped table-bordered table-hover\">";
             text += "<thead>";
-            text +="<tr>";
+            text +="<tr style=\"cursor: pointer;\">";
             text +="<th class=\"align-middle\" scope=\"col\">Priority SUSAR</th>";
             text +="<th class=\"align-middle\" scope=\"col\">AER No.</th>";
             // text +="<th scope=\"col\">Documents</th>";

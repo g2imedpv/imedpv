@@ -90,7 +90,8 @@ echo $this->element('generatepdf');
         </a>
         <div class="dropdown-menu">
             <a class="dropdown-item" href="#">CIOMS</a>
-            <a class="dropdown-item" target="_blank" href="/sd-tabs/genFDApdf/<?= $caseNo?>/<?= $version?>">FDA</a>
+            <a class="dropdown-item" target="_blank" href="/sd-tabs/genFDApdf/<?php echo $caseId ?>">FDA</a>
+            <a class="dropdown-item" target="_blank" href="/sd-tabs/genXML/<?php echo $caseId ?>">XML</a>
             <!-- Add this if location had details
             <div role="separator" class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Separated link</a>
@@ -99,7 +100,7 @@ echo $this->element('generatepdf');
     </li>
 
     <!-- "Export" Dropdown Button -->
-    <li class="nav-item">
+    <!-- <li class="nav-item">
         <a class="btn btn-outline-info" href="#" title="Export" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-file-export"></i> Export
         </a>
@@ -107,12 +108,10 @@ echo $this->element('generatepdf');
             <a class="dropdown-item" href="#">CIOMS</a>
             <a class="dropdown-item" href="#">FDA</a>
             <a class="dropdown-item" href="#">XML</a>
-            <!-- Add this if location had details
             <div role="separator" class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Separated link</a>
-            -->
         </div>
-    </li>
+    </li> -->
 
     <!-- "Save All" Button -->
     <li class="nav-item">
