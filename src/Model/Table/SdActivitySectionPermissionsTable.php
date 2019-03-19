@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * SdActivitySectionPermissions Model
  *
- * @property |\Cake\ORM\Association\BelongsTo $SdWorkflowActivities
+ * @property \App\Model\Table\SdWorkflowActivitiesTable|\Cake\ORM\Association\BelongsTo $SdWorkflowActivities
  * @property \App\Model\Table\SdSectionsTable|\Cake\ORM\Association\BelongsTo $SdSections
  *
  * @method \App\Model\Entity\SdActivitySectionPermission get($primaryKey, $options = [])

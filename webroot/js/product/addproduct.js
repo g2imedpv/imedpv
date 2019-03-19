@@ -63,6 +63,13 @@ function removeCro(id){
 }
 jQuery(function($) {  // In case of jQuery conflict
     $(document).ready(function(){
+        
+        $('[id^=write]').change(function(){
+            var id = $(this).attr('id').split('-');
+            if($(this).is(':checked')) $('[id=read-'+id[1]+'-'+id[2]+']').prop('checked',true);
+        });
+
+
         // $('#submitchocountry').click(function(){
         //     var default_text = "<p>This is default workflow and cannot be changed</p>";
         //     var customize_text = "";
@@ -208,34 +215,16 @@ jQuery(function($) {  // In case of jQuery conflict
                 $('#custom-workflow_description-validate').show().delay(2000).fadeOut();;
             }
             else {
-                workflowname = $('#custom-workflow_name').val();
-                if(workflowname.length == 0){
-                    $(this).show();
-                    $('#custworkflowname').attr('disabled',false);
-                    $('li.custworkflowstep').find('button').show();
-                    $('#cusworkflow').find('ul').show();
-                    // $('#custworkflowname').after('<div id="errWorkflow" class="alert alert-danger" role="alert">Workflow name is required!</div>');
-                    $('#custworkflowname').after($("#errWorkflow").show());
-                    swal({
-                        title: "Failed to choose Workflow",
-                        text: "Workflow name is REQUIRED",
-                        icon: "warning",
-                        button: "OK",
-                    });
-                    return false;
-                }
-                else {
-                    $('#defworkflow, #custbtn, .closewf').hide();
-                    $('#cusT, #undochoWF').show();
-                    $('#sortable, #draggable').addClass("mx-auto w-50");
-                    $('#cusworkflow').find('ul').hide();
-                    $('#custom-workflow_name').attr('disabled',true);
-                    $('#custom-workflow_description').attr('disabled',true);
-                    $('li.custworkflowstep').find('button').hide();
-                    $(this).hide();
-                    $('#sortable').find('.card-body').append( '<div class="input-group w-25 mx-auto"><i class="fas fa-arrow-up gobackstep"></i><input type="text" class="step_backward form-control form-control-sm backstep_input" aria-label="Back Steps" aria-describedby="backSteps"></div>');
-                    $('#custworkflowname').next('#errWorkflow').remove(); // *** this line have been added ***
-                }
+                $('#defworkflow, #custbtn, .closewf').hide();
+                $('#cusT, #undochoWF').show();
+                $('#sortable, #draggable').addClass("mx-auto w-50");
+                $('#cusworkflow').find('ul').hide();
+                $('#custom-workflow_name').attr('disabled',true);
+                $('#custom-workflow_description').attr('disabled',true);
+                $('li.custworkflowstep').find('button').hide();
+                $(this).hide();
+                $('#sortable').find('.card-body').append( '<div class="input-group w-25 mx-auto"><i class="fas fa-arrow-up gobackstep"></i><input type="text" class="step_backward form-control form-control-sm backstep_input" aria-label="Back Steps" aria-describedby="backSteps"></div>');
+                $('#custworkflowname').next('#errWorkflow').remove(); // *** this line have been added ***
                 $("#sortable").sortable({ disabled: true });
             }
         };
@@ -446,7 +435,7 @@ jQuery(function($) {  // In case of jQuery conflict
                             default_text +="<div class=\"input-group w-25 mx-auto\">";
                                 default_text +="<i class=\"fas fa-arrow-up gobackstep\"></i>";
                                 default_text +="<input type=\"text\" readonly=\"readonly\" value="+v.step_backward+" class=\"step_backward form-control form-control-sm\" aria-label=\"Back Steps\" aria-describedby=\"backSteps\">"
-                                default_text +="<button type=\"button\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\"><i class=\"fas fa-grip-horizontal\"></i></button>";
+                                default_text +="<button type=\"button\" onclick=\"sectionPermission("+v.id+",1)\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\"><i class=\"fas fa-grip-horizontal\"></i></button>";
                             default_text +="</div>"
                         default_text +="</div>";
                     default_text +="</div>";
@@ -712,6 +701,44 @@ jQuery(function($) {  // In case of jQuery conflict
         });
      });
 });
+
+function sectionPermission(activity_id, readonly){
+    $("div[id^=section]").each(function(){
+        var sectionElement = $(this);
+        if($(this).find("[id^=write]").length){
+            
+            var id = $(this).find("[id^=write]").attr('id').split('-');
+            var flag = 0;
+            $.each(loadPermissions[id[1]].sd_sections[id[2]].sd_activity_section_permissions,function(k,v){
+                if(v.sd_workflow_activity_id == activity_id){
+                    if(v.action == 1) {
+                        sectionElement.find("input[id^=write]").prop('checked',true);
+                        sectionElement.find("input[id^=read]").prop('checked',true);
+                        flag = 1;
+                    }
+                    else if(v.action == 2) {
+                        flag = 1;
+                        sectionElement.find("input[id^=write]").prop('checked',false);
+                        sectionElement.find("input[id^=read]").prop('checked',true);
+                    }
+                    return false;
+                }
+            });
+            if(flag==0){
+                sectionElement.find("input[id^=write]").prop('checked',false);
+                sectionElement.find("input[id^=read]").prop('checked',false);
+            }
+        }
+    });
+    if(readonly){
+        $("[id^=write]").each(function(){
+            $(this).prop('disabled',true);}
+        );
+        $("[id^=read]").each(function(){
+            $(this).prop('disabled',true);});
+    }
+}
+
 function iterateWorkflow(wkfl_name)
 {
     var steps = [];

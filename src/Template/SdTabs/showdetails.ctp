@@ -14,6 +14,7 @@ echo $this->element('generatepdf');
     var caseNo = "<?= $caseNo ?>";
     var userId = <?= $this->request->session()->read('Auth.User.id')?>;
     var version = <?= $version ?>;
+    var tabId = <?= $tabid?>;
     var section = <?php $sdSections;
     echo json_encode($sdSections)?>;
     var caseId = <?= $caseId ?>;
@@ -156,7 +157,7 @@ echo $this->element('generatepdf');
     ?>
     <?php if(($writePermission)&&($this->request->getQuery('readonly')!=1)):?>
     <div class="text-center">
-        <div onclick="submitDataEntry()" class="completeBtn w-25 btn btn-success">Complete</div>
+        <button type="submit" class="completeBtn w-25 btn btn-success">Complete</button>
     </div>
     <?php endif;?>
     <hr class="d-inline-block w-100">

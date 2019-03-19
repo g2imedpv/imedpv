@@ -832,14 +832,15 @@ class SdCasesController extends AppController
                 'query_status'=>0,
                 'receiver_status'=>1,
                 'send_date'=>date("Y-m-d H:i:s"),
-
-
             ];
-            $patchedQuery = $queryTable->patchEntity($sdQuery, $dataSet);
+            
+            
+            $patchedQuery = $queryTable->patchEntity($sdQuery, $dataSet);debug($patchedQuery);debug($dataSet);
             if(!$queryTable->save($patchedQuery)){
                  echo "error in saving query";
                  return;
             }
+            $this->request->session()->delete('caseValidate.'.$case['id']);
             echo "success";
             $this->Flash->success(__('You\'ve successfully Signed-Off.'));
             die();

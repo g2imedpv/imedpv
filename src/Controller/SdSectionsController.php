@@ -121,7 +121,7 @@ class SdSectionsController extends AppController
                 if($sectionFieldValue['id']!=null){//add judging whether updateing Using Validate
                     $sdFieldValueEntity = $sdFieldValues->get($sectionFieldValue['id']);/**add last-updated time */                            
                     $sdFieldValues->patchEntity($sdFieldValueEntity,$sectionFieldValue);
-                    if(!$sdFieldValues->save($sdFieldValueEntity)) echo "error in updating!" ;
+                    if(!$sdFieldValues->save($sdFieldValueEntity)) {print_r($sdFieldValueEntity);echo "error in updating!" ;}
                     $savedField[$sdFieldValueEntity['sd_field_id']] = $sdFieldValueEntity['id'];
                 }elseif(!empty($sectionFieldValue['field_value'])){
                     $sdFieldValueEntity = $sdFieldValues->newEntity();
