@@ -14,23 +14,29 @@
             <div class="container">
                 <div class="form-row">
                     <div class="form-group col-md-4">
+                        <label>Search LLT Term</label>
                         <input type="text" class="form-control" id="llt_term"  placeholder="Search LLT Term">
                     </div>
                     <div class="form-group col-md-4">
+                        <label>Search PT Term</label>
                         <input type="text" class="form-control" id="pt_term"  placeholder="Search PT Term">
                     </div>
                     <div class="form-group col-md-4">
+                        <label>Search by Key Word</label>
                         <input type="text" class="form-control" id="wildcard_search"  placeholder="Search by Key Word">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
+                        <label>Search HLT Term</label>
                         <input type="text" class="form-control" id="hlt_term" placeholder="Search HLT Term">
                     </div>
                     <div class="form-group col-md-4">
+                        <label>Search HLGT Term</label>
                         <input type="text" class="form-control" id="hlgt_term" placeholder="Search HLGT Term">
                     </div>
                     <div class="form-group col-md-4">
+                        <label>Search SOC Term</label>
                         <input type="text" class="form-control" id="soc_term"  placeholder="Search SOC Term">
                     </div>
                 </div>

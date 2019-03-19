@@ -33,6 +33,10 @@
     <?= $this->Html->css('datatable/DataTables/css/dataTables.bootstrap4.min.css') ?>
     <?= $this->Html->script('datatable/DataTables/js/jquery.dataTables.min.js') ?>
     <?= $this->Html->script('datatable/DataTables/js/dataTables.bootstrap4.min.js') ?>
+
+    <!-- For local Select2 (External library for quick selecting) CSS/JS link -->
+    <?= $this->Html->css('select2/select2.min.css') ?>
+    <?= $this->Html->script('select2/select2.min.js') ?>
 </head>
 <body>
 
