@@ -294,7 +294,23 @@ $(document).ready(function(){
         }
         var $daySelect = $(".daySelect");
         for (j=1;j<=31;j++){
-            $daySelect.append($('<option></option>').val(j).html(j))
+            if (j<10) {
+                $daySelect.append($('<option></option>').val("0"+j).html(j))
+            }
+            else {
+                $daySelect.append($('<option></option>').val(j).html(j))
+            }
         }
     });
+
+    $('#dobDay,#dobMonth,#dobYear').change(
+        function(){
+            //var oriValue = $('#caseReg_patient_dob').val();
+            var dayValue = $('#dobDay').val();
+            var monthValue = $('#dobMonth').val();
+            var yearValue = $('#dobYear').val();
+            Value = dayValue + monthValue + yearValue;
+            $('#caseReg_patient_dob').val(Value);
+        }
+    )
 });
