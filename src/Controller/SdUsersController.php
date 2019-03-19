@@ -141,6 +141,7 @@ class SdUsersController extends AppController
 
     public function logout() {
         $this->Flash->success('You are now logged out.');
+        $this->request->session()->destroy();
         return $this->redirect($this->Auth->logout());
     }
 
@@ -276,6 +277,7 @@ class SdUsersController extends AppController
                 ]
             ])->toArray();
             $parceObj['users'] = $users;
+            $parceObj['caseValidate'] = $this->request->session()->read('caseValidate.'.$caseId);
             echo json_encode($parceObj);
             die();
         }

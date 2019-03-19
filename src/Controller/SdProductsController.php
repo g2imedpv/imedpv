@@ -402,14 +402,10 @@ class SdProductsController extends AppController
         $sd_tabs = $sd_tabs_table->find()
                     ->contain(['SdSections'=>function($q){
                         return $q->order(['SdSections.section_level'=>'DESC','SdSections.display_order'=>'ASC'])
-                                ->select(['SdSections.sd_tab_id','asp.action','asp.sd_workflow_activity_id','SdSections.section_name','SdSections.section_level','SdSections.child_section'])
-                                ->join([
-                                    'asp'=>[
-                                        'table'=>'sd_activity_section_permissions',
-                                        'type'=>'LEFT',
-                                        'conditions'=>['asp.sd_section_id = SdSections.id']
-                                    ]
-                                ]);
+                                ->select(['SdSections.id','SdSections.sd_tab_id','SdSections.section_name','SdSections.section_level','SdSections.child_section'])
+                                ->contain(['SdActivitySectionPermissions'=>function($q){
+                                    return $q->select(['sd_section_id','sd_workflow_activity_id','action']);
+                                }]);
                     }])->order(['SdTabs.display_order'=>'ASC']);
         return $sd_tabs->toList();
     }

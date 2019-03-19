@@ -11,13 +11,13 @@
                 <div class="card-header text-center">
                     <h3>Case Registration / Duplicate Detection</h3>
                 </div>
-                <?= $this->Form->create($productInfo,['id'=>'caseRegistration']);?>
+                <?= $this->Form->create($productInfo,['id'=>'caseRegistrationForm']);?>
                 <div class="card-body">
                     <div class="text-center">
                         <!-- Add Product -->
                         <div class="form-row">
                             <div class="form-group col-md-3">
-                                <label>Product Name:</label>
+                                <label>Product Name: <i class="fas fa-asterisk reqField"></i></label>
                                 <select type="text" class="form-control" id="product_id">
                                     <option value="">Select Project No</option>
                                     <?php
@@ -27,6 +27,14 @@
                                     <!-- html->form(project_no) -->
                                 </select>
                                 <input name="product_id" type="hidden" id="input_product_id">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>Country: <i class="fas fa-asterisk reqField"></i></label>
+                                <select type="text" class="form-control" id="sd_product_workflow_id">
+                                    <option value="">Select Country:</option>
+                                    <!-- html->form(project_no) -->
+                                </select>
+                                <input name="sd_product_workflow_id" id="input_product_workflow_id" type="hidden">
                             </div>
                             <div class="form-group col-md-3">
                                 <label>Patient Age:</label>
@@ -46,14 +54,6 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label>Country:</label>
-                                <select type="text" class="form-control" id="sd_product_workflow_id">
-                                    <option value="">Select Country:</option>
-                                    <!-- html->form(project_no) -->
-                                </select>
-                                <input name="sd_product_workflow_id" id="input_product_workflow_id" type="hidden">
-                            </div>
                              <div class="form-group col-md-3">
                                 <label>Patient Gender:</label>
                                 <select type="text" class="form-control" name="field_value[93]" id="patient_gender">
@@ -76,6 +76,7 @@
 
                         <!-- Advance Search -->
                         <div id="caseRegAdvFields" style="display:none;">
+                            <hr class="my-3">
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label>Reporter First Name:</label>
@@ -88,16 +89,6 @@
                                 <div class="form-group col-md-3">
                                     <label>Subject No.:</label>
                                     <input type="text" class="form-control" name="" id="">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-3">
-                                    <label>Patient Initial:</label>
-                                    <input type="text" class="form-control" name="field_value[79]" id="patient_initial">
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label>Patient Date of Birth:</label>
-                                    <input type="text" class="form-control" name="field_value[85]" id="patient_dob">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label>Patient Ethnic origin:</label>
@@ -113,6 +104,45 @@
                                         <option  value="8">Unknown</option>
                                         <option  value="9">White</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label>Patient Initial:</label>
+                                    <input type="text" class="form-control" name="field_value[79]" id="patient_initial">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Patient Date of Birth:</label>
+                                    <div class="form-row">
+                                        <div class="col-sm-4">
+                                            <select id="dobDay" class="custom-select js-example-basic-single daySelect" placeholder="Day">
+                                                <option value="00">Day</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <select id=dobMonth class="custom-select js-example-basic-single monthSelect" placeholder="Month">
+                                                <option value="00">Month</option>
+                                                <option value="01">Jan-1</option>
+                                                <option value="02">Feb-2</option>
+                                                <option value="03">Mar-3</option>
+                                                <option value="04">Apr-4</option>
+                                                <option value="05">May-5</option>
+                                                <option value="06">Jun-6</option>
+                                                <option value="07">Jul-7</option>
+                                                <option value="08">Aug-8</option>
+                                                <option value="09">Sep-9</option>
+                                                <option value="10">Oct-10</option>
+                                                <option value="11">Nov-11</option>
+                                                <option value="12">Dec-12</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <select id="dobYear" class="custom-select js-example-basic-single yearSelect" placeholder="Year">
+                                                <option value="0000">Year</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" class="form-control" name="field_value[85]" id="caseReg_patient_dob" value="00000000">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label>Patient Age group:</label>

@@ -8,7 +8,6 @@
   <div class="card-body">
     <div class="alert alert-primary w-50 mx-auto" role="alert"><h4>New Case Number: 43523452345234</h4></div>
     <hr class="my-3">
-
     <!-- Basic Info Fields Set -->
     <div id="basicInfo" class="form-group">
         <h4 class="text-left">Product</h4>
@@ -18,7 +17,7 @@
                 <input type="text" class="form-control" id="test" placeholder="">
             </div>
         </div>
-        <h4 class="text-left">Patient</h4>
+        <h4 class="text-left mt-3">Patient</h4>
         <div id="patientInfo" class="form-row bg-light">
             <div class="form-group col-md-3">
                 <label>Patient ID (B.1.1)</label>
@@ -28,24 +27,64 @@
                 <label>Sex (B.1.5)</label>
                 <input type="text" class="form-control" id="sex" placeholder="">
             </div>
+        </div>
+        <div id="patientInfo" class="form-row bg-light">
             <div class="form-group col-md-3">
                 <label>Date of birth (B.1.2.1b)</label>
-                <input type="text" class="form-control" id="dob" placeholder="">
+                                    <div class="form-row">
+                                        <div class="col-sm-4">
+                                            <select id="dobDay" class="custom-select js-example-basic-single daySelect" placeholder="Day">
+                                                <option value="00">Day</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <select id=dobMonth class="custom-select js-example-basic-single monthSelect" placeholder="Month">
+                                                <option value="00">Month</option>
+                                                <option value="01">Jan-1</option>
+                                                <option value="02">Feb-2</option>
+                                                <option value="03">Mar-3</option>
+                                                <option value="04">Apr-4</option>
+                                                <option value="05">May-5</option>
+                                                <option value="06">Jun-6</option>
+                                                <option value="07">Jul-7</option>
+                                                <option value="08">Aug-8</option>
+                                                <option value="09">Sep-9</option>
+                                                <option value="10">Oct-10</option>
+                                                <option value="11">Nov-11</option>
+                                                <option value="12">Dec-12</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <select id="dobYear" class="custom-select js-example-basic-single yearSelect" placeholder="Year">
+                                                <option value="0000">Year</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" class="form-control" name="field_value[85]" id="caseReg_patient_dob" value="00000000">
             </div>
             <div class="form-group col-md-3">
-                <label>Patient Age</label>
+                <label>Age at time of onset reaction (B.1.2.2a)</label>
+                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Field Helper" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
                 <input type="text" class="form-control" id="age" placeholder="">
             </div>
             <!-- <div class="form-group col-md-3">
                 <label>Age at the time of event (B.1.2.2a)</label>
                 <input type="text" class="form-control" id="" placeholder="">
-            </div>
-            <div class="form-group col-md-3">
-                <label>Unit (B.1.2.2b)</label>
-                <input type="text" class="form-control" id="" placeholder="">
             </div> -->
+            <div class="form-group col-md-3">
+                <label>Age Unit (B.1.2.2b)</label>
+                <select class="custom-select">
+                    <option value="">Select Age Unit</option>
+                    <option value="800">Decade</option>
+                    <option value="801">Year</option>
+                    <option value="802">Month</option>
+                    <option value="803">Week</option>
+                    <option value="804">Day</option>
+                    <option value="805">Hour</option>
+                </select>
+            </div>
         </div>
-        <h4 class="text-left">Reporter</h4>
+        <h4 class="text-left mt-3">Reporter</h4>
         <div id="reporterInfo" class="form-row">
             <div class="form-group col-md-3">
                 <label>First Name (A.2.1.1b)</label>
@@ -56,7 +95,7 @@
                 <input type="text" class="form-control" id="lname" placeholder="">
             </div>
         </div>
-        <h4 class="text-left">Event</h4>
+        <h4 class="text-left mt-3">Event</h4>
         <div class="form-row bg-light">
             <div class="form-group col-md-4">
                 <label>Reported term (B.2.i.0) <i class="fas fa-asterisk reqField"></i></label>
@@ -85,6 +124,15 @@
                 <input type="text" class="form-control" id="" placeholder="">
             </div>
         </div>
+
+        <!-- Attachment -->
+        <h4 class="text-left mt-3">Attach Documents </h4>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <input type="file" class="form-control-file" id="">
+            </div>
+        </div>
+
         <button type="button" id="confirmElements" class="btn btn-primary m-auto w-25">Countinue</button>
     </div>
 
@@ -170,19 +218,6 @@
         </div>
     </div>
 
-    <!-- Attachment -->
-    <div id="attach" class="card w-50 mx-auto my-3" style="display:none;">
-        <div class="card-header text-center"><h5>Please attach your documents</h5></div>
-        <div class="card-body">
-            <div class="mx-auto w-50">
-                <div class="form-group">
-                    <input type="file" class="form-control-file" id="">
-                </div>
-            </div>
-            <button type="button" id="attachBack" class="btn btn-outline-warning my-2 mx-2 w-25">Back</button>
-            <button type="button" id="confirmAttach" class="btn btn-primary my-2 mx-2 w-50">Confirm</button>
-        </div>
-    </div>
 
   </div>
 </div>

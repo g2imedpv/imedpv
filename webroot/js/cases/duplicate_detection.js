@@ -1,16 +1,17 @@
-$(document).ready(function() {
-    var unsaved = false;
+// $(document).ready(function() {
+//     var unsaved = false;
 
-    $("input:not(:button,:submit),textarea,select").change(function(){   //triggers change in all input fields including text type
-        unsaved = true;
-    });
+//     $("input:not(:button,:submit),textarea,select").change(function(){   //triggers change in all input fields including text type
+//         unsaved = true;
+//     });
 
-    window.onbeforeunload = function (){
-        if(unsaved){
-            return 'Your data is changed, are you sure you want to complete?';
-        }
-    };
-});
+//     window.onbeforeunload = function (){
+//         if(unsaved){
+//             return 'Your data is changed, are you sure you want to complete?';
+//         }
+//     };
+// });
+
 $(document).ready(function(){
     /**
      *
@@ -117,6 +118,8 @@ function checkDuplicate(){
                 text +="</tr>";
                 text +="</thead>";
                 text +="<tbody>";
+                var age_unit={"800":"decade(s)","801":"year(s)","802":"Month(s)","803":"Week(s)","804":"Day(s)","805":"Hour(s)"};
+                var gender=["","male","female","Unknown","not specified"];
                 $.each(result, function(k,caseDetail){
                     text += "<tr>";
                     text += "<td><button type=\"button\" class=\"btn btn-outline-info\" onclick=\"caseDetail(\'"+caseDetail.caseNo+"\')\" data-toggle=\"modal\" data-target=\".CaseDetail\">" + caseDetail.caseNo;
@@ -126,10 +129,10 @@ function checkDuplicate(){
                     if(!jQuery.isEmptyObject(caseDetail.patient_initial)) text +=caseDetail.patient_initial;
                     text +=  "</td>";
                     text += "<td>";
-                    if(!jQuery.isEmptyObject(caseDetail.patient_age)) text +=caseDetail.patient_age;
+                    if(!jQuery.isEmptyObject(caseDetail.patient_age)) {text +=caseDetail.patient_age+" "+age_unit[caseDetail.patient_age_unit]}
                     text += "</td>";
                     text += "<td>";
-                    if(!jQuery.isEmptyObject(caseDetail.patient_gender)) text +=caseDetail.patient_gender;
+                    if(!jQuery.isEmptyObject(caseDetail.patient_gender)) text +=gender[caseDetail.patient_gender];
                     text += "</td>";
                     text += "<td>";
                     if(!jQuery.isEmptyObject(caseDetail.patient_dob)) text += caseDetail.patient_dob;
@@ -150,7 +153,7 @@ function checkDuplicate(){
                 text +="</table>";
             }else text+="<div class=\"my-3 text-center\"><h3>No Duplicate AER(s) Found</h3></div>"
             //text +="<div class=\"text-center\"> <button onclick=\"clearResult()\" class=\"btn btn-outline-warning mx-2 w-25\">Search Again</button>";
-            text +="<button onclick=\"createCase()\" class=\"btn btn-primary float-right w-25 my-3\">Create This Case</button> </div>";
+            text +="<div onclick=\"createCase()\" class=\"btn btn-primary float-right w-25 my-3\" style=\"cursor:pointer;\">Create This Case</div> </div>";
             $("#caseTable").html(text);
         },
         error:function(response){
@@ -169,19 +172,24 @@ function checkDuplicate(){
 
 }
 function createCase(){
+    var confirmFlag = 0;
     swal({
-        title: "Are you sure?",
-        text: "Is your duplicate search completed?",
+        title: "Is your duplicate search completed?",
+        text: "",
         icon: "warning",
-        buttons: true,
+        buttons: ["No", "Yes - Continue"],
         dangerMode: true,
+        closeOnClickOutside: false,
       })
-      .then(() => {
-        $(location).attr('href', '/sd-cases/createcase');
+      .then((value) => {
+            value =confirmFlag;
       });
-    $("select").each(function(){
-        $(this).prop("disabled", false);
-    });
+    if(confirmFlag){
+        $("select").each(function(){
+            $(this).prop("disabled", false);
+            document.getElementById("caseRegistrationForm").submit();
+        });
+    }
 }
 function clearResult(){
     $('#caseTable').html("");
@@ -203,7 +211,7 @@ $(document).ready(function(){
     $("#confirmElements").click(function(){
         // IF invalid case
         if ($('#patient').val() == 1) {
-            swal("We think this an invalid case. Do you want to continue creating a new case?","","warning", {
+            swal("This is an invalid case. Do you want to continue creating a new case?","","warning", {
                 buttons: {
                     Yes: true,
                     No: true,
@@ -226,8 +234,8 @@ $(document).ready(function(){
                         $(location).attr('href', '/sd-cases/caseregistration');
                         break;
 
-                        //   default:
-                        //     swal("cancel");
+                    //   default:
+                    //     swal("cancel");
                 }
             });
         }
@@ -276,18 +284,36 @@ $(document).ready(function(){
             $(this).prop("readonly", false);
         });
     });
-    $("#confirmPrioritize").click(function(){
-        $('#prioritize').hide();
-        $('#attach').show();
-        // $("#prioritize :input").each(function(){
-        //     $(this).prop("readonly", false);
-        // });
+
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
     });
-    $("#attachBack").click(function(){
-        $('#attach').hide();
-        $('#confirmElements').show();
-        $("#basicInfo :input").each(function(){
-            $(this).prop("readonly", false);
-        });
+
+    // Loop Year and Day
+    $(function(){
+        var $yearSelect = $(".yearSelect");
+        for (i=1900;i<=2050;i++){
+            $yearSelect.append($('<option></option>').val(i).html(i))
+        }
+        var $daySelect = $(".daySelect");
+        for (j=1;j<=31;j++){
+            if (j<10) {
+                $daySelect.append($('<option></option>').val("0"+j).html(j))
+            }
+            else {
+                $daySelect.append($('<option></option>').val(j).html(j))
+            }
+        }
     });
+
+    $('#dobDay,#dobMonth,#dobYear').change(
+        function(){
+            //var oriValue = $('#caseReg_patient_dob').val();
+            var dayValue = $('#dobDay').val();
+            var monthValue = $('#dobMonth').val();
+            var yearValue = $('#dobYear').val();
+            Value = dayValue + monthValue + yearValue;
+            $('#caseReg_patient_dob').val(Value);
+        }
+    )
 });

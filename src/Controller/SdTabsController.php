@@ -1,4 +1,5 @@
 <?php
+      
         namespace App\Controller;
         use Cake\ORM\TableRegistry;
 
@@ -35,6 +36,7 @@
              */
             public function showdetails($caseNo, $version = 1,$tabid = 1)
             {
+
                 $writePermission= 0;
                 $userinfo = $this->request->session()->read('Auth.User');
                 $sdCasesTable = TableRegistry::get('SdCases');
@@ -109,6 +111,11 @@
                     $activitySectionPermissions = null;
                     $writePermission =1;
                 }
+                if($writePermission){
+                    $caseValidation = $this->request->session()->read('caseValidate.'.$caseId);
+                    if($caseValidation==null)
+                    $this->request->session()->write('caseValidate.'.$caseId, $this->validateForm($caseId));
+                }
                 $this->set(compact('activitySectionPermissions'));
                 //For readonly status, donot render layout
                 $readonly = $this->request->getQuery('readonly');
@@ -135,7 +142,7 @@
                     }
                 }
 
-                $this->set(compact('sdSections','caseNo','version','tabid','caseId','product_name','case_versions','writePermission'));
+                $this->set(compact('validatedDatas','sdSections','caseNo','version','tabid','caseId','product_name','case_versions','writePermission'));
             }
             /**
              *

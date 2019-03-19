@@ -192,8 +192,9 @@ class MedDraController extends AppController
                 };
                 if( $socTerm != '' ){
                     $qptb->where(['meddra.soc_name LIKE \'%'.$socTerm.'%\'']);
-                };
-                $drugList = $conn->execute($qptb)->fetchAll();
+                };         
+
+                $drugList = $conn->execute($qptb->distinct())->fetchAll();
                 echo json_encode($drugList);
             }catch (\PDOException $e){
                 echo $qptb;

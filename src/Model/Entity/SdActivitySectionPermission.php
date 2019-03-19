@@ -11,7 +11,7 @@ use Cake\ORM\Entity;
  * @property int $sd_section_id
  * @property int $action
  *
- * @property \App\Model\Entity\SdActivity $sd_activity
+ * @property \App\Model\Entity\SdWorkflowActivity $sd_workflow_activity
  * @property \App\Model\Entity\SdSection $sd_section
  */
 class SdActivitySectionPermission extends Entity
@@ -30,7 +30,7 @@ class SdActivitySectionPermission extends Entity
         'sd_workflow_activity_id' => true,
         'sd_section_id' => true,
         'action' => true,
-        'sd_activity' => true,
+        'sd_workflow_activity' => true,
         'sd_section' => true
     ];
 }

@@ -521,6 +521,7 @@ class SdCasesController extends AppController
                 $savedData['status'] = "1";
                 $savedData['caseNo'] = $date_str;
                 $savedData['version_no'] = "1";
+                //TODO VERSION UP MIGHT BE INCLUDED
                 $savedData['sd_user_id'] = $userinfo['id'];
                 $savedData['sd_workflow_activity_id'] = $sdWorkflowActivities['id'];
                 $sdCase = $this->SdCases->patchEntity($sdCase, $savedData);
@@ -691,7 +692,7 @@ class SdCasesController extends AppController
                 }
 
             //$this->Flash->success(__('The case number is'.$date_str));
-            return $this->redirect('/sd-cases/createcase/');
+            return $this->redirect('/sd-cases/createcase'.$date_str.'/'.$savedCase['version_no']);
         }
         $this->set(compact('productInfo','date_str'));
     }
@@ -832,14 +833,15 @@ class SdCasesController extends AppController
                 'query_status'=>0,
                 'receiver_status'=>1,
                 'send_date'=>date("Y-m-d H:i:s"),
-
-
             ];
-            $patchedQuery = $queryTable->patchEntity($sdQuery, $dataSet);
+            
+            
+            $patchedQuery = $queryTable->patchEntity($sdQuery, $dataSet);debug($patchedQuery);debug($dataSet);
             if(!$queryTable->save($patchedQuery)){
                  echo "error in saving query";
                  return;
             }
+            $this->request->session()->delete('caseValidate.'.$case['id']);
             echo "success";
             $this->Flash->success(__('You\'ve successfully Signed-Off.'));
             die();
@@ -871,8 +873,10 @@ class SdCasesController extends AppController
    *
    *
    */
-  public function createcase(){
+  public function createcase($caseNo, $versionNo=null){
     $this->viewBuilder()->layout('main_layout');
+    
+
   }
 
 

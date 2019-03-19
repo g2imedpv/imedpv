@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
  * SdSections Model
  *
  * @property \App\Model\Table\SdTabsTable|\Cake\ORM\Association\BelongsTo $SdTabs
- * @property |\Cake\ORM\Association\HasMany $SdPhaseRoleSectionPermissions
+ * @property |\Cake\ORM\Association\HasMany $SdActivitySectionPermissions
  * @property \App\Model\Table\SdSectionStructuresTable|\Cake\ORM\Association\HasMany $SdSectionStructures
  *
  * @method \App\Model\Entity\SdSection get($primaryKey, $options = [])
@@ -43,7 +43,7 @@ class SdSectionsTable extends Table
             'foreignKey' => 'sd_tab_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('SdPhaseRoleSectionPermissions', [
+        $this->hasMany('SdActivitySectionPermissions', [
             'foreignKey' => 'sd_section_id'
         ]);
         $this->hasMany('SdSectionStructures', [
@@ -76,7 +76,8 @@ class SdSectionsTable extends Table
         $validator
             ->scalar('child_section')
             ->maxLength('child_section', 50)
-            ->allowEmpty('child_section');
+            ->requirePresence('child_section', 'create')
+            ->notEmpty('child_section');
 
         $validator
             ->boolean('is_addable')
