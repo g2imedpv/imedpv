@@ -118,6 +118,8 @@ function checkDuplicate(){
                 text +="</tr>";
                 text +="</thead>";
                 text +="<tbody>";
+                var age_unit={"800":"decade(s)","801":"year(s)","802":"Month(s)","803":"Week(s)","804":"Day(s)","805":"Hour(s)"};
+                var gender=["","male","female","Unknown","not specified"];
                 $.each(result, function(k,caseDetail){
                     text += "<tr>";
                     text += "<td><button type=\"button\" class=\"btn btn-outline-info\" onclick=\"caseDetail(\'"+caseDetail.caseNo+"\')\" data-toggle=\"modal\" data-target=\".CaseDetail\">" + caseDetail.caseNo;
@@ -127,10 +129,10 @@ function checkDuplicate(){
                     if(!jQuery.isEmptyObject(caseDetail.patient_initial)) text +=caseDetail.patient_initial;
                     text +=  "</td>";
                     text += "<td>";
-                    if(!jQuery.isEmptyObject(caseDetail.patient_age)) text +=caseDetail.patient_age;
+                    if(!jQuery.isEmptyObject(caseDetail.patient_age)) {text +=caseDetail.patient_age+" "+age_unit[caseDetail.patient_age_unit]}
                     text += "</td>";
                     text += "<td>";
-                    if(!jQuery.isEmptyObject(caseDetail.patient_gender)) text +=caseDetail.patient_gender;
+                    if(!jQuery.isEmptyObject(caseDetail.patient_gender)) text +=gender[caseDetail.patient_gender];
                     text += "</td>";
                     text += "<td>";
                     if(!jQuery.isEmptyObject(caseDetail.patient_dob)) text += caseDetail.patient_dob;
@@ -170,6 +172,7 @@ function checkDuplicate(){
 
 }
 function createCase(){
+    var confirmFlag = 0;
     swal({
         title: "Is your duplicate search completed?",
         text: "",
@@ -179,14 +182,14 @@ function createCase(){
         closeOnClickOutside: false,
       })
       .then((value) => {
-        if (value) {
-            $(location).attr('href', '/sd-cases/createcase');
-        }
+            value =confirmFlag;
       });
-
-    $("select").each(function(){
-        $(this).prop("disabled", false);
-    });
+    if(confirmFlag){
+        $("select").each(function(){
+            $(this).prop("disabled", false);
+            document.getElementById("caseRegistrationForm").submit();
+        });
+    }
 }
 function clearResult(){
     $('#caseTable').html("");
