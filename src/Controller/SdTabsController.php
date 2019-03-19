@@ -775,10 +775,6 @@
         // debug($required_field_list);
         return $required_field_list;
     }
-
-
-}
- 
             public function genXML($caseId)
             {
                 $this->autoRender = false;
