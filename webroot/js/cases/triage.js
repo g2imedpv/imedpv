@@ -131,7 +131,9 @@ $(document).ready(function(){
                 $(this).prop("disabled", true);
             });
             $('#confirmElements').hide();
-            $('#prioritize').show();}
+            $('#prioritize').show();
+            $('#prioritize :input').prop('disabled',false);
+        }
     });
 
     $("#checkbtn").click(function(){
@@ -148,10 +150,24 @@ $(document).ready(function(){
         $('#caseRegAdvFields').show();
     });
 
-    $("#reason-3 ").click(function(){
-        $('#othersInput').toggle();
-    });
+    $("#reason-3").change(function(){
+        if($(this).prop('checked')){
+            $('#otherReason').prop('disabled',false);
+            $('#otherReason').show();
+        }
 
+        if(!$(this).prop('checked')){
+            $('#otherReason').prop('disabled',true);
+            $('#otherReason').hide();
+        }
+    });
+    $('[id^=patientField_dob]').change(function(){
+        var day = $('[id=patientField_dob_day]').val();
+        var month = $('[id=patientField_dob_month]').val();
+        var year = $('[id=patientField_dob_year]').val();
+        var dob_string = day + month + year;
+        $('#patientField_dob').val(dob_string);
+    });
     $("#selReaBack").click(function(){
         $('[id^=reason]').each(function(){
             $(this).prop('disabled',true)
@@ -175,6 +191,14 @@ $(document).ready(function(){
         if(validCase == 2) {
             $('#selReaBack').show();
             $('#confirmRea').show();
+        }else{
+            $('#confirmElements').show();
+            $("#basicInfo :input").each(function(){
+                $(this).prop("readonly", false);
+            });
+            $("select").each(function(){
+                $(this).prop("disabled", false);
+            });
         }
     });
 
@@ -185,25 +209,33 @@ $(document).ready(function(){
     $('[id^=prioritize]').change(function(){
         var text="";
         if($('#prioritize-seriousness-1').prop('checked')&&$('#prioritize-related-1').prop('checked')&&$('#prioritize-unlabelled-1').prop('checked')) prioritizeType = 1;
-        if($('#prioritize-seriousness-2').prop('checked')&&$('#prioritize-related-1').prop('checked')&&$('#prioritize-unlabelled-1').prop('checked')) prioritizeType = 2;
-        if($('#prioritize-seriousness-4').prop('checked')) prioritizeType = 3;
+        else if($('#prioritize-seriousness-2').prop('checked')&&$('#prioritize-related-1').prop('checked')&&$('#prioritize-unlabelled-1').prop('checked')) prioritizeType = 2;
+        else if($('#prioritize-seriousness-4').prop('checked')) prioritizeType = 3;
+        else prioritizeType = 0;
+        console.log(prioritizeType);
+        var formatDayZero = new Date(dayZero.substring(2,4)+" "+dayZero.substring(0,2)+" "+dayZero.substring(4,8));
+        var formatDueDay = new Date();
         if(prioritizeType == 1){
-            text +="7 Days Report, Priority: High, Due Date: "
+            formatDueDay.setDate(formatDayZero.getDate()+7);
+            text +="7 Days Report, Priority: High, Due Date: "+formatDueDay;
         }
         if(prioritizeType == 2){
-            text +="15 Days Report, Priority: High, Due Date: "
+            formatDueDay.setDate(formatDayZero.getDate()+15);
+            text +="15 Days Report, Priority: High, Due Date: "+formatDueDay;
         }
         if(prioritizeType == 0){
-            text +="15 Days Case, Priority: Medium, Due Date: "
+            formatDueDay.setDate(formatDayZero.getDate()+15);
+            text +="15 Days Case, Priority: Medium, Due Date: "+formatDueDay;
         }
-        if(prioritizeType == 1){
-            text +="90 Days Case, Priority: Low, Due Date: "
+        if(prioritizeType == 3){
+            formatDueDay.setDate(formatDayZero.getDate()+90);
+            text +="90 Days Case, Priority: Low, Due Date: "+formatDueDay;
         }
-        $('#prioritizeType').html(text);
+        $('#prioritizeType').text();
+        $('#prioritizeType').text(text);
     });
 });
-function savenexit(){
-    $('#triageForm').attr('action','/sd-cases/triage/'+caseNo);
+function savenexit(){ 
     document.getElementById("triageForm").submit();
 }
 

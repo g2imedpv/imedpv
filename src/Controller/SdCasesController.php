@@ -674,7 +674,7 @@ class SdCasesController extends AppController
                     'sd_field_id' => '225',
                     'set_number' => '1',
                     'created_time' =>date("Y-m-d H:i:s"),
-                    'field_value' =>date("Ymd"),
+                    'field_value' =>date("dmY"),
                     'status' =>'1',
                 ];
                 $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
@@ -907,9 +907,13 @@ class SdCasesController extends AppController
             $requestData = $this->request->getData();
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
             //TODO if the case is to push to Data Entry
+            debug($requestData['field_value']);
+
             foreach($requestData['field_value'] as $field_id => $detail_data){
                 if($detail_data!=""){
-                    $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                    $previous_field_value = $sdFieldValueTable->find()->where(['sd_case_id'=>$case['id'],'sd_field_id'=>$field_id,'set_number'=>'1','status'=>'1'])->first();
+                    if($previous_field_value!=null) $sdFieldValueEntity = $previous_field_value;
+                    else $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                     $dataSet = [
                         'sd_case_id' => $case->id,
                         'sd_field_id' => $field_id,
@@ -925,11 +929,11 @@ class SdCasesController extends AppController
                     }
                 }
             }
-            if($requestData['endTriage'])
+            if(in_array('endTriage',$requestData))
             {
                 echo "succuess";
                 die();
-            }
+            }else $this->Flash->success(__('This page has been saved.'));
         }
         $this->viewBuilder()->setLayout('main_layout');
         $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$versionNo])
@@ -952,7 +956,8 @@ class SdCasesController extends AppController
         foreach($field_ids as $field_id){
             try{
             $field_value = $fieldValue_Table->find()->where(['sd_case_id'=>$case['id'],'sd_field_id'=>$field_id,'set_number'=>'1','status'=>'1'])->first();
-            $field_value_set[$field_id] = $field_value['field_value'];
+            $field_value_set[$field_id]['field_value'] = $field_value['field_value'];
+            // $field_value_set[$field_id]['id'] = $field_value['id'];
             }catch (\PDOException $e){
                 $field_value_set[$field_id] = null;
             }
