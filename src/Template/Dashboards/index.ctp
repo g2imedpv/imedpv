@@ -4,7 +4,7 @@
 <head>
 <script>
 var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
-var userId = <?= $this->request->session()->read('Auth.User.id')?>;
+var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
 </script>
 <div class="container" >
   <div class="row mt-3"style="display:none;">

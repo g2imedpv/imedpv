@@ -67,29 +67,30 @@ function searchWhoDra(){
 }
 function checkDuplicate(){
     $("[id=checkbutton]").hide();
-
+    var fields =[
+        'product_id',
+        'sd_product_workflow_id',
+        'patient_initial',
+        'patient_age',
+        'patient_age_unit',
+        'patient_gender',
+        // 'patient_dob',
+        'reporter_firstname',
+        'reporter_lastname',
+        'report_term',
+        'event_onset_date',
+        'patient_ethnic_origin',
+        'patient_age_group',
+        'meddraptname',
+        'meddralltname',
+        'meddrahltname',
+    ];
     var request={
-        'userId':userId,
-        'product_id':$('#product_id').val(),
-        'sd_product_workflow_id':$('#sd_product_workflow_id').val(),
-        'patient_initial':$('#patient_initial').val(),
-        'patient_age':$('#patient_age').val(),
-        'patient_age_unit':$('#patient_age_unit').val(),
-        'patient_gender':$('#patient_gender').val(),
-        'patient_dob':$('#patient_dob').val(),
-        'reporter_firstname':$('#reporter_firstname').val(),
-        'reporter_lastname':$('#reporter_lastname').val(),
-        'report_term':$('#report_term').val(),
-        'event_onset_date':$('#event_onset_date').val(),
-        'patient_ethnic_origin':$('#patient_ethnic_origin').val(),
-        'patient_age_group':$('#patient_age_group').val(),
-        'meddraptname':$('#meddraptname').val(),
-        'meddralltname':$('#meddralltname').val(),
-        'meddrahltname':$('#meddrahltname').val(),
-        'activity_due_date':$('#activity_due_date').val(),
-        'submission_due_date':$('#submission_due_date').val(),
-
+        'userId':userId
     };
+    $.each(fields,function(k,field_label){
+        if(!(($('#'+field_label).val()=="")||($('#'+field_label).val()=="null"))) request[field_label] = $('#'+field_label).val();
+    });
     console.log(request);
     $.ajax({
         headers: {
@@ -182,14 +183,12 @@ function createCase(){
         closeOnClickOutside: false,
       })
       .then((value) => {
-            value =confirmFlag;
-      });
-    if(confirmFlag){
-        $("select").each(function(){
+           $("select").each(function(){
             $(this).prop("disabled", false);
-            document.getElementById("caseRegistrationForm").submit();
+            
         });
-    }
+        document.getElementById("caseRegistrationForm").submit();
+      });
 }
 function clearResult(){
     $('#caseTable').html("");
@@ -206,114 +205,3 @@ function caseDetail(caseNo)
     $('#caseLabel').text("Case Detail:"+caseNo);
     $('#iframeDiv').attr('src','/sd-tabs/showdetails/'+caseNo+'/'+$('#version-'+caseNo).val()+'/1?readonly=1');
 }
-
-$(document).ready(function(){
-    $("#confirmElements").click(function(){
-        // IF invalid case
-        if ($('#patient').val() == 1) {
-            swal("This is an invalid case. Do you want to continue creating a new case?","","warning", {
-                buttons: {
-                    Yes: true,
-                    No: true,
-                    cancel: "Cancel"
-                },
-            })
-            .then((value) => {
-                switch (value) {
-                    case "Yes":
-                        swal("Please Select Reasons in following step","", "success");
-                        $("#basicInfo :input").each(function(){
-                            $(this).prop("readonly", true);
-                        });
-                        $('#confirmElements').hide();
-                        $('#selRea').show();
-                        break;
-
-                    case "No":
-                        swal("Your case has been inactivated","", "warning");
-                        $(location).attr('href', '/sd-cases/caseregistration');
-                        break;
-
-                    //   default:
-                    //     swal("cancel");
-                }
-            });
-        }
-        // ELSE valid case
-        else {
-            $("#basicInfo :input").each(function(){
-                $(this).prop("readonly", true);
-            });
-            $('#confirmElements').hide();
-            $('#prioritize').show();}
-    });
-
-    $("#checkbtn").click(function(){
-        //$(this).hide();
-        $('#clear').show();
-    });
-
-    $("#clear").click(function(){
-        $(this).hide();
-    });
-
-    $("#caseRegAdvBtn").click(function(){
-        $(this).hide();
-        $('#caseRegAdvFields').show();
-    });
-
-    $("#otherCheck").click(function(){
-        $('#othersInput').toggle();
-    });
-
-    $("#selReaBack").click(function(){
-        $('#selRea').hide();
-        $('#confirmElements').show();
-        $("#basicInfo :input").each(function(){
-            $(this).prop("readonly", false);
-        });
-    });
-    $("#confirmRea").click(function(){
-        $('#selRea').hide();
-        $('#prioritize').show();
-    });
-    $("#prioritizeBack").click(function(){
-        $('#prioritize').hide();
-        $('#confirmElements').show();
-        $("#basicInfo :input").each(function(){
-            $(this).prop("readonly", false);
-        });
-    });
-
-    $(document).ready(function() {
-        $('.js-example-basic-single').select2();
-    });
-
-    // Loop Year and Day
-    $(function(){
-        var $yearSelect = $(".yearSelect");
-        for (i=1900;i<=2050;i++){
-            $yearSelect.append($('<option></option>').val(i).html(i))
-        }
-        var $daySelect = $(".daySelect");
-        for (j=1;j<=31;j++){
-            if (j<10) {
-                $daySelect.append($('<option></option>').val("0"+j).html(j))
-            }
-            else {
-                $daySelect.append($('<option></option>').val(j).html(j))
-            }
-        }
-    });
-
-    $('#dobDay,#dobMonth,#dobYear').change(
-        function(){
-            //var oriValue = $('#caseReg_patient_dob').val();
-            var dayValue = $('#dobDay').val();
-            var monthValue = $('#dobMonth').val();
-            var yearValue = $('#dobYear').val();
-            Value = dayValue + monthValue + yearValue;
-            $('#caseReg_patient_dob').val(Value);
-        }
-    )
-});
