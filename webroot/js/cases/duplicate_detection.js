@@ -74,7 +74,7 @@ function checkDuplicate(){
         'patient_age',
         'patient_age_unit',
         'patient_gender',
-        'patient_dob',
+        // 'patient_dob',
         'reporter_firstname',
         'reporter_lastname',
         'report_term',
