@@ -38,8 +38,7 @@ class SdMedwatchPositionsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsTo('SdFields', [
-            'foreignKey' => 'sd_field_id',
-            'joinType' => 'INNER'
+            'foreignKey' => 'sd_field_id'
         ]);
     }
 
@@ -58,41 +57,35 @@ class SdMedwatchPositionsTable extends Table
         $validator
             ->scalar('medwatch_no')
             ->maxLength('medwatch_no', 4)
-            ->requirePresence('medwatch_no', 'create')
-            ->notEmpty('medwatch_no');
+            ->allowEmpty('medwatch_no');
 
         $validator
             ->scalar('field_name')
-            ->maxLength('field_name', 30)
-            ->requirePresence('field_name', 'create')
-            ->notEmpty('field_name');
+            ->maxLength('field_name', 20)
+            ->allowEmpty('field_name');
 
         $validator
             ->integer('position_top')
-            ->requirePresence('position_top', 'create')
-            ->notEmpty('position_top');
+            ->allowEmpty('position_top');
 
         $validator
             ->integer('position_left')
-            ->requirePresence('position_left', 'create')
-            ->notEmpty('position_left');
+            ->allowEmpty('position_left');
 
         $validator
             ->integer('position_width')
-            ->requirePresence('position_width', 'create')
-            ->notEmpty('position_width');
+            ->allowEmpty('position_width');
 
         $validator
             ->integer('position_height')
-            ->requirePresence('position_height', 'create')
-            ->notEmpty('position_height');
+            ->allowEmpty('position_height');
 
         $validator
+            ->integer('set_number')
             ->allowEmpty('set_number');
 
         $validator
-            ->scalar('value_type')
-            ->maxLength('value_type', 100)
+            ->integer('value_type')
             ->allowEmpty('value_type');
 
         return $validator;
