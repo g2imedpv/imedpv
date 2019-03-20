@@ -51,6 +51,7 @@
         echo $mailNotice;
         ?>
       </div>
+
       <div class="nav-item dropdown p-2 bd-highlight">
         <a class="nav-link text-dark bg-light" href="/sd-users/myaccount" id="accountInfo" role="button" aria-haspopup="true" aria-expanded="false">
           <h5>Hi, <span id="roleName"> <?php print $this->request->getSession()->read('Auth.User.firstname'); ?>&nbsp;<?php print $this->request->getSession()->read('Auth.User.lastname'); ?> </span> </h5>
@@ -61,6 +62,7 @@
           <a class="dropdown-item my-1" href="/sd-users/logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
         </div>
       </div>
+
     </div>
 </div>
 
@@ -113,7 +115,6 @@
     </form> -->
   </div>
 </nav>
-
 
 
 <!-- The following codes are required when this layout applied to any other  -->

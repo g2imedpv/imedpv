@@ -191,13 +191,21 @@
                     <div class="modal fade CaseDetail" tabindex="-1" role="dialog" aria-labelledby="CaseDetail" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content" style="width:1250px;left: -220px;">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="caseLabel"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
                                 <div class="modal-body m-3">
-                                    <h5 id="caseLabel"></h5>
                                     <div class="embed-responsive embed-responsive-4by3">
                                         <iframe id="iframeDiv" class="embed-responsive-item" src=""></iframe>
                                     </div>
-                                    <!-- <iframe id="iframeDiv" src="" width="700" height="730"></iframe> -->
                                 </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                                <!-- <iframe id="iframeDiv" src="" width="700" height="730"></iframe> -->
                             </div>
                         </div>
                     </div>
