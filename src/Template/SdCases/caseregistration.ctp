@@ -75,16 +75,6 @@
                             </div>
                         </div>
                         <div class="form-row">
-                             <div class="form-group col-md-3">
-                                <label>Patient Gender:</label>
-                                <select type="text" class="form-control" name="field_value[93]" id="patient_gender">
-                                    <option value="null">Select Patient Gender</option>
-                                    <option value="1">Male</option>
-                                    <option value="2">Female</option>
-                                    <option value="3">Unknown</option>
-                                    <option value="4">Not Specified</option>
-                                </select>
-                             </div>
                             <div class="form-group col-md-3">
                                 <label>Event Report Term:</label>
                                 <input type="text" class="form-control" name="field_value[149]" id="report_term">
