@@ -8,7 +8,6 @@
   <div class="card-body">
     <div class="alert alert-primary w-50 mx-auto" role="alert"><h4>New Case Number: 43523452345234</h4></div>
     <hr class="my-3">
-
     <!-- Basic Info Fields Set -->
     <div id="basicInfo" class="form-group">
         <h4 class="text-left">Product</h4>
@@ -34,12 +33,12 @@
                 <label>Date of birth (B.1.2.1b)</label>
                 <div class="form-row">
                     <div class="col-sm-4">
-                        <select class="custom-select js-example-basic-single daySelect" placeholder="Day">
+                        <select id="dobDay" class="custom-select js-example-basic-single daySelect" placeholder="Day">
                             <option value="00">Day</option>
                         </select>
                     </div>
                     <div class="col-sm-4">
-                        <select class="custom-select js-example-basic-single" placeholder="Month">
+                        <select id=dobMonth class="custom-select js-example-basic-single monthSelect" placeholder="Month">
                             <option value="00">Month</option>
                             <option value="01">Jan-1</option>
                             <option value="02">Feb-2</option>
@@ -56,13 +55,14 @@
                         </select>
                     </div>
                     <div class="col-sm-4">
-                        <select class="custom-select js-example-basic-single yearSelect" placeholder="Year">
+                        <select id="dobYear" class="custom-select js-example-basic-single yearSelect" placeholder="Year">
                             <option value="0000">Year</option>
                         </select>
                     </div>
                 </div>
+                <input type="hidden" class="form-control" name="field_value[85]" id="caseReg_patient_dob" value="00000000">
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-5">
                 <label>Age at time of onset reaction (B.1.2.2a)</label>
                 <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Field Helper" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
                 <input type="text" class="form-control" id="age" placeholder="">
