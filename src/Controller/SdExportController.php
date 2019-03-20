@@ -331,7 +331,20 @@ class SdExportController extends AppController
                                 $count_words = $line*70;
                                 $pagethree=substr($positions['fv']['field_value'],$count_words);
                                 $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pagethree.'</p>';      
+                                .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pagethree.'</p>'; 
+                        case '10':
+                            $positions= $sdMedwatchPositions ->find()
+                            ->select(['sdMedwatchPositions.id','sdMedwatchPositions.sd_field_id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
+                                'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value'])
+                            ->join([
+                                'fv' =>[
+                                    'table' =>'sd_field_values',
+                                    'type'=>'INNER',
+                                    'conditions'=>['sdMedwatchPositions.sd_field_id = fv.sd_field_id','sdMedwatchPositions.sd_field_id = '.$field_id,'fv.status = 1','fv.sd_case_id='.$caseId,'sdMedwatchPositions.value_type=10']
+                                ]
+                            ]);
+                            debug($positions);die();
+
                     }
                     return $text;
                 }

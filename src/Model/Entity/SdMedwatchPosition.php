@@ -15,7 +15,7 @@ use Cake\ORM\Entity;
  * @property int $position_height
  * @property int $sd_field_id
  * @property int $set_number
- * @property string $value_type
+ * @property int $value_type
  *
  * @property \App\Model\Entity\SdField $sd_field
  */
