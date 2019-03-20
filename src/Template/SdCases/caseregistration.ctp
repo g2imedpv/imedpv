@@ -37,7 +37,28 @@
                                 <input name="sd_product_workflow_id" id="input_product_workflow_id" type="hidden">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>Patient Age:</label>
+                                <label>Event Report Term:</label>
+                                <input type="text" class="form-control" name="field_value[149]" id="report_term">
+                             </div>
+                             <div class="form-group col-md-3">
+                                <label>Reaction Onset Date(B.2.i.4):</label>
+                                <input type="text" class="form-control" name="field_value[159]" id="event_onset_date">
+                             </div>
+                        </div>
+                        <div class="form-row">
+                             <div class="form-group col-md-3">
+                                <label>Patient Gender:</label>
+                                <select type="text" class="form-control" name="field_value[93]" id="patient_gender">
+                                    <option value="">Select Patient Gender</option>
+                                    <option value="1">Male</option>
+                                    <option value="2">Female</option>
+                                    <option value="3">Unknown</option>
+                                    <option value="4">Not Specified</option>
+                                </select>
+                             </div>
+                            <div class="form-group col-md-5">
+                                <label>Age at time of onset reaction (B.1.2.2a)</label>
+                                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Field Helper" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
                                 <input type="text" class="form-control" name="field_value[86]" id="patient_age">
                             </div>
                             <div class="form-group col-md-3">
@@ -52,26 +73,6 @@
                                     <option value="805">Hour</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-row">
-                             <div class="form-group col-md-3">
-                                <label>Patient Gender:</label>
-                                <select type="text" class="form-control" name="field_value[93]" id="patient_gender">
-                                    <option value="">Select Patient Gender</option>
-                                    <option value="1">Male</option>
-                                    <option value="2">Female</option>
-                                    <option value="3">Unknown</option>
-                                    <option value="4">Not Specified</option>
-                                </select>
-                             </div>
-                            <div class="form-group col-md-3">
-                                <label>Event Report Term:</label>
-                                <input type="text" class="form-control" name="field_value[149]" id="report_term">
-                             </div>
-                             <div class="form-group col-md-3">
-                                <label>Reaction Onset Date(B.2.i.4):</label>
-                                <input type="text" class="form-control" name="field_value[159]" id="event_onset_date">
-                             </div>
                         </div>
 
                         <!-- Advance Search -->

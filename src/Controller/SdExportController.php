@@ -6,6 +6,16 @@ use Cake\ORM\TableRegistry;
 class SdExportController extends AppController
         {
             /**
+            *  Generate CIOMS files
+            *
+            */
+            public function genCioms () {
+                $this->viewBuilder()->layout('CIOMS');
+                //$this->autoRender = false;
+            }
+
+
+            /**
             *  Generate PDF files
             *
             */
@@ -57,7 +67,7 @@ class SdExportController extends AppController
                             $text = $text." <style> p {position: absolute;}  </style>";
                             $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                             .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$positions['fv']['field_value'].'</p>';
-                        break;     
+                        break;
                         case '4':// convert xxxxxxxx to dd-mmm-yyyy
                             $positions= $sdMedwatchPositions ->find()
                             ->select(['sdMedwatchPositions.id','sdMedwatchPositions.field_name','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
@@ -76,7 +86,7 @@ class SdExportController extends AppController
                                         $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.substr($positions['fv']['field_value'],0,2).'</p>';
                                     continue;
-                                    case "month":  
+                                    case "month":
                                         switch(substr($positions['fv']['field_value'],2,2)){
                                             case '01':
                                                     $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
@@ -125,7 +135,7 @@ class SdExportController extends AppController
                                             case '12':
                                                     $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                                                     .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'DEC'.'</p>';
-                                                    default; 
+                                                    default;
                                         }
                                         continue;
                                     case "year":
@@ -152,13 +162,13 @@ class SdExportController extends AppController
                                         .'px; width: '.$position_detail5['position_width'].'px;  height: '.$position_detail5['position_height'].'px; color:red;">'.$pageone.'</p>';
                             $pagethree=substr($positions['fv']['field_value'],$count_words);
                             $text =$text.'<p style="top: 1500px; left: 100px; width:100px;  height:100px; color:red;">'.$pagethree.'</p>';
-                        case '6'://                  
-    
+                        case '6'://
+
                     }
                     return $text;
                 }
 
-            
+
             public function genFDApdf($caseId)
             {
                 $result=$result.$this->getPositionByType($caseId,79,1) ;  //a1 patientID field
@@ -206,30 +216,30 @@ class SdExportController extends AppController
                 $result=$result.$this->getPositionByType($caseId,229,1);//e1 phone
                 $result=$result.$this->getPositionByType($caseId,232,1);//e1 email
                 $result=$result.$this->getPositionByType($caseId,342,2);//e2 health professional?
-            
 
 
 
-                  
 
-                
-                        
-               
-                
+
+
+
+
+
+
                 // Require composer autoload
                 //require_once __DIR__ . '../vendor/autoload.php';
                // debug($positions);
                 // Require composer autoload
                 //require_once __DIR__ . '../vendor/autoload.php';
-               
+
                 $mpdf = new \Mpdf\Mpdf();
 
                 $mpdf->CSSselectMedia='mpdf';
                 $mpdf->SetTitle('FDA-MEDWATCH');
 
                 //$medwatchdata = $this->SdTabs->find();
-                
-                $mpdf->use_kwt = true;  
+
+                $mpdf->use_kwt = true;
 
                 $mpdf->SetImportUse();
                 $mpdf->SetDocTemplate('export_template/MEDWATCH.pdf',true);
@@ -243,12 +253,12 @@ class SdExportController extends AppController
                 //$mpdf->WriteHTML("second page");
 
 
-                
+
                 $mpdf->AddPage();
-                
-                
+
+
                 //$mpdf->WriteHTML();
-               
+
 
                 $mpdf->Output();
                 // Download a PDF file directly to LOCAL, uncomment while in real useage
@@ -256,10 +266,10 @@ class SdExportController extends AppController
 
 
                 $this->set(compact('positions'));
-                
+
 
             }
-           
+
             /**
             *  Generate XML files
             *
@@ -274,15 +284,15 @@ class SdExportController extends AppController
                         'table' =>'sd_field_values',
                         'type'=>'INNER',
                         'conditions'=>['sdFields.id = fv.sd_field_id','fv.sd_case_id='.$caseId, 'sdFields.descriptor = \''.$descriptor.'\'',
-                        'fv.set_number='.$setNumber ]         
+                        'fv.set_number='.$setNumber ]
                     ]
                 ])->first();
-                
-                $value=$ICSR['fv']['field_value'];      
-                return $value; 
-              
+
+                $value=$ICSR['fv']['field_value'];
+                return $value;
+
             }
- 
+
             public function genXML($caseId)
             {
                 $this->autoRender = false;
@@ -311,10 +321,10 @@ class SdExportController extends AppController
                                 xmlwriter_text($xml,'2.2');//For submission of combination product reports use the value “2.2” for the DTD Descriptor
                             xmlwriter_end_element($xml);
                             xmlwriter_start_element($xml, 'messageformatrelease');xmlwriter_end_element($xml);
-                            xmlwriter_start_element($xml, 'messagenumb');xmlwriter_end_element($xml); 
-                            xmlwriter_start_element($xml, 'messagesenderidentifier');xmlwriter_end_element($xml); 
-                            xmlwriter_start_element($xml, 'messagereceiveridentifier');xmlwriter_end_element($xml); 
-                            xmlwriter_start_element($xml, 'messagedateformat');xmlwriter_end_element($xml); 
+                            xmlwriter_start_element($xml, 'messagenumb');xmlwriter_end_element($xml);
+                            xmlwriter_start_element($xml, 'messagesenderidentifier');xmlwriter_end_element($xml);
+                            xmlwriter_start_element($xml, 'messagereceiveridentifier');xmlwriter_end_element($xml);
+                            xmlwriter_start_element($xml, 'messagedateformat');xmlwriter_end_element($xml);
                             xmlwriter_start_element($xml, 'messagedate');xmlwriter_end_element($xml);
                         xmlwriter_end_element($xml); // ichicsrmessageheader
                         //Start a child element safetyreport
@@ -426,7 +436,7 @@ class SdExportController extends AppController
                                 xmlwriter_start_element($xml, 'linkedreportnumb');
                                     xmlwriter_text($xml,$this->getValue($caseId, "linkedreportnumb",2));
                                 xmlwriter_end_element($xml);
-                            xmlwriter_end_element($xml); 
+                            xmlwriter_end_element($xml);
                             //primarysource
                             xmlwriter_start_element($xml, 'primarysource');//primarysource
                                 xmlwriter_start_element($xml, 'reportertitle');//reportertitle
@@ -450,7 +460,7 @@ class SdExportController extends AppController
                                 xmlwriter_start_element($xml, 'reporterstreet');//reporterstreet
                                     xmlwriter_text($xml,$this->getValue($caseId, "reporterstreet",1));
                                 xmlwriter_end_element($xml);//reporterstreet
-                                xmlwriter_start_element($xml, 'reportercity');//reportercity  
+                                xmlwriter_start_element($xml, 'reportercity');//reportercity
                                     xmlwriter_text($xml,$this->getValue($caseId, "reportercity",1));
                                 xmlwriter_end_element($xml);//reportercity
                                 xmlwriter_start_element($xml, 'reporterstate');//reporterstate
@@ -501,7 +511,7 @@ class SdExportController extends AppController
                                 xmlwriter_start_element($xml, 'reporterstreet');//reporterstreet
                                     xmlwriter_text($xml,$this->getValue($caseId, "reporterstreet",2));
                                 xmlwriter_end_element($xml);//reporterstreet
-                                xmlwriter_start_element($xml, 'reportercity');//reportercity  
+                                xmlwriter_start_element($xml, 'reportercity');//reportercity
                                     xmlwriter_text($xml,$this->getValue($caseId, "reportercity",2));
                                 xmlwriter_end_element($xml);//reportercity
                                 xmlwriter_start_element($xml, 'reporterstate');//reporterstate
@@ -867,7 +877,7 @@ class SdExportController extends AppController
                                         xmlwriter_end_element($xml);//patientdetermautopsmeddraversion
                                         xmlwriter_start_element($xml, 'patientdetermineautopsy');//patientdetermineautopsy
                                             xmlwriter_text($xml,$this->getValue($caseId, "patientdetermineautopsy",2));
-                                        xmlwriter_end_element($xml);//patientdetermineautopsy 
+                                        xmlwriter_end_element($xml);//patientdetermineautopsy
                                     xmlwriter_end_element($xml);//patientautospy
                                 xmlwriter_end_element($xml);//patientdeath
                                 //parent
@@ -1319,7 +1329,7 @@ class SdExportController extends AppController
                                 xmlwriter_end_element($xml);//drug*/
                                 //summary
                                 xmlwriter_start_element($xml, 'summary');//summary
-                                    xmlwriter_start_element($xml, 'narrativeincludeclinical');//narrativeincludeclinical 
+                                    xmlwriter_start_element($xml, 'narrativeincludeclinical');//narrativeincludeclinical
                                         xmlwriter_text($xml,$this->getValue($caseId, "narrativeincludeclinical",1));
                                     xmlwriter_end_element($xml);//narrativeincludeclinical
                                     xmlwriter_start_element($xml, 'reportercomment');//reportercomment
@@ -1337,15 +1347,15 @@ class SdExportController extends AppController
                                 xmlwriter_end_element($xml);//summary
                             xmlwriter_end_element($xml); //patient
                         xmlwriter_end_element($xml); // safetyreport
-                    
+
                     //the first element end
                     xmlwriter_end_element($xml); // ichicsr
 
                 //document end
                 xmlwriter_end_document($xml);
                 echo xmlwriter_output_memory($xml);
-                
 
-            }   
+
+            }
         }
 ?>
