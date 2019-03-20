@@ -175,7 +175,7 @@ class SdProductWorkflowsController extends AppController
                                 return $q->select('company_name');
                             }]);
                         }])->distinct();
-        $this->viewBuilder()->layout('main_layout');
+        $this->viewBuilder()->setLayout('main_layout');
         $this->set(compact('sdProductWorkflow','sdUserAssignments','id','sdUserDistinctAssignments'));
     }
 }

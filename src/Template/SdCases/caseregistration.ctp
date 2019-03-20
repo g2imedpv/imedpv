@@ -19,7 +19,7 @@
                             <div class="form-group col-md-3">
                                 <label>Product Name: <i class="fas fa-asterisk reqField"></i></label>
                                 <select type="text" class="form-control" id="product_id">
-                                    <option value="">Select Project No</option>
+                                    <option value="null">Select Project No</option>
                                     <?php
                                     foreach($productInfo as $k => $productDetail){
                                         echo "<option value=".$productDetail->id.">".$productDetail->product_name."</option>";
@@ -31,7 +31,7 @@
                             <div class="form-group col-md-3">
                                 <label>Country: <i class="fas fa-asterisk reqField"></i></label>
                                 <select type="text" class="form-control" id="sd_product_workflow_id">
-                                    <option value="">Select Country:</option>
+                                    <option value="null">Select Country:</option>
                                     <!-- html->form(project_no) -->
                                 </select>
                                 <input name="sd_product_workflow_id" id="input_product_workflow_id" type="hidden">
@@ -43,7 +43,7 @@
                             <div class="form-group col-md-3">
                                 <label>Age Unit:</label>
                                 <select class="form-control" name="field_value[87]" id="patient_age_unit">
-                                    <option value="">Select Unit</option>
+                                    <option value="null">Select Unit</option>
                                     <option value="800">Decade</option>
                                     <option value="801">Year</option>
                                     <option value="802">Month</option>
@@ -57,7 +57,7 @@
                              <div class="form-group col-md-3">
                                 <label>Patient Gender:</label>
                                 <select type="text" class="form-control" name="field_value[93]" id="patient_gender">
-                                    <option value="">Select Patient Gender</option>
+                                    <option value="null">Select Patient Gender</option>
                                     <option value="1">Male</option>
                                     <option value="2">Female</option>
                                     <option value="3">Unknown</option>
@@ -103,7 +103,7 @@
                                 <div class="form-group col-md-3">
                                     <label>Patient Ethnic origin:</label>
                                     <select class="form-control" id="patient_ethnic_origin" name="field_value[235]">
-                                        <option value=""></option>
+                                        <option value="null"></option>
                                         <option  value="1">American Indian or Alaskan Native</option>
                                         <option  value="2">Asian</option>
                                         <option  value="3">Black or African American</option>
@@ -118,7 +118,7 @@
                                 <div class="form-group col-md-3">
                                     <label>Patient Age group:</label>
                                     <select class="form-control" name="field_value[90]" id="patient_age_group">
-                                        <option value=""></option>
+                                        <option value="null"></option>
                                         <option value="1">Neonate</option>
                                         <option value="2">Infant</option>
                                         <option value="3">Child</option>
@@ -179,7 +179,7 @@
 
 </div>
 <script type="text/javascript">
-    var userId = <?= $this->request->session()->read('Auth.User.id')?>;
+    var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
     var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
 var productInfo = <?php $productInfo =$productInfo->toList();
 echo json_encode($productInfo);?>;

@@ -115,11 +115,11 @@ class SdCompaniesController extends AppController
      */
     public function selectCompany()
     {
-        $this->viewBuilder()->layout('login');
-        $userinfo = $this->request->session()->read('Auth.User');
+        $this->viewBuilder()->setLayout('login');
+        $userinfo = $this->request->getSession()->read('Auth.User');
         if ($this->request->is(['patch', 'post', 'put'])) {
             $company = $this->request->getData();
-            $this->request->session()->write('Auth.User.company_id', $company['company_id']);
+            $this->request->getSession()->write('Auth.User.company_id', $company['company_id']);
             return $this->redirect(['controller'=>'dashboards','action' => 'index']);
         }
         $sdCompany = $this->SdCompanies->find()

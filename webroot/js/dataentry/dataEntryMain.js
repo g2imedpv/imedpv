@@ -659,7 +659,7 @@ function action(type){
                 'X-CSRF-Token': csrfToken
             },
             type:'POST',
-            url:'/sd-users/searchNextAvailable/'+caseId,
+            url:'/sd-users/searchNextAvailable/'+caseNo+'/'+version,
             success:function(response){console.log(response);
                 response = JSON.parse(response);
                 console.log(response);
@@ -737,7 +737,7 @@ function action(type){
                 'X-CSRF-Token': csrfToken
             },
             type:'POST',
-            url:'/sd-users/searchPreviousAvailable/'+caseId,
+            url:'/sd-users/searchPreviousAvailable/'+caseNo+'/'+version,
             success:function(response){console.log(response);
                 response = JSON.parse(response);
                 console.log(response);

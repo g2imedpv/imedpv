@@ -113,7 +113,7 @@ class MedDraController extends AppController
      */
     public function search(){
         
-        $userinfo = $this->request->session()->read('Auth.user');
+        $userinfo = $this->request->getSession()->read('Auth.user');
         if($this->request->is('POST')){
             $this->autoRender = false;
             $searchKey = $this->request->getData();

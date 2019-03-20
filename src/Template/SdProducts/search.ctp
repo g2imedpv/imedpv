@@ -6,7 +6,7 @@
 <?= $this->Html->script('product/search.js') ?>
 <head>
 <script type="text/javascript">
-    var userId = <?= $this->request->session()->read('Auth.User.id')?>;
+    var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
     var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
 </script>
 <div class="container">

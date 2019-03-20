@@ -1,7 +1,7 @@
 <title>Case List</title>
 <script>
 var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
-var userId = <?= $this->request->session()->read('Auth.User.id')?>;
+var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
 </script>
 <div class="card my-3 w-75 mx-auto">
     <div class="card-header text-center">

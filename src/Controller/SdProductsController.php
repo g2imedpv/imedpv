@@ -137,7 +137,7 @@ class SdProductsController extends AppController
 
     public function search()
     {
-        $this->viewBuilder()->layout('main_layout');
+        $this->viewBuilder()->setLayout('main_layout');
         $product_types = $this->loadProductTypes();
         if ($this->request->is('post')) {
 
@@ -184,7 +184,7 @@ class SdProductsController extends AppController
 
     public function addproduct()
     {
-        $this->viewBuilder()->layout('main_layout');
+        $this->viewBuilder()->setLayout('main_layout');
         // $this->set('sdSponsors', $sponsors);
         $workflow_structure = $this->loadWorkflowsStructure();
         $this->set('workflow_structure', $workflow_structure);
@@ -275,7 +275,7 @@ class SdProductsController extends AppController
             $this->Flash->success(__('The sd product has been saved.'));
             return $this->redirect(['action' => 'search']);
         }
-        $userinfo = $this->request->session()->read('Auth.User');
+        $userinfo = $this->request->getSession()->read('Auth.User');
         $cro_companies = TableRegistry::get("SdSponsorCros");
         $query = $cro_companies->find()
         ->select(['SdCompanies.id', 'SdCompanies.company_name'])
