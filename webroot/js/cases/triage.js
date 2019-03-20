@@ -54,9 +54,9 @@ $(document).ready(function(){
                                 },
                             }).then((value) => {
                                 if (value) {
-                                    window.location.href = "/sd-cases/caselist";    
+                                    window.location.href = "/sd-cases/caselist";
                                 }
-                            });              
+                            });
                         },
                         error:function(response){
                             console.log(response);
@@ -112,7 +112,7 @@ $(document).ready(function(){
                             data:request,
                             success:function(response){
                                 swal("Your case has been inactivated","", "warning");
-                                window.location.href = "/sd-cases/caseList";                     
+                                window.location.href = "/sd-cases/caseList";
                             },
                             error:function(response){
 
@@ -134,19 +134,7 @@ $(document).ready(function(){
             $('#prioritize').show();}
     });
 
-    $("#checkbtn").click(function(){
-        //$(this).hide();
-        $('#clear').show();
-    });
 
-    $("#clear").click(function(){
-        $(this).hide();
-    });
-
-    $("#caseRegAdvBtn").click(function(){
-        $(this).hide();
-        $('#caseRegAdvFields').show();
-    });
 
     $("#reason-3 ").click(function(){
         $('#othersInput').toggle();

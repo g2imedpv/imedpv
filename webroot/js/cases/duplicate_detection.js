@@ -36,7 +36,24 @@ $(document).ready(function(){
         $('#input_product_workflow_id').val(product_workflow_id);
     });
 
+    $('#checkbtn').click(function(){
+     });
 
+    $("#caseRegAdvBtn").click(function(){
+        $(this).hide();
+        $('#caseRegAdvFields').show();
+    });
+
+    $("#checkbtn").click(function(){
+        // if(!$('#product_id').val()){
+        //    alert('Input can not be left blank');
+        // }
+        $('#clear').show();
+    });
+
+    $("#clear").click(function(){
+        $(this).hide();
+    });
     /**
      *show caseNo
      */
@@ -185,7 +202,7 @@ function createCase(){
       .then((value) => {
            $("select").each(function(){
             $(this).prop("disabled", false);
-            
+
         });
         document.getElementById("caseRegistrationForm").submit();
       });
