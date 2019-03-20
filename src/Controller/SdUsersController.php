@@ -152,7 +152,7 @@ class SdUsersController extends AppController
                 if ($sdUser) {
                     $this->Auth->setUser($sdUser);
                     $SdRoles = TableRegistry::get('SdRoles')->get($sdUser['sd_role_id']);
-                    $session = $this->getRequest()->getgetSession();
+                    $session = $this->getRequest()->getSession();
                     $session->write('Auth.User.role_name', $SdRoles['description']);
                     return $this->redirect($this->Auth->redirectUrl(
                         // Set the first page after user logged in
