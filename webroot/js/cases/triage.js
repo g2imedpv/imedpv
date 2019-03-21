@@ -1,22 +1,24 @@
 $(document).ready(function(){
         // IF invalid case
+        var validCase = 0;
+    $("#confirmElements").click(function(){
         var patient_element = false;
+        var reporter_element = false;
+        var event_element = false;
         $('#patientInfo :input').each(function(){
             if(($(this).val()!=null)&&($(this).val()!= ""))
             patient_element = true;
         });
-        var reporter_element = false;
         $('[id^=reporterField]').each(function(){
             if(($(this).val()!=null)&&($(this).val()!= ""))
             reporter_element = true;
         });
-        var event_element = false;
         $('[id^=eventField]').each(function(){
             if(($(this).val()!=null)&&($(this).val()!= ""))
             event_element = true;
         });
-        var validCase = patient_element + reporter_element + event_element;
-    $("#confirmElements").click(function(){
+        console.log(patient_element);console.log(reporter_element);console.log(event_element);
+        validCase = patient_element + reporter_element + event_element;
         if (validCase <= 1) {
             swal("This is an invalid case and it will be inactivated. Are you sure you want to continue?","","warning", {
                 buttons: {

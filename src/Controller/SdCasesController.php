@@ -956,7 +956,7 @@ class SdCasesController extends AppController
         foreach($field_ids as $field_id){
             try{
             $field_value = $fieldValue_Table->find()->where(['sd_case_id'=>$case['id'],'sd_field_id'=>$field_id,'set_number'=>'1','status'=>'1'])->first();
-            $field_value_set[$field_id]['field_value'] = $field_value['field_value'];
+            $field_value_set[$field_id] = $field_value['field_value'];
             // $field_value_set[$field_id]['id'] = $field_value['id'];
             }catch (\PDOException $e){
                 $field_value_set[$field_id] = null;

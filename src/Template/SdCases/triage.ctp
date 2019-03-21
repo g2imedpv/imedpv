@@ -7,7 +7,7 @@
     var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
     var caseNo = "<?= $caseNo ?>";
     var versionNo = <?= $versionNo?>;
-    var dayZero = "<?= $field_value_set['225']['field_value']?>";
+    var dayZero = "<?= $field_value_set['225']?>";
 </script>
 <div class="card text-center w-75 mx-auto my-3">
   <div class="card-header text-center"><h3>Create New Case</h3></div>
@@ -21,23 +21,23 @@
         <div class="form-row">
             <div class="form-group col-md-3">
                 <label>Product Name (B.4.k.2.1)<i class="fas fa-asterisk reqField"></i></label>
-                <p><b><?= $field_value_set['176']['field_value'] ?></b><p>
+                <p><b><?= $field_value_set['176'] ?></b><p>
             </div>
         </div>
         <h4 class="text-left mt-3">Patient</h4>
         <div id="patientInfo" class="form-row bg-light">
             <div class="form-group col-md-3">
                 <label>Patient ID (B.1.1)</label>
-                <input type="text" class="form-control" id="patientField_id" name="field_value[79]" placeholder="" value="<?= $field_value_set['79']['field_value'] ?>">
+                <input type="text" class="form-control" id="patientField_id" name="field_value[79]" placeholder="" value="<?= $field_value_set['79'] ?>">
             </div>
             <div class="form-group col-md-3">
                 <label>Sex (B.1.5)</label>
                 <select class="custom-select" id="patientField_sex" name="field_value[93]" placeholder="">
                     <option value="">Select Sex</option>
-                    <option value="1" <?php echo ($field_value_set['93']['field_value']=='1')?"selected":null?>>Male</option>
-                    <option value="2" <?php echo ($field_value_set['93']['field_value']=='2')?"selected":null?>>Female</option>
-                    <option value="3" <?php echo ($field_value_set['93']['field_value']=='3')?"selected":null?>>Unknown</option>
-                    <option value="4" <?php echo ($field_value_set['93']['field_value']=='4')?"selected":null?>>Not Specified</option>
+                    <option value="1" <?php echo ($field_value_set['93']=='1')?"selected":null?>>Male</option>
+                    <option value="2" <?php echo ($field_value_set['93']=='2')?"selected":null?>>Female</option>
+                    <option value="3" <?php echo ($field_value_set['93']=='3')?"selected":null?>>Unknown</option>
+                    <option value="4" <?php echo ($field_value_set['93']=='4')?"selected":null?>>Not Specified</option>
                 </select>
             </div>
         </div>
@@ -51,7 +51,7 @@
                         echo "<option value=\"00\">Day</option>";
                         for($i=1;$i<32;$i++){
                             echo "<option value=\"".sprintf("%02d",$i)."\"";
-                            if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],0,2)==sprintf("%02d",$i))) echo "selected";
+                            if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85'],0,2)==sprintf("%02d",$i))) echo "selected";
                             echo ">".$i."</option>";
                         }
                         ?>
@@ -64,7 +64,7 @@
                         echo "<option value=\"00\">Month</option>";
                         foreach($month_str as $i => $month){
                             echo "<option value=\"".sprintf("%02d",$i+1)."\"";
-                            if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],2,2)==sprintf("%02d",$i+1))) echo "selected";
+                            if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85'],2,2)==sprintf("%02d",$i+1))) echo "selected";
                             echo ">".$month."</option>";
                         }
                         ?>
@@ -76,7 +76,7 @@
                         echo "<option value=\"00\">Day</option>";
                         for($i=1900;$i<=2050;$i++){
                             echo "<option value=\"".sprintf("%04d",$i)."\"";
-                            if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],4,4)==sprintf("%02d",$i))) echo "selected";
+                            if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85'],4,4)==sprintf("%02d",$i))) echo "selected";
                             echo ">".$i."</option>";
                         }
                         ?>
@@ -85,7 +85,7 @@
                     </div>
                     <?php 
                     echo "<input id=\"patientField_dob\" name=\"field_value[85]\"";
-                    if($field_value_set['85']['field_value']!=null) echo "value=\"".$field_value_set['85']['field_value']."\"";
+                    if($field_value_set['85']!=null) echo "value=\"".$field_value_set['85']."\"";
                     echo "type=\"hidden\">";
                     ?>
                 </div>
@@ -93,7 +93,7 @@
             <div class="form-group col-md-3">
                 <label>Age at time of onset reaction (B.1.2.2a)</label>
                 <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Field Helper" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
-                <input type="text" class="form-control" id="patientField_age" name="field_value[86]" placeholder="" value="<?= $field_value_set['86']['field_value'] ?>">
+                <input type="text" class="form-control" id="patientField_age" name="field_value[86]" placeholder="" value="<?= $field_value_set['86'] ?>">
             </div>
             <!-- <div class="form-group col-md-3">
                 <label>Age at the time of event (B.1.2.2a)</label>
@@ -103,12 +103,12 @@
                 <label>Age Unit (B.1.2.2b)</label>
                 <select class="custom-select" name="field_value[87]" id="patientField_ageunit">
                     <option value="">Select Age Unit</option>
-                    <option value="800" <?php echo ($field_value_set['87']['field_value']=='800')?"selected":null?> >Decade</option>
-                    <option value="801" <?php echo ($field_value_set['87']['field_value']=='801')?"selected":null?>>Year</option>
-                    <option value="802" <?php echo ($field_value_set['87']['field_value']=='802')?"selected":null?>>Month</option>
-                    <option value="803" <?php echo ($field_value_set['87']['field_value']=='803')?"selected":null?>>Week</option>
-                    <option value="804" <?php echo ($field_value_set['87']['field_value']=='804')?"selected":null?>>Day</option>
-                    <option value="805" <?php echo ($field_value_set['87']['field_value']=='805')?"selected":null?>>Hour</option>
+                    <option value="800" <?php echo ($field_value_set['87']=='800')?"selected":null?> >Decade</option>
+                    <option value="801" <?php echo ($field_value_set['87']=='801')?"selected":null?>>Year</option>
+                    <option value="802" <?php echo ($field_value_set['87']=='802')?"selected":null?>>Month</option>
+                    <option value="803" <?php echo ($field_value_set['87']=='803')?"selected":null?>>Week</option>
+                    <option value="804" <?php echo ($field_value_set['87']=='804')?"selected":null?>>Day</option>
+                    <option value="805" <?php echo ($field_value_set['87']=='805')?"selected":null?>>Hour</option>
                 </select>
             </div>
         </div>
@@ -116,18 +116,18 @@
         <div id="reporterInfo" class="form-row">
             <div class="form-group col-md-3">
                 <label>First Name (A.2.1.1b)</label>
-                <input type="text" class="form-control" name="field_value[26]" id="reporterField_firstname" placeholder="" value="<?= $field_value_set['26']['field_value'] ?>">
+                <input type="text" class="form-control" name="field_value[26]" id="reporterField_firstname" placeholder="" value="<?= $field_value_set['26'] ?>">
             </div>
             <div class="form-group col-md-3">
                 <label>Last Name (A.2.1.1d)</label>
-                <input type="text" class="form-control" name="field_value[28]" id="reporterField_lastname" placeholder="" value="<?= $field_value_set['28']['field_value'] ?>">
+                <input type="text" class="form-control" name="field_value[28]" id="reporterField_lastname" placeholder="" value="<?= $field_value_set['28'] ?>">
             </div>
         </div>
         <h4 class="text-left mt-3">Event</h4>
         <div class="form-row bg-light">
             <div class="form-group col-md-4">
                 <label>Reported term (B.2.i.0) <i class="fas fa-asterisk reqField"></i></label>
-                <input type="text" class="form-control" name="field_value[149]" id="eventField_term" placeholder="" value="<?= $field_value_set['149']['field_value'] ?>">
+                <input type="text" class="form-control" name="field_value[149]" id="eventField_term" placeholder="" value="<?= $field_value_set['149'] ?>">
             </div>
             <div class="form-group col-md-2">
                 <label>MedDra Browser</label>
@@ -141,15 +141,15 @@
         <div class="form-row bg-light">
             <div class="form-group col-md-3">
                 <label>LLT Name</label>
-                <input type="text" class="form-control" name="field_value[394]" id="eventField_meddralltname" value="<?= $field_value_set['394']['field_value'] ?>" placeholder="">
+                <input type="text" class="form-control" name="field_value[394]" id="eventField_meddralltname" value="<?= $field_value_set['394'] ?>" placeholder="">
             </div>
             <div class="form-group col-md-3">
                 <label>PT Name</label>
-                <input type="text" class="form-control" name="field_value[392]" id="eventField_meddraptname" value="<?= $field_value_set['392']['field_value'] ?>" placeholder="">
+                <input type="text" class="form-control" name="field_value[392]" id="eventField_meddraptname" value="<?= $field_value_set['392'] ?>" placeholder="">
             </div>
             <div class="form-group col-md-3">
                 <label>HLT Name</label>
-                <input type="text" class="form-control" name="field_value[395]" id="eventField_meddrahltname" value="<?= $field_value_set['395']['field_value'] ?>" placeholder="">
+                <input type="text" class="form-control" name="field_value[395]" id="eventField_meddrahltname" value="<?= $field_value_set['395'] ?>" placeholder="">
             </div>
         </div>
 
