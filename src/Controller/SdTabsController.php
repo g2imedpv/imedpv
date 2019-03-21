@@ -244,27 +244,6 @@
                 $this->set(compact('sdTabs'));
             }
 
-                        /**
-            *  Generate XML files
-            *
-            */
-            //create getValue function
-            public function getValue($caseId,$descriptor,$setNumber){
-                $sdFields = TableRegistry::get('sdFields');
-                $ICSR = $sdFields ->find()
-                ->select(['fv.field_value'])
-                ->join([
-                    'fv' =>[
-                        'table' =>'sd_field_values',
-                        'type'=>'INNER',
-                        'conditions'=>['sdFields.id = fv.sd_field_id','fv.sd_case_id='.$caseId, 'sdFields.descriptor = \''.$descriptor.'\'',
-                        'fv.set_number='.$setNumber ]
-                    ]
-                ])->first();
-                $value=$ICSR['fv']['field_value'];
-                return $value;
-
-            }
 
     /**
      *
