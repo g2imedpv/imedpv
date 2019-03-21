@@ -10,7 +10,7 @@ class DashboardsController extends AppController {
 
     }
     public function index (){
-        $this->viewBuilder()->layout('main_layout');
+        $this->viewBuilder()->setLayout('main_layout');
         //TODO DB somewhere store the user's preferrence
         $preferrence_list = [
             '0'=>[
@@ -70,7 +70,7 @@ class DashboardsController extends AppController {
                 'match_value'=>'>= 1'
             ]
         ];
-        $userinfo = $this->request->session()->read('Auth.User');
+        $userinfo = $this->request->getSession()->read('Auth.User');
         $sdCases = TableRegistry::get('SdCases');
         foreach($preferrence_list as $k => $preferrence_detail){
             $searchResult = $sdCases->find()->select(['caseNo','id']);

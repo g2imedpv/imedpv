@@ -141,12 +141,12 @@ class SdUsersController extends AppController
 
     public function logout() {
         $this->Flash->success('You are now logged out.');
-        $this->request->session()->destroy();
+        $this->request->getSession()->destroy();
         return $this->redirect($this->Auth->logout());
     }
 
     public function login() {
-        $this->viewBuilder()->layout('login');
+        $this->viewBuilder()->setLayout('login');
             if ($this->request->is('post')) {
                 $sdUser = $this->Auth->identify();
                 if ($sdUser) {
@@ -165,11 +165,11 @@ class SdUsersController extends AppController
             }
     }
     
-    public function searchPreviousAvailable($caseId){
+    public function searchPreviousAvailable($caseNo, $version=1){
         if($this->request->is('POST')){
             $this->autoRender = false;
             $searchKey = $this->request->getData();
-            $case = TableRegistry::get('SdCases')->get($caseId);
+            $case = TableRegistry::get('SdCases')->find()->where(['caseNo'=>$caseNo,'version_no'=>$version])->first();
             $currentActivity = TableRegistry::get('SdWorkflowActivities')->get($case['sd_workflow_activity_id']);
             $previousActivities = TableRegistry::get('SdWorkflowActivities')->find()
                         ->select(['SdWorkflowActivities.id','SdWorkflowActivities.activity_name','pw.id','SdWorkflowActivities.order_no'])
@@ -203,7 +203,7 @@ class SdUsersController extends AppController
                                     'conditions'=>['company.id = user.sd_company_id']                                
                                 ]
                             ])
-                            ->where(['sd_case_id'=>$caseId,'sd_workflow_activity_id'=>$previousActivity['id']])
+                            ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$previousActivity['id']])
                             ->order(['close_time'=>'DESC'])->toArray();            
                 $parceObj[$previousActivity['id']] = $previousActivity;
                 $parceObj[$previousActivity['id']]['previousUserOnPreviousActivity'] = $previousUserOnPreviousActivity;
@@ -227,11 +227,11 @@ class SdUsersController extends AppController
             die();
         }
     }    
-    public function searchNextAvailable($caseId){
+    public function searchNextAvailable($caseNo, $versionNo=1){
         if($this->request->is('POST')){
             $this->autoRender = false;
             $searchKey = $this->request->getData();
-            $case = TableRegistry::get('SdCases')->get($caseId);
+            $case = TableRegistry::get('SdCases')->find()->where(['caseNo'=>$caseNo,'version_no'=>$versionNo])->first();
             $currentActivity = TableRegistry::get('SdWorkflowActivities')->get($case['sd_workflow_activity_id']);
             $newtOrder = $currentActivity['order_no']+1;
             $nextActivity = TableRegistry::get('SdWorkflowActivities')->find()
@@ -258,7 +258,7 @@ class SdUsersController extends AppController
                                 'conditions'=>['company.id = user.sd_company_id']                                
                             ]
                         ])
-                        ->where(['sd_case_id'=>$caseId,'sd_workflow_activity_id'=>$nextActivity['id']])
+                        ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$nextActivity['id']])
                         ->order(['close_time'=>'DESC'])->toArray();            
             $parceObj = [];
             $parceObj['previousUserOnNextActivity'] = $previousUserOnNextActivity;
@@ -277,15 +277,15 @@ class SdUsersController extends AppController
                 ]
             ])->toArray();
             $parceObj['users'] = $users;
-            $parceObj['caseValidate'] = $this->request->session()->read('caseValidate.'.$caseId);
+            $parceObj['caseValidate'] = $this->request->getSession()->read('caseValidate.'.$case['id']);
             echo json_encode($parceObj);
             die();
         }
     }
     public function myaccount() {
-        $this->viewBuilder()->layout('main_layout');
+        $this->viewBuilder()->setLayout('main_layout');
 
-        $userID = $this->request->session()->read('Auth.User.id');
+        $userID = $this->request->getSession()->read('Auth.User.id');
         $this->set(compact('userID'));
     }
 }

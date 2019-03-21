@@ -31,19 +31,22 @@ $(document).ready(function(){
                 if((rule[1]=="N")&&(!/^[0-9]+$/.test(field_value)))
                 {
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").show();
-                    $(this).find("[id^=section-"+id[1]+"-error_message-]").text('/numbers only');
+                    //$(this).find("[id^=section-"+id[1]+"-error_message-]").text('/numbers only');
+                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Numbers Only", "Please re-entry the valid data", "warning"));
                     console.log('number only at '+$(this).attr('id'));
                     validate = 0;
                 }else if((rule[1]=="A")&&(!/^[a-zA-Z]+$/.test(field_value))){
                     console.log('alphabet only at '+$(this).attr('id'));
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").show();
-                    $(this).find("[id^=section-"+id[1]+"-error_message-]").text('/alphabet only');
+                    //$(this).find("[id^=section-"+id[1]+"-error_message-]").text('/alphabet only');
+                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Alphabet Only", "Please re-entry the valid data", "warning"));
                     validate = 0;
                 }
                 if(rule[0]<field_value.length) {
                     console.log('exccess the length at'+$(this).attr('id'));
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").show();
-                    $(this).find("[id^=section-"+id[1]+"-error_message-]").text( $(this).find("[id^=section-"+id[1]+"-error_message-]").text()+'/exccess the length');
+                    //$(this).find("[id^=section-"+id[1]+"-error_message-]").text( $(this).find("[id^=section-"+id[1]+"-error_message-]").text()+'/exccess the length');
+                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Exccess the length", "Please re-entry the valid data", "warning"));
                     validate = 0;
                 }
             };
@@ -659,7 +662,7 @@ function action(type){
                 'X-CSRF-Token': csrfToken
             },
             type:'POST',
-            url:'/sd-users/searchNextAvailable/'+caseId,
+            url:'/sd-users/searchNextAvailable/'+caseNo+'/'+version,
             success:function(response){console.log(response);
                 response = JSON.parse(response);
                 console.log(response);
@@ -737,7 +740,7 @@ function action(type){
                 'X-CSRF-Token': csrfToken
             },
             type:'POST',
-            url:'/sd-users/searchPreviousAvailable/'+caseId,
+            url:'/sd-users/searchPreviousAvailable/'+caseNo+'/'+version,
             success:function(response){console.log(response);
                 response = JSON.parse(response);
                 console.log(response);

@@ -1,5 +1,11 @@
 jQuery(function($) {
     $(document).ready(searchProd());
+
+    $('#advsearch').click(function () {
+        $(this).hide();
+        $('#advsearchfield').show();
+    });
+
 });
 function searchProd(){
     var request = {
@@ -21,9 +27,9 @@ function searchProd(){
             var result = $.parseJSON(response);
             var text = "";
             text +="<h3>Product List</h3>";
-            text +="<table class=\"table table-hover table-striped table-bordered\" id=\"search_result\">";
+            text +="<table class=\"table table-hover table-bordered\" id=\"search_result\">";
             text += "<thead>";
-            text +="<tr class=\"table-secondary\">";
+            text +="<tr>";
             text +="<th scope=\"col\">Product Name</th>";
             text +="<th scope=\"col\">Study Number</th>";
             text +="<th scope=\"col\">Study Type</th>";

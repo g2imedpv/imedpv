@@ -36,7 +36,7 @@ class SectionNavCell extends Cell
         $this->loadModel('SdTabs');
         $this->loadModel('SdCases');
         $sdCase = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$version])->first();
-        $userinfo = $this->request->session()->read('Auth.User');
+        $userinfo = $this->request->getSession()->read('Auth.User');
         $sd_workflow_activity_id = $sdCase['sd_workflow_activity_id'];
         // debug($sd_workflow_activity_id);
         if($userinfo['sd_role_id']>2){

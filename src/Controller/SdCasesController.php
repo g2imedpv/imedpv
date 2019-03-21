@@ -304,7 +304,7 @@ class SdCasesController extends AppController
      * Use when case list
      */
     public function search(){
-        $userinfo = $this->request->session()->read('Auth.User');
+        $userinfo = $this->request->getSession()->read('Auth.User');
         if($this->request->is('POST')){
             $preferrence_list = [
                 '0'=>[
@@ -432,7 +432,7 @@ class SdCasesController extends AppController
                             'type'=>'LEFT',
                             'conditions' => ['clinical_trial.sd_field_id = 40','clinical_trial.sd_case_id = SdCases.id','clinical_trial.field_value = 1'],
                         ]
-                    ])->order(['caseNo'=>'ASC','versions'=>'DESC']);
+                    ])->order(['caseNo'=>'ASC','versions'=>'DESC'])->where(['SdCases.status'=>'1']);
                 if(array_key_exists('preferrenceId',$searchKey) ) {
                     $preferrence_detail = $preferrence_list[$searchKey['preferrenceId']-1];
                     if(array_key_exists('value_at',$preferrence_detail))
@@ -479,8 +479,8 @@ class SdCasesController extends AppController
      */
     public function caseregistration()
     {
-        $this->viewBuilder()->layout('main_layout');
-        $userinfo = $this->request->session()->read('Auth.User');
+        $this->viewBuilder()->setLayout('main_layout');
+        $userinfo = $this->request->getSession()->read('Auth.User');
         //TODO Check whether this user has permission to create case
         //TODO fetch product_workflow only this user can access
         $productInfo = TableRegistry::get('SdProducts')
@@ -538,108 +538,134 @@ class SdCasesController extends AppController
                  */
                 //data on product
                 $product_data = TableRegistry::get('SdProducts')->get($requestData['product_id']);
-                $sdFieldValueEntity = $sdFieldValueTable->newEntity();
-                $dataSet = [
-                    'sd_case_id' => $savedCase->id,
-                    'sd_field_id' => '176',
-                    'set_number' => '1',
-                    'created_time' =>date("Y-m-d H:i:s"),
-                    'field_value' =>$product_data['product_desc'],
-                    'status' =>'1',
+                $fieldId_product_set = [
+                    '176'=>'product_desc', 
+                    '40'=>'study_type',
+                    '175'=>'sd_product_flag',
+                    '283'=>'WHODD_decode',
+                    '344'=>'WHODD_code',
+                    '389'=>'WHODD_name',
+                    '284'=>'mfr_name'
                 ];
-                $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
-                if(!$sdFieldValueTable->save($savedFieldValueEntity)){
-                    echo "problem in saving product_desc sdfields";
-                    return null;
+                foreach($fieldId_product_set as $fieldId =>$product_info)
+                {
+                    $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                    $dataSet = [
+                        'sd_case_id' => $savedCase->id,
+                        'sd_field_id' => $fieldId,
+                        'set_number' => '1',
+                        'created_time' =>date("Y-m-d H:i:s"),
+                        'field_value' =>$product_data[$product_info],
+                        'status' =>'1',
+                    ];
+                    $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                    if(!$sdFieldValueTable->save($savedFieldValueEntity)){
+                        echo "problem in saving".$product_info."sdfields";
+                        return null;
+                    }
                 }
-                $sdFieldValueEntity = $sdFieldValueTable->newEntity();
-                $dataSet = [
-                    'sd_case_id' => $savedCase->id,
-                    'sd_field_id' => '40',
-                    'set_number' => '1',
-                    'created_time' =>date("Y-m-d H:i:s"),
-                    'field_value' =>$product_data['study_type'],
-                    'status' =>'1',
-                ];
-                $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
-                if(!$sdFieldValueTable->save($savedFieldValueEntity)){
-                    echo "problem in saving product_desc sdfields";
-                    return null;
-                }
-                $sdFieldValueEntity = $sdFieldValueTable->newEntity();
-                $dataSet = [
-                    'sd_case_id' => $savedCase->id,
-                    'sd_field_id' => '175',
-                    'set_number' => '1',
-                    'created_time' =>date("Y-m-d H:i:s"),
-                    'field_value' =>$product_data['sd_product_flag'],
-                    'status' =>'1',
-                ];
-                $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
-                // debug($dataSet);
-                if(!$sdFieldValueTable->save($savedFieldValueEntity)){
-                    echo "problem in saving sd_product_flag sdfields";
-                    return null;
-                }
-                $sdFieldValueEntity = $sdFieldValueTable->newEntity();
-                $dataSet = [
-                    'sd_case_id' => $savedCase->id,
-                    'sd_field_id' => '283',
-                    'set_number' => '1',
-                    'created_time' =>date("Y-m-d H:i:s"),
-                    'field_value' =>$product_data['WHODD_decode'],
-                    'status' =>'1',
-                ];
+                // $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                // $dataSet = [
+                //     'sd_case_id' => $savedCase->id,
+                //     'sd_field_id' => '176',
+                //     'set_number' => '1',
+                //     'created_time' =>date("Y-m-d H:i:s"),
+                //     'field_value' =>$product_data['product_desc'],
+                //     'status' =>'1',
+                // ];
+                // $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                // if(!$sdFieldValueTable->save($savedFieldValueEntity)){
+                //     echo "problem in saving product_desc sdfields";
+                //     return null;
+                // }
+                // $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                // $dataSet = [
+                //     'sd_case_id' => $savedCase->id,
+                //     'sd_field_id' => '40',
+                //     'set_number' => '1',
+                //     'created_time' =>date("Y-m-d H:i:s"),
+                //     'field_value' =>$product_data['study_type'],
+                //     'status' =>'1',
+                // ];
+                // $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                // if(!$sdFieldValueTable->save($savedFieldValueEntity)){
+                //     echo "problem in saving product_desc sdfields";
+                //     return null;
+                // }
+                // $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                // $dataSet = [
+                //     'sd_case_id' => $savedCase->id,
+                //     'sd_field_id' => '175',
+                //     'set_number' => '1',
+                //     'created_time' =>date("Y-m-d H:i:s"),
+                //     'field_value' =>$product_data['sd_product_flag'],
+                //     'status' =>'1',
+                // ];
+                // $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                // // debug($dataSet);
+                // if(!$sdFieldValueTable->save($savedFieldValueEntity)){
+                //     echo "problem in saving sd_product_flag sdfields";
+                //     return null;
+                // }
+                // $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                // $dataSet = [
+                //     'sd_case_id' => $savedCase->id,
+                //     'sd_field_id' => '283',
+                //     'set_number' => '1',
+                //     'created_time' =>date("Y-m-d H:i:s"),
+                //     'field_value' =>$product_data['WHODD_decode'],
+                //     'status' =>'1',
+                // ];
 
-                $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
-                // debug($dataSet);
-                if(!$sdFieldValueTable->save($savedFieldValueEntity)){
-                    echo "problem in saving WHODD_decode sdfields";
-                    return null;
-                }
-                $sdFieldValueEntity = $sdFieldValueTable->newEntity();
-                $dataSet = [
-                    'sd_case_id' => $savedCase->id,
-                    'sd_field_id' => '344',
-                    'set_number' => '1',
-                    'created_time' =>date("Y-m-d H:i:s"),
-                    'field_value' =>$product_data['WHODD_code'],
-                    'status' =>'1',
-                ];
-                $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
-                if(!$sdFieldValueTable->save($savedFieldValueEntity)) {
-                    echo "problem in saving WHODD_code sdfields";
-                    return null;
-                }
-                $sdFieldValueEntity = $sdFieldValueTable->newEntity();
-                $dataSet = [
-                    'sd_case_id' => $savedCase->id,
-                    'sd_field_id' => '389',
-                    'set_number' => '1',
-                    'created_time' =>date("Y-m-d H:i:s"),
-                    'field_value' =>$product_data['WHODD_name'],
-                    'status' =>'1',
-                ];
-                $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
-                if(!$sdFieldValueTable->save($savedFieldValueEntity)){
-                    echo "problem in saving WHODD_name sdfields";
-                    return null;
-                }
-                $sdFieldValueEntity = $sdFieldValueTable->newEntity();
-                $dataSet = [
-                    'sd_case_id' => $savedCase->id,
-                    'sd_field_id' => '284',
-                    'set_number' => '1',
-                    'created_time' =>date("Y-m-d H:i:s"),
-                    'field_value' =>$product_data['mfr_name'],
-                    'status' =>'1',
-                ];
-                //data on case registration
-                $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
-                if(!$sdFieldValueTable->save($savedFieldValueEntity)) {
-                    echo "problem in saving mfr_name sdfields";
-                    return null;
-                }
+                // $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                // // debug($dataSet);
+                // if(!$sdFieldValueTable->save($savedFieldValueEntity)){
+                //     echo "problem in saving WHODD_decode sdfields";
+                //     return null;
+                // }
+                // $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                // $dataSet = [
+                //     'sd_case_id' => $savedCase->id,
+                //     'sd_field_id' => '344',
+                //     'set_number' => '1',
+                //     'created_time' =>date("Y-m-d H:i:s"),
+                //     'field_value' =>$product_data['WHODD_code'],
+                //     'status' =>'1',
+                // ];
+                // $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                // if(!$sdFieldValueTable->save($savedFieldValueEntity)) {
+                //     echo "problem in saving WHODD_code sdfields";
+                //     return null;
+                // }
+                // $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                // $dataSet = [
+                //     'sd_case_id' => $savedCase->id,
+                //     'sd_field_id' => '389',
+                //     'set_number' => '1',
+                //     'created_time' =>date("Y-m-d H:i:s"),
+                //     'field_value' =>$product_data['WHODD_name'],
+                //     'status' =>'1',
+                // ];
+                // $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                // if(!$sdFieldValueTable->save($savedFieldValueEntity)){
+                //     echo "problem in saving WHODD_name sdfields";
+                //     return null;
+                // }
+                // $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                // $dataSet = [
+                //     'sd_case_id' => $savedCase->id,
+                //     'sd_field_id' => '284',
+                //     'set_number' => '1',
+                //     'created_time' =>date("Y-m-d H:i:s"),
+                //     'field_value' =>$product_data['mfr_name'],
+                //     'status' =>'1',
+                // ];
+                // //data on case registration
+                // $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                // if(!$sdFieldValueTable->save($savedFieldValueEntity)) {
+                //     echo "problem in saving mfr_name sdfields";
+                //     return null;
+                // }
 
                 //save day 0
                 $sdFieldValueEntity = $sdFieldValueTable->newEntity();
@@ -648,7 +674,7 @@ class SdCasesController extends AppController
                     'sd_field_id' => '225',
                     'set_number' => '1',
                     'created_time' =>date("Y-m-d H:i:s"),
-                    'field_value' =>date("Ymd"),
+                    'field_value' =>date("dmY"),
                     'status' =>'1',
                 ];
                 $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
@@ -657,7 +683,7 @@ class SdCasesController extends AppController
                     return null;
                 }
                 foreach($requestData['field_value'] as $field_id => $detail_data){
-                    if($detail_data!=null){
+                    if($detail_data!=""){
                         $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                         $dataSet = [
                             'sd_case_id' => $savedCase->id,
@@ -692,7 +718,7 @@ class SdCasesController extends AppController
                 }
 
             //$this->Flash->success(__('The case number is'.$date_str));
-            return $this->redirect('/sd-cases/createcase'.$date_str.'/'.$savedCase['version_no']);
+            return $this->redirect('/sd-cases/triage/'.$date_str);
         }
         $this->set(compact('productInfo','date_str'));
     }
@@ -713,7 +739,7 @@ class SdCasesController extends AppController
     }
 
     public function caselist(){
-        $this->viewBuilder()->layout('main_layout');
+        $this->viewBuilder()->setLayout('main_layout');
 
     }
     /**
@@ -792,7 +818,9 @@ class SdCasesController extends AppController
             //Save current user sign off history
             $caseCurrentHistoryTable =TableRegistry::get('SdCaseHistories');
             $caseCurrentHistory = $caseCurrentHistoryTable->find()
-                                            ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$case['sd_workflow_activity_id'],'sd_user_id'=>$case['sd_user_id'],'close_time IS NULL'])
+                                            ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$case['sd_workflow_activity_id'],
+                                            // 'sd_user_id'=>$case['sd_user_id'],
+                                            'close_time IS NULL'])
                                             ->order(['enter_time'=>'DESC'])->first();
             $caseCurrentHistory['comment'] = $requstData['content'];
             $caseCurrentHistory['close_time'] = date("Y-m-d H:i:s");
@@ -841,7 +869,7 @@ class SdCasesController extends AppController
                  echo "error in saving query";
                  return;
             }
-            $this->request->session()->delete('caseValidate.'.$case['id']);
+            $this->request->getSession()->delete('caseValidate.'.$case['id']);
             echo "success";
             $this->Flash->success(__('You\'ve successfully Signed-Off.'));
             die();
@@ -867,17 +895,108 @@ class SdCasesController extends AppController
        }
    }
 
-   /**
-   * Create cases
-   *
-   *
-   *
-   */
-  public function createcase($caseNo, $versionNo=null){
-    $this->viewBuilder()->layout('main_layout');
-    
+    /**
+     * Create cases
+     *
+     *
+     *
+     */
+    public function triage($caseNo, $versionNo=1){
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$versionNo])->first();
+            $requestData = $this->request->getData();
+            $sdFieldValueTable = TableRegistry::get('SdFieldValues');
+            //TODO if the case is to push to Data Entry
+            debug($requestData['field_value']);
 
-  }
+            foreach($requestData['field_value'] as $field_id => $detail_data){
+                if($detail_data!=""){
+                    $previous_field_value = $sdFieldValueTable->find()->where(['sd_case_id'=>$case['id'],'sd_field_id'=>$field_id,'set_number'=>'1','status'=>'1'])->first();
+                    if($previous_field_value!=null) $sdFieldValueEntity = $previous_field_value;
+                    else $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                    $dataSet = [
+                        'sd_case_id' => $case->id,
+                        'sd_field_id' => $field_id,
+                        'set_number' => '1',
+                        'created_time' =>date("Y-m-d H:i:s"),
+                        'field_value' =>$detail_data,
+                        'status' =>'1',
+                    ];
+                    $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                    if(!$sdFieldValueTable->save($savedFieldValueEntity)) {
+                        echo "problem in saving".$field_id."sdfields";
+                        return null;
+                    }
+                }
+            }
+            if(in_array('endTriage',$requestData))
+            {
+                echo "succuess";
+                die();
+            }else $this->Flash->success(__('This page has been saved.'));
+        }
+        $this->viewBuilder()->setLayout('main_layout');
+        $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$versionNo])
+            ->select(['pwf.id','pd.id','SdCases.id'])
+            ->join([
+                'pwf'=>[
+                    'table'=>'sd_product_workflows',
+                    'type'=>'LEFT',
+                    'conditions'=>['pwf.id = SdCases.sd_product_workflow_id']
+                ],
+                'pd'=>[
+                    'table'=>'sd_products',
+                    'type'=>'LEFT',
+                    'conditions'=>['pd.id = pwf.sd_product_id']
+                ]
+            ])->first();
+        $field_ids = ['176','85','79','93','86','87','26','28','149','394','392','395','225'];
+        $fieldValue_Table = TableRegistry::get('SdFieldValues');
+        $field_value_set = [];
+        foreach($field_ids as $field_id){
+            try{
+            $field_value = $fieldValue_Table->find()->where(['sd_case_id'=>$case['id'],'sd_field_id'=>$field_id,'set_number'=>'1','status'=>'1'])->first();
+            $field_value_set[$field_id] = $field_value['field_value'];
+            // $field_value_set[$field_id]['id'] = $field_value['id'];
+            }catch (\PDOException $e){
+                $field_value_set[$field_id] = null;
+            }
+        }
 
+        $this->set(compact('case','caseNo','versionNo','field_value_set'));
+    }
 
+    /**
+     * 
+     * Deactivate Case While triage
+     */
+    public function deactivate($caseNo, $versionNo=1){
+        $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$versionNo])->first();
+        $case['status'] = 0;
+        if (!$this->SdCases->save($case)) echo "problem in saving cases";
+        // print_r($this->request->getData());
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $this->autoRender = false;
+            $requestData = $this->request->getData();
+            $sdFieldValueTable = TableRegistry::get('SdFieldValues');
+            foreach($requestData as $field_id => $detail_data){
+                if($detail_data!=""){
+                    $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                    $dataSet = [
+                        'sd_case_id' => $case->id,
+                        'sd_field_id' => $field_id,
+                        'set_number' => '1',
+                        'created_time' =>date("Y-m-d H:i:s"),
+                        'field_value' =>$detail_data,
+                        'status' =>'1',
+                    ];
+                    $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                    if(!$sdFieldValueTable->save($savedFieldValueEntity)) {
+                        echo "problem in saving".$field_id."sdfields";
+                        return null;
+                    }
+                }
+            }
+        }
+    }
 }

@@ -19,7 +19,7 @@
                             <div class="form-group col-md-3">
                                 <label>Product Name: <i class="fas fa-asterisk reqField"></i></label>
                                 <select type="text" class="form-control" id="product_id">
-                                    <option value="">Select Project No</option>
+                                    <option value="null">Select Project No</option>
                                     <?php
                                     foreach($productInfo as $k => $productDetail){
                                         echo "<option value=".$productDetail->id.">".$productDetail->product_name."</option>";
@@ -31,27 +31,19 @@
                             <div class="form-group col-md-3">
                                 <label>Country: <i class="fas fa-asterisk reqField"></i></label>
                                 <select type="text" class="form-control" id="sd_product_workflow_id">
-                                    <option value="">Select Country:</option>
+                                    <option value="null">Select Country:</option>
                                     <!-- html->form(project_no) -->
                                 </select>
                                 <input name="sd_product_workflow_id" id="input_product_workflow_id" type="hidden">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>Patient Age:</label>
-                                <input type="text" class="form-control" name="field_value[86]" id="patient_age">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label>Age Unit:</label>
-                                <select class="form-control" name="field_value[87]" id="patient_age_unit">
-                                    <option value="">Select Unit</option>
-                                    <option value="800">Decade</option>
-                                    <option value="801">Year</option>
-                                    <option value="802">Month</option>
-                                    <option value="803">Week</option>
-                                    <option value="804">Day</option>
-                                    <option value="805">Hour</option>
-                                </select>
-                            </div>
+                                <label>Event Report Term:</label>
+                                <input type="text" class="form-control" name="field_value[149]" id="report_term">
+                             </div>
+                             <div class="form-group col-md-3">
+                                <label>Reaction Onset Date(B.2.i.4):</label>
+                                <input type="text" class="form-control" name="field_value[159]" id="event_onset_date">
+                             </div>
                         </div>
                         <div class="form-row">
                              <div class="form-group col-md-3">
@@ -64,14 +56,23 @@
                                     <option value="4">Not Specified</option>
                                 </select>
                              </div>
+                            <div class="form-group col-md-5">
+                                <label>Age at time of onset reaction (B.1.2.2a)</label>
+                                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Field Helper" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
+                                <input type="text" class="form-control" name="field_value[86]" id="patient_age">
+                            </div>
                             <div class="form-group col-md-3">
-                                <label>Event Report Term:</label>
-                                <input type="text" class="form-control" name="field_value[149]" id="report_term">
-                             </div>
-                             <div class="form-group col-md-3">
-                                <label>Reaction Onset Date(B.2.i.4):</label>
-                                <input type="text" class="form-control" name="field_value[159]" id="event_onset_date">
-                             </div>
+                                <label>Age Unit:</label>
+                                <select class="form-control" name="field_value[87]" id="patient_age_unit">
+                                    <option value="null">Select Unit</option>
+                                    <option value="800">Decade</option>
+                                    <option value="801">Year</option>
+                                    <option value="802">Month</option>
+                                    <option value="803">Week</option>
+                                    <option value="804">Day</option>
+                                    <option value="805">Hour</option>
+                                </select>
+                            </div>
                         </div>
 
                         <!-- Advance Search -->
@@ -93,7 +94,7 @@
                                 <div class="form-group col-md-3">
                                     <label>Patient Ethnic origin:</label>
                                     <select class="form-control" id="patient_ethnic_origin" name="field_value[235]">
-                                        <option value=""></option>
+                                        <option value="null"></option>
                                         <option  value="1">American Indian or Alaskan Native</option>
                                         <option  value="2">Asian</option>
                                         <option  value="3">Black or African American</option>
@@ -147,7 +148,7 @@
                                 <div class="form-group col-md-3">
                                     <label>Patient Age group:</label>
                                     <select class="form-control" name="field_value[90]" id="patient_age_group">
-                                        <option value=""></option>
+                                        <option value="null"></option>
                                         <option value="1">Neonate</option>
                                         <option value="2">Infant</option>
                                         <option value="3">Child</option>
@@ -190,13 +191,21 @@
                     <div class="modal fade CaseDetail" tabindex="-1" role="dialog" aria-labelledby="CaseDetail" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content" style="width:1250px;left: -220px;">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="caseLabel"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
                                 <div class="modal-body m-3">
-                                    <h5 id="caseLabel"></h5>
                                     <div class="embed-responsive embed-responsive-4by3">
                                         <iframe id="iframeDiv" class="embed-responsive-item" src=""></iframe>
                                     </div>
-                                    <!-- <iframe id="iframeDiv" src="" width="700" height="730"></iframe> -->
                                 </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                                <!-- <iframe id="iframeDiv" src="" width="700" height="730"></iframe> -->
                             </div>
                         </div>
                     </div>
@@ -208,7 +217,7 @@
 
 </div>
 <script type="text/javascript">
-    var userId = <?= $this->request->session()->read('Auth.User.id')?>;
+    var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
     var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
 var productInfo = <?php $productInfo =$productInfo->toList();
 echo json_encode($productInfo);?>;

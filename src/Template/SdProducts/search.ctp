@@ -6,7 +6,7 @@
 <?= $this->Html->script('product/search.js') ?>
 <head>
 <script type="text/javascript">
-    var userId = <?= $this->request->session()->read('Auth.User.id')?>;
+    var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
     var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
 </script>
 <div class="container">
@@ -81,7 +81,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-row justify-content-center">
+                        <button onclick="searchProd()" class="btn btn-primary w-25"><i class="fas fa-search"></i> Search</button>
+                        <button id="advsearch" class="btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</button>
+                        <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> Clear</button>
+                        <!-- <div class="form-row justify-content-center">
                             <div class="form-group col-lg-3">
                                 <div onclick="searchProd()" class="btn btn-primary w-100"><i class="fas fa-search"></i> Search</div>
                             </div>
@@ -91,12 +94,19 @@
                             <div class="form-group col-lg-1">
                                 <div class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> Clear</div>
                             </div>
-                        </div>
+                        </div> -->
+
+
                         <div class="modal fade WFlistView" tabindex="-1" role="dialog" aria-labelledby="WFlistView" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-center">Workflow Details</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
                                         <div class="modal-body m-3">
-                                            <h4>Workflow Details</h4>
                                             <table class="table table-hover" id="ifram_view">
                                                 <thead>
                                                     <tr>
@@ -143,7 +153,12 @@
                             <div class="modal fade product_detail" tabindex="-1" role="dialog" aria-labelledby="product_detail" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
-                                        <h3 class="modal-title">Product Detail</h3>
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-center">Product Detail</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
                                         <div class="modal-body m-3">
                                             <div id="addpro" class="form-row">
                                                 <div class="form-group col-md-3">
@@ -225,6 +240,10 @@
                                                     <input type="text" readonly="readonly" class="form-control" id="detail_product_desc">
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <!-- <button type="button" class="btn btn-primary">Send message</button> -->
                                         </div>
                                     </div>
                                 </div>

@@ -12,7 +12,7 @@ echo $this->element('generatepdf');
     var readonly =  <?php if($this->request->getQuery('readonly')!=1){$readonly = 0;}
                         else{$readonly = 1;};echo $readonly;?>;
     var caseNo = "<?= $caseNo ?>";
-    var userId = <?= $this->request->session()->read('Auth.User.id')?>;
+    var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
     var version = <?= $version ?>;
     var tabId = <?= $tabid?>;
     var section = <?php $sdSections;
@@ -89,7 +89,7 @@ echo $this->element('generatepdf');
             <i class="fas fa-print"></i> Print Out
         </a>
         <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">CIOMS</a>
+            <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/">CIOMS</a>
             <a class="dropdown-item" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>">FDA</a>
             <a class="dropdown-item" target="_blank" href="/sd-export/genXML/<?php echo $caseId ?>">XML</a>
             <!-- Add this if location had details

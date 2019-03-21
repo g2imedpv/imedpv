@@ -209,8 +209,7 @@ class SdSectionsController extends AppController
             ])->where([
                 'OR' =>[['field.field_label LIKE \'%'.$requstData['key'].'%\''],['section_name LIKE \'%'.$requstData['key'].'%\''],
                         ['tab.tab_name LIKE \'%'.$requstData['key'].'%\'']],
-            ])
-            ->toArray();
+            ]);
             echo json_encode($sections);
             die();
         }

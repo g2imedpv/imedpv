@@ -34,7 +34,7 @@ class SdQueriesController extends AppController
      */
     public function view($id = null)
     {
-        $this->viewBuilder()->layout('main_layout');
+        $this->viewBuilder()->setLayout('main_layout');
         $sdQuery = $this->SdQueries->find()
                 ->select(['id','title','content','query_type','sender','receiver','send_date','read_date','query_status',
                         'senderEmail'=>'sender_info.email','senderCompany'=>'sender_info.company_name','senderfirstname'=>'sender_info.firstname','senderlastname'=>'sender_info.lastname',
@@ -51,7 +51,7 @@ class SdQueriesController extends AppController
                     'conditions'=>['receiver_info.id = SdQueries.receiver']
                 ]
                 ])->where(['SdQueries.id'=>$id])->first();
-        $userinfo = $this->request->session()->read('Auth.User');
+        $userinfo = $this->request->getSession()->read('Auth.User');
         if(($sdQuery['sender']!=$userinfo['id'])&&($sdQuery['receiver']!=$userinfo['id']))
         {
             $this->Flash->error(__('Cannot find this query.'));
@@ -136,7 +136,7 @@ class SdQueriesController extends AppController
      */
     public function queries($type = null){
         $userId = $this->request->getSession()->read('Auth.User.id');
-        $this->viewBuilder()->layout('main_layout');
+        $this->viewBuilder()->setLayout('main_layout');
         switch ($type){
             case null:
                 $sdQueries = $this->SdQueries->find()

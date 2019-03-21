@@ -38,7 +38,7 @@
             {
 
                 $writePermission= 0;
-                $userinfo = $this->request->session()->read('Auth.User');
+                $userinfo = $this->request->getSession()->read('Auth.User');
                 $sdCasesTable = TableRegistry::get('SdCases');
                 $sdCases = $sdCasesTable->find()->where(['caseNo'=>$caseNo,'version_no'=>$version])->contain(['SdProductWorkflows.SdProducts'])->first();
                 $caseId = $sdCases['id'];
@@ -112,14 +112,14 @@
                     $writePermission =1;
                 }
                 if($writePermission){
-                    $caseValidation = $this->request->session()->read('caseValidate.'.$caseId);
+                    $caseValidation = $this->request->getSession()->read('caseValidate.'.$caseId);
                     if($caseValidation==null)
-                    $this->request->session()->write('caseValidate.'.$caseId, $this->validateForm($caseId));
+                    $this->request->getSession()->write('caseValidate.'.$caseId, $this->validateForm($caseId));
                 }
                 $this->set(compact('activitySectionPermissions'));
                 //For readonly status, donot render layout
                 $readonly = $this->request->getQuery('readonly');
-                if ($readonly!=1) $this->viewBuilder()->layout('main_layout'); else $this->viewBuilder()->layout('readonly_layout');
+                if ($readonly!=1) $this->viewBuilder()->setLayout('main_layout'); else $this->viewBuilder()->setLayout('readonly_layout');
                 $case_versions = $sdCasesTable->find()->where(['caseNo'=>$caseNo])->select(['version_no']);
                 $product_name = $sdCases['sd_product_workflow']['sd_product']['product_name'];
 
@@ -353,7 +353,7 @@
         }
         if($this->request->is('POST')){
             if($sectionId!=null)
-            $this->request->session()->write('caseValidate.'.$caseId.'.'.$tabId.'.'.$sectionId, $required_field_list[$tabId][$sectionId]);
+            $this->request->getSession()->write('caseValidate.'.$caseId.'.'.$tabId.'.'.$sectionId, $required_field_list[$tabId][$sectionId]);
             $this->autoRender = false;
             echo json_encode($required_field_list);
             die();
