@@ -38,7 +38,7 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label>Event Report Term:</label>
-                                <input type="text" class="form-control" name="field_value[149]" id="report_term">
+                                <input type="text" class="form-control" name="field_value[149]" id="event_report_term">
                              </div>
                              <div class="form-group col-md-3">
                                 <label>Reaction Onset Date(B.2.i.4):</label>
@@ -73,16 +73,6 @@
                                     <option value="805">Hour</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label>Event Report Term:</label>
-                                <input type="text" class="form-control" name="field_value[149]" id="report_term">
-                             </div>
-                             <div class="form-group col-md-3">
-                                <label>Reaction Onset Date(B.2.i.4):</label>
-                                <input type="text" class="form-control" name="field_value[159]" id="event_onset_date">
-                             </div>
                         </div>
 
                         <!-- Advance Search -->
@@ -153,7 +143,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <input type="hidden" class="form-control" name="field_value[85]" id="caseReg_patient_dob" value="00000000">
+                                    <input type="hidden" class="form-control" name="field_value[85]" id="patient_dob">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label>Patient Age group:</label>

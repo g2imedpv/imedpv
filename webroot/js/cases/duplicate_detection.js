@@ -89,18 +89,19 @@ function checkDuplicate(){
         'sd_product_workflow_id',
         'patient_initial',
         'patient_age',
+        'patient_age_group',
         'patient_age_unit',
         'patient_gender',
         // 'patient_dob',
         'reporter_firstname',
         'reporter_lastname',
-        'report_term',
         'event_onset_date',
         'patient_ethnic_origin',
         'patient_age_group',
         'meddraptname',
         'meddralltname',
         'meddrahltname',
+        'event_report_term',
     ];
     var request={
         'userId':userId
@@ -153,7 +154,14 @@ function checkDuplicate(){
                     if(!jQuery.isEmptyObject(caseDetail.patient_gender)) text +=gender[caseDetail.patient_gender];
                     text += "</td>";
                     text += "<td>";
-                    if(!jQuery.isEmptyObject(caseDetail.patient_dob)) text += caseDetail.patient_dob;
+                    if(!jQuery.isEmptyObject(caseDetail.patient_dob)) {
+                        var monthes=[
+                            "Uk", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                        ]
+                        if(caseDetail.patient_dob.substring(0,2)=="00") text+="Uk"; else text+=caseDetail.patient_dob.substring(0,2);
+                        text += "-"+monthes[Number(caseDetail.patient_dob.substring(2,4))]+"-";
+                        if(caseDetail.patient_dob.substring(4,8)=="0000") text+="Uk"; else text+=caseDetail.patient_dob.substring(4,8);
+                    }
                     text += "</td>";
                     text += "<td>";
                     if(!jQuery.isEmptyObject(caseDetail.reporter_firstname)) text +=caseDetail.reporter_firstname+" ";

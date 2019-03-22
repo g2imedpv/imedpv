@@ -1,22 +1,25 @@
 $(document).ready(function(){
         // IF invalid case
+        var validCase = 0;
+    $("#confirmElements").click(function(){
         var patient_element = false;
+        var reporter_element = false;
+        var event_element = false;
         $('#patientInfo :input').each(function(){
             if(($(this).val()!=null)&&($(this).val()!= ""))
             patient_element = true;
         });
-        var reporter_element = false;
         $('[id^=reporterField]').each(function(){
             if(($(this).val()!=null)&&($(this).val()!= ""))
             reporter_element = true;
         });
-        var event_element = false;
         $('[id^=eventField]').each(function(){
             if(($(this).val()!=null)&&($(this).val()!= ""))
             event_element = true;
         });
-        var validCase = patient_element + reporter_element + event_element;
-    $("#confirmElements").click(function(){
+        if(validCase==4) $('#validcase').val('1'); else $('#validcase').val('0');
+        console.log(patient_element);console.log(reporter_element);console.log(event_element);
+        validCase = patient_element + reporter_element + event_element;
         if (validCase <= 1) {
             swal("This is an invalid case and it will be inactivated. Are you sure you want to continue?","","warning", {
                 buttons: {
@@ -28,17 +31,8 @@ $(document).ready(function(){
                 if (value) {
                     var request ={};
                     $("[name^=field_value]").each(function(){
-                        if($(this).val()!="")
-                        {
-                            var field_id = $(this).attr('name').split('[')[1];
-                            console.log(field_id.split(']')[0]);
-                            request[field_id.split(']')[0]] = $(this).val();
-                        }
+                        request[$(this).attr('name')] = $(this).val();
                     });
-                    if($('[id=patientField_sex]').val()!="")
-                        request['93'] = $('[id=patientField_sex]').val();
-                    if($('[id=patientField_ageunit]').val()!="")
-                        request['87'] = $('[id=patientField_ageunit]').val();
                     console.log(request);
                     $.ajax({
                         headers: {
@@ -81,6 +75,7 @@ $(document).ready(function(){
                         });
                         $('#confirmElements').hide();
                         $('#selRea').show();
+                        $("#savenexitbtn").appendTo("#selectReasonContent");
                         $('[id^=reason]').each(function(){
                             $(this).prop('disabled',false)
                         });
@@ -91,17 +86,8 @@ $(document).ready(function(){
                     case "No":
                         var request ={};
                         $("[name^=field_value]").each(function(){
-                            if($(this).val()!="")
-                            {
-                                var field_id = $(this).attr('name').split('[')[1];
-                                console.log(field_id.split(']')[0]);
-                                request[field_id.split(']')[0]] = $(this).val();
-                            }
+                            request[$(this).attr('name')] = $(this).val();
                         });
-                        if($('[id=patientField_sex]').val()!="")
-                            request['93'] = $('[id=patientField_sex]').val();
-                        if($('[id=patientField_ageunit]').val()!="")
-                            request['87'] = $('[id=patientField_ageunit]').val();
                         console.log(request);
                         $.ajax({
                             headers: {
@@ -112,7 +98,7 @@ $(document).ready(function(){
                             data:request,
                             success:function(response){
                                 swal("Your case has been inactivated","", "warning");
-                                window.location.href = "/sd-cases/caseList";
+                                window.location.href = "/sd-cases/caselist";
                             },
                             error:function(response){
 
@@ -124,6 +110,7 @@ $(document).ready(function(){
         }
         // ELSE valid case
         else {
+            $("#savenexitbtn").appendTo("#prioritizeContent");
             $("#basicInfo :input").each(function(){
                 $(this).prop("readonly", true);
             });
@@ -149,6 +136,14 @@ $(document).ready(function(){
             $('#otherReason').hide();
         }
     });
+    $('[id^=reason]').change(function(){
+        $('#reason_value').prop('diasbled',false);
+        var text ="";
+        if($('#reason-1').prop('checked')==0) text +="0"; else text +="1";
+        if($('#reason-2').prop('checked')==0) text +="0"; else text +="1";
+        if($('#reason-3').prop('checked')==0) text +="0"; else text +="1";
+        $('#reason_value').val(text);
+    });
     $('[id^=patientField_dob]').change(function(){
         var day = $('[id=patientField_dob_day]').val();
         var month = $('[id=patientField_dob_month]').val();
@@ -157,6 +152,7 @@ $(document).ready(function(){
         $('#patientField_dob').val(dob_string);
     });
     $("#selReaBack").click(function(){
+        $("#savenexitbtn").appendTo("#basicInfo");
         $('[id^=reason]').each(function(){
             $(this).prop('disabled',true)
         });
@@ -169,16 +165,16 @@ $(document).ready(function(){
     });
     $("#confirmRea").click(function(){
         $(this).hide();
+        $("#savenexitbtn").appendTo("#prioritizeContent");
         $('#selReaBack').hide();
         $('#prioritize').show();
         $('#prioritize :input').prop('disabled',false);
     });
     $("#prioritizeBack").click(function(){
-        $('#prioritize').hide();
-        $('#prioritize :input').prop('disabled',true);
         if(validCase == 2) {
             $('#selReaBack').show();
             $('#confirmRea').show();
+            $("#savenexitbtn").appendTo("#selectReasonContent");
         }else{
             $('#confirmElements').show();
             $("#basicInfo :input").each(function(){
@@ -187,7 +183,10 @@ $(document).ready(function(){
             $("select").each(function(){
                 $(this).prop("disabled", false);
             });
+            $("#savenexitbtn").appendTo("#basicInfo");
         }
+        $('#prioritize').hide();
+        $('#prioritize :input').prop('disabled',true);
     });
 
     $(document).ready(function() {
@@ -197,35 +196,39 @@ $(document).ready(function(){
     $('[id^=prioritize]').change(function(){
         var text="";
         if($('#prioritize-seriousness-1').prop('checked')&&$('#prioritize-related-1').prop('checked')&&$('#prioritize-unlabelled-1').prop('checked')) prioritizeType = 1;
-        else if($('#prioritize-seriousness-2').prop('checked')&&$('#prioritize-related-1').prop('checked')&&$('#prioritize-unlabelled-1').prop('checked')) prioritizeType = 2;
+        else if($('#prioritize-seriousness-2').prop('checked')) prioritizeType = 2;
         else if($('#prioritize-seriousness-4').prop('checked')) prioritizeType = 3;
         else prioritizeType = 0;
         console.log(prioritizeType);
         var formatDayZero = new Date(dayZero.substring(2,4)+" "+dayZero.substring(0,2)+" "+dayZero.substring(4,8));
         var formatDueDay = new Date();
+        var yearText =formatDueDay.getFullYear();
+        var monthText =formatDueDay.getMonth();
+        var dayText =formatDueDay.getDay();
         if(prioritizeType == 1){
-            formatDueDay.setDate(formatDayZero.getDate()+7);
-            text +="7 Days Report, Priority: High, Due Date: "+formatDueDay;
+            formatDueDay.setDate(formatDayZero.getDate()+8);
+            text +="7 Days Report, Priority: High, Due Date: ";
         }
         if(prioritizeType == 2){
-            formatDueDay.setDate(formatDayZero.getDate()+15);
-            text +="15 Days Report, Priority: High, Due Date: "+formatDueDay;
+            formatDueDay.setDate(formatDayZero.getDate()+16);
+            text +="15 Days Report, Priority: High, Due Date: ";
         }
         if(prioritizeType == 0){
-            formatDueDay.setDate(formatDayZero.getDate()+15);
-            text +="15 Days Case, Priority: Medium, Due Date: "+formatDueDay;
+            formatDueDay.setDate(formatDayZero.getDate()+16);
+            text +="15 Days Case, Priority: Medium, Due Date: ";
         }
         if(prioritizeType == 3){
-            formatDueDay.setDate(formatDayZero.getDate()+90);
-            text +="90 Days Case, Priority: Low, Due Date: "+formatDueDay;
+            formatDueDay.setDate(formatDayZero.getDate()+91);
+            text +="90 Days Case, Priority: Low, Due Date: ";
         }
+        if(dayText<10){dayText="0"+dayText;}
+        if(monthText<10){monthText="0"+monthText;}
+        text += yearText+'/'+monthText+'/'+dayText;
+        $('#submissionDate_value').val(dayText+monthText+yearText);
         $('#prioritizeType').text();
         $('#prioritizeType').text(text);
     });
 });
-function savenexit(){ 
-    document.getElementById("triageForm").submit();
-}
 
 function endTriage(){
     var request ={};
@@ -237,10 +240,6 @@ function endTriage(){
         }
     });
     request['endTriage'] = 1;
-    if($('[id=patientField_sex]').val()!="")
-        request['field_value[93]'] = $('[id=patientField_sex]').val();
-    if($('[id=patientField_ageunit]').val()!="")
-        request['field_value[87]'] = $('[id=patientField_ageunit]').val();
     console.log(request);
     $.ajax({
         headers: {
@@ -333,4 +332,10 @@ function confirmEndTriage(){
             console.log(response.responseText);
             }
         });
+}
+function savenexit(){
+    $("select").each(function(){
+        $(this).prop("disabled", false);
+    });
+    document.getElementById("triageForm").submit();
 }
