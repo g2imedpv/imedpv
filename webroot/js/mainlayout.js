@@ -111,7 +111,13 @@ $(function(){
 });
 
 function onQueryClicked(preferrenceId = null){
-    var request = {'searchName': $("#searchName").val(), 'searchProductName':$("#searchProductName").val(),'userId':userId};
+    //TODO enhance search
+    var request = {
+        'searchName': $("#searchName").val(), 
+        'searchProductName':$("#searchProductName").val(),
+        'userId':userId,
+        'caseStatus':$("#caseStatus").val(),
+    };
     if (preferrenceId!=null)
     request['preferrenceId'] = preferrenceId;
     var today = new Date();
@@ -143,6 +149,7 @@ function onQueryClicked(preferrenceId = null){
             text +="<th class=\"align-middle\" scope=\"col\">Product Type</th>";
             text +="<th class=\"align-middle\" scope=\"col\">Activity Due Date</th>";
             text +="<th class=\"align-middle\" scope=\"col\">Submission Due Date</th>";
+            text +="<th class=\"align-middle\" scope=\"col\">status</th>";
             text +="<th class=\"align-middle\" scope=\"col\">Action</th>";
             text +="</tr>";
             text +="</thead>";
@@ -171,10 +178,24 @@ function onQueryClicked(preferrenceId = null){
                 if(caseDetail.product_type_label!=null) text += caseDetail.product_type_label;
                 text += "</td>";
                 text += "<td class=\"align-middle\">"+caseDetail.activity_due_date+"</td>";
-                text += "<td class=\"align-middle\">" + caseDetail.submission_due_date + "</td>";
+                text += "<td class=\"align-middle\">";
+                if((caseDetail.submission_due_date!=null)&&(typeof caseDetail.submission_due_date !="undefined")&&(caseDetail.submission_due_date !="")){
+                    var datestr = caseDetail.submission_due_date;
+                    var year = datestr.substring(4,8);
+                    var monthes = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                    var month = monthes[Number(datestr.substring(2,4))];
+                    var day = datestr.substring(0,2);
+                    text+= day+"-"+month+"-"+year;
+                }
+                text +="</td>";
+                text += "<td class=\"align-middle\">"; 
+                if(caseDetail.status==1) text+="activate";
+                else text+="inactivate";
+                text+="</td>";
                 text += "<td class=\"align-middle\">";
                 if(caseDetail.sd_user_id == userId)
-                    text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">Enter</div></a>";
+                    if(caseDetail.sd_workflow_activity_id=='1')text += "<a href=\"/sd-cases/triage/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">Continue Triage</div></a>";
+                    else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">Enter</div></a>";
                 else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-info m-1\">Check Detail</div></a>";
                 if((caseDetail.sd_workflow_activity_id=='9999')&&(previous_case!=caseDetail.caseNo))
                     text += "<div class=\"btn btn-warning m-1\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"versionUp(\'"+caseDetail.caseNo+"\')\">Version Up</div>";
@@ -197,9 +218,11 @@ function versionUp(caseNo){
     $('#confirmVersionUp').attr("onclick","confirmVersionUp(\'"+caseNo+"\')");
 }
 function confirmVersionUp(caseNo){
+    var versionNo = $('#version-'+caseNo).val();
     var request={
         "caseNo":caseNo,
-        "version_no":$('#version-'+caseNo).val()
+        "version_no":versionNo,
+        "userId":userId
     };
     console.log(request);
     $.ajax({
@@ -211,33 +234,34 @@ function confirmVersionUp(caseNo){
         data:request,
         success:function(response){
             console.log(response);
+            window.location.href = "/sd-cases/triage/"+caseNo+'/'+Number(versionNo+1);
         },
         error:function(response){
             console.log(response.responseText);
         }
     });
 }
-function closeCase(caseNo){
-    var request={
-        "caseNo":caseNo,
-        "version_no":$('#version-'+caseNo).val()
-    };
-    console.log(request);
-    $.ajax({
-        headers: {
-            'X-CSRF-Token': csrfToken
-        },
-        type:'POST',
-        url:'/sd-cases/closeCase',
-        data:request,
-        success:function(response){
-            console.log(response);
-        },
-        error:function(response){
-            console.log(response.responseText);
-        }
-    });
-}
+// function closeCase(caseNo){
+//     var request={
+//         "caseNo":caseNo,
+//         "version_no":$('#version-'+caseNo).val()
+//     };
+//     console.log(request);
+//     $.ajax({
+//         headers: {
+//             'X-CSRF-Token': csrfToken
+//         },
+//         type:'POST',
+//         url:'/sd-cases/closeCase',
+//         data:request,
+//         success:function(response){
+//             console.log(response);
+//         },
+//         error:function(response){
+//             console.log(response.responseText);
+//         }
+//     });
+// }
 
 jQuery(document).ready(function($) {
     $(".queryBoxTable").click(function() {
