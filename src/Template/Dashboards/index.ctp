@@ -129,16 +129,16 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             <?php
             foreach($preferrence_list as $preferrence_detail){
                 if ($preferrence_detail['id']==7) {
-                    echo "<div class=\"form-group col-lg-4\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\"><div class=\"form-control btn btn-danger w-100\">";
+                    echo "<div class=\"form-group col-lg-4\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\"><button class=\"form-control btn btn-danger w-100\">";
                     echo $preferrence_detail['preferrence_name']." ";
                     echo "<span class=\"badge badge-light\">".$preferrence_detail['count']."</span>";
-                    echo "</div></div>";
+                    echo "</button></div>";
                 }
                 else {
-                    echo "<div class=\"form-group col-lg-2\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\"><div class=\"form-control btn btn-outline-primary w-100\">";
+                    echo "<div class=\"form-group col-lg-2\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\"><button class=\"form-control btn btn-outline-primary w-100\">";
                     echo $preferrence_detail['preferrence_name']." ";
                     echo "<span class=\"badge badge-danger\">".$preferrence_detail['count']."</span>";
-                    echo "</div></div>";
+                    echo "</button></div>";
                 }
             }
             ?>
@@ -150,10 +150,10 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 <input type="text" class="form-control" id="searchProductName" name="searchProductName" placeholder="Search by Product Name">
             </div>
             <div class="form-group col-lg-2">
-                <div id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary"><i class="fas fa-search"></i> Search</div>
+                <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary"><i class="fas fa-search"></i> Search</button>
             </div>
             <div class="form-group col-lg-2">
-                <div id="fullSearchBtn" class="form-control btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</div>
+                <button id="fullSearchBtn" class="form-control btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</button>
             </div>
         </div>
         <div id="fullSearch" style="display:none;">
@@ -209,10 +209,10 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             </div>
             <div class="form-row justify-content-center">
                 <div class="form-group col-lg-3">
-                    <div id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary w-100"><i class="fas fa-search"></i> Search</div>
+                    <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary w-100"><i class="fas fa-search"></i> Search</button>
                 </div>
                 <div class="form-group col-lg-1">
-                    <div class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> Clear</div>
+                    <button class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> Clear</button>
                 </div>
             </div>
         </div>

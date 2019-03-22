@@ -82,14 +82,14 @@ jQuery(function($) {  // In case of jQuery conflict
 // Make nav button has "active" effect
     $(function(){
         // If clicked the first level menu
-        $('#navbarSupportedContent > ul > li > a').each(function(){
+        $('#navbarNavDropdown > ul > li > a').each(function(){
             if (
                 $(this).prop('href') == window.location.href) {
                     $(this).addClass('active');
             }
         });
         // If clicked the second (submenu) level
-        $('#navbarSupportedContent > ul > li > div > a').each(function(){
+        $('#navbarNavDropdown > ul > li > ul > a').each(function(){
             if (
                 ($(this).prop('href').split('/').slice(3,4)).toString() == ((window.location.pathname).split('/').slice(1,2)).toString() ) {
                     $(this).parent().siblings('a').addClass('active');

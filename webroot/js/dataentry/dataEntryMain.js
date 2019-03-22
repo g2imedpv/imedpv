@@ -701,7 +701,7 @@ function action(type){
                 text +="</select>";
                 text +="</div>";
                 text +="<h3>Field Required</h3>"
-                text +="<table>";
+                text +="<table class=\"table table-hover\">";
                 text +="<tr>";
                 text +="<th scope=\"col\">Category</th>";
                 text +="<th scope=\"col\">Section</th>";

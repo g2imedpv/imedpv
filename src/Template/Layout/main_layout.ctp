@@ -37,6 +37,10 @@
     <!-- For local Select2 (External library for quick selecting) CSS/JS link -->
     <?= $this->Html->css('select2/select2.min.css') ?>
     <?= $this->Html->script('select2/select2.min.js') ?>
+
+    <!-- For local NavBar CSS/JS link -->
+    <?= $this->Html->css('navbar.css') ?>
+    <?= $this->Html->script('navbar.js') ?>
 </head>
 <body>
 
@@ -52,7 +56,7 @@
         ?>
       </div>
 
-      <div class="nav-item dropdown p-2 bd-highlight">
+      <div class="nav-item dropdown p-2 bd-highlight myaccount">
         <a class="nav-link text-dark bg-light" href="/sd-users/myaccount" id="accountInfo" role="button" aria-haspopup="true" aria-expanded="false">
           <h5>Hi, <span id="roleName"> <?php print $this->request->getSession()->read('Auth.User.firstname'); ?>&nbsp;<?php print $this->request->getSession()->read('Auth.User.lastname'); ?> </span> </h5>
         </a>
@@ -66,53 +70,25 @@
     </div>
 </div>
 
-<nav class="mainNav navbar navbar-expand-lg navbar-dark">
-  <!-- <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button> -->
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navMenu navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="/Dashboards/index">Dashboard <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="/sd-products/search" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">Product</a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+<nav class="navbar navbar-expand-lg mainNav navbar-dark bg-primary">
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="nav navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="/Dashboards/index">Dashboard <span class="sr-only">(current)</span></a></li>
+      <!-- <li class="nav-item"><a class="nav-link" href="#">Link</a></li> -->
+      <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#">Product</a>
+        <ul class="dropdown-menu">
           <a class="dropdown-item" href="/sd-products/search">Search Product</a>
           <a class="dropdown-item" href="/sd-products/addproduct">Add Product</a>
-        </div>
+        </ul>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="/sd-cases/caselist" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ICSR</a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#">ICSR</a>
+        <ul class="dropdown-menu">
           <a class="dropdown-item" href="/sd-cases/caseregistration">Register SAE/AE</a>
           <a class="dropdown-item" href="/sd-cases/caselist">Case List</a>
-          <!-- Use the following if we need diveder in dropdown menu
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-          -->
-        </div>
+        </ul>
       </li>
-      <!-- <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">Form Builder</a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/">Add Form</a>
-          <a class="dropdown-item" href="/">Form List</a>
-        </div>
-      </li> -->
-      <li class="nav-item">
-        <a class="nav-link" href="/sd-users/myaccount">My Account</a>
-      </li>
-      <!-- <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-      </li> -->
+      <li class="nav-item"><a class="nav-link" href="/sd-users/myaccount">My Account</a></li>
     </ul>
-    <!-- <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form> -->
   </div>
 </nav>
 
