@@ -25,6 +25,7 @@ class SdExportController extends AppController
                 {
                     $more_conditions = "fv.set_number=".$set_num;
                 }
+                
                 $sdMedwatchPositions = TableRegistry::get('sdMedwatchPositions');
                     switch($value_type){
                         case '1'://direct output
@@ -38,11 +39,10 @@ class SdExportController extends AppController
                                 'conditions'=>['sdMedwatchPositions.sd_field_id ='.$field_id,'sdMedwatchPositions.sd_field_id = fv.sd_field_id','fv.status = 1','fv.sd_case_id='.$caseId,'sdMedwatchPositions.value_type=1', $more_conditions]
                                 ]
                             ])->first();
-                            //debug($positions);die();
                             $text = $text." <style> p {position: absolute;}  </style>";
                                     $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$positions['fv']['field_value'].'</p>';
-                        break;
+                            break;
                         case '2'://checkbox output
                             $positions= $sdMedwatchPositions ->find()
                             ->select(['sdMedwatchPositions.id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
@@ -55,10 +55,11 @@ class SdExportController extends AppController
                                 ]
                             ])->first();
                             $text = $text." <style> p {position: absolute;font-size:15px;}  </style>";
-                            $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                            $text = $text.'<p style="top:201 px; left: 366 px; width:18 px;  height: 18 px; color:red;">'.'X'.'</p>';
+                            $text = $text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'X'.'</p>';
-                        break;
-                        case '3': // distinct different  suspect product according to set numbers
+                            break;
+                        case '3': // distinct different suspect product according to set_numbers
                             $positions= $sdMedwatchPositions ->find()
                             ->select(['sdMedwatchPositions.id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
                                 'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value','sdMedwatchPositions.set_number','sdMedwatchPositions.sd_field_id'])
@@ -73,8 +74,8 @@ class SdExportController extends AppController
                             $text = $text." <style> p {position: absolute;}  </style>";
                             $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                             .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$positions['fv']['field_value'].'</p>';
-                            break;
-                        case '4':// convert xxxxxxxx to dd-mmm-yyyy
+                            break;     
+                        case '4':// convert date xxxxxxxx to dd-mmm-yyyy
                             $positions= $sdMedwatchPositions ->find()
                             ->select(['sdMedwatchPositions.id','sdMedwatchPositions.field_name','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
                                 'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value'])
@@ -91,11 +92,22 @@ class SdExportController extends AppController
                                 $date=explode('_',$position_details['field_name']);
                                     switch($date[1]){
                                         case "day":
-                                            $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.substr($position_details['fv']['field_value'],0,2).'</p>';
+                                            switch(substr($position_details['fv']['field_value'],0,2)){
+                                                case '00':
+                                                    $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
+                                                    .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'  '.'</p>';
+                                                    break;
+                                                default:
+                                                    $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
+                                                    .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.substr($position_details['fv']['field_value'],0,2).'</p>';
+                                            }
                                         continue;
                                         case "month":
                                             switch(substr($position_details['fv']['field_value'],2,2)){
+                                                case '00':
+                                                        $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'  '.'</p>';
+                                                        continue;
                                                 case '01':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
                                                         .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'JAN'.'</p>';
@@ -150,7 +162,6 @@ class SdExportController extends AppController
                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
                                             .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.substr($position_details['fv']['field_value'],4,4).'</p>';
                                         default;
-                                        //debug($text);die();
                                         }
                                 }
                             break;
@@ -171,8 +182,6 @@ class SdExportController extends AppController
                             $pageone=substr($positions['fv']['field_value'],0,$count_words);
                             $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pageone.'</p>';
-                            // $pagethree=substr($positions['fv']['field_value'],$count_words);
-                            // $text =$text.'<p style="top: 1500px; left: 100px; width:100px;  height:100px; color:red;">'.$pagethree.'</p>';
                         case '6'://use set_number and date convert c8
                             $positions= $sdMedwatchPositions ->find()
                             ->select(['sdMedwatchPositions.id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
@@ -267,6 +276,9 @@ class SdExportController extends AppController
                             $startday=substr($position_details['fv']['field_value'],0,2);
                             $startmon=substr($position_details['fv']['field_value'],2,2);
                                 switch($startmon){
+                                    case '00':
+                                        $startmon="00-";
+                                        continue;
                                     case '01':
                                         $startmon="JAN-";
                                         continue;
@@ -324,8 +336,8 @@ class SdExportController extends AppController
                             $text = $text." <style> p {position: absolute;font-size:15px;}  </style>";
                             $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'X'.'</p>';
-                            break;
-                        case '9':
+                            break; 
+                        case '9': //narrative continue
                             $positions= $sdMedwatchPositions ->find()
                                 ->select(['sdMedwatchPositions.id','sdMedwatchPositions.sd_field_id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
                                     'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value'])
@@ -341,34 +353,76 @@ class SdExportController extends AppController
                                 $count_words = $line*70;
                                 $pagethree=substr($positions['fv']['field_value'],$count_words);
                                 $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pagethree.'</p>';
-                        case '10':
+                                .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pagethree.'</p>'; 
+                        case '10'://e3 occupation convert
                             $positions= $sdMedwatchPositions ->find()
-                            ->select(['sdMedwatchPositions.id','sdMedwatchPositions.sd_field_id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
-                                'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value'])
+                            ->select(['sdMedwatchPositions.id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
+                                'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value','sdMedwatchPositions.field_name'])
                             ->join([
                                 'fv' =>[
                                     'table' =>'sd_field_values',
                                     'type'=>'INNER',
                                     'conditions'=>['sdMedwatchPositions.sd_field_id = fv.sd_field_id','sdMedwatchPositions.sd_field_id = '.$field_id,'fv.status = 1','fv.sd_case_id='.$caseId,'sdMedwatchPositions.value_type=10']
                                 ]
-                            ]);
-                            debug($positions);die();
-
+                            ])->first();
+                            $text = $text." <style> p {position: absolute;font-size:15px;}  </style>";
+                            switch($positions['fv']['field_value']){
+                                case '1':
+                                    $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'Phisician'.'</p>';
+                                    break;
+                                case '2':
+                                    $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'Pharmacist'.'</p>';
+                                    break;
+                                case '3':
+                                    $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'Other health professional'.'</p>';
+                                    break;
+                                case '4':
+                                    $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'Lawyer'.'</p>';
+                                    break;
+                                case '5':
+                                    $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'Consumer or other non health professional'.'</p>';
+                                    break;
+                            }
+                        case '11'://join sd_field_value_look_ups
+                            $positions= $sdMedwatchPositions ->find()
+                            ->select(['sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
+                                'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','look.caption','sdMedwatchPositions.set_number','sdMedwatchPositions.sd_field_id','sdMedwatchPositions.field_name'])
+                            ->join([
+                                'fv' =>[
+                                    'table' =>'sd_field_values',
+                                    'type'=>'INNER',
+                                    'conditions'=>['sdMedwatchPositions.sd_field_id = fv.sd_field_id','sdMedwatchPositions.sd_field_id = '.$field_id,'fv.status = 1','fv.sd_case_id='.$caseId,'sdMedwatchPositions.value_type=11','sdMedwatchPositions.set_number=fv.set_number',$more_conditions]
+                                ]
+                            ])
+                            ->join([
+                                'look' =>[
+                                    'table' =>'sd_field_value_look_ups',
+                                    'type'=>'LEFT',
+                                    'conditions'=>['look.sd_field_id = fv.sd_field_id','fv.field_value=look.value']
+                                ]
+                            ])->first();
+                            $text = $text." <style> p {position: absolute;}  </style>";
+                                    $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$positions['look']['caption'].'</p>';
+                        
                     }
                     return $text;
                 }
 
 
             public function genFDApdf($caseId)
-            {
+            {  
                 $result=$result.$this->getPositionByType($caseId,79,1) ;  //a1 patientID field
                 $result=$result.$this->getPositionByType($caseId,86,1); //a2 age field
                 $result=$result.$this->getPositionByType($caseId,85,4); //a2 date of birth
                 $result=$result.$this->getPositionByType($caseId,87,2); // a2 age unit
                 $result=$result.$this->getPositionByType($caseId,93,2);// a3 sex
                 $result=$result.$this->getPositionByType($caseId,91,1);// a4 weight
-                $result=$result.$this->getPositionByType($caseId,91,2);// a4 weight unit
                 $result=$result.$this->getPositionByType($caseId,235,2);// a5 ethnicity
                 $result=$result.$this->getPositionByType($caseId,224,2);// b1 adverse event
                 $result=$result.$this->getPositionByType($caseId,354,2);// b2 serious
@@ -387,10 +441,10 @@ class SdExportController extends AppController
                 $result=$result.$this->getPositionByType($caseId,179,3);// c1#2 Lot number
                 $result=$result.$this->getPositionByType($caseId,191,3);//c3#1 dose
                 $result=$result.$this->getPositionByType($caseId,185,3);//c3#1 frequency
-                $result=$result.$this->getPositionByType($caseId,192,3);//c3#1 route used
+                $result=$result.$this->getPositionByType($caseId,192,11);//c3#1 route used
                 $result=$result.$this->getPositionByType($caseId,191,3);//c3#2 dose
                 $result=$result.$this->getPositionByType($caseId,185,3);//c3#2 frequency
-                $result=$result.$this->getPositionByType($caseId,192,3);//c3#2 route used
+                $result=$result.$this->getPositionByType($caseId,192,11);//c3#2 route used
                 $result=$result.$this->getPositionByType($caseId,199,7,1);//c4#1 start day
                 $result=$result.$this->getPositionByType($caseId,205,7,1);//c4#1 stop day
                 $result=$result.$this->getPositionByType($caseId,199,7,2);//c4#2 start day
@@ -405,8 +459,8 @@ class SdExportController extends AppController
                 $result=$result.$this->getPositionByType($caseId,298,6,2);// C8#2 expiration date
                 //$result=$result.$this->getPositionByType($caseId,197,8,1);//c9#1 dechallenge?
                 //$result=$result.$this->getPositionByType($caseId,197,8,2);//c9#2 dechallenge?
-                //$result=$result.$this->getPositionByType($caseId,197,8,1);//c10#1 rechallenge?
-                //$result=$result.$this->getPositionByType($caseId,197,8,2);//c10#2 rechallenge?
+                $result=$result.$this->getPositionByType($caseId,209,8,1);//c10#1 rechallenge?
+                $result=$result.$this->getPositionByType($caseId,209,8,2);//c10#2 rechallenge?
                 $result=$result.$this->getPositionByType($caseId,28,1);// e1 last name
                 $result=$result.$this->getPositionByType($caseId,26,1); //e1 first name
                 $result=$result.$this->getPositionByType($caseId,31,1); //e1 address
@@ -417,6 +471,8 @@ class SdExportController extends AppController
                 $result=$result.$this->getPositionByType($caseId,229,1);//e1 phone
                 $result=$result.$this->getPositionByType($caseId,232,1);//e1 email
                 $result=$result.$this->getPositionByType($caseId,342,2);//e2 health professional?
+                $result=$result.$this->getPositionByType($caseId,36,10);//e3 occuption
+                
                 // Require composer autoload
                 //require_once __DIR__ . '../vendor/autoload.php';
                // debug($positions);
