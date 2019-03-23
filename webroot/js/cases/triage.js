@@ -17,7 +17,7 @@ $(document).ready(function(){
             if(($(this).val()!=null)&&($(this).val()!= ""))
             event_element = true;
         });
-        if(validCase==4) $('#validcase').val('1'); else $('#validcase').val('0');
+        if(validCase==4) $('#validcase').val('1'); else $('#validcase').val('2');
         console.log(patient_element);console.log(reporter_element);console.log(event_element);
         validCase = patient_element + reporter_element + event_element;
         if (validCase <= 1) {
@@ -191,45 +191,42 @@ $(document).ready(function(){
 
     $(document).ready(function() {
         $('.js-example-basic-single').select2();
+        prioritizeDate();
     });
-    var prioritizeType = 0;
-    $('[id^=prioritize]').change(function(){
-        var text="";
-        if($('#prioritize-seriousness-1').prop('checked')&&$('#prioritize-related-1').prop('checked')&&$('#prioritize-unlabelled-1').prop('checked')) prioritizeType = 1;
-        else if($('#prioritize-seriousness-2').prop('checked')) prioritizeType = 2;
-        else if($('#prioritize-seriousness-4').prop('checked')) prioritizeType = 3;
-        else prioritizeType = 0;
-        console.log(prioritizeType);
-        var formatDayZero = new Date(dayZero.substring(2,4)+" "+dayZero.substring(0,2)+" "+dayZero.substring(4,8));
-        var formatDueDay = new Date();
-        var yearText =formatDueDay.getFullYear();
-        var monthText =formatDueDay.getMonth();
-        var dayText =formatDueDay.getDay();
-        if(prioritizeType == 1){
-            formatDueDay.setDate(formatDayZero.getDate()+8);
-            text +="7 Days Report, Priority: High, Due Date: ";
-        }
-        if(prioritizeType == 2){
-            formatDueDay.setDate(formatDayZero.getDate()+16);
-            text +="15 Days Report, Priority: High, Due Date: ";
-        }
-        if(prioritizeType == 0){
-            formatDueDay.setDate(formatDayZero.getDate()+16);
-            text +="15 Days Case, Priority: Medium, Due Date: ";
-        }
-        if(prioritizeType == 3){
-            formatDueDay.setDate(formatDayZero.getDate()+91);
-            text +="90 Days Case, Priority: Low, Due Date: ";
-        }
-        if(dayText<10){dayText="0"+dayText;}
-        if(monthText<10){monthText="0"+monthText;}
-        text += yearText+'/'+monthText+'/'+dayText;
-        $('#submissionDate_value').val(dayText+monthText+yearText);
-        $('#prioritizeType').text();
-        $('#prioritizeType').text(text);
-    });
-});
 
+    $('[id^=prioritize]').change(function(){prioritizeDate()});
+});
+function prioritizeDate(){
+    var text="";    
+    var dueType = 0;
+    var submitType = 0
+    if($('#prioritize-seriousness-1').prop('checked')) dueType = 1;
+    if($('#prioritize-related-1').prop('checked')&&$('#prioritize-unlabelled-1').prop('checked')) submitType = 1;
+    var formatDayZero = new Date(dayZero.substring(2,4)+" "+dayZero.substring(0,2)+" "+dayZero.substring(4,8));
+    var formatDueDay = new Date();
+    if(dueType == 1){
+        formatDueDay.setDate(formatDayZero.getDate()+8);
+        text +="Priority: High, 7 Days";
+    }else{
+        formatDueDay.setDate(formatDayZero.getDate()+16);
+        text +="Priority: Normal, 15 Days";
+    }
+    if(submitType == 1){
+        text +=" Report ";
+    }else{
+        text +=" Case ";
+    }  
+    text+='Due Date:';    
+    var yearText =formatDueDay.getFullYear();
+    var monthText =(Number(formatDueDay.getMonth())+1);
+    var dayText =formatDueDay.getDate();
+    if(dayText<10){dayText="0"+dayText;}
+    if(monthText<10){monthText="0"+monthText;}
+    text += yearText+'/'+monthText+'/'+dayText;
+    $('#submissionDate_value').val(dayText+monthText+yearText);
+    $('#prioritizeType').text();
+    $('#prioritizeType').text(text);
+}
 function endTriage(){
     var request ={};
     $("[name^=field_value]").each(function(){
