@@ -19,12 +19,22 @@
 
     <?php if($versionNo>1){
         echo "<div id=\"basicInfo\" class=\"form-group\"><h4 class=\"text-left\">Version Info</h4>";
-        foreach($field_value_set as $field_id => $field_detail){
-            echo "<div class=\"form-group col-md-3\">";
-            echo "<label>".$field_detail['label']."</label>";
-            echo "";
-        }
+        echo "<div class=\"form-row\">";
+        echo "<div class=\"form-group col-md-3\">";
+        echo "<label>Reason For Version Up</label>";
+        // if($field_value_set['79']['id']!=null)
+        //     echo "<input type=\"hidden\" id=\"id_patientField_id_id\" name=\"field_value[79][id]\" value=\"".$field_value_set['79']['id']."\">";
+        // echo "<input type=\"text\" class=\"form-control\" id=\"patientField_id\" name=\"field_value[79][value]\" value=\"".$field_value_set['79']['field_value']."\"></div>";
+        // echo "</div>";
+        echo "<select class=\"custom-select\">";
+        echo "<option>Follow Up</option>";
+        echo "<option>Data Correction</option>";
+        echo "</select></div>";
+        echo "<div class=\"form-group col-md-3\">";
+        echo "<label>Versioning Comment</label>";
+        echo "<textarea class=\"form-control\"></textarea>";
         echo "</div>";
+        echo "</div></div>";
     }
     ?>
     </div>

@@ -159,7 +159,7 @@ $( function() {
     });
 
 
-    $('input:checkbox').change(
+    $('input:checkbox[id^=section]').change(
         function(){
             if ($(this).is(':checked')) {
                 var id = $(this).attr('id').split('-');

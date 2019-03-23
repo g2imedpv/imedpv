@@ -167,7 +167,7 @@ function onQueryClicked(preferrenceId = null){
                 text +="</td>";
                 text += "<td class=\"align-middle\">" + caseDetail.caseNo + "</td>";
                 // text += "<td></td>";
-                text += "<td class=\"align-middle\">"+ caseDetail.versions + "</td>";
+                text += "<td class=\"align-middle\" id=\"version-"+caseDetail.caseNo+"\">"+ caseDetail.versions + "</td>";
                 text += "<td id=\"activity-"+caseDetail.caseNo+"\" class=\"align-middle\">";
                 if(caseDetail.sd_workflow_activity_id!='9999') text += caseDetail.wa.activity_name;
                 else text += "Finished Data Accessment"
@@ -215,16 +215,12 @@ function onQueryClicked(preferrenceId = null){
     });
 }
 function versionUp(caseNo){
-    $('#confirmVersionUp').attr("onclick","confirmVersionUp(\'"+caseNo+"\')");
-}
-function confirmVersionUp(caseNo){
-    var versionNo = $('#version-'+caseNo).val();
+    var versionNo = $('#version-'+caseNo).text();
     var request={
         "caseNo":caseNo,
         "version_no":versionNo,
         "userId":userId
     };
-    console.log(request);
     $.ajax({
         headers: {
             'X-CSRF-Token': csrfToken
@@ -234,7 +230,7 @@ function confirmVersionUp(caseNo){
         data:request,
         success:function(response){
             console.log(response);
-            window.location.href = "/sd-cases/triage/"+caseNo+'/'+Number(versionNo+1);
+            window.location.href = "/sd-cases/triage/"+caseNo+'/'+Number(Number(versionNo)+1);
         },
         error:function(response){
             console.log(response.responseText);

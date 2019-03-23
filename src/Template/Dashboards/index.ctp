@@ -44,7 +44,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
         </div>
     </div>
   </div>
-  <div class="modal fade versionUpFrame" tabindex="-1" role="dialog" aria-labelledby="versionUpFrame" aria-hidden="true">
+  <!-- <div class="modal fade versionUpFrame" tabindex="-1" role="dialog" aria-labelledby="versionUpFrame" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -68,7 +68,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
   <div class="row mt-3" id="pendcase" style="display:none;">
     <div class="col">
