@@ -40,18 +40,18 @@
                     <div class="col-sm-4">
                         <select id=dobMonth class="custom-select js-example-basic-single monthSelect" placeholder="Month">
                             <option value="00">Month</option>
-                            <option value="01">Jan-1</option>
-                            <option value="02">Feb-2</option>
-                            <option value="03">Mar-3</option>
-                            <option value="04">Apr-4</option>
-                            <option value="05">May-5</option>
-                            <option value="06">Jun-6</option>
-                            <option value="07">Jul-7</option>
-                            <option value="08">Aug-8</option>
-                            <option value="09">Sep-9</option>
-                            <option value="10">Oct-10</option>
-                            <option value="11">Nov-11</option>
-                            <option value="12">Dec-12</option>
+                            <option value="01">Jan</option>
+                            <option value="02">Feb</option>
+                            <option value="03">Mar</option>
+                            <option value="04">Apr</option>
+                            <option value="05">May</option>
+                            <option value="06">Jun</option>
+                            <option value="07">Jul</option>
+                            <option value="08">Aug</option>
+                            <option value="09">Sep</option>
+                            <option value="10">Oct</option>
+                            <option value="11">Nov</option>
+                            <option value="12">Dec</option>
                         </select>
                     </div>
                     <div class="col-sm-4">
