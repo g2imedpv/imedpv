@@ -9,9 +9,271 @@ class SdExportController extends AppController
             *  Generate CIOMS files
             *
             */
-            public function genCioms () {
+            public function getCiomsDirectValue($caseId,$field_id,$set_num){
+                $sdFieldValues = TableRegistry::get('sdFieldValues');
+                $direct =$sdFieldValues->find()
+                    ->select(['field_value'])
+                    ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'set_number='.$set_num,'status=1'])->first();
+                $directValue=$direct['field_value'];
+                return $directValue;
+            }
+            public function getCiomsLookupValue($caseId,$field_id,$set_num){
+                $sdFieldValues = TableRegistry::get('sdFieldValues');
+                $lookup= $sdFieldValues ->find()
+                    ->select(['look.caption'])
+                     ->join([
+                         'look' =>[
+                                'table' =>'sd_field_value_look_ups',
+                                'type'=>'INNER',
+                                'conditions'=>['sd_case_id='.$caseId,'look.sd_field_id = sdFieldValues.sd_field_id','set_number='.$set_num,'status=1',
+                                             'sdFieldValues.sd_field_id='.$field_id,'sdFieldValues.field_value=look.value']
+                                ]
+                            ])->first(); 
+                $lookupValue=$lookup['look']['caption'];
+                
+                return $lookupValue;
+            }
+            public function getCiomsDateValue($caseId,$field_id,$set_num){
+                $sdFieldValues = TableRegistry::get('sdFieldValues');
+                $dateFormat =$sdFieldValues->find()
+                ->select(['field_value'])
+                ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'set_number='.$set_num,'status=1'])->first();
+                    switch(substr($dateFormat['field_value'],2,2)){
+                        case '00':
+                               $monthFormat="-MMM-";
+                               break;
+                        case '01':
+                                $monthFormat="-JAN-";
+                                break;
+                        case '02':
+                               $monthFormat="-FEB-";
+                               break;
+                        case '03':
+                                $monthFormat="-Mar-";
+                                break;
+                        case '04':
+                                $monthFormat="-APR-";
+                                break;
+                        case '05':
+                                $monthFormat="-MAY-";
+                                break;
+                        case '06':
+                                $monthFormat="-JUN-";
+                                break;
+                        case '07':
+                                $monthFormat="-JUL-";
+                                break;
+                        case '08':
+                                $monthFormat="-AUG-";
+                                break;
+                        case '09':
+                                $monthFormat="-SEP-";
+                                break;
+                        case '10':
+                                $monthFormat="-OCT-";
+                                break;
+                        case '11':
+                                $monthFormat="-NOV-";
+                                break;
+                        case '12':
+                                $monthFormat="-DEC-";
+                                default;
+                  }
+                return substr($dateFormat['field_value'],0,2).$monthFormat.substr($dateFormat['field_value'],4,4);
+            } 
+            public function getCiomsMonthValue($caseId,$field_id,$set_num){
+                $sdFieldValues = TableRegistry::get('sdFieldValues');
+                $monthFormat =$sdFieldValues->find()
+                ->select(['field_value'])
+                ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'set_number='.$set_num,'status=1'])->first();
+                    switch(substr($monthFormat['field_value'],2,2)){
+                        case '00':
+                               $monthFormat="MMM";
+                               break;
+                        case '01':
+                                $monthFormat="JAN";
+                                break;
+                        case '02':
+                               $monthFormat="FEB";
+                               break;
+                        case '03':
+                                $monthFormat="Mar";
+                                break;
+                        case '04':
+                                $monthFormat="APR";
+                                break;
+                        case '05':
+                                $monthFormat="MAY";
+                                break;
+                        case '06':
+                                $monthFormat="JUN";
+                                break;
+                        case '07':
+                                $monthFormat="JUL";
+                                break;
+                        case '08':
+                                $monthFormat="AUG";
+                                break;
+                        case '09':
+                                $monthFormat="SEP";
+                                break;
+                        case '10':
+                                $monthFormat="OCT";
+                                break;
+                        case '11':
+                                $monthFormat="NOV";
+                                break;
+                        case '12':
+                                $monthFormat="DEC";
+                                default;
+                  }
+                return $monthFormat;
+            }
+            public function getCiomsSeriousValue($caseId,$field_id,$set_num){
+                $choice=$this->getCiomsDirectValue($caseId,$field_id,$set_num);
+                //debug($choice);die();
+                if(substr($choice,0,1)==1){
+                    $this->set('patientDied','checked');
+                };
+                if(substr($choice,1,1)==1){
+                    $this->set('lifeThreatening','checked');
+                };
+                if(substr($choice,2,1)==1){
+                    $this->set('disability','checked');
+                };
+                if(substr($choice,3,1)==1){
+                    $this->set('hospitalization','checked');
+                };
+                if(substr($choice,4,1)==1){
+                    $this->set('congenital','checked');
+                };
+                if(substr($choice,5,1)==1){
+                    $this->set('otherSerious','checked');
+                };
+            }
+            public function getCiomsDechallengeValue($caseId,$field_id,$set_num){
+                $choice=$this->getCiomsDirectValue($caseId,$field_id,$set_num);
+                //debug($choice);die();
+                switch($choice){
+                    case '1':
+                        $this->set('DeYes','checked');
+                        break;
+                    case '2':
+                        $this->set('DeNo','checked');
+                        break;
+                    case '4':
+                        $this->set('DeUnkown','checked');
+                        break;
+                        default;
+                    }
+                }
+            public function getCiomsRechallengeValue($caseId,$field_id,$set_num){
+                $choice=$this->getCiomsDirectValue($caseId,$field_id,$set_num);
+                //debug($choice);die();
+                switch($choice){
+                    case '1':
+                        $this->set('ReYes','checked');
+                        break;
+                    case '2':
+                        $this->set('ReNo','checked');
+                        break;
+                    case '4':
+                        $this->set('ReUnkown','checked');
+                        break;
+                        default;
+                    }
+                }
+            public function getCiomsReportSourceValue($caseId,$set_num){
+                $choiceOne=$this->getCiomsDirectValue($caseId,6,$set_num);
+                $choiceTwo=$this->getCiomsDirectValue($caseId,342,$set_num);
+                $choiceThree=$this->getCiomsDirectValue($caseId,37,$set_num);
+                if($choiceOne==2){
+                    $this->set('study','checked');
+                };
+                if($choiceTwo==1){
+                    $this->set('healthProfessional','checked');
+                };
+                if($choiceThree!=null){
+                    $this->set('literature','checked');
+                };
+                   
+                }
+        
+            public function genCIOMS ($caseId) {
                 $this->viewBuilder()->layout('CIOMS');
-                //$this->autoRender = false;
+                //1.
+                $this->set('patientInitial', $this->getCiomsDirectValue($caseId,79,1));//B.1.1  patientinitial
+                //1a.
+                $this->set('country', $this->getCiomsLookupValue($caseId,3,1));// A.1.2 occurcountry
+                //2.
+                $this->set('birth', $this->getCiomsDirectValue($caseId,85,1));// A.1.2.1b patientbirthdate
+                $this->set('birthMonth', $this->getCiomsMonthValue($caseId,85,1));// A.1.2.1b patientbirthdate
+                //2a.
+                $this->set('age', $this->getCiomsDirectValue($caseId,86,1));//B.1.2.2a patientonsetage
+                $this->set('ageUnit',$this->getCiomsLookupValue($caseId,87,1));//B.1.2.2b  patientonsetageunit
+                //4-6
+                $this->set('reaction', $this->getCiomsDirectValue($caseId,156,1));//B.2.i.4b  reactionstartdate
+                $this->set('reactionMonth', $this->getCiomsMonthValue($caseId,156,1));//B.2.i.4b  reactionstartdate
+                //3
+                $this->set('sex',$this->getCiomsLookupValue($caseId,93,1));//B.1.5  sex
+                //7
+                $this->set('primarySourceReaction', $this->getCiomsDirectValue($caseId,149,1));//B.2.i.0  primarysourcereaction
+                $this->set('reactionOutcome ', $this->getCiomsDirectValue($caseId,165,1));//B.2.i.8  reactionoutcome
+                $this->set('actionDrug', $this->getCiomsDirectValue($caseId,208,1));// B.4.K.16  actiondrug
+                $this->set('narrativeIncludeClinical', $this->getCiomsDirectValue($caseId,218,1));//B.5.1  narrativeincludeclinical
+                //8-12
+                $this->getCiomsSeriousValue($caseId,354,1);
+                //13
+                $this->set('resultsTestsProcedures', $this->getCiomsSeriousValue($caseId,222,1));//B.3.2 resultstestsprocedures
+                //14
+                $this->set('drugone', $this->getCiomsDirectValue($caseId,177,1));//B.4.K.2+B.4.K.3  activesubstancename+obtaindrugcountry
+                $this->set('genericOne', $this->getCiomsDirectValue($caseId,178,1));//B.4.K.3   obtaindrugcountry
+                $this->set('drugtwo', $this->getCiomsDirectValue($caseId,177,2));//B.4.K.2+B.4.K.3  activesubstancename+obtaindrugcountry
+                $this->set('genericTwo', $this->getCiomsDirectValue($caseId,178,2));//B.4.K.3   obtaindrugcountry
+                //15
+                $this->set('doseone', $this->getCiomsDirectValue($caseId,291,1));//
+                $this->set('dosetwo', $this->getCiomsDirectValue($caseId,291,2));
+                //16
+                $this->set('routeone', $this->getCiomsLookupValue($caseId,192,1));//B.4.k.8    drugadministrationroute
+                $this->set('routetwo', $this->getCiomsLookupValue($caseId,192,2));//B.4.k.8    drugadministrationroute
+                //17
+                $this->set('indicationOne', $this->getCiomsDirectValue($caseId,197,1));//B.4.k.11b   drugindication
+                $this->set('indicationTwo', $this->getCiomsDirectValue($caseId,197,2));//B.4.k.11b   drugindication
+                //18
+                $this->set('TherapyStartOne', $this->getCiomsDateValue($caseId,199,1));//B.4.k.12b   drugstartdate
+                $this->set('TherapyStartTwo', $this->getCiomsDateValue($caseId,199,2));//B.4.k.12b   drugstartdate
+                $this->set('TherapyStopOne', $this->getCiomsDateValue($caseId,205,1));//B.4.k.14b    drugenddate
+                $this->set('TherapyStopTwo', $this->getCiomsDateValue($caseId,205,2));//B.4.k.14b    drugenddate
+                //19
+                $this->set('TherapyDurationOne', $this->getCiomsDirectValue($caseId,206,1));//B.4.k.15a  drugtreatmentduration
+                $this->set('TherapyDurationUnitOne', $this->getCiomsLookupValue($caseId,207,1));//B.4.k.15b  drugtreatmentdurationunit
+                $this->set('TherapyDurationTwo', $this->getCiomsDirectValue($caseId,206,2));//B.4.k.15a  drugtreatmentduration
+                $this->set('TherapyDurationUnitTwo', $this->getCiomsLookupValue($caseId,207,2));//B.4.k.15b  drugtreatmentdurationunit
+                //20.
+                $this->getCiomsDechallengeValue($caseId,381,1);//dechallenge
+                //21.
+                $this->getCiomsRechallengeValue($caseId,209,1);//Rechallenge
+                //22. concomitant drugs and dates of administration
+                $this->set('productName', $this->getCiomsDirectValue($caseId,176,2));//B.4.k.2.1medicinalproduct
+                $this->set('substanceName', $this->getCiomsDirectValue($caseId,177,2));//B.4.k.2.2activesubstancename
+                $this->set('countryObtain', $this->getCiomsDirectValue($caseId,178,2));//+B.4.k.2.3obtaindrugcountry
+                $this->set('startDate', $this->getCiomsDirectValue($caseId,199,2));////B.4.k.12b   drugstartdate
+                $this->set('stopDate', $this->getCiomsDateValue($caseId,205,2));//B.4.k.14b    drugenddate
+                //23.other relevant history
+                $this->set('patientEpisodeName', $this->getCiomsDirectValue($caseId,97,2));//B.1.7.1a.2  patientepisodename
+                $this->set('patientMedicalStartDate', $this->getCiomsDateValue($caseId,99,2));//B.1.7.1c	patientmedicalstartdate
+                $this->set('patientMedicalContinue', $this->getCiomsLooKupValue($caseId,100,2));//B.1.7.1d  patientmedicalcontinue
+                $this->set('patientMedicalEndDate', $this->getCiomsDateValue($caseId,102,2));//B.1.7.1f   patientmedicalenddate
+                $this->set('patientMedicalComment', $this->getCiomsDirectValue($caseId,103,1));//B.1.7.1g  patientmedicalcomment
+                //24a
+                $this->set('caseSource', $this->getCiomsDateValue($caseId,19,2));//A.1.11.1  Source of the case identifier 
+                //24b
+                $this->set('otherCaseIndentifier', $this->getCiomsDateValue($caseId,18,2));//A.1.11 Other case identifiers in previous transmissions
+                //24c
+                $this->set('receiptDate', $this->getCiomsDateValue($caseId,12,1));//A.1.7b  Latest received date 
+                //24d
+                $this->getCiomsReportSourceValue($caseId,1);
+
             }
 
 
@@ -25,7 +287,7 @@ class SdExportController extends AppController
                 {
                     $more_conditions = "fv.set_number=".$set_num;
                 }
-                
+                $fv = TableRegistry::get('sdFieldValues');
                 $sdMedwatchPositions = TableRegistry::get('sdMedwatchPositions');
                     switch($value_type){
                         case '1'://direct output
@@ -407,9 +669,67 @@ class SdExportController extends AppController
                                 ]
                             ])->first();
                             $text = $text." <style> p {position: absolute;}  </style>";
-                                    $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                            $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$positions['look']['caption'].'</p>';
-                        
+                            break;           
+                        case '12'://describe event and problem in page1
+                            $query1=$fv->find()
+                                ->select(['field_value'])
+                                ->where(['sd_case_id='.$caseId,'sd_field_id=218','set_number=1','status=1'])->first();
+                            $query2=$fv->find()
+                                ->select(['field_value'])
+                                ->where(['sd_case_id='.$caseId,'sd_field_id=219','set_number=1','status=1'])->first();
+                            $query3=$fv->find()
+                                ->select(['field_value'])
+                                ->where(['sd_case_id='.$caseId,'sd_field_id=221','set_number=1','status=1'])->first();
+                            $query4=$fv->find()
+                                ->select(['field_value'])
+                                ->where(['sd_case_id='.$caseId,'sd_field_id=222','set_number=1','status=1'])->first();
+                            $description=$query1['field_value']."\r\n"."\r\n".$query2['field_value']."\r\n"."\r\n".$query3['field_value']."\r\n"."\r\n".$query4['field_value'];         
+                            $positions= $sdMedwatchPositions ->find()
+                                ->select(['sdMedwatchPositions.id','sdMedwatchPositions.sd_field_id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
+                                    'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value'])
+                                ->join([
+                                    'fv' =>[
+                                        'table' =>'sd_field_values',
+                                        'type'=>'INNER',
+                                        'conditions'=>['sdMedwatchPositions.sd_field_id = fv.sd_field_id','sdMedwatchPositions.sd_field_id = '.$field_id,'fv.status = 1','fv.sd_case_id='.$caseId,'sdMedwatchPositions.value_type=12']
+                                    ]
+                                ])->first(); 
+                                $text = $text."<style> p {position: absolute;font-size:10px;font-family: courier;}  </style>";
+                                $pageone=substr($description,0,400);
+                                $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pageone.'</p>';
+                                break;
+                        case '13':  //describe event and problem in page3
+                            $query1=$fv->find()
+                                ->select(['field_value'])
+                                ->where(['sd_case_id='.$caseId,'sd_field_id=218','set_number=1','status=1'])->first();
+                            $query2=$fv->find()
+                                ->select(['field_value'])
+                                ->where(['sd_case_id='.$caseId,'sd_field_id=219','set_number=1','status=1'])->first();
+                            $query3=$fv->find()
+                                ->select(['field_value'])
+                                ->where(['sd_case_id='.$caseId,'sd_field_id=221','set_number=1','status=1'])->first();
+                            $query4=$fv->find()
+                                ->select(['field_value'])
+                                ->where(['sd_case_id='.$caseId,'sd_field_id=222','set_number=1','status=1'])->first();
+                            $description=$query1['field_value']."\r\n"."\r\n".$query2['field_value']."\r\n"."\r\n".$query3['field_value']."\r\n"."\r\n".$query4['field_value'];         
+                            $positions= $sdMedwatchPositions ->find()
+                                ->select(['sdMedwatchPositions.id','sdMedwatchPositions.sd_field_id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
+                                    'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value'])
+                                ->join([
+                                    'fv' =>[
+                                        'table' =>'sd_field_values',
+                                        'type'=>'INNER',
+                                        'conditions'=>['sdMedwatchPositions.sd_field_id = fv.sd_field_id','sdMedwatchPositions.sd_field_id = '.$field_id,'fv.status = 1','fv.sd_case_id='.$caseId,'sdMedwatchPositions.value_type=13']
+                                    ]
+                                ])->first(); 
+                                $text = $text."<style> p {position: absolute;font-size:10px;font-family: courier;}  </style>";
+                                $pagethree=substr($description,400);
+                                $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pagethree.'</p>';    
+                                            
                     }
                     return $text;
                 }
@@ -428,7 +748,7 @@ class SdExportController extends AppController
                 $result=$result.$this->getPositionByType($caseId,354,2);// b2 serious
                 $result=$result.$this->getPositionByType($caseId,115,4);// b2 death date
                 $result=$result.$this->getPositionByType($caseId,156,4);// b3 date of event
-                $result=$result.$this->getPositionByType($caseId,218,5);// b5 describe event or problem
+                $result=$result.$this->getPositionByType($caseId,218,12,1);// b5 describe event or problem
                 $result=$result.$this->getPositionByType($caseId,174,5);// b6 relevant tests/laboratory data
                 $result=$result.$this->getPositionByType($caseId,104,5);// b7 other relevant history
                 $result=$result.$this->getPositionByType($caseId,176,3,1);// c1#1 name and strength
@@ -439,10 +759,10 @@ class SdExportController extends AppController
                 $result=$result.$this->getPositionByType($caseId,284,3,2);// c1#2 Manufacturer/compounder
                 $result=$result.$this->getPositionByType($caseId,179,3);// c1#1 Lot number
                 $result=$result.$this->getPositionByType($caseId,179,3);// c1#2 Lot number
-                $result=$result.$this->getPositionByType($caseId,191,3);//c3#1 dose
+                $result=$result.$this->getPositionByType($caseId,183,3);//c3#1 dose
                 $result=$result.$this->getPositionByType($caseId,185,3);//c3#1 frequency
                 $result=$result.$this->getPositionByType($caseId,192,11);//c3#1 route used
-                $result=$result.$this->getPositionByType($caseId,191,3);//c3#2 dose
+                $result=$result.$this->getPositionByType($caseId,183,3);//c3#2 dose
                 $result=$result.$this->getPositionByType($caseId,185,3);//c3#2 frequency
                 $result=$result.$this->getPositionByType($caseId,192,11);//c3#2 route used
                 $result=$result.$this->getPositionByType($caseId,199,7,1);//c4#1 start day
@@ -503,7 +823,7 @@ class SdExportController extends AppController
 
                 $mpdf->AddPage();
 
-                $continue=$this->getPositionByType($caseId,218,9);// b5 describe event or problem continue
+                $continue=$this->getPositionByType($caseId,218,13);// b5 describe event or problem continue
                 $continue=$continue.$this->getPositionByType($caseId,174,9);// b6 relevant tests continue
                 $continue=$continue.$this->getPositionByType($caseId,104,9);//b7 other relevant history continue
                 $mpdf->WriteHTML($continue);
