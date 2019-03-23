@@ -44,23 +44,31 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
         </div>
     </div>
   </div>
-  <div class="modal fade versionUpFrame" tabindex="-1" role="dialog" aria-labelledby="versionUpFrame" aria-hidden="true">
+  <!-- <div class="modal fade versionUpFrame" tabindex="-1" role="dialog" aria-labelledby="versionUpFrame" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Version Up</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <div class="modal-body m-3">
-                            <div class="form-group">
+                            <div class="form-group text-center">
                                 <label for="">Reason For Version Up:</label>
-                                <select  class="form-control">
+                                <select  class="form-control w-50 mx-auto">
                                     <option>Select reason for version up</option>
                                     <option>Data Correction</option>
                                     <option>Follow Up</option>
                                 </select>
                             </div>
-                            <div class="form-control btn btn-primary w-50 float-right" id="confirmVersionUp" onclick="">Confirm </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary w-25" id="confirmVersionUp" onclick="">Confirm </button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
   <div class="row mt-3" id="pendcase" style="display:none;">
     <div class="col">
@@ -129,16 +137,16 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             <?php
             foreach($preferrence_list as $preferrence_detail){
                 if ($preferrence_detail['id']==7) {
-                    echo "<div class=\"form-group col-lg-4\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\"><div class=\"form-control btn btn-danger w-100\">";
+                    echo "<div class=\"form-group col-lg-4\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\"><button class=\"form-control btn btn-danger w-100\">";
                     echo $preferrence_detail['preferrence_name']." ";
                     echo "<span class=\"badge badge-light\">".$preferrence_detail['count']."</span>";
-                    echo "</div></div>";
+                    echo "</button></div>";
                 }
                 else {
-                    echo "<div class=\"form-group col-lg-2\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\"><div class=\"form-control btn btn-outline-primary w-100\">";
+                    echo "<div class=\"form-group col-lg-2\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\"><button class=\"form-control btn btn-outline-primary w-100\">";
                     echo $preferrence_detail['preferrence_name']." ";
                     echo "<span class=\"badge badge-danger\">".$preferrence_detail['count']."</span>";
-                    echo "</div></div>";
+                    echo "</button></div>";
                 }
             }
             ?>
@@ -150,10 +158,10 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 <input type="text" class="form-control" id="searchProductName" name="searchProductName" placeholder="Search by Product Name">
             </div>
             <div class="form-group col-lg-2">
-                <div id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary"><i class="fas fa-search"></i> Search</div>
+                <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary"><i class="fas fa-search"></i> Search</button>
             </div>
             <div class="form-group col-lg-2">
-                <div id="fullSearchBtn" class="form-control btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</div>
+                <button id="fullSearchBtn" class="form-control btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</button>
             </div>
         </div>
         <div id="fullSearch" style="display:none;">
@@ -165,7 +173,11 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                     <input type="text" class="form-control"  id="searchName" name="searchName" placeholder="Select Case No.">
                 </div>
                 <div class="form-group col-lg-4">
-                    <input type="text" class="form-control" id="case_status" placeholder="Select Case Status">
+                    <select class="form-control" id="caseStatus" name="caseStatus">
+                        <option value="1">activate</option>
+                        <option value="2">Inactivate</option>
+                        <option value="3">all</option>
+                    </select>
                 </div>
             </div>
             <div class="form-row">
@@ -209,10 +221,10 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             </div>
             <div class="form-row justify-content-center">
                 <div class="form-group col-lg-3">
-                    <div id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary w-100"><i class="fas fa-search"></i> Search</div>
+                    <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary w-100"><i class="fas fa-search"></i> Search</button>
                 </div>
                 <div class="form-group col-lg-1">
-                    <div class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> Clear</div>
+                    <button class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> Clear</button>
                 </div>
             </div>
         </div>

@@ -155,23 +155,16 @@ tr:nth-child(even) {
 }
 
 /* mainNav hover */
-.dropdown:hover > .dropdown-menu {
+.myaccount:hover > .dropdown-menu {
     display: block;
 }
 
-/* topBar hover*/
-li.nav-item:hover > .dropdown-menu {
-    display: block;
-}
 
 /* Sidenav Dropdown hover effect */
 .dropright:hover > .dropdown-menu {
     display: block;
 }
 
-.dropdown-submenu:hover + .dropdown-menu {
-    display: inline-block;
-}
 
 .caseList{
     width: 410px;
@@ -478,4 +471,8 @@ ul.queryBoxLeft > a {
     position: relative;
     top: -5px;
     left: 3px;
+}
+
+#navbarNavDropdown > ul > li {
+    margin-left: 20px;
 }

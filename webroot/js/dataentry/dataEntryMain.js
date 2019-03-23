@@ -159,7 +159,7 @@ $( function() {
     });
 
 
-    $('input:checkbox').change(
+    $('input:checkbox[id^=section]').change(
         function(){
             if ($(this).is(':checked')) {
                 var id = $(this).attr('id').split('-');
@@ -701,7 +701,7 @@ function action(type){
                 text +="</select>";
                 text +="</div>";
                 text +="<h3>Field Required</h3>"
-                text +="<table>";
+                text +="<table class=\"table table-hover\">";
                 text +="<tr>";
                 text +="<th scope=\"col\">Category</th>";
                 text +="<th scope=\"col\">Section</th>";
@@ -866,3 +866,16 @@ function backward(){
             }
         });
 }
+
+// Product Tab: If "Ongoing field checked", then Therapy End date (B.4.k.14b) DISABLED
+$(document).ready(function(){
+    $("#section-22-checkbox-434-option-1").change(function(){
+        if($(this).prop('checked')){
+            $('#section-22-date-205').prop('disabled',true);
+        }
+
+        if(!$(this).prop('checked')){
+            $('#section-22-date-205').prop('disabled',false);
+        }
+    });
+});

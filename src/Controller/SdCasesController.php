@@ -142,9 +142,9 @@ class SdCasesController extends AppController
                                         'pg.set_number',
                                         'patient_dob'=>'pdob.field_value',
                                         'pdob.set_number',
-                                        'reporter_first_name'=>'rfn.field_value',
+                                        'reporter_firstname'=>'rfn.field_value',
                                         'rfn.set_number',
-                                        'reporter_last_name'=>'rln.field_value',
+                                        'reporter_lastname'=>'rln.field_value',
                                         'rln.set_number',
                                         'event_report_term' =>'ert.field_value',
                                         'ert.set_number',
@@ -275,20 +275,20 @@ class SdCasesController extends AppController
                 //     ]);}
                 if(!empty($searchKey['product_id'])) $searchResult = $searchResult->where(['pd.id '=>$searchKey['product_id']]);
                 if(!empty($searchKey['country'])) $searchResult = $searchResult->where(['wf.country'=>$searchKey['country']]);
-                if(!empty($searchKey['patient_initial'])) $searchResult = $searchResult->where(['pi.field_value LIKE'=>'%'.$searchKey['patient_initial'].'%']);
-                if(!empty($searchKey['patient_age'])) $searchResult = $searchResult->where(['pa.field_value  LIKE'=>'%'.$searchKey['patient_age'].'%']);
-                if(!empty($searchKey['patient_age_unit'])) $searchResult = $searchResult->where(['pau.field_value  LIKE'=>'%'.$searchKey['patient_age_unit'].'%']);
-                if(!empty($searchKey['patient_dob'])) $searchResult = $searchResult->where(['pdob.field_value  LIKE'=>'%'.$searchKey['patient_dob'].'%']);
-                if(!empty($searchKey['patient_gender'])) $searchResult = $searchResult->where(['pg.field_value  LIKE'=>'%'.$searchKey['patient_gender'].'%']);
-                if(!empty($searchKey['reporter_first_name'])) $searchResult = $searchResult->where(['rfn.field_value  LIKE'=>'%'.$searchKey['reporter_first_name'].'%']);
-                if(!empty($searchKey['reporter_last_name'])) $searchResult = $searchResult->where(['rln.field_value  LIKE'=>'%'.$searchKey['reporter_last_name'].'%']);
-                if(!empty($searchKey['event_report_term'])) $searchResult = $searchResult->where(['ert.field_value  LIKE'=>'%'.$searchKey['event_report_term'].'%']);
-                if(!empty($searchKey['patient_ethnic_origin'])) $searchResult = $searchResult->where(['peo.field_value  LIKE'=>'%'.$searchKey['patient_ethnic_origin'].'%']);
-                if(!empty($searchKey['patient_age_group'])) $searchResult = $searchResult->where(['pag.field_value  LIKE'=>'%'.$searchKey['patient_age_group'].'%']);
-                if(!empty($searchKey['event_onset_date'])) $searchResult = $searchResult->where(['eod.field_value  LIKE'=>'%'.$searchKey['event_onset_date'].'%']);
-                if(!empty($searchKey['meddraptname'])) $searchResult = $searchResult->where(['mpt.field_value  LIKE'=>'%'.$searchKey['meddraptname'].'%']);
-                if(!empty($searchKey['meddralltname'])) $searchResult = $searchResult->where(['mllt.field_value  LIKE'=>'%'.$searchKey['meddralltname'].'%']);
-                if(!empty($searchKey['meddrahltname'])) $searchResult = $searchResult->where(['mhlt.field_value  LIKE'=>'%'.$searchKey['meddrahltname'].'%']);
+                if(!empty($searchKey['patient_initial'])) $searchResult = $searchResult->where(['pi.field_value LIKE'=>'%'.trim($searchKey['patient_initial']).'%']);
+                if(!empty($searchKey['patient_age'])) $searchResult = $searchResult->where(['pa.field_value  LIKE'=>'%'.trim($searchKey['patient_age']).'%']);
+                if(!empty($searchKey['patient_age_unit'])) $searchResult = $searchResult->where(['pau.field_value  LIKE'=>'%'.trim($searchKey['patient_age_unit']).'%']);
+                if(!empty($searchKey['patient_dob'])) $searchResult = $searchResult->where(['pdob.field_value  LIKE'=>'%'.trim($searchKey['patient_dob']).'%']);
+                if(!empty($searchKey['patient_gender'])) $searchResult = $searchResult->where(['pg.field_value  LIKE'=>'%'.trim($searchKey['patient_gender']).'%']);
+                if(!empty($searchKey['reporter_firstname'])) $searchResult = $searchResult->where(['rfn.field_value  LIKE'=>'%'.trim($searchKey['reporter_firstname']).'%']);
+                if(!empty($searchKey['reporter_lastname'])) $searchResult = $searchResult->where(['rln.field_value  LIKE'=>'%'.trim($searchKey['reporter_lastname']).'%']);
+                if(!empty($searchKey['event_report_term'])) $searchResult = $searchResult->where(['ert.field_value  LIKE'=>'%'.trim($searchKey['event_report_term']).'%']);
+                if(!empty($searchKey['patient_ethnic_origin'])) $searchResult = $searchResult->where(['peo.field_value  LIKE'=>'%'.trim($searchKey['patient_ethnic_origin']).'%']);
+                if(!empty($searchKey['patient_age_group'])) $searchResult = $searchResult->where(['pag.field_value  LIKE'=>'%'.trim($searchKey['patient_age_group']).'%']);
+                if(!empty($searchKey['event_onset_date'])) $searchResult = $searchResult->where(['eod.field_value  LIKE'=>'%'.trim($searchKey['event_onset_date']).'%']);
+                if(!empty($searchKey['meddraptname'])) $searchResult = $searchResult->where(['mpt.field_value  LIKE'=>'%'.trim($searchKey['meddraptname']).'%']);
+                if(!empty($searchKey['meddralltname'])) $searchResult = $searchResult->where(['mllt.field_value  LIKE'=>'%'.trim($searchKey['meddralltname']).'%']);
+                if(!empty($searchKey['meddrahltname'])) $searchResult = $searchResult->where(['mhlt.field_value  LIKE'=>'%'.trim($searchKey['meddrahltname']).'%']);
                 // print_r($searchResult);
             }catch (\PDOException $e){
                 echo "cannot the case find in database";
@@ -377,6 +377,7 @@ class SdCasesController extends AppController
                     'submission_due_date'=>'submission_due_date.field_value',
                     'activity_due_date'=>'activity_due_date.field_value',
                     'caseNo',
+                    'SdCases.status',
                     'sd_workflow_activity_id',
                     'pd.product_name',
                     'wa.activity_name',
@@ -432,7 +433,7 @@ class SdCasesController extends AppController
                             'type'=>'LEFT',
                             'conditions' => ['clinical_trial.sd_field_id = 40','clinical_trial.sd_case_id = SdCases.id','clinical_trial.field_value = 1'],
                         ]
-                    ])->order(['caseNo'=>'ASC','versions'=>'DESC'])->where(['SdCases.status'=>'1']);
+                    ])->order(['caseNo'=>'ASC','versions'=>'DESC']);
                 if(array_key_exists('preferrenceId',$searchKey) ) {
                     $preferrence_detail = $preferrence_list[$searchKey['preferrenceId']-1];
                     if(array_key_exists('value_at',$preferrence_detail))
@@ -460,6 +461,10 @@ class SdCasesController extends AppController
                         ]
                     ]);}
                 if(!empty($searchKey['searchName'])) $searchResult = $searchResult->where(['caseNo LIKE'=>'%'.$searchKey['searchName'].'%']);
+                if(!empty($searchKey['caseStatus'])) {
+                    if($searchKey['caseStatus']=='1') $searchResult = $searchResult->where(['SdCases.status'=>'1']);
+                    else if($searchKey['caseStatus']=='2') $searchResult = $searchResult->where(['SdCases.status'=>'0']);
+                }
                 if(!empty($searchKey['searchProductName'])) $searchResult = $searchResult->where(['product_name  LIKE'=>'%'.$searchKey['searchProductName'].'%']);
                 $searchResult->all();
             }catch (\PDOException $e){
@@ -768,6 +773,7 @@ class SdCasesController extends AppController
                                 ->where(['order_no = 1'])->first()->toArray();
             $case['sd_workflow_activity_id'] = $sdWorkflowActivity['id'];
             $case['version_no'] = (int)$case['version_no'] + 1;
+            $case['sd_user_id'] = $requstData['userId'];
             $patchedCase = $this->SdCases->patchEntity($newCase, $case);
             $savedCase = $this->SdCases->save($patchedCase);
             if ($savedCase) echo "success"; else echo "error";
@@ -785,6 +791,20 @@ class SdCasesController extends AppController
                 $newFieldValue['status']="1";
                 $patchedFieldValue = $sdFieldValuesTable->save($newFieldValue);
                 if(!$patchedFieldValue) {print_r($patchedFieldValue);return;}
+            }
+            $caseHistoriesTable = TableRegistry::get('SdCaseHistories');
+            $newCaseHistory = $caseHistoriesTable->newEntity();
+            $dataSet =[
+                'sd_workflow_activity_id'=> $sdWorkflowActivity['id'],
+                'sd_user_id' => $requstData['userId'],
+                'sd_case_id' => $savedCase['id'],
+                'enter_time' => date("Y-m-d H:i:s"),
+            ];
+            $newCaseHistory = $caseHistoriesTable ->patchEntity($newCaseHistory, $dataSet);
+            if(!$caseHistoriesTable->save($newCaseHistory)){
+                echo "problem in saving case history";
+                debug($newCaseHistory);
+                return null;
             }
             die();
         }
@@ -907,26 +927,30 @@ class SdCasesController extends AppController
             $requestData = $this->request->getData();
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
             //TODO if the case is to push to Data Entry
-            debug($requestData['field_value']);
 
             foreach($requestData['field_value'] as $field_id => $detail_data){
-                if($detail_data!=""){
-                    $previous_field_value = $sdFieldValueTable->find()->where(['sd_case_id'=>$case['id'],'sd_field_id'=>$field_id,'set_number'=>'1','status'=>'1'])->first();
-                    if($previous_field_value!=null) $sdFieldValueEntity = $previous_field_value;
-                    else $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                if((array_key_exists('id',$detail_data))&&($detail_data['id']!=null)) {
+                    $previous_field_value = $sdFieldValueTable->get($detail_data['id']);
+                    if($detail_data['value']==$previous_field_value['field_value']) continue;
+                    $savedFieldValueEntity = $previous_field_value;
+                    $savedFieldValueEntity['field_value'] = $detail_data['value'];
+                }
+                else {
+                    if($detail_data['value']==null) continue;
+                    $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                     $dataSet = [
                         'sd_case_id' => $case->id,
                         'sd_field_id' => $field_id,
                         'set_number' => '1',
                         'created_time' =>date("Y-m-d H:i:s"),
-                        'field_value' =>$detail_data,
+                        'field_value' =>$detail_data['value'],
                         'status' =>'1',
                     ];
                     $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
-                    if(!$sdFieldValueTable->save($savedFieldValueEntity)) {
-                        echo "problem in saving".$field_id."sdfields";
-                        return null;
-                    }
+                }
+                if(!$sdFieldValueTable->save($savedFieldValueEntity)) {
+                    echo "problem in saving".$field_id."sdfields";
+                    return null;
                 }
             }
             if(in_array('endTriage',$requestData))
@@ -950,19 +974,34 @@ class SdCasesController extends AppController
                     'conditions'=>['pd.id = pwf.sd_product_id']
                 ]
             ])->first();
-        $field_ids = ['176','85','79','93','86','87','26','28','149','394','392','395','225'];
+        $field_ids = ['176','85','79','93','86','87','26','28','149','394','392','395','225','417','420','421','422','423','223','415'];
+        $versionup_fields = [''];
+        
         $fieldValue_Table = TableRegistry::get('SdFieldValues');
         $field_value_set = [];
         foreach($field_ids as $field_id){
             try{
             $field_value = $fieldValue_Table->find()->where(['sd_case_id'=>$case['id'],'sd_field_id'=>$field_id,'set_number'=>'1','status'=>'1'])->first();
-            $field_value_set[$field_id] = $field_value['field_value'];
-            // $field_value_set[$field_id]['id'] = $field_value['id'];
+            $field_value_set[$field_id]['field_value'] = $field_value['field_value'];
+            $field_value_set[$field_id]['id'] = $field_value['id'];
             }catch (\PDOException $e){
                 $field_value_set[$field_id] = null;
             }
         }
-
+        if($versionNo>1) 
+        {
+            $version_up_set =[''];
+            foreach($versionup_fields as $field_id){
+                try{
+                $field_value = $fieldValue_Table->find()->where(['sd_case_id'=>$case['id'],'sd_field_id'=>$field_id,'set_number'=>'1','status'=>'1'])->first();
+                $version_up_set[$field_id]['field_value'] = $field_value['field_value'];
+                $version_up_set[$field_id]['id'] = $field_value['id'];
+                }catch (\PDOException $e){
+                    $version_up_set[$field_id] = null;
+                }
+            }
+            $this->set('version_up_set',$version_up_set);
+        }
         $this->set(compact('case','caseNo','versionNo','field_value_set'));
     }
 
@@ -979,22 +1018,29 @@ class SdCasesController extends AppController
             $this->autoRender = false;
             $requestData = $this->request->getData();
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
-            foreach($requestData as $field_id => $detail_data){
-                if($detail_data!=""){
+            foreach($requestData['field_value'] as $field_id => $detail_data){
+                if((array_key_exists('id',$detail_data))&&($detail_data['id']!=null)) {
+                    $previous_field_value = $sdFieldValueTable->get($detail_data['id']);
+                    if($detail_data['value']==$previous_field_value['field_value']) continue;
+                    $savedFieldValueEntity = $previous_field_value;
+                    $savedFieldValueEntity['field_value'] = $detail_data['value'];
+                }
+                else {
+                    if($detail_data['value']==null) continue;
                     $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                     $dataSet = [
                         'sd_case_id' => $case->id,
                         'sd_field_id' => $field_id,
                         'set_number' => '1',
                         'created_time' =>date("Y-m-d H:i:s"),
-                        'field_value' =>$detail_data,
+                        'field_value' =>$detail_data['value'],
                         'status' =>'1',
                     ];
                     $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
-                    if(!$sdFieldValueTable->save($savedFieldValueEntity)) {
-                        echo "problem in saving".$field_id."sdfields";
-                        return null;
-                    }
+                }
+                if(!$sdFieldValueTable->save($savedFieldValueEntity)) {
+                    echo "problem in saving".$field_id."sdfields";
+                    return null;
                 }
             }
         }

@@ -3,6 +3,7 @@ var workflow_k = 0;
 var workflow_info ={};
 var cro_list=[];
 var call_center_list = {};
+var customize_activity_permission={};
 $(document).ready(function() {
     var unsaved = false;
 
@@ -446,6 +447,8 @@ jQuery(function($) {  // In case of jQuery conflict
                             customize_text +="<button class=\"close closewf\">&times;</button>";
                             customize_text +="<h5 class=\"card-title\"><b>"+v.activity_name+"</b></h5>";
                             customize_text +="<p class=\"card-text\">"+v.description+"</p>";
+                            customize_text +="<button type=\"button\" onclick=\"sectionPermission("+v.id+",1)\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\"><i class=\"fas fa-grip-horizontal\"></i></button>";
+
                         customize_text +="</div>";
                     customize_text +="</div>";
                 customize_text +="</li>"

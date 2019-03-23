@@ -12,6 +12,12 @@
             <input type="text" class="form-control text-center" value="<?php print $this->request->getSession()->read('Auth.User.email'); ?>" disabled>
         </div>
     </div>
+    <div class="form-row">
+        <div class="form-group col-md-6 mx-auto">
+            <label>User Role</label>
+            <input type="text" class="form-control text-center" value="<?php echo $this->request->getSession()->read('Auth.User.role_name'); ?>" disabled>
+        </div>
+    </div>
     <div class="form-row justify-content-center">
         <div class="form-group col-md-3">
             <label>First Name</label>
@@ -26,6 +32,7 @@
 
     <a href="/sd-users/edit/<?php print $this->request->getSession()->read('Auth.User.id'); ?>" class="btn btn-info w-25 mx-1">Change Password</a>
     <a href="#" class="btn btn-primary w-25 mx-1">Save</a>
+    <a role="button" class="btn btn-warning d-block mx-auto my-3 w-25" href="/sd-users/logout"> Log Out</a>
 
     <!-- <?php
     echo $userID;
