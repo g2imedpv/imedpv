@@ -113,7 +113,7 @@ $(function(){
 function onQueryClicked(preferrenceId = null){
     //TODO enhance search
     var request = {
-        'searchName': $("#searchName").val(), 
+        'searchName': $("#searchName").val(),
         'searchProductName':$("#searchProductName").val(),
         'userId':userId,
         'caseStatus':$("#caseStatus").val(),
@@ -188,7 +188,7 @@ function onQueryClicked(preferrenceId = null){
                     text+= day+"-"+month+"-"+year;
                 }
                 text +="</td>";
-                text += "<td class=\"align-middle\">"; 
+                text += "<td class=\"align-middle\">";
                 if(caseDetail.status==1) text+="activate";
                 else text+="inactivate";
                 text+="</td>";
@@ -198,7 +198,7 @@ function onQueryClicked(preferrenceId = null){
                     else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">Enter</div></a>";
                 else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-info m-1\">Check Detail</div></a>";
                 if((caseDetail.sd_workflow_activity_id=='9999')&&(previous_case!=caseDetail.caseNo))
-                    text += "<div class=\"btn btn-warning m-1\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"versionUp(\'"+caseDetail.caseNo+"\')\">Version Up</div>";
+                    text += "<button class=\"btn btn-warning m-1\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"versionUp(\'"+caseDetail.caseNo+"\')\">Version Up</button>";
                 text +="</td>";
                 text += "</tr>";
                 previous_case = caseDetail.caseNo;

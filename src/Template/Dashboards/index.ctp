@@ -47,16 +47,24 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
   <div class="modal fade versionUpFrame" tabindex="-1" role="dialog" aria-labelledby="versionUpFrame" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Version Up</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <div class="modal-body m-3">
-                            <div class="form-group">
+                            <div class="form-group text-center">
                                 <label for="">Reason For Version Up:</label>
-                                <select  class="form-control">
+                                <select  class="form-control w-50 mx-auto">
                                     <option>Select reason for version up</option>
                                     <option>Data Correction</option>
                                     <option>Follow Up</option>
                                 </select>
                             </div>
-                            <div class="form-control btn btn-primary w-50 float-right" id="confirmVersionUp" onclick="">Confirm </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary w-25" id="confirmVersionUp" onclick="">Confirm </button>
                         </div>
                     </div>
                 </div>

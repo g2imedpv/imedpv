@@ -866,3 +866,16 @@ function backward(){
             }
         });
 }
+
+// Product Tab: If "Ongoing field checked", then Therapy End date (B.4.k.14b) DISABLED
+$(document).ready(function(){
+    $("#section-22-checkbox-434-option-1").change(function(){
+        if($(this).prop('checked')){
+            $('#section-22-date-205').prop('disabled',true);
+        }
+
+        if(!$(this).prop('checked')){
+            $('#section-22-date-205').prop('disabled',false);
+        }
+    });
+});
