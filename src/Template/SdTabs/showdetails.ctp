@@ -376,9 +376,8 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                             continue;
                         case 'Meddra show':
                             echo "<input id=\"section-".$section->id."-".$sd_section_structure_detail->sd_field->descriptor."-".$sd_section_structure_detail->sd_field->id."\" class=\"form-control\" name=".$field_value_nameHolder." type=\"text\"";
-                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=".$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value:null;
-                            if($permission==2) echo " disabled ";
-                            echo " readonly=\"readonly\">";
+                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value):null;
+                            echo "\" readonly=\"readonly\">";
                             continue;
                     }
                 echo"</div>";
