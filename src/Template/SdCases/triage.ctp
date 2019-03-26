@@ -208,7 +208,7 @@
                 echo "<input type=\"hidden\" id=\"id_validcase\" name=\"field_value[223][id]\" value=\"".$field_value_set['223']['id']."\">";?>
         <?php echo "<input type=\"hidden\" id=\"validcase\" name=\"field_value[223][value]\" value=\"".$field_value_set['223']['field_value']."\">";?>
         <button type="button" id="confirmElements" class="btn btn-primary m-auto w-25">Countinue</button>
-        <button type="button" onclick="savenexit()" id="savenexitbtn" class="btn btn-primary m-auto w-25">Save And Exit</button>
+        <button type="button" onclick="savenexit()" id="savenexitbtn" class="btn btn-outline-info m-auto w-25">Save And Exit</button>
     </div>
 
     <hr class="my-2">

@@ -184,7 +184,7 @@
                     <div id="checkbutton" class="d-flex justify-content-center">
                         <div id="caseRegAdvBtn" class="btn btn-outline-info w-25 mx-1"><i class="fas fa-keyboard"></i> Advanced Search</div>
                         <input class="btn btn-success mx-1 w-25" onclick="checkDuplicate()" id="checkbtn" type="button" value="Seach Duplicate">
-                        <div onclick="clearResult()" id="clear" class="btn btn-outline-warning mx-2 w-25" style="display:none;">Search Again</div>
+                        <input onclick="clearResult()" id="clear" class="btn btn-outline-warning mx-2 w-25" style="display:none;" type="button" value="Search Again">
                         <!-- <a role="button" onclick="checkDuplicate()" id="checkbtn" class="completeBtn btn btn-success d-block m-auto w-25">Seach Duplicate</a> -->
                     </div>
 
