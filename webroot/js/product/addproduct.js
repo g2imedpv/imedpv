@@ -832,13 +832,17 @@ function sectionPermission(activity_id, readonly){
         $("[id^=read]").each(function(){
             $(this).prop('disabled',true);});
     }else{
+        var text ="<button type=\"button\" class=\"btn btn-primary\" onclick=\"savePermission()\">Save</button>";
+        $('#permissionFooter').prepend(text);
         $("div[id^=section]").each(function(){
             $(this).find("input[id^=write]").prop('disabled',false);
             $(this).find("input[id^=read]").prop('disabled',false);
         });
     }
 }
+function savePermission(workflowType){
 
+}
 function iterateWorkflow(wkfl_name)
 {
     var steps = [];

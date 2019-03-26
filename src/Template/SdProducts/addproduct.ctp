@@ -403,8 +403,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary">Save</button>
+                                    <div class="modal-footer" id="permissionFooter">
+                                        <button type="button" class="btn btn-primary" id="savePermission" onclick="savePermission()">Save</button>
                                     </div>
                                     </div>
                                 </div>
