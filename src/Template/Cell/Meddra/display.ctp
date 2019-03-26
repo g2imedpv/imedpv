@@ -213,7 +213,7 @@ function searchMedDra(fieldId, type, llt_name=null) {
                 $('[id*=meddrahltcode]').val(result['primary'][0][5]);
                 $('[id*=meddrahlgtname]').val(result['primary'][0][6]);
                 $('[id*=meddrahlgtcode]').val(result['primary'][0][7]);
-                $('[id*=meddrasoccode]').val(result['primary'][0][8]);
+                $('[id*=meddrasocname]').val(result['primary'][0][8]);
                 $('[id*=meddrasoccode]').val(result['primary'][0][9]);
                 $('[id*=meddraversion]').val('18.1');
                 return false;
