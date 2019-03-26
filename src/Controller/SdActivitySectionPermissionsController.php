@@ -21,7 +21,7 @@ class SdActivitySectionPermissionsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['SdActivities', 'SdSections']
+            'contain' => ['SdWorkflowActivities', 'SdSections']
         ];
         $sdActivitySectionPermissions = $this->paginate($this->SdActivitySectionPermissions);
 
@@ -38,7 +38,7 @@ class SdActivitySectionPermissionsController extends AppController
     public function view($id = null)
     {
         $sdActivitySectionPermission = $this->SdActivitySectionPermissions->get($id, [
-            'contain' => ['SdActivities', 'SdSections']
+            'contain' => ['SdWorkflowActivities', 'SdSections']
         ]);
 
         $this->set('sdActivitySectionPermission', $sdActivitySectionPermission);
@@ -61,9 +61,9 @@ class SdActivitySectionPermissionsController extends AppController
             }
             $this->Flash->error(__('The sd activity section permission could not be saved. Please, try again.'));
         }
-        $sdActivities = $this->SdActivitySectionPermissions->SdActivities->find('list', ['limit' => 200]);
+        $sdWorkflowActivities = $this->SdActivitySectionPermissions->SdWorkflowActivities->find('list', ['limit' => 200]);
         $sdSections = $this->SdActivitySectionPermissions->SdSections->find('list', ['limit' => 200]);
-        $this->set(compact('sdActivitySectionPermission', 'sdActivities', 'sdSections'));
+        $this->set(compact('sdActivitySectionPermission', 'sdWorkflowActivities', 'sdSections'));
     }
 
     /**
@@ -87,9 +87,9 @@ class SdActivitySectionPermissionsController extends AppController
             }
             $this->Flash->error(__('The sd activity section permission could not be saved. Please, try again.'));
         }
-        $sdActivities = $this->SdActivitySectionPermissions->SdActivities->find('list', ['limit' => 200]);
+        $sdWorkflowActivities = $this->SdActivitySectionPermissions->SdWorkflowActivities->find('list', ['limit' => 200]);
         $sdSections = $this->SdActivitySectionPermissions->SdSections->find('list', ['limit' => 200]);
-        $this->set(compact('sdActivitySectionPermission', 'sdActivities', 'sdSections'));
+        $this->set(compact('sdActivitySectionPermission', 'sdWorkflowActivities', 'sdSections'));
     }
 
     /**
@@ -110,5 +110,17 @@ class SdActivitySectionPermissionsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+    public function searchActivityPermission($activity_id){
+        if($this->request->is('POST')){
+            $this->autoRender = false;
+            $sdActivitySectionPermission = $this->SdActivitySectionPermissions
+                                        ->find('list',[
+                                            'keyField' => 'sd_section_id',
+                                            'valueField' => 'action'
+                                        ])->where(['sd_workflow_activity_id'=>$activity_id]);
+            echo json_encode($sdActivitySectionPermission->all());
+            die();
+        }
     }
 }

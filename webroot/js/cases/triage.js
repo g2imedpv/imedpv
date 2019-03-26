@@ -17,7 +17,7 @@ $(document).ready(function(){
             if(($(this).val()!=null)&&($(this).val()!= ""))
             event_element = true;
         });
-        if(validCase==4) $('#validcase').val('1'); else $('#validcase').val('2');
+        if(validCase==3) $('#validcase').val('1'); else $('#validcase').val('2');
         console.log(patient_element);console.log(reporter_element);console.log(event_element);
         validCase = patient_element + reporter_element + event_element;
         if (validCase <= 1) {

@@ -295,7 +295,7 @@
                         <label class="form-check-label" for="prioritize-unlabelled-1">Yes</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" id="prioritize-unlabelled-2" value="1" name="field_value[423][value]" <?php if($field_value_set['423']['field_value']==2) echo "checked"; ?> disabled>
+                        <input class="form-check-input" type="radio" id="prioritize-unlabelled-2" value="2" name="field_value[423][value]" <?php if($field_value_set['423']['field_value']==2) echo "checked"; ?> disabled>
                         <label class="form-check-label" for="prioritize-unlabelled-2">No</label>
                     </div>
                 </div>
