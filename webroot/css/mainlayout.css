@@ -432,7 +432,7 @@ hr.wfhr {
     color: red;
 }
 
-.DE_search_bar {
+.DE_search_bar, .queryBoxTable, #caseRegAdvBtn{
     cursor: pointer;
 }
 
@@ -448,10 +448,6 @@ ul.queryBoxLeft > a {
 ul.queryBoxLeft > a {
     text-decoration: none;
     color: #000000b8;
-}
-
-.queryBoxTable {
-    cursor: pointer;
 }
 
 .querybox{

@@ -1,5 +1,6 @@
 <button type="button" class="btn btn-info btn-sm mx-3" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-search"></i> MedDRA Browser</button>
-<input type="text" id="llt-searchbar">
+<input class="my-2" type="text" id="llt-searchbar">
+
 <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document" style="max-width: 1175px !important;">
     <div class="modal-content">
@@ -12,7 +13,7 @@
       <div class="modal-body">
             <!-- Search field -->
             <div class="container">
-                <div class="form-row">
+                <div class="form-row mx-2">
                     <!-- <div class="form-group col-md-4">
                         <label>Search LLT Term</label>
                         <input type="text" class="form-control" id="llt_term"  placeholder="Search LLT Term">
@@ -23,10 +24,10 @@
                     </div> -->
                     <div class="form-group col-md-4">
                         <label>SMQ:</label>
-                        <input type="text" class="form-control" id="wildcard_search"  placeholder="Search by Key Word">
+                        <input type="text" class="form-control" id="wildcard_search"  placeholder="Search by SMQ">
                     </div>
-                    <div class="form-group col-md-4">
-                        <label for="meddra-full_text">full text</label>
+                    <div class="form-group">
+                        <label for="meddra-full_text">Full Text</label>
                         <input type="checkbox" class="form-control" id="meddra-full_text">
                     </div>
                 </div>
@@ -39,8 +40,8 @@
                     </div>
                 </div> -->
             </div>
-            <div class="container">
-                    <div class="form-row justify-content-center">
+            <div class="container mb-5">
+                    <div class="form-row justify-content-around">
                         <div class="form-group col-md-2">
                             <label for="">SOC Name</label>
                             <input type="text" class="form-control" id="typed-soc-name">
@@ -62,12 +63,12 @@
                             <input type="text" class="form-control" id="typed-llt-name">
                         </div>
                     </div>
-                    <div style="height: 300px;" class="form-row justify-content-center">
-                        <div class="form-group border h-100 col-md-2" id="field-soc_name"></div>
-                        <div class="form-group border h-100 col-md-2" id="field-hlgt_name"></div>
-                        <div class="form-group border h-100 col-md-2" id="field-hlt_name"></div>
-                        <div class="form-group border h-100 col-md-2" id="field-pt_name"></div>
-                        <div class="form-group border h-100 col-md-2" id="field-llt_name"></div>
+                    <div style="height: 300px;" class="form-row justify-content-around">
+                        <div class="form-group border h-100 col-md-2 overflow-auto" id="field-soc_name"></div>
+                        <div class="form-group border h-100 col-md-2 overflow-auto" id="field-hlgt_name"></div>
+                        <div class="form-group border h-100 col-md-2 overflow-auto" id="field-hlt_name"></div>
+                        <div class="form-group border h-100 col-md-2 overflow-auto" id="field-pt_name"></div>
+                        <div class="form-group border h-100 col-md-2 overflow-auto" id="field-llt_name"></div>
                     </div>
             </div>
             <!-- Table field (Should be hidden before search) -->
@@ -136,7 +137,7 @@
 
 
 <script>
-<?php 
+<?php
     if($fieldId!=null)
     echo "var fieldId =".$fieldId." ;";
     else     echo "var fieldId =0 ;";
@@ -197,8 +198,8 @@ function searchMedDra(fieldId, type, llt_name=null) {
         type:'POST',
         url:'/med-dra/search',
         data:request,
-        success:function(response){   
-            console.log('su');   
+        success:function(response){
+            console.log('su');
             console.log(response);
             var result = $.parseJSON(response);
             if(result['type']==3){
@@ -229,8 +230,8 @@ function searchMedDra(fieldId, type, llt_name=null) {
                             text +=">";
                             text +="<label id=\"meddralabel-"+formatV+"-"+k+"\" for=\"meddraoption-"+formatV+"-"+k+"\">";
                             text +=v[0];
-                            text +="</label>"; 
-                            // if((typeof result[formatV]['primary']!='undefined')&&(v[1]==result[formatV]['primary'][0][0])) 
+                            text +="</label>";
+                            // if((typeof result[formatV]['primary']!='undefined')&&(v[1]==result[formatV]['primary'][0][0]))
                             // text +="<input id=\"primary-"+formatV+"\" type=\"hidden\" > ***";
                             text +="<input type=\"hidden\" id=\"meddracode-"+formatV+"-"+k+"\" value=\""+v[1]+"\" >";
                             // text +="<input onclick=\"searchMedDra("+fieldId+",2)\" type=\"checkbox\" id=\"meddraoption-"+formatV+"-"+k+"\" >";
@@ -276,7 +277,7 @@ function searchMedDra(fieldId, type, llt_name=null) {
         //     console.log(term);
         //     if($(this).hasClass('bg-primary')){
         //         console.log('has primary');
-        //         $(this).removeClass('bg-primary'); 
+        //         $(this).removeClass('bg-primary');
         //         searchMedDra("+fieldId+",2);
         //         return false;
         //     }else{
@@ -287,7 +288,7 @@ function searchMedDra(fieldId, type, llt_name=null) {
         //             if($(this).hasClass('bg-warning')) {$(this).removeClass('bg-warning'); return true;}
         //         });
         //         $(this).attr('class','bg-primary');
-            
+
         //     searchMedDra("+fieldId+",2);return false;
         // }
         // });
@@ -303,7 +304,7 @@ function searchMedDra(fieldId, type, llt_name=null) {
 function clickOption(term, key){
     if($('#meddradiv-'+term+'-'+key).hasClass('bg-primary')){
         console.log('has primary');
-        $('#meddradiv-'+term+'-'+key).removeClass('bg-primary'); 
+        $('#meddradiv-'+term+'-'+key).removeClass('bg-primary');
     }else{
         $('[id^=meddradiv-'+term+']').each(function(){
             if($(this).hasClass('bg-primary')) {$(this).removeClass('bg-primary'); return true;}

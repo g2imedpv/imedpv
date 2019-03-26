@@ -1,5 +1,9 @@
 jQuery(function($) {
     $(document).ready(paginationReady());
+
+    $("select").select2({
+        selectOnClose: true
+    });
 });
 
 
@@ -878,4 +882,5 @@ $(document).ready(function(){
             $('#section-22-date-205').prop('disabled',false);
         }
     });
+
 });
