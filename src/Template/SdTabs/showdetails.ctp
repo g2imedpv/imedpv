@@ -293,8 +293,8 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                             echo "<input id=\"section-".$section->id."-field_rule-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][field_rule]\" value=".$sd_section_structure_detail->sd_field->field_length."-".$sd_section_structure_detail->sd_field->field_type." type=\"hidden\">";
                             echo "<input id=\"section-".$section->id."-text-".$sd_section_structure_detail->sd_field->id."\" class=\"form-control\" name=".$field_value_nameHolder." type=\"text\"";
                             if($permission==2) echo " disabled ";
-                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value):null;
-                            echo "\" >";
+                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":null;
+                            echo ">";
                             continue;
                         case 'radio':
                             echo "<div id=\"section-".$section->id."-radio-".$sd_section_structure_detail->sd_field->id."\">";
@@ -351,7 +351,6 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                             if($permission==2) echo " disabled ";
                             echo "value=\"";
                             echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value:null;
-
                             echo "\">";
                             continue;
                         case 'whodra browser':
@@ -359,13 +358,13 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                                 $whoddCell = $html->cell('Whodd',[$sd_section_structure_detail->sd_field->id]);
                                 echo $whoddCell;
                                 echo "<input readonly=\"readonly\" style=\"float:left\" id=\"section-".$section->id."-whodracode-".$sd_section_structure_detail->sd_field->id."\" class=\"col-md-5 form-control\" name=".$field_value_nameHolder." type=\"text\"";
-                                echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=".$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value:null;
+                                echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":null;
                                 echo " >";
                             }
                             continue;
                         case 'whodra show':
                             echo "<input id=\"section-".$section->id."-whodraname-".$sd_section_structure_detail->sd_field->id."\" class=\"form-control\" name=".$field_value_nameHolder." type=\"text\"";
-                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=".$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value:null;
+                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":null;
                             if($permission==2) echo " disabled ";
                             echo " readonly=\"readonly\">";
                             continue;
@@ -375,8 +374,8 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                             continue;
                         case 'Meddra show':
                             echo "<input id=\"section-".$section->id."-".$sd_section_structure_detail->sd_field->descriptor."-".$sd_section_structure_detail->sd_field->id."\" class=\"form-control\" name=".$field_value_nameHolder." type=\"text\"";
-                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value):null;
-                            echo "\" readonly=\"readonly\">";
+                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":null;
+                            echo "readonly=\"readonly\">";
                             continue;
                     }
                 echo"</div>";

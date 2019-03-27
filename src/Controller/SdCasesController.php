@@ -227,7 +227,7 @@ class SdCasesController extends AppController
                                         'eod' =>[
                                             'table' =>'sd_field_values',
                                             'type'=>'LEFT',
-                                            'conditions' => ['eod.sd_field_id = 159','eod.status = 1','eod.sd_case_id = SdCases.id'
+                                            'conditions' => ['eod.sd_field_id = 156','eod.status = 1','eod.sd_case_id = SdCases.id'
                                             ]
                                         ],
                                         'mpt' =>[

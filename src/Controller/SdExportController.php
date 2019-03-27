@@ -9,6 +9,7 @@ class SdExportController extends AppController
             *  Generate CIOMS files
             *
             */
+            // function of get direct value
             public function getCiomsDirectValue($caseId,$field_id,$set_num){
                 $sdFieldValues = TableRegistry::get('sdFieldValues');
                 $direct =$sdFieldValues->find()
@@ -17,12 +18,14 @@ class SdExportController extends AppController
                 $directValue=$direct['field_value'];
                 return $directValue;
             }
+
+            //function of get caption value by join table sd_field_value_look_ups
             public function getCiomsLookupValue($caseId,$field_id,$set_num){
                 $sdFieldValues = TableRegistry::get('sdFieldValues');
                 $lookup= $sdFieldValues ->find()
                     ->select(['look.caption'])
                      ->join([
-                         'look' =>[
+                            'look' =>[
                                 'table' =>'sd_field_value_look_ups',
                                 'type'=>'INNER',
                                 'conditions'=>['sd_case_id='.$caseId,'look.sd_field_id = sdFieldValues.sd_field_id','set_number='.$set_num,'status=1',
@@ -30,57 +33,60 @@ class SdExportController extends AppController
                                 ]
                             ])->first(); 
                 $lookupValue=$lookup['look']['caption'];
-                
                 return $lookupValue;
             }
+
+            //function of convert date into dd-mmm-yyy format
             public function getCiomsDateValue($caseId,$field_id,$set_num){
                 $sdFieldValues = TableRegistry::get('sdFieldValues');
                 $dateFormat =$sdFieldValues->find()
-                ->select(['field_value'])
-                ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'set_number='.$set_num,'status=1'])->first();
-                    switch(substr($dateFormat['field_value'],2,2)){
-                        case '00':
-                               $monthFormat="-MMM-";
-                               break;
-                        case '01':
+                    ->select(['field_value'])
+                    ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'set_number='.$set_num,'status=1'])->first();
+                        switch(substr($dateFormat['field_value'],2,2)){
+                            case '00':
+                                $monthFormat="-MMM-";
+                                break;
+                            case '01':
                                 $monthFormat="-JAN-";
                                 break;
-                        case '02':
-                               $monthFormat="-FEB-";
-                               break;
-                        case '03':
+                            case '02':
+                                $monthFormat="-FEB-";
+                                break;
+                            case '03':
                                 $monthFormat="-Mar-";
                                 break;
-                        case '04':
+                            case '04':
                                 $monthFormat="-APR-";
                                 break;
-                        case '05':
+                            case '05':
                                 $monthFormat="-MAY-";
                                 break;
-                        case '06':
+                            case '06':
                                 $monthFormat="-JUN-";
                                 break;
-                        case '07':
+                            case '07':
                                 $monthFormat="-JUL-";
                                 break;
-                        case '08':
+                            case '08':
                                 $monthFormat="-AUG-";
                                 break;
-                        case '09':
+                            case '09':
                                 $monthFormat="-SEP-";
                                 break;
-                        case '10':
+                            case '10':
                                 $monthFormat="-OCT-";
                                 break;
-                        case '11':
+                            case '11':
                                 $monthFormat="-NOV-";
                                 break;
-                        case '12':
+                            case '12':
                                 $monthFormat="-DEC-";
                                 default;
-                  }
+                            }
                 return substr($dateFormat['field_value'],0,2).$monthFormat.substr($dateFormat['field_value'],4,4);
             } 
+
+            //function of convert month into mmm format
             public function getCiomsMonthValue($caseId,$field_id,$set_num){
                 $sdFieldValues = TableRegistry::get('sdFieldValues');
                 $monthFormat =$sdFieldValues->find()
@@ -88,50 +94,51 @@ class SdExportController extends AppController
                 ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'set_number='.$set_num,'status=1'])->first();
                     switch(substr($monthFormat['field_value'],2,2)){
                         case '00':
-                               $monthFormat="MMM";
-                               break;
+                            $monthFormat="MMM";
+                            break;
                         case '01':
-                                $monthFormat="JAN";
-                                break;
+                            $monthFormat="JAN";
+                            break;
                         case '02':
-                               $monthFormat="FEB";
-                               break;
+                            $monthFormat="FEB";
+                            break;
                         case '03':
-                                $monthFormat="Mar";
-                                break;
+                            $monthFormat="Mar";
+                            break;
                         case '04':
-                                $monthFormat="APR";
-                                break;
+                            $monthFormat="APR";
+                            break;
                         case '05':
-                                $monthFormat="MAY";
-                                break;
+                            $monthFormat="MAY";
+                            break;
                         case '06':
-                                $monthFormat="JUN";
-                                break;
+                            $monthFormat="JUN";
+                            break;
                         case '07':
-                                $monthFormat="JUL";
-                                break;
+                            $monthFormat="JUL";
+                            break;
                         case '08':
-                                $monthFormat="AUG";
-                                break;
+                            $monthFormat="AUG";
+                            break;
                         case '09':
-                                $monthFormat="SEP";
-                                break;
+                            $monthFormat="SEP";
+                            break;
                         case '10':
-                                $monthFormat="OCT";
-                                break;
+                            $monthFormat="OCT";
+                            break;
                         case '11':
-                                $monthFormat="NOV";
-                                break;
+                            $monthFormat="NOV";
+                            break;
                         case '12':
-                                $monthFormat="DEC";
-                                default;
-                  }
+                            $monthFormat="DEC";
+                            default;
+                        }
                 return $monthFormat;
             }
+
+            //function of no.8-12 checkbox
             public function getCiomsSeriousValue($caseId,$field_id,$set_num){
                 $choice=$this->getCiomsDirectValue($caseId,$field_id,$set_num);
-                //debug($choice);die();
                 if(substr($choice,0,1)==1){
                     $this->set('patientDied','checked');
                 };
@@ -151,9 +158,15 @@ class SdExportController extends AppController
                     $this->set('otherSerious','checked');
                 };
             }
+            
+            //function of no.7+13 narrative
+            public function getCiomsNarrativeValue($caseId,$set_num){
+              
+                 }
+
+            //function of no.20 checkbox
             public function getCiomsDechallengeValue($caseId,$field_id,$set_num){
                 $choice=$this->getCiomsDirectValue($caseId,$field_id,$set_num);
-                //debug($choice);die();
                 switch($choice){
                     case '1':
                         $this->set('DeYes','checked');
@@ -166,10 +179,11 @@ class SdExportController extends AppController
                         break;
                         default;
                     }
-                }
+            }
+
+            //function of no.21 checkbox
             public function getCiomsRechallengeValue($caseId,$field_id,$set_num){
                 $choice=$this->getCiomsDirectValue($caseId,$field_id,$set_num);
-                //debug($choice);die();
                 switch($choice){
                     case '1':
                         $this->set('ReYes','checked');
@@ -181,8 +195,10 @@ class SdExportController extends AppController
                         $this->set('ReUnkown','checked');
                         break;
                         default;
-                    }
                 }
+            }
+
+            //function of no.24d checkbox
             public function getCiomsReportSourceValue($caseId,$set_num){
                 $choiceOne=$this->getCiomsDirectValue($caseId,6,$set_num);
                 $choiceTwo=$this->getCiomsDirectValue($caseId,342,$set_num);
@@ -196,9 +212,9 @@ class SdExportController extends AppController
                 if($choiceThree!=null){
                     $this->set('literature','checked');
                 };
-                   
-                }
+            }
         
+            // Call the previous function by $caseId,$field_id and $set_num
             public function genCIOMS ($caseId) {
                 $this->viewBuilder()->layout('CIOMS');
                 //1.
@@ -221,10 +237,11 @@ class SdExportController extends AppController
                 $this->set('reactionOutcome ', $this->getCiomsDirectValue($caseId,165,1));//B.2.i.8  reactionoutcome
                 $this->set('actionDrug', $this->getCiomsDirectValue($caseId,208,1));// B.4.K.16  actiondrug
                 $this->set('narrativeIncludeClinical', $this->getCiomsDirectValue($caseId,218,1));//B.5.1  narrativeincludeclinical
+               
                 //8-12
                 $this->getCiomsSeriousValue($caseId,354,1);
                 //13
-                $this->set('resultsTestsProcedures', $this->getCiomsSeriousValue($caseId,222,1));//B.3.2 resultstestsprocedures
+                $this->set('resultsTestsProcedures', $this->getCiomsDirectValue($caseId,174,1));//B.3.2 resultstestsprocedures
                 //14
                 $this->set('drugone', $this->getCiomsDirectValue($caseId,177,1));//B.4.K.2+B.4.K.3  activesubstancename+obtaindrugcountry
                 $this->set('genericOne', $this->getCiomsDirectValue($caseId,178,1));//B.4.K.3   obtaindrugcountry
@@ -281,6 +298,7 @@ class SdExportController extends AppController
             *  Generate PDF files
             *
             */
+            //function include all type of fields
             public function getPositionByType($caseId,$field_id,$value_type, $set_num=null){
                 $more_conditions = "";
                 if (!is_null($set_num))
@@ -296,16 +314,16 @@ class SdExportController extends AppController
                             'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value'])
                             ->join([
                                 'fv' =>[
-                                'table' =>'sd_field_values',
-                                'type'=>'INNER',
-                                'conditions'=>['sdMedwatchPositions.sd_field_id ='.$field_id,'sdMedwatchPositions.sd_field_id = fv.sd_field_id','fv.status = 1','fv.sd_case_id='.$caseId,'sdMedwatchPositions.value_type=1', $more_conditions]
-                                ]
+                                    'table' =>'sd_field_values',
+                                    'type'=>'INNER',
+                                    'conditions'=>['sdMedwatchPositions.sd_field_id ='.$field_id,'sdMedwatchPositions.sd_field_id = fv.sd_field_id','fv.status = 1','fv.sd_case_id='.$caseId,'sdMedwatchPositions.value_type=1', $more_conditions]
+                                    ]
                             ])->first();
                             $text = $text." <style> p {position: absolute;}  </style>";
-                                    $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$positions['fv']['field_value'].'</p>';
+                            $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                                       .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$positions['fv']['field_value'].'</p>';
                             break;
-                        case '2'://checkbox output
+                        case '2'://simple checkbox output
                             $positions= $sdMedwatchPositions ->find()
                             ->select(['sdMedwatchPositions.id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
                                 'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value','sdMedwatchPositions.field_name'])
@@ -317,11 +335,11 @@ class SdExportController extends AppController
                                 ]
                             ])->first();
                             $text = $text." <style> p {position: absolute;font-size:15px;}  </style>";
-                            $text = $text.'<p style="top:201 px; left: 366 px; width:18 px;  height: 18 px; color:red;">'.'X'.'</p>';
+                            $text = $text.'<p style="top: 203px; left: 366px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
                             $text = $text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'X'.'</p>';
+                                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'X'.'</p>';
                             break;
-                        case '3': // distinct different suspect product according to set_numbers
+                        case '3': // distinct different suspect product according to set_numbers and direct output
                             $positions= $sdMedwatchPositions ->find()
                             ->select(['sdMedwatchPositions.id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
                                 'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value','sdMedwatchPositions.set_number','sdMedwatchPositions.sd_field_id'])
@@ -348,7 +366,6 @@ class SdExportController extends AppController
                                     'conditions'=>['sdMedwatchPositions.sd_field_id = fv.sd_field_id','sdMedwatchPositions.sd_field_id = '.$field_id,'fv.status = 1','fv.sd_case_id='.$caseId,'sdMedwatchPositions.value_type=4']
                                 ]
                             ])->toList();
-
                             $text = $text." <style> p {position: absolute;font-size:15px;}  </style>";
                             foreach($positions as $position_details){
                                 $date=explode('_',$position_details['field_name']);
@@ -363,7 +380,7 @@ class SdExportController extends AppController
                                                     $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
                                                     .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.substr($position_details['fv']['field_value'],0,2).'</p>';
                                             }
-                                        continue;
+                                            continue;
                                         case "month":
                                             switch(substr($position_details['fv']['field_value'],2,2)){
                                                 case '00':
@@ -419,15 +436,15 @@ class SdExportController extends AppController
                                                         .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'DEC'.'</p>';
                                                         default;
                                             }
-                                        continue;
+                                            continue;
                                         case "year":
                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
                                             .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.substr($position_details['fv']['field_value'],4,4).'</p>';
                                         default;
-                                        }
-                                }
+                                    }
+                            }
                             break;
-                        case '5'://narrtive in page one and continue in page three
+                        case '5'://narrative in page one
                             $positions= $sdMedwatchPositions ->find()
                             ->select(['sdMedwatchPositions.id','sdMedwatchPositions.sd_field_id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
                                 'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value'])
@@ -599,7 +616,7 @@ class SdExportController extends AppController
                             $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'X'.'</p>';
                             break; 
-                        case '9': //narrative continue
+                        case '9': //narrative continue in page3
                             $positions= $sdMedwatchPositions ->find()
                                 ->select(['sdMedwatchPositions.id','sdMedwatchPositions.sd_field_id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
                                     'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value'])
@@ -650,7 +667,7 @@ class SdExportController extends AppController
                                     .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'Consumer or other non health professional'.'</p>';
                                     break;
                             }
-                        case '11'://join sd_field_value_look_ups
+                        case '11'://set numbers and get caption by joining table sd_field_value_look_ups c3#route
                             $positions= $sdMedwatchPositions ->find()
                             ->select(['sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
                                 'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','look.caption','sdMedwatchPositions.set_number','sdMedwatchPositions.sd_field_id','sdMedwatchPositions.field_name'])
@@ -729,70 +746,159 @@ class SdExportController extends AppController
                                 $pagethree=substr($description,400);
                                 $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pagethree.'</p>';    
-                                            
+                                break;
+                        case '14': //b2 checkbox field to solve 8 digital value format
+                            $positions= $sdMedwatchPositions ->find()
+                            ->select(['sdMedwatchPositions.id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
+                                'sdMedwatchPositions.position_width','sdMedwatchPositions.position_height','fv.field_value','sdMedwatchPositions.field_name'])
+                            ->join([
+                                'fv' =>[
+                                    'table' =>'sd_field_values',
+                                    'type'=>'INNER',
+                                    'conditions'=>['sdMedwatchPositions.sd_field_id = fv.sd_field_id','sdMedwatchPositions.sd_field_id = '.$field_id,'fv.status = 1','fv.sd_case_id='.$caseId,'sdMedwatchPositions.value_type=14']
+                                ]
+                            ])->first();
+                            $text = $text." <style> p {position: absolute;font-size:15px;}  </style>";
+                            if(substr($positions['fv']['field_value'],0,1)==1){
+                                $text = $text.'<p style="top: 336px; left: 44px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
+                               
+                            };
+                            if(substr($positions['fv']['field_value'],1,1)==1){
+                                $text = $text.'<p style="top: 353px; left: 44px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
+                            };
+                            if(substr($positions['fv']['field_value'],2,1)==1){
+                                $text = $text.'<p style="top: 353px; left: 232px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
+                            };
+                            if(substr($positions['fv']['field_value'],3,1)==1){
+                                $text = $text.'<p style="top: 369px; left: 44px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
+                            };
+                            if(substr($positions['fv']['field_value'],4,1)==1){
+                                $text = $text.'<p style="top: 369px; left: 232px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
+                            };
+                            if(substr($positions['fv']['field_value'],5,1)==1){
+                                $text = $text.'<p style="top: 384px; left: 44px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
+                            };
+                            break;
+                       
+
                     }
+                    
                     return $text;
                 }
 
 
             public function genFDApdf($caseId)
             {  
-                $result=$result.$this->getPositionByType($caseId,79,1) ;  //a1 patientID field
-                $result=$result.$this->getPositionByType($caseId,86,1); //a2 age field
-                $result=$result.$this->getPositionByType($caseId,85,4); //a2 date of birth
-                $result=$result.$this->getPositionByType($caseId,87,2); // a2 age unit
-                $result=$result.$this->getPositionByType($caseId,93,2);// a3 sex
-                $result=$result.$this->getPositionByType($caseId,91,1);// a4 weight
-                $result=$result.$this->getPositionByType($caseId,235,2);// a5 ethnicity
-                $result=$result.$this->getPositionByType($caseId,224,2);// b1 adverse event
-                $result=$result.$this->getPositionByType($caseId,354,2);// b2 serious
-                $result=$result.$this->getPositionByType($caseId,115,4);// b2 death date
-                $result=$result.$this->getPositionByType($caseId,156,4);// b3 date of event
-                $result=$result.$this->getPositionByType($caseId,218,12,1);// b5 describe event or problem
-                $result=$result.$this->getPositionByType($caseId,174,5);// b6 relevant tests/laboratory data
-                $result=$result.$this->getPositionByType($caseId,104,5);// b7 other relevant history
-                $result=$result.$this->getPositionByType($caseId,176,3,1);// c1#1 name and strength
-                $result=$result.$this->getPositionByType($caseId,176,3,2);// c1#2 name and strength
-                $result=$result.$this->getPositionByType($caseId,345,3);// c1#1 NDC or unique ID
-                $result=$result.$this->getPositionByType($caseId,345,3);// c1#2 NDC or unique ID
-                $result=$result.$this->getPositionByType($caseId,284,3);// c1#1 Manufacturer/compounder
-                $result=$result.$this->getPositionByType($caseId,284,3,2);// c1#2 Manufacturer/compounder
-                $result=$result.$this->getPositionByType($caseId,179,3);// c1#1 Lot number
-                $result=$result.$this->getPositionByType($caseId,179,3);// c1#2 Lot number
-                $result=$result.$this->getPositionByType($caseId,183,3);//c3#1 dose
-                $result=$result.$this->getPositionByType($caseId,185,3);//c3#1 frequency
-                $result=$result.$this->getPositionByType($caseId,192,11);//c3#1 route used
-                $result=$result.$this->getPositionByType($caseId,183,3);//c3#2 dose
-                $result=$result.$this->getPositionByType($caseId,185,3);//c3#2 frequency
-                $result=$result.$this->getPositionByType($caseId,192,11);//c3#2 route used
-                $result=$result.$this->getPositionByType($caseId,199,7,1);//c4#1 start day
-                $result=$result.$this->getPositionByType($caseId,205,7,1);//c4#1 stop day
-                $result=$result.$this->getPositionByType($caseId,199,7,2);//c4#2 start day
-                $result=$result.$this->getPositionByType($caseId,205,7,2);//c4#2 stop day
-                $result=$result.$this->getPositionByType($caseId,197,3);//c5#1 diagnosis for use
-                $result=$result.$this->getPositionByType($caseId,197,3);//c5#2 diagnosis for use
-                //$result=$result.$this->getPositionByType($caseId,197,8,1);//c6#1 is the product compounded?
-                //$result=$result.$this->getPositionByType($caseId,197,8,1);//c6#2 is the product compounded?
-                //$result=$result.$this->getPositionByType($caseId,197,8,1);//c7#1 Is the product over-the-counter?
-                //$result=$result.$this->getPositionByType($caseId,197,8,2);//c7#2 Is the product over-the-counter?
-                $result=$result.$this->getPositionByType($caseId,298,6,1);// c8#1 expiration date
-                $result=$result.$this->getPositionByType($caseId,298,6,2);// C8#2 expiration date
-                //$result=$result.$this->getPositionByType($caseId,197,8,1);//c9#1 dechallenge?
-                //$result=$result.$this->getPositionByType($caseId,197,8,2);//c9#2 dechallenge?
-                $result=$result.$this->getPositionByType($caseId,209,8,1);//c10#1 rechallenge?
-                $result=$result.$this->getPositionByType($caseId,209,8,2);//c10#2 rechallenge?
-                $result=$result.$this->getPositionByType($caseId,28,1);// e1 last name
-                $result=$result.$this->getPositionByType($caseId,26,1); //e1 first name
-                $result=$result.$this->getPositionByType($caseId,31,1); //e1 address
-                $result=$result.$this->getPositionByType($caseId,32,1); //e1 city
-                $result=$result.$this->getPositionByType($caseId,33,1); //e1 state
-                $result=$result.$this->getPositionByType($caseId,35,1); //e1 country
-                $result=$result.$this->getPositionByType($caseId,34,1); // e1 zip
-                $result=$result.$this->getPositionByType($caseId,229,1);//e1 phone
-                $result=$result.$this->getPositionByType($caseId,232,1);//e1 email
-                $result=$result.$this->getPositionByType($caseId,342,2);//e2 health professional?
-                $result=$result.$this->getPositionByType($caseId,36,10);//e3 occuption
-                
+                ////a1 patientID field
+                $result=$result.$this->getPositionByType($caseId,79,1) ;
+                //a2 age field  
+                $result=$result.$this->getPositionByType($caseId,86,1);
+                //a2 date of birth 
+                $result=$result.$this->getPositionByType($caseId,85,4);
+                // a2 age unit 
+                $result=$result.$this->getPositionByType($caseId,87,2);
+                // a3 sex 
+                $result=$result.$this->getPositionByType($caseId,93,2);
+                // a4 weight
+                $result=$result.$this->getPositionByType($caseId,91,1);
+                // a5 ethnicity
+                $result=$result.$this->getPositionByType($caseId,235,2);
+                // b1 adverse event
+                $result=$result.$this->getPositionByType($caseId,224,2);
+                // b2 serious
+                $result=$result.$this->getPositionByType($caseId,354,14);
+                // b2 death date
+                $result=$result.$this->getPositionByType($caseId,115,4);
+                // b3 date of event
+                $result=$result.$this->getPositionByType($caseId,156,4);
+                // b5 describe event or problem
+                $result=$result.$this->getPositionByType($caseId,218,12,1);
+                // b6 relevant tests/laboratory data
+                $result=$result.$this->getPositionByType($caseId,174,5);
+                // b7 other relevant history
+                $result=$result.$this->getPositionByType($caseId,104,5);
+                // c1#1 name and strength
+                $result=$result.$this->getPositionByType($caseId,176,3,1);
+                // c1#2 name and strength
+                $result=$result.$this->getPositionByType($caseId,176,3,2);
+                // c1#1 NDC or unique ID
+                $result=$result.$this->getPositionByType($caseId,345,3);
+                // c1#2 NDC or unique ID
+                $result=$result.$this->getPositionByType($caseId,345,3);
+                // c1#1 Manufacturer/compounder
+                $result=$result.$this->getPositionByType($caseId,284,3);
+                // c1#2 Manufacturer/compounder
+                $result=$result.$this->getPositionByType($caseId,284,3,2);
+                // c1#1 Lot number
+                $result=$result.$this->getPositionByType($caseId,179,3);
+                // c1#2 Lot number
+                $result=$result.$this->getPositionByType($caseId,179,3);
+                //c3#1 dose
+                $result=$result.$this->getPositionByType($caseId,183,3);
+                //c3#1 frequency
+                $result=$result.$this->getPositionByType($caseId,185,3);
+                //c3#1 route used
+                $result=$result.$this->getPositionByType($caseId,192,11);
+                //c3#2 dose
+                $result=$result.$this->getPositionByType($caseId,183,3);
+                //c3#2 frequency
+                $result=$result.$this->getPositionByType($caseId,185,3);
+                //c3#2 route used
+                $result=$result.$this->getPositionByType($caseId,192,11);
+                //c4#1 start day
+                $result=$result.$this->getPositionByType($caseId,199,7,1);
+                //c4#1 stop day
+                $result=$result.$this->getPositionByType($caseId,205,7,1);
+                //c4#2 start day
+                $result=$result.$this->getPositionByType($caseId,199,7,2);
+                //c4#2 stop day
+                $result=$result.$this->getPositionByType($caseId,205,7,2);
+                //c5#1 diagnosis for use
+                $result=$result.$this->getPositionByType($caseId,197,3);
+                //c5#2 diagnosis for use
+                $result=$result.$this->getPositionByType($caseId,197,3);
+                //c6#1 is the product compounded?
+                $result=$result.$this->getPositionByType($caseId,435,8,1);
+                //c6#2 is the product compounded?
+                $result=$result.$this->getPositionByType($caseId,435,8,2);
+                 //c7#1 Is the product over-the-counter?
+                $result=$result.$this->getPositionByType($caseId,425,8,1);
+                //c7#2 Is the product over-the-counter?
+                $result=$result.$this->getPositionByType($caseId,425,8,2);
+                // c8#1 expiration date
+                $result=$result.$this->getPositionByType($caseId,298,6,1);
+                // C8#2 expiration date
+                $result=$result.$this->getPositionByType($caseId,298,6,2);
+                //c9#1 dechallenge?
+                $result=$result.$this->getPositionByType($caseId,381,8,1);
+                //c9#2 dechallenge?
+                $result=$result.$this->getPositionByType($caseId,381,8,2);
+                //c10#1 rechallenge?
+                $result=$result.$this->getPositionByType($caseId,209,8,1);
+                //c10#2 rechallenge?
+                $result=$result.$this->getPositionByType($caseId,209,8,2);
+                // e1 last name
+                $result=$result.$this->getPositionByType($caseId,28,1);
+                //e1 first name
+                $result=$result.$this->getPositionByType($caseId,26,1); 
+                //e1 address
+                $result=$result.$this->getPositionByType($caseId,31,1); 
+                //e1 city
+                $result=$result.$this->getPositionByType($caseId,32,1); 
+                //e1 state
+                $result=$result.$this->getPositionByType($caseId,33,1); 
+                //e1 country
+                $result=$result.$this->getPositionByType($caseId,35,1); 
+                // e1 zip
+                $result=$result.$this->getPositionByType($caseId,34,1);
+                //e1 phone 
+                $result=$result.$this->getPositionByType($caseId,229,1);
+                //e1 email
+                $result=$result.$this->getPositionByType($caseId,232,1);
+                //e2 health professional?
+                $result=$result.$this->getPositionByType($caseId,342,2);
+                //e3 occuption
+                $result=$result.$this->getPositionByType($caseId,36,10);
                 // Require composer autoload
                 //require_once __DIR__ . '../vendor/autoload.php';
                // debug($positions);
@@ -857,7 +963,6 @@ class SdExportController extends AppController
                         'fv.set_number='.$setNumber ]
                     ]
                 ])->first();
-
                 $value=$ICSR['fv']['field_value'];
                 return $value;
 
@@ -866,7 +971,13 @@ class SdExportController extends AppController
             public function genXML($caseId)
             {
                 $this->autoRender = false;
-                $xml = "xml/example";
+                $sdCases = TableRegistry::get('sdCases');
+                $name=$sdCases->find()
+                        ->select(['caseNo'])
+                        ->where(['id='.$caseId,'status=1'])->first();
+                $fileName=$name['caseNo'];
+                $time=date("Y-m-d-H-i-s");
+                $xml = "$fileName-$time";
                 header("Content-Type: text/html/force-download");
                 header("Content-Disposition: attachment; filename=".$xml.".xml");
                 $xml = xmlwriter_open_memory();
@@ -874,7 +985,7 @@ class SdExportController extends AppController
                 $res = xmlwriter_set_indent_string($xml, ' ');
                 //create document
                 xmlwriter_start_document($xml, '1.0','ISO-8859-1');//FDA supports only the ISO-8859-1 character set for encoding the submission.
-                xmlwriter_write_comment($xml, 'edited with XML Spy v3.0.7 NT');
+                xmlwriter_write_dtd($xml,'ichicsr','','https://www.accessdata.fda.gov/xml/icsr-xml-v2.1.dtd');
                     // A first element ichicsr
                     xmlwriter_start_element($xml, 'ichicsr');//ichicsr
                         // Attribute lang="en"
@@ -1922,6 +2033,7 @@ class SdExportController extends AppController
                     xmlwriter_end_element($xml); // ichicsr
 
                 //document end
+                xmlwriter_end_dtd($xml);
                 xmlwriter_end_document($xml);
                 echo xmlwriter_output_memory($xml);
 
