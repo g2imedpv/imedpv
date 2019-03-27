@@ -27,7 +27,6 @@ echo $this->element('generatepdf');
 <title>Data Entry</title>
 <head>
     <!-- For checking unsaved contents JS link -->
-    <?= $this->Html->script('specific.js') ?>
     <?= $this->Html->script('dataentry/dataEntryMain.js') ?>
     <!-- For select add input  -->
     <?= $this->Html->css('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css') ?>
