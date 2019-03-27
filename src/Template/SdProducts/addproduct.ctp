@@ -351,7 +351,7 @@
                                             <div class="permissionSec my-4">
                                             <!-- TODO LOAD STRUCTURE OF SECTIONS -->
                                             <?php 
-                                            foreach($loadPermissions as $tabkey => $tab){
+                                            foreach($loadTabs as $tabkey => $tab){
                                                 echo "<div class=\"row\"><div class=\"col-md-12\"><h5 class=\"text-center\">".$tab['tab_name']."</h5></div></div><div class=\"row\">";
                                                 $exsitSectionNo = [];
                                                 foreach($tab['sd_sections'] as $key => $sdSection){
@@ -361,16 +361,17 @@
                                                     if(!in_array($section['id'], $exsitSectionNo))
                                                     continue;
                                                     if($section['section_level']>1){
-                                                        echo "<div class=\"col-md-12\" id=\"section-".$section['id']."\">".$section['section_name']."</div>";
+                                                        echo "<div class=\"col-md-12\" id=\"l2section-".$section['id']."\"><label>".$section['section_name']."</label>";
                                                         // debug($section['child_section']);
                                                         $child_sections = explode(',', $section['child_section']);
                                                         foreach($child_sections as $child_section){
                                                             $childSectionKey = array_search($child_section,$exsitSectionNo);
-                                                            echo "<div class=\"col-md-6\" id=\"section-".$child_section."\">".$tab['sd_sections'][$childSectionKey]['section_name'];
+                                                            echo "<div class=\"col-md-6\" id=\"l1section-".$child_section."\">".$tab['sd_sections'][$childSectionKey]['section_name'];
                                                             echo "<label class=\"mx-1\"><input type=\"checkbox\" id=\"write-".$tabkey."-".$childSectionKey."\" class=\"checkItem\" value=\"\">Write</label>";
                                                             echo "<label class=\"mx-1\"><input type=\"checkbox\" id=\"read-".$tabkey."-".$childSectionKey."\" class=\"checkItem\" value=\"\">Read</label></div>";
                                                             $exsitSectionNo[$childSectionKey]= null;
                                                         }
+                                                        echo "</div>";
                                                     }
                                                 }
                                                 echo "</div><hr class=\"my-2\">";
@@ -402,8 +403,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary">Save</button>
+                                    <div class="modal-footer" id="permissionFooter">
+                                        <button type="button" class="btn btn-primary" id="savePermission" onclick="savePermission()">Save</button>
                                     </div>
                                     </div>
                                 </div>
@@ -584,5 +585,5 @@
 </div>
 <script type="text/javascript">
 var workflowInfo = <?php echo json_encode($workflow_structure);?>;
-var loadPermissions = <?php echo json_encode($loadPermissions);?>;
+var loadTabs = <?php echo json_encode($loadTabs);?>;
 </script>

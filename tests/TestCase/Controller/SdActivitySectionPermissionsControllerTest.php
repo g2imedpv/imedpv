@@ -17,7 +17,7 @@ class SdActivitySectionPermissionsControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.sd_activity_section_permissions',
-        'app.sd_activities',
+        'app.sd_workflow_activities',
         'app.sd_sections'
     ];
 
