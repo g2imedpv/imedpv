@@ -1,15 +1,11 @@
-#page-footer-wrapper {
-    visibility: hidden;
-  }  
-  #footer {display:none;}
+
 @media print {
     nav, aside {
        display: none;
     }
  }
- .footer-socket-wrapper {
-    display:none;
-}
+
+@page { size: letter;  margin-top: 4mm;margin-bottom: 4mm }
 html,
 body {
 margin: 30px;
@@ -81,11 +77,11 @@ table {
 
 .titlesize {
     font-weight: bold;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .textsize {
-    font-size: 12px;
+    font-size: 13px;
 }
 .SectionTwo{
     line-height: 0px;
@@ -102,4 +98,5 @@ table {
 
 .secondheader{
     font-weight: bold;
+    color:black;
 }

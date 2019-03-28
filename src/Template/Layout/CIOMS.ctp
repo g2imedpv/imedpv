@@ -8,7 +8,7 @@
 
 <body>
     <!-- TITLE -->
-    <table class="tg mx-auto" style="table-layout: fixed;  width: 95%; height:80px;">
+    <table class="tg mx-auto" style="table-layout: fixed;  width: 95%; height:120px;">
         <colgroup>
         <col style="width: 467px">
         <col style="width: 129px">
@@ -128,8 +128,8 @@
         <tr style="height:15px;" class="SectionTwo">
             <td class="tg-0pky">
                 <p class="text-left titlesize"> 15. DAILY DOSE(S) </p>
-                <p class="text-left textsize">#1)<?php echo $doseone?></p>
-                <p class="text-left textsize">#2)<?php echo $dosetwo?></p>
+                <p class="text-left textsize">#1)<?php echo $doseOne."  ".$doseUnitOne."  dosage(s)= ".$separateDosageOne."Ïnterval=".$intervalOne." ".$intervalUnitOne?></p>
+                <p class="text-left textsize">#2)<?php echo $doseTwo."  ".$doseUnitTwo."  dosage(s)= ".$separateDosageTwo."Ïnterval=".$intervalTwo." ".$intervalUnitTwo?></p>
             </td>
             <td class="tg-0pky">
                 <p class=" titlesize"> 16. ROUTE(S) OF ADMINISTRATION </p>
@@ -241,7 +241,7 @@
     <!-- Page Two -->
     <div class="tg m-5 pageBreak" >
         <span class="pagetwo secondheader">page 2 of 2</span><span class="pagetwo secondheader float-right">Mfr.Control Number:</span>
-        <hr style="margin-top: 0px;" color=#000000>
+        <hr class="secondheader" size=3 color=#000000 >
         <h3 class="tg-0pky text-center align-middle title pagetwo" ><b>ADDITIONAL INFORMATION</b></h3>
         <p class="text-left titlesize pagetwo"> 7 + 13. DESCRIBE REACTION(S) continued </p>
         <p class="textsize pagetwo"><?php echo substr($primarySourceReaction.$reactionOutcome.$actionDrug.$narrativeIncludeClinical.$resultsTestsProcedures,1000)?></p>
