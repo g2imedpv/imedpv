@@ -217,11 +217,11 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
         if(($section->is_addable == 1)&&($permission==1))
         {
             echo "<div id=\"pagination-l2-section-".$section->id."\">";
-            echo "<div role=\"button\" id=\"delete_section-".$section->id."\"  class=\"float-right px-3 mx-3 btn btn-outline-info\" onclick=\"l2deleteSection(".$section->id.")\" style=\"display:none\">Delete</div>";
-            echo "<div role=\"button\" id=\"child_section-";
+            echo "<input type=\"button\" id=\"delete_section-".$section->id."\"  class=\"float-right px-3 mx-3 btn btn-outline-danger\" onclick=\"l2deleteSection(".$section->id.")\" value=\"Delete\" style=\"display:none\">";
+            echo "<input type=\"button\" id=\"child_section-";
             $child_array = explode(",",$section->child_section);
             foreach($child_array as $Key => $sdSectionKey) echo "[".$sdSectionKey."]";
-            echo "-sectionKey-".$sectionKey."-setNo-1-section-".$section->id."\" onclick=\"level2setPageChange(".$section->id.",1,1)\" class=\"float-right px-3 mx-3 btn btn-outline-info\" title=\"Add new\">Add</div>";
+            echo "-sectionKey-".$sectionKey."-setNo-1-section-".$section->id."\" onclick=\"level2setPageChange(".$section->id.",1,1)\" class=\"float-right px-3 mx-3 btn btn-info\" value=\"Add\">";
             echo "</div>";
             echo "<div class=\"showpagination\" id=\"showpagination-".$section->id."\"></div>";
         }
@@ -386,19 +386,20 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
         echo "</div>";
         echo "<div class=\"header-section\">";
         echo "<h3 id=\"section_label-".$section->id."\"class=\"secspace\">".$section->section_name;
-        echo"<a role=\"button\" id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
+        echo "<input id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-primary\" type=\"button\" value=\"Save\" style=\"display:none\">";
+        //echo"<a role=\"button\" id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
         echo "</h3>";
             if(($section->is_addable == 1)&&($permission==1))
             {
-                echo "<div id=\"pagination-section-".$section->id."\">";
+                echo "<div id=\"pagination-section-".$section->id."\" class=\"DEpagination\">";
                 if($max_set_No != 0)
-                echo "<a role=\"button\" id=\"delete-btn".$section->id."-".$sectionKey."\" onclick=\"deleteSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\">delete</a>";
+                //echo "<a role=\"button\" id=\"delete-btn".$section->id."-".$sectionKey."\" onclick=\"deleteSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\">delete</a>";
+                echo "<input id=\"delete-btn".$section->id."-".$sectionKey."\" onclick=\"deleteSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-danger\" type=\"button\" value=\"Delete\">";
 
-                echo "<div role=\"button\" id=\"add_set-".$section->id."-sectionKey-".$sectionKey."-setNo-".$max_set_No."\" onclick=\"setPageChange(".$section->id.",1,1)\" class=\"float-right px-3 mx-3 btn btn-outline-info\" title=\"Add new\"";
-                if($max_set_No == 0) echo "style=\"display:none\"";
-                echo ">Add</div>";
+                echo "<input type=\"button\" id=\"add_set-".$section->id."-sectionKey-".$sectionKey."-setNo-".$max_set_No."\" onclick=\"setPageChange(".$section->id.",1,1)\" class=\"float-right px-3 mx-3 btn btn-info\" value=\"Add\"";
+                if($max_set_No == 0) echo "style=\"display:none\">";
                 echo "<nav class=\"float-right ml-3\" title=\"Pagination\" aria-label=\"Page navigation example\">";
-                echo "<ul class=\"pagination mb-0\">";
+                echo "<ul class=\"pagination mb-0 mx-2\">";
                 echo    "<li class=\"page-item\" id=\"left_set-".$section->id."-sectionKey-".$sectionKey."-setNo-1\" onclick=\"setPageChange(".$section->id.",0)\">";
                 echo    "<a class=\"page-link\" aria-label=\"Previous\">";
                 echo        "<span aria-hidden=\"true\">&laquo;</span>";

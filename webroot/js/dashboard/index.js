@@ -8,4 +8,12 @@ $(document).ready(function(){
         $('#fullSearch').show();
         $('#basicSearch').hide();
     });
+
+    // Press "Enter" Key for searching after input
+    $('.searchmodal input').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){ //“ENTER” key is represented by ascii code “13”
+            onQueryClicked();
+        }
+    });
 });

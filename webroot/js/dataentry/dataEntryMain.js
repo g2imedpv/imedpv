@@ -481,7 +481,27 @@ function deleteSection(sectionId, pcontrol=false){
         url:'/sd-sections/deleteSection/'+caseId,
         data:request,
         success:function(response){
-            alert("This set has been deleted");
+            //alert("This set has been deleted");
+
+            swal({
+                icon: "success",
+                title: "This set has been deleted",
+              });
+
+            // TODO
+            // swal("Are you sure?","This action can not be undone", "warning",{
+            //     buttons: {
+            //         Yes: true,
+            //         cancel: "Cancel"
+            //     },
+            // }).then((value) => {
+            //     if (value) {
+            //         swal({
+            //             icon: "success",
+            //             title: "This set has been deleted",
+            //           });
+            //     }
+            // });
             savedArray = $.parseJSON(response);
             console.log(savedArray);
             var sectionIdOriginal =  $("[id^=save-btn"+sectionId+"]").attr('id');
@@ -596,7 +616,11 @@ function saveSection(sectionId){
         data:request,
         success:function(response){
             console.log(response);
-            alert("This section has been saved");
+            //alert("This section has been saved");
+            swal({
+                icon: "success",
+                title: "This section has been saved",
+              });
             savedArray = $.parseJSON(response);
             var sectionIdOriginal =  $("[id^=save-btn"+sectionId+"]").attr('id');
             var section_Id = sectionIdOriginal.split('-');
@@ -894,9 +918,21 @@ jQuery(function($) {
             unsaved = true;
         });
 
+        // $(window).bind('beforeunload', function(){
+        //     if(unsaved){
+        //          return swal({
+        //             title: "Are you sure?",
+        //             text: "Your data is changed, are you sure you want to complete?",
+        //             icon: "warning",
+        //             buttons: true,
+        //             dangerMode: true,
+        //         })}
+        //   });
+
         window.onbeforeunload = function (){
             if(unsaved){
-                return 'Your data is changed, are you sure you want to complete?';
+                var _msg = 'Your data is changed, are you sure you want to complete?';
+                return  _msg;
             }
         };
     });
