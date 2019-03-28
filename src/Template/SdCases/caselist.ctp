@@ -5,7 +5,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
 </script>
 <div class="card my-3 w-75 mx-auto">
     <div class="card-header text-center">
-        <h5> Case List</h5>
+        <h3> Case List</h3>
     </div>
     <div class="card-body">
         <div class="form-row">

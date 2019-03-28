@@ -41,7 +41,7 @@
                                 <input type="text" class="form-control" name="field_value[149]" id="event_report_term">
                              </div>
                              <div class="form-group col-md-3">
-                                <label>Reaction Onset Date(B.2.i.4):</label>
+                                <label>Reaction Onset Date (B.2.i.4b):</label>
                                 <input type="text" class="form-control" name="field_value[156]" id="event_onset_date">
                              </div>
                         </div>
@@ -57,7 +57,7 @@
                                 </select>
                              </div>
                             <div class="form-group col-md-5">
-                                <label>Age at time of onset reaction (B.1.2.2a)</label>
+                                <label>Age at Time of Onset of Reaction/event (B.1.2.2a)</label>
                                 <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Field Helper" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
                                 <input type="text" class="form-control" name="field_value[86]" id="patient_age">
                             </div>

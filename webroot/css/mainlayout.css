@@ -472,3 +472,14 @@ ul.queryBoxLeft > a {
 #navbarNavDropdown > ul > li {
     margin-left: 20px;
 }
+
+.queryBackBtn {
+    font-size: 30px !important;
+    margin-top: -50px;
+    margin-left: -10px;
+}
+
+.DEpagination {
+    display: inherit;
+    margin-top: 2px;
+}

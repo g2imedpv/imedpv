@@ -174,9 +174,9 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 </div>
                 <div class="form-group col-lg-4">
                     <select class="form-control" id="caseStatus" name="caseStatus">
-                        <option value="1">activate</option>
+                        <option value="1">Activate</option>
                         <option value="2">Inactivate</option>
-                        <option value="3">all</option>
+                        <option value="3">All</option>
                     </select>
                 </div>
             </div>

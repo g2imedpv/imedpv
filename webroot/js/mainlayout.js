@@ -149,7 +149,7 @@ function onQueryClicked(preferrenceId = null){
             text +="<th class=\"align-middle\" scope=\"col\">Product Type</th>";
             text +="<th class=\"align-middle\" scope=\"col\">Activity Due Date</th>";
             text +="<th class=\"align-middle\" scope=\"col\">Submission Due Date</th>";
-            text +="<th class=\"align-middle\" scope=\"col\">status</th>";
+            text +="<th class=\"align-middle\" scope=\"col\">Status</th>";
             text +="<th class=\"align-middle\" scope=\"col\">Action</th>";
             text +="</tr>";
             text +="</thead>";
