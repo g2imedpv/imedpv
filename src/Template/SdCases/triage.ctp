@@ -14,7 +14,7 @@
   <div class="card-body">
     <div class="alert alert-primary w-50 mx-auto" role="alert"><h4>New Case Number: <?= $caseNo ?></h4></div>
     <hr class="my-3">
-    <?= $this->Form->create($caseNo,['id'=>"triageForm"]) ?>
+    <?= $this->Form->create($caseNo,['id'=>"triageForm", 'enctype'=>"multipart/form-data"]) ?>
     <!-- Basic Info Fields Set -->
 
     <?php if($versionNo>1){
@@ -197,10 +197,51 @@
         </div>
 
         <!-- Attachment -->
-        <h4 class="text-left mt-3">Attach Documents </h4>
+        <h4 class="text-left mt-3">Attachments and References</h4>
         <div class="form-row">
-            <div class="form-group col-md-4">
-                <!-- <input type="file" class="form-control-file" id=""> -->
+            <div class="form-group col-md-3">
+                <label>Classification<i class="fas fa-asterisk reqField"></i></label>
+                <input type="text" class="form-control" name="doc_classification_0" id="doc_classification_0" value="">
+            </div>
+            <div class="form-group col-md-3">
+                <label>Description<i class="fas fa-asterisk reqField"></i></label>
+                <input type="text" class="form-control" name="doc_description_0" id="doc_description_0" value="">
+            </div>
+            <div class="form-group col-md-3">
+                <label>File/Reference</label>
+                <input type="text" class="form-control" name="doc_path_0" id="doc_path_0" value="" style="display:none">
+                <input name="doc_attachment_0" id="doc_attachment_0" type="file"/>
+            </div>
+            <div class="form-group col-md-3">
+            <label>&nbsp;</label>
+            <select name="doc_source_0" id="doc_source_0">
+            <!--<option value="">Choose the source</option>-->
+            <option value="File Attachment">File Attachment</option>
+            <option value="URL Reference">URL Reference</option>
+            </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label>Classification<i class="fas fa-asterisk reqField"></i></label>
+                <input type="text" class="form-control" name="doc_classification_1" id="doc_classification_1" value="">
+            </div>
+            <div class="form-group col-md-3">
+                <label>Description<i class="fas fa-asterisk reqField"></i></label>
+                <input type="text" class="form-control" name="doc_description_1" id="doc_description_1" value="">
+            </div>
+            <div class="form-group col-md-3">
+                <label>File/Reference</label>
+                <input type="text" class="form-control" name="doc_path_1" id="doc_path_1" value="" style="display:none">
+                <input name="doc_attachment_1" id="doc_attachment_1" type="file"/>
+            </div>
+            <div class="form-group col-md-3">
+            <label>&nbsp;</label>
+            <select name="doc_source_1" id="doc_source_1">
+            <!--<option value="">Choose the source</option>-->
+            <option value="File Attachment">File Attachment</option>
+            <option value="URL Reference">URL Reference</option>
+            </select>
             </div>
         </div>
         <?php if($field_value_set['223']['id']!=null)

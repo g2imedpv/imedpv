@@ -1,4 +1,27 @@
 $(document).ready(function(){
+    /*
+     Attachment source selections
+     Added by Chloe Wang Mar 23, 2019
+    */
+    $('[id^=doc_source]').each(function(s,v){
+        //console.log($(this));
+        $(this)
+        .change(function () {
+            if ($( "#doc_source_"+s+" option:selected" ).val() == 'File Attachment')
+            {
+                $('#doc_attachment_'+s).show();
+                $('#doc_path_'+s).hide();
+            }
+            else if ($( "#doc_source_"+s+" option:selected" ).val() == 'URL Reference')
+            {
+                $('#doc_attachment_'+s).hide();
+                $('#doc_path_'+s).show();
+            }
+            
+        })
+    });
+    
+
         // IF invalid case
         var validCase = 0;
     $("#confirmElements").click(function(){
@@ -30,6 +53,9 @@ $(document).ready(function(){
                 if (value) {
                     var request ={};
                     $("[name^=field_value]").each(function(){
+                        request[$(this).attr('name')] = $(this).val();
+                    });
+                    $("[name^=doc_]").each(function(){
                         request[$(this).attr('name')] = $(this).val();
                     });
                     console.log(request);

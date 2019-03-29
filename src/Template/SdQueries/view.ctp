@@ -2,14 +2,15 @@
 
 <div class="container-fluid w-75 my-3">
     <div class="jumbotron">
+    <button type="button" class="btn btn-link queryBackBtn" onclick="window.history.back();"><i class="fas fa-arrow-left"></i></button>
     <h1 class="display-4"><?= h($sdQuery->title) ?></h1>
     <div class="d-flex">
-        <div class="lead w-75">From: <?php 
+        <div class="lead w-75">From: <?php
                 if($sdQuery->senderfirstname==null) echo "SystmNotice";
                 else echo $sdQuery->senderfirstname." ".$sdQuery->senderlastname."  &lt;".$sdQuery->senderEmail."&gt;";
                 ?>
         </div>
-        <div class="lead w-75">To: <?php 
+        <div class="lead w-75">To: <?php
                 if($sdQuery->receiverfirstname==null) echo "SystmNotice";
                 else echo $sdQuery->receiverfirstname." ".$sdQuery->receiverlastname."   &lt;".$sdQuery->receiverEmail."&gt;";
                 ?>
@@ -18,6 +19,5 @@
     </div>
     <hr class="my-4">
     <?php echo ($sdQuery->content) ?>
-    <button type="button" class="btn btn-primary float-right" onclick="window.history.back();">Go Back</button>
     </div>
 </div>
