@@ -197,53 +197,54 @@
         </div>
 
         <!-- Attachment -->
-        <h4 class="text-left mt-3">Attachments and References</h4>
-        <div class="form-row">
+        <div id="attachmentField">
+            <h4 class="text-left mt-3">Attachments and References</h4>
+            <button type="button" id="add_attachment-0">+Add Attachment</button>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label>Classification<i class="fas fa-asterisk reqField"></i></label>
+                    <input type="text" class="form-control" name="document[0][doc_classification]" id="doc_classification_0" value="">
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Description<i class="fas fa-asterisk reqField"></i></label>
+                    <input type="text" class="form-control" name="document[0][doc_description]" id="doc_description_0" value="">
+                </div>
+                <div class="form-group col-md-3">
+                    <label>File/Reference</label>
+                    <input type="text" class="form-control" name="document[0][doc_path]" id="doc_path_0" value="" style="display:none">
+                    <input name="document[0][doc_attachment]" id="doc_attachment_0" type="file"/>
+                </div>
+                <div class="form-group col-md-3">
+                <label>&nbsp;</label>
+                <select name="document[0][doc_source]" id="doc_source_0">
+                <option value="File Attachment">File Attachment</option>
+                <option value="URL Reference">URL Reference</option>
+                </select>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="form-row">
             <div class="form-group col-md-3">
                 <label>Classification<i class="fas fa-asterisk reqField"></i></label>
-                <input type="text" class="form-control" name="doc_classification_0" id="doc_classification_0" value="">
+                <input type="text" class="form-control" name="document[doc_classification_1]" id="doc_classification_1" value="">
             </div>
             <div class="form-group col-md-3">
                 <label>Description<i class="fas fa-asterisk reqField"></i></label>
-                <input type="text" class="form-control" name="doc_description_0" id="doc_description_0" value="">
+                <input type="text" class="form-control" name="document[doc_description_1]" id="doc_description_1" value="">
             </div>
             <div class="form-group col-md-3">
                 <label>File/Reference</label>
-                <input type="text" class="form-control" name="doc_path_0" id="doc_path_0" value="" style="display:none">
-                <input name="doc_attachment_0" id="doc_attachment_0" type="file"/>
+                <input type="text" class="form-control" name="document[doc_path_1]" id="doc_path_1" value="" style="display:none">
+                <input name="document[doc_attachment_1]" id="doc_attachment_1" type="file"/>
             </div>
             <div class="form-group col-md-3">
             <label>&nbsp;</label>
-            <select name="doc_source_0" id="doc_source_0">
-            <!--<option value="">Choose the source</option>-->
+            <select name="document[doc_source_1]" id="doc_source_1">
             <option value="File Attachment">File Attachment</option>
             <option value="URL Reference">URL Reference</option>
             </select>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-3">
-                <label>Classification<i class="fas fa-asterisk reqField"></i></label>
-                <input type="text" class="form-control" name="doc_classification_1" id="doc_classification_1" value="">
-            </div>
-            <div class="form-group col-md-3">
-                <label>Description<i class="fas fa-asterisk reqField"></i></label>
-                <input type="text" class="form-control" name="doc_description_1" id="doc_description_1" value="">
-            </div>
-            <div class="form-group col-md-3">
-                <label>File/Reference</label>
-                <input type="text" class="form-control" name="doc_path_1" id="doc_path_1" value="" style="display:none">
-                <input name="doc_attachment_1" id="doc_attachment_1" type="file"/>
-            </div>
-            <div class="form-group col-md-3">
-            <label>&nbsp;</label>
-            <select name="doc_source_1" id="doc_source_1">
-            <!--<option value="">Choose the source</option>-->
-            <option value="File Attachment">File Attachment</option>
-            <option value="URL Reference">URL Reference</option>
-            </select>
-            </div>
-        </div>
+        </div> -->
         <?php if($field_value_set['223']['id']!=null)
                 echo "<input type=\"hidden\" id=\"id_validcase\" name=\"field_value[223][id]\" value=\"".$field_value_set['223']['id']."\">";?>
         <?php echo "<input type=\"hidden\" id=\"validcase\" name=\"field_value[223][value]\" value=\"".$field_value_set['223']['field_value']."\">";?>
