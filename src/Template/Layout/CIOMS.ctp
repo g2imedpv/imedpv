@@ -1,4 +1,4 @@
-<title>CIOMS</title>
+<!--<title>CIOMS</title>-->
 
 <!-- For local Bootstrap/CSS link -->
 <?= $this->Html->css('cimos.css') ?>
@@ -86,7 +86,7 @@
             <input class="my-2" type="checkbox" name="vehicle3" value="Boat" <?php echo $otherSerious?>> OTHER<br>
         </th>
     </tr>
-    <tr style="height:20px;">
+    <tr style="height:15px;">
         <td class="tg-0lax"><p class="text-center textsize">Day</p> <p class="text-center textsize"><?php echo substr($birth,0,2) ?></p></td>
         <td class="tg-0lax"><p class="text-center textsize">Month</p> <p class="text-center textsize"><?php echo $birthMonth ?></p></td>
         <td class="tg-0lax"><p class="text-center textsize">Year</p> <p class="text-center textsize"><?php echo substr($birth,4,4) ?></p></td>
@@ -94,42 +94,42 @@
         <td class="tg-0lax"><p class="text-center textsize">Month</p> <p class="text-center textsize"><?php echo $reactionMonth ?></p></td>
         <td class="tg-0lax"><p class="text-center textsize">Year</p> <p class="text-center textsize"><?php echo substr($reaction,4,4) ?></p></td>
     </tr>
-    <tr style="height:140px;">
+    <tr style="height:130px;">
         <td class="tg-0lax" colspan="10">
             <p class="text-left titlesize"> 7 + 13. DESCRIBE REACTION(S) (including relevant tests/lab data) </p>
-            <p class="text-left textsize"><?php echo $primarySourceReaction."</br>".$reactionOutcome."</br>".$actionDrug."</br>".$narrativeIncludeClinical."</br>".$resultsTestsProcedures?></p>
+            <p class="text-left textsize"><?php echo substr($primarySourceReaction.$reactionOutcome.$actionDrug.$narrativeIncludeClinical.$resultsTestsProcedures,0,1000)?></p>
         </td>
     </tr>
     </table>
 
     <!-- II. SUSPECT DRUG(S) INFORMATION -->
     <h3 class="text-center mt-3">II. SUSPECT DRUG(S) INFORMATION</h3>
-    <table class="tg mx-auto" style="width: 95%; height:200px;">
+    <table class="tg mx-auto" style="width: 95%; height:150px;">
         <colgroup>
             <col style="width: 50%">
             <col style="width: 25%">
             <col style="width: 25%">
         </colgroup>
-        <tr>
+        <tr class="SectionTwo">
             <th class="tg-0pky" colspan="2">
                 <p class="text-left titlesize"> 14. SUSPECT DRUG(S) (include generic name) </p>
                 <p class="text-left textsize">#1)<?php echo $drugone."/".$genericOne?></p>
                 <p class="text-left textsize">#2)<?php echo $drugtwo."/".$genericTwo?></p>
             </th>
             <th class="tg-0pky">
-                <p class="text-center titlesize"> 20. DID REACTION ABATE AFTER STOPPING DRUG?</p>
-                <div class="d-flex justify-content-around">
-                    <input type="checkbox" name="vehicle1" value="Bike" <?php echo $DeYes?> > Yes<br>
-                    <input type="checkbox" name="vehicle2" value="Car" <?php echo $DeNo?>> No<br>
-                    <input type="checkbox" name="vehicle3" value="Boat" <?php echo $DeUnkown?>> N/A<br>
+                <p class="text-center titlesize" style="padding:5px;"> 20. DID REACTION ABATE AFTER STOPPING DRUG?</p>
+                <div class="d-flex justify-content-around" style="font-size:12px;">
+                    <input type="checkbox" name="vehicle1" value="Bike" <?php echo $DeYes?> >Yes<br>
+                    <input type="checkbox" name="vehicle2" value="Car" <?php echo $DeNo?>>No<br>
+                    <input type="checkbox" name="vehicle3" value="Boat" <?php echo $DeUnkown?>>N/A<br>
                 </div>
             </th>
         </tr>
-        <tr style="height:15px;">
+        <tr style="height:15px;" class="SectionTwo">
             <td class="tg-0pky">
                 <p class="text-left titlesize"> 15. DAILY DOSE(S) </p>
-                <p class="text-left textsize">#1)<?php echo $doseone?></p>
-                <p class="text-left textsize">#2)<?php echo $dosetwo?></p>
+                <p class="text-left textsize">#1)<?php echo $doseOne."  ".$doseUnitOne."  dosage(s)= ".$separateDosageOne."Ïnterval=".$intervalOne." ".$intervalUnitOne?></p>
+                <p class="text-left textsize">#2)<?php echo $doseTwo."  ".$doseUnitTwo."  dosage(s)= ".$separateDosageTwo."Ïnterval=".$intervalTwo." ".$intervalUnitTwo?></p>
             </td>
             <td class="tg-0pky">
                 <p class=" titlesize"> 16. ROUTE(S) OF ADMINISTRATION </p>
@@ -137,22 +137,22 @@
                 <p class="text-left textsize">#2)<?php echo $routetwo?></p>
             </td>
             <td class="tg-0pky" rowspan="2">
-                <p class="text-center titlesize"> 21. DID REACTION REAPPEAR AFTER REINTRODUCTION?</p>
-                <div class="d-flex justify-content-around">
-                    <input type="checkbox" name="vehicle1" value="Bike" <?php echo $ReYes?>> Yes<br>
-                    <input type="checkbox" name="vehicle2" value="Car" <?php echo $ReNo?>> No<br>
-                    <input type="checkbox" name="vehicle3" value="Boat" <?php echo $ReUnkown?>> N/A<br>
+                <p class="text-center titlesize" style="padding:3px;"> 21. DID REACTION REAPPEAR AFTER REINTRODUCTION?</p>
+                <div class="d-flex justify-content-around" style="font-size:12px;">
+                    <input type="checkbox" name="vehicle1" value="Bike" <?php echo $ReYes?>>Yes<br>
+                    <input type="checkbox" name="vehicle2" value="Car" <?php echo $ReNo?>>No<br>
+                    <input type="checkbox" name="vehicle3" value="Boat" <?php echo $ReUnkown?>>N/A<br>
                 </div>
             </td>
         </tr>
-        <tr style="height:20px;">
+        <tr style="height:20px;" class="SectionTwo">
             <td class="tg-0lax" colspan="2">
                 <p class=" titlesize"> 17. INDICATION(S) FOR USE </p>
                 <p class="text-left textsize">#1)<?php echo $indicationOne?></p>
                 <p class="text-left textsize">#2)<?php echo $indicationTwo?></p>
             </td>
         </tr>
-        <tr>
+        <tr class="SectionTwo">
             <td class="tg-0lax">
                 <p class=" titlesize"> 18. THERAPY DATES (from/to) </p>
                 <p class="text-left textsize">#1)<?php echo $TherapyStartOne."/".$TherapyStopOne?></p>
@@ -217,10 +217,10 @@
             </td>
             <td class="tg-0lax">
                 <p class=" titlesize"> 24d. REPORT SOURCE </p>
-                <div class="d-flex justify-content-left">
-                    <input class="mx-1" type="checkbox" name="vehicle1" value="Bike" <?php echo $study?>> STUDY
-                    <input class="mx-1" type="checkbox" name="vehicle2" value="Car" <?php echo $literature?>> LITERATURE <br>
-                    <input class="mx-1" type="checkbox" name="vehicle3" value="Boat" <?php echo $healthProfessional?>> HEALTH PROFESSIONAL
+                <div class="d-flex justify-content-left" style="font-size:12px;">
+                    <input class="mx-1" type="checkbox" name="vehicle1" value="Bike" <?php echo $study?>>STUDY
+                    <input class="mx-1" type="checkbox" name="vehicle2" value="Car" <?php echo $literature?>>LITERATURE <br>
+                    <input class="mx-1" type="checkbox" name="vehicle3" value="Boat" <?php echo $healthProfessional?>>HEALTH PROFESSIONAL
                 </div>
             </td>
         </tr>
@@ -231,11 +231,20 @@
             </td>
             <td class="tg-0lax">
                 <p class=" titlesize"> 25a. REPORT TYPE </p>
-                <div class="d-flex justify-content-around">
-                    <input type="checkbox" name="vehicle1" value="Bike"> INITIAL
-                    <input type="checkbox" name="vehicle2" value="Car"> FOLLOW UP
+                <div class="d-flex justify-content-around" style="font-size:12px;">
+                    <input type="checkbox" name="vehicle1" value="Bike">INITIAL
+                    <input type="checkbox" name="vehicle2" value="Car">FOLLOW UP
                 </div>
             </td>
         </tr>
     </table>
+    <!-- Page Two -->
+    <div class="tg m-5 pageBreak" >
+        <span class="pagetwo secondheader">page 2 of 2</span><span class="pagetwo secondheader float-right">Mfr.Control Number:</span>
+        <hr class="secondheader" size=3 color=#000000 >
+        <h3 class="tg-0pky text-center align-middle title pagetwo" ><b>ADDITIONAL INFORMATION</b></h3>
+        <p class="text-left titlesize pagetwo"> 7 + 13. DESCRIBE REACTION(S) continued </p>
+        <p class="textsize pagetwo"><?php echo substr($primarySourceReaction.$reactionOutcome.$actionDrug.$narrativeIncludeClinical.$resultsTestsProcedures,1000)?></p>
+    </div>
+
 </body>

@@ -27,7 +27,6 @@ echo $this->element('generatepdf');
 <title>Data Entry</title>
 <head>
     <!-- For checking unsaved contents JS link -->
-    <?= $this->Html->script('specific.js') ?>
     <?= $this->Html->script('dataentry/dataEntryMain.js') ?>
     <!-- For select add input  -->
     <?= $this->Html->css('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css') ?>
@@ -218,11 +217,11 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
         if(($section->is_addable == 1)&&($permission==1))
         {
             echo "<div id=\"pagination-l2-section-".$section->id."\">";
-            echo "<div role=\"button\" id=\"delete_section-".$section->id."\"  class=\"float-right px-3 mx-3 btn btn-outline-info\" onclick=\"l2deleteSection(".$section->id.")\" style=\"display:none\">Delete</div>";
-            echo "<div role=\"button\" id=\"child_section-";
+            echo "<input type=\"button\" id=\"delete_section-".$section->id."\"  class=\"float-right px-3 mx-3 btn btn-outline-danger\" onclick=\"l2deleteSection(".$section->id.")\" value=\"Delete\" style=\"display:none\">";
+            echo "<input type=\"button\" id=\"child_section-";
             $child_array = explode(",",$section->child_section);
             foreach($child_array as $Key => $sdSectionKey) echo "[".$sdSectionKey."]";
-            echo "-sectionKey-".$sectionKey."-setNo-1-section-".$section->id."\" onclick=\"level2setPageChange(".$section->id.",1,1)\" class=\"float-right px-3 mx-3 btn btn-outline-info\" title=\"Add new\">Add</div>";
+            echo "-sectionKey-".$sectionKey."-setNo-1-section-".$section->id."\" onclick=\"level2setPageChange(".$section->id.",1,1)\" class=\"float-right px-3 mx-3 btn btn-info\" value=\"Add\">";
             echo "</div>";
             echo "<div class=\"showpagination\" id=\"showpagination-".$section->id."\"></div>";
         }
@@ -294,8 +293,8 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                             echo "<input id=\"section-".$section->id."-field_rule-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][field_rule]\" value=".$sd_section_structure_detail->sd_field->field_length."-".$sd_section_structure_detail->sd_field->field_type." type=\"hidden\">";
                             echo "<input id=\"section-".$section->id."-text-".$sd_section_structure_detail->sd_field->id."\" class=\"form-control\" name=".$field_value_nameHolder." type=\"text\"";
                             if($permission==2) echo " disabled ";
-                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value):null;
-                            echo "\" >";
+                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":null;
+                            echo ">";
                             continue;
                         case 'radio':
                             echo "<div id=\"section-".$section->id."-radio-".$sd_section_structure_detail->sd_field->id."\">";
@@ -352,7 +351,6 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                             if($permission==2) echo " disabled ";
                             echo "value=\"";
                             echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value:null;
-
                             echo "\">";
                             continue;
                         case 'whodra browser':
@@ -360,13 +358,13 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                                 $whoddCell = $html->cell('Whodd',[$sd_section_structure_detail->sd_field->id]);
                                 echo $whoddCell;
                                 echo "<input readonly=\"readonly\" style=\"float:left\" id=\"section-".$section->id."-whodracode-".$sd_section_structure_detail->sd_field->id."\" class=\"col-md-5 form-control\" name=".$field_value_nameHolder." type=\"text\"";
-                                echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=".$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value:null;
+                                echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":null;
                                 echo " >";
                             }
                             continue;
                         case 'whodra show':
                             echo "<input id=\"section-".$section->id."-whodraname-".$sd_section_structure_detail->sd_field->id."\" class=\"form-control\" name=".$field_value_nameHolder." type=\"text\"";
-                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=".$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value:null;
+                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":null;
                             if($permission==2) echo " disabled ";
                             echo " readonly=\"readonly\">";
                             continue;
@@ -376,8 +374,8 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                             continue;
                         case 'Meddra show':
                             echo "<input id=\"section-".$section->id."-".$sd_section_structure_detail->sd_field->descriptor."-".$sd_section_structure_detail->sd_field->id."\" class=\"form-control\" name=".$field_value_nameHolder." type=\"text\"";
-                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value):null;
-                            echo "\" readonly=\"readonly\">";
+                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":null;
+                            echo "readonly=\"readonly\">";
                             continue;
                     }
                 echo"</div>";
@@ -388,19 +386,20 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
         echo "</div>";
         echo "<div class=\"header-section\">";
         echo "<h3 id=\"section_label-".$section->id."\"class=\"secspace\">".$section->section_name;
-        echo"<a role=\"button\" id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
+        echo "<input id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-primary\" type=\"button\" value=\"Save\" style=\"display:none\">";
+        //echo"<a role=\"button\" id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
         echo "</h3>";
             if(($section->is_addable == 1)&&($permission==1))
             {
-                echo "<div id=\"pagination-section-".$section->id."\">";
+                echo "<div id=\"pagination-section-".$section->id."\" class=\"DEpagination\">";
                 if($max_set_No != 0)
-                echo "<a role=\"button\" id=\"delete-btn".$section->id."-".$sectionKey."\" onclick=\"deleteSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\">delete</a>";
+                //echo "<a role=\"button\" id=\"delete-btn".$section->id."-".$sectionKey."\" onclick=\"deleteSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\">delete</a>";
+                echo "<input id=\"delete-btn".$section->id."-".$sectionKey."\" onclick=\"deleteSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-danger\" type=\"button\" value=\"Delete\">";
 
-                echo "<div role=\"button\" id=\"add_set-".$section->id."-sectionKey-".$sectionKey."-setNo-".$max_set_No."\" onclick=\"setPageChange(".$section->id.",1,1)\" class=\"float-right px-3 mx-3 btn btn-outline-info\" title=\"Add new\"";
-                if($max_set_No == 0) echo "style=\"display:none\"";
-                echo ">Add</div>";
+                echo "<input type=\"button\" id=\"add_set-".$section->id."-sectionKey-".$sectionKey."-setNo-".$max_set_No."\" onclick=\"setPageChange(".$section->id.",1,1)\" class=\"float-right px-3 mx-3 btn btn-info\" value=\"Add\"";
+                if($max_set_No == 0) echo "style=\"display:none\">";
                 echo "<nav class=\"float-right ml-3\" title=\"Pagination\" aria-label=\"Page navigation example\">";
-                echo "<ul class=\"pagination mb-0\">";
+                echo "<ul class=\"pagination mb-0 mx-2\">";
                 echo    "<li class=\"page-item\" id=\"left_set-".$section->id."-sectionKey-".$sectionKey."-setNo-1\" onclick=\"setPageChange(".$section->id.",0)\">";
                 echo    "<a class=\"page-link\" aria-label=\"Previous\">";
                 echo        "<span aria-hidden=\"true\">&laquo;</span>";

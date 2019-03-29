@@ -25,25 +25,24 @@ $(document).ready(function(){
         // IF invalid case
         var validCase = 0;
     $("#confirmElements").click(function(){
-        var patient_element = false;
-        var reporter_element = false;
-        var event_element = false;
+        var patient_element = 0;
+        var reporter_element = 0;
+        var event_element = 0;
         $('#patientInfo :input').each(function(){
             if(($(this).val()!=null)&&($(this).val()!= ""))
-            patient_element = true;
+            patient_element = 1;
         });
         $('[id^=reporterField]').each(function(){
             if(($(this).val()!=null)&&($(this).val()!= ""))
-            reporter_element = true;
+            reporter_element = 1;
         });
         $('[id^=eventField]').each(function(){
             if(($(this).val()!=null)&&($(this).val()!= ""))
-            event_element = true;
+            event_element = 1;
         });
-        if(validCase==4) $('#validcase').val('1'); else $('#validcase').val('2');
-        console.log(patient_element);console.log(reporter_element);console.log(event_element);
         validCase = patient_element + reporter_element + event_element;
         if (validCase <= 1) {
+            $('#validcase').val('2');
             swal("This is an invalid case and it will be inactivated. Are you sure you want to continue?","","warning", {
                 buttons: {
                     continue: true,
@@ -95,6 +94,7 @@ $(document).ready(function(){
             .then((value) => {
                 switch (value) {
                     case "Yes":
+                        $('#validcase').val('2');
                         swal("Please Select Reasons in following step","", "success");
                         $("#basicInfo :input").each(function(){
                             $(this).prop("readonly", true);
@@ -110,6 +110,7 @@ $(document).ready(function(){
                         });
                         break;
                     case "No":
+                        $('#validcase').val('1');
                         var request ={};
                         $("[name^=field_value]").each(function(){
                             request[$(this).attr('name')] = $(this).val();
@@ -136,6 +137,7 @@ $(document).ready(function(){
         }
         // ELSE valid case
         else {
+            $('#validcase').val('1');
             $("#savenexitbtn").appendTo("#prioritizeContent");
             $("#basicInfo :input").each(function(){
                 $(this).prop("readonly", true);

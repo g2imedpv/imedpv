@@ -1,3 +1,11 @@
+
+@media print {
+    nav, aside {
+       display: none;
+    }
+ }
+
+@page { size: letter;  margin-top: 4mm;margin-bottom: 4mm }
 html,
 body {
 margin: 30px;
@@ -20,6 +28,7 @@ table {
     max-height: 100% !important;
     overflow: hidden !important;
     page-break-after: auto;
+    
 }
 }
 
@@ -34,7 +43,7 @@ table {
 
 .tg td {
     font-family: Arial, sans-serif;
-    font-size: 14px;
+    font-size: 18px;
     padding: 10px 5px;
     border-style: solid;
     border-width: 1px;
@@ -45,7 +54,7 @@ table {
 
 .tg th {
     font-family: Arial, sans-serif;
-    font-size: 14px;
+    font-size: 8px;
     font-weight: normal;
     padding: 10px 5px;
     border-style: solid;
@@ -68,9 +77,26 @@ table {
 
 .titlesize {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .textsize {
-    font-size: 10px;
+    font-size: 13px;
+}
+.SectionTwo{
+    line-height: 0px;
+
+}
+
+.pageBreak {
+    page-break-before: always;
+}
+
+.pagetwo{
+    font-family: Arial, sans-serif;
+}
+
+.secondheader{
+    font-weight: bold;
+    color:black;
 }

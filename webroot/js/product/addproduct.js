@@ -1,9 +1,9 @@
 var resource_list={};
 var workflow_k = 0;
-var workflow_info ={};
+var workflow_list ={};
 var cro_list=[];
 var call_center_list = {};
-var customize_activity_permission={};
+var distriNo = 1;
 $(document).ready(function() {
     var unsaved = false;
 
@@ -64,6 +64,85 @@ function removeCro(id){
 }
 jQuery(function($) {  // In case of jQuery conflict
     $(document).ready(function(){
+        $('#addNewDistri').click(function(){
+            var text ='';
+            text +='<div id="newDistri-'+ distriNo + '">';
+            console.log(text);
+                text +='<div class="form-group col-md-3 d-inline-block">';
+                    text +='<label for="">Select Country</label>';
+                    text +='<select class="form-control" id="" name="">';
+                        text +='<option value="">Select Country</option>';
+                        text +='<option value="USA">Unitied States</option>';
+                        text +='<option value="JPN">Japan</option>';
+                        text +='<option value="EU">Europe</option>';
+                    text +='</select>';
+                text +='</div>';
+                text +='<div class="my-2">';
+                text +='<button type="button" id="defDistriBtn-'+ distriNo +'" class="btn btn-success workflow w-25">';
+                text +='<span>Default Distribution</span>';
+                text +='</button>';
+                text +='<div id="defDistriContent-'+ distriNo +'" style="display:none;">';
+                    text +='<div class="d-flex justify-content-center">';
+                        text +='<div class="card m-2" style="width: 18rem;">';
+                            text +='<div class="card-body">';
+                                text +='<h5 class="card-title">Generate Report</h5>';
+                                text +='<p class="card-text">Output a report from system</p>';
+                            text +='</div>';
+                        text +='</div>';
+                        text +='<div class="card m-2" style="width: 18rem;">';
+                            text +='<div class="card-body">';
+                                text +='<h5 class="card-title">Submission</h5>';
+                                text +='<p class="card-text">Submit report to regulator</p>';
+                            text +='</div>';
+                        text +='</div>';
+                    text +='</div>';
+                text +='</div>';
+            text +='</div>';
+            text +='<div class="my-2">';
+                text +='<button type="button" id="custDistriBtn-'+ distriNo +'" class="btn btn-success workflow w-25">';
+                text +='<span>Customize Distribution</span>';
+                text +='</button>';
+                text +='<div id="custDistriContent-'+ distriNo +'" class="my-3" style="display:none;">';
+                    text +='<div class="d-flex justify-content-center">';
+                        text +='<div class="card m-2" style="width: 18rem;">';
+                            text +='<div class="card-body">';
+                                text +='<h5 class="card-title">Generate Report</h5>';
+                                text +='<p class="card-text">Output a report from system</p>';
+                            text +='</div>';
+                        text +='</div>';
+                        text +='<div class="card m-2" style="width: 18rem;">';
+                            text +='<div class="card-body">';
+                                text +='<h5 class="card-title">Submission</h5>';
+                                text +='<p class="card-text">Submit report to regulator</p>';
+                            text +='</div>';
+                        text +='</div>';
+                    text +='</div>';
+                text +='</div>';
+            text +='</div>';
+            text +='<button type="button" class="btn btn-sm btn-outline-danger float-right distRmBtn" onclick="$(this).parent().remove();">';
+            text +='<i class="fas fa-trash-alt"></i>Remove</button><br><hr></div>';
+            // $( ".newDistrictArea" ).append(text);
+            $( ".newDistrictArea" ).append('<div id="newDistri-'+ distriNo + '"><div class="form-group col-md-3 d-inline-block"><label for="">Select Country</label><select class="form-control" id="" name=""><option value="">Select Country</option><option value="USA">Unitied States</option><option value="JPN">Japan</option><option value="EU">Europe</option></select></div><div class="my-2"><button type="button" id="defDistriBtn-'+ distriNo +'" class="btn btn-success workflow w-25"><span>Default Distribution</span></button><div id="defDistriContent-'+ distriNo +'" style="display:none;"><div class="d-flex justify-content-center"><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Generate Report</h5><p class="card-text">Output a report from system</p></div></div><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Submission</h5><p class="card-text">Submit report to regulator</p></div></div></div></div></div><div class="my-2"><button type="button" id="custDistriBtn-'+ distriNo +'" class="btn btn-success workflow w-25"><span>Customize Distribution</span></button><div id="custDistriContent-'+ distriNo +'" class="my-3" style="display:none;"><div class="d-flex justify-content-center"><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Generate Report</h5><p class="card-text">Output a report from system</p></div> </div><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Submission</h5><p class="card-text">Submit report to regulator</p></div></div></div></div></div><button type="button" class="btn btn-sm btn-outline-danger float-right distRmBtn" onclick="$(this).parent().remove();"><i class="fas fa-trash-alt"></i> Remove</button><br><hr></div>');
+
+            distriNo++;
+        });
+        $('[id^=defDistriBtn]').click(function(){
+            var defDistriSequence = $(this).attr('id').split('-')[1];
+            console.log(defDistriSequence)
+            $('#defDistriContent-' + defDistriSequence).show();
+            $('#custDistriContent-' + defDistriSequence).hide();
+        });
+        $('[id^=custDistriBtn]').click(function(){
+            var custDistriSequence = $(this).attr('id').split('-')[1];
+            console.log(custDistriSequence);
+            $('#custDistriContent-' + custDistriSequence).show();
+            $('#defDistriContent-' + custDistriSequence).hide();
+        });
+        $('#submitDistri').click(function(){
+            $('.distRmBtn, #addNewDistri').hide();
+            $(this).hide();
+            $('#choosecro').show();
+        });
         
         $('[id^=write]').change(function(){
             var id = $(this).attr('id').split('-');
@@ -204,16 +283,17 @@ jQuery(function($) {  // In case of jQuery conflict
         }
         if (($('.defworkflow').is(':hidden') && $('.custworkflow').is(':visible')))
         {
-            if(
-                !$('#custom-workflow_name').val()  ) {
-                $('#custom-workflow_name-validate').show().delay(2000).fadeOut();;
+            if(!$('#custom-workflow_name').val()  ) {
+                $('#custom-workflow_name-validate').show().delay(2000).fadeOut();
+                return false;
             }
             else if (
                 !$('#custom-workflow_description').val()  ) {
                 $('html,body').animate({
                     scrollTop: $("#cusworkflow").offset().top
                     });
-                $('#custom-workflow_description-validate').show().delay(2000).fadeOut();;
+                $('#custom-workflow_description-validate').show().delay(2000).fadeOut();
+                return false;
             }
             else {
                 $('#defworkflow, #custbtn, .closewf').hide();
@@ -223,6 +303,13 @@ jQuery(function($) {  // In case of jQuery conflict
                 $('#custom-workflow_name').attr('disabled',true);
                 $('#custom-workflow_description').attr('disabled',true);
                 $('li.custworkflowstep').find('button').hide();
+                var order = 1;
+                $('#sortable').find('.card-body').each(function(){
+                    console.log($(this).children('.input-group'));
+                    var text ="<button type=\"button\" onclick=\"sectionPermission("+order+",2)\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\"><i class=\"fas fa-grip-horizontal\"></i></button>";
+                    $(this).append(text);
+                    order ++;
+                });
                 $(this).hide();
                 $('#sortable').find('.card-body').append( '<div class="input-group w-25 mx-auto"><i class="fas fa-arrow-up gobackstep"></i><input type="text" class="step_backward form-control form-control-sm backstep_input" aria-label="Back Steps" aria-describedby="backSteps"></div>');
                 $('#custworkflowname').next('#errWorkflow').remove(); // *** this line have been added ***
@@ -272,7 +359,7 @@ jQuery(function($) {  // In case of jQuery conflict
         //     cro_text +="<option value=\""+cro.id+"\">"+cro.name+"</option>";
         //     });
         // $('#croname').html(cro_text);
-        workflow_info[workflow_k].activities = [];
+        workflow_list[workflow_k].activities = [];
         $('#crotable').html("");
         if ($('.defworkflow').is(':visible') && $('.custworkflow').is(':hidden'))
         {
@@ -289,13 +376,13 @@ jQuery(function($) {  // In case of jQuery conflict
                     activities_list.step_backward = $(this).val();
                 });
                 activities_list.order_no = order_no;
-                workflow_info[workflow_k].activities.push(activities_list);
+                workflow_list[workflow_k].activities.push(activities_list);
                 order_no++;
             });
-            workflow_info[workflow_k].id = $('#default-workflow_id').val();
-            workflow_info[workflow_k].workflow_type = 0;
-            workflow_info[workflow_k].workflow_name = $('#default-workflow_name').val();
-            workflow_info[workflow_k].workflow_description= $('#default-workflow_description').val();
+            workflow_list[workflow_k].id = $('#default-workflow_id').val();
+            workflow_list[workflow_k].workflow_type = 0;
+            workflow_list[workflow_k].workflow_name = $('#default-workflow_name').val();
+            workflow_list[workflow_k].workflow_description= $('#default-workflow_description').val();
         }
         if (($('.defworkflow').is(':hidden') && $('.custworkflow').is(':visible')))
         {
@@ -316,19 +403,19 @@ jQuery(function($) {  // In case of jQuery conflict
                     activities_list.step_backward = $(this).val();
                 });
                 activities_list.order_no = order_no;
-                workflow_info[workflow_k].activities.push(activities_list);
+                workflow_list[workflow_k].activities.push(activities_list);
                 order_no++;
             });
-            workflow_info[workflow_k].workflow_type = 1;
-            workflow_info[workflow_k].workflow_name = $('#custom-workflow_name').val();
-            workflow_info[workflow_k].workflow_description= $('#custom-workflow_description').val();
+            workflow_list[workflow_k].workflow_type = 1;
+            workflow_list[workflow_k].workflow_name = $('#custom-workflow_name').val();
+            workflow_list[workflow_k].workflow_description= $('#custom-workflow_description').val();
         }
         //TODO While customized
     });
     $('#addNewWL').click(function() {
         function addNewWorkflow() {
             resource_list[workflow_k] = {};
-            workflow_info[workflow_k] = {};
+            workflow_list[workflow_k] = {};
             // var call_center_text = "<option value=\"\">Select Call Center</option>";
             // $.each(call_center_list, function(k,call_center){
             //     call_center_text +="<option value=\""+k+"\">"+call_center.name+"</option>";
@@ -406,8 +493,8 @@ jQuery(function($) {  // In case of jQuery conflict
             $('.custworkflow').hide();
             $('#submitworkflow').hide();
             $('#exit_workflow').hide();
-            workflow_info[workflow_k].country = $('#select-country').val();
-            workflow_info[workflow_k].sd_company_id = $('#callCenter').val();
+            workflow_list[workflow_k].country = $('#select-country').val();
+            workflow_list[workflow_k].sd_company_id = $('#callCenter').val();
             $(this).hide();
             $('#undochocon').show();
             $("#select-country, #callCenter ").prop("disabled", true);
@@ -437,18 +524,16 @@ jQuery(function($) {  // In case of jQuery conflict
                                 default_text +="<i class=\"fas fa-arrow-up gobackstep\"></i>";
                                 default_text +="<input type=\"text\" readonly=\"readonly\" value="+v.step_backward+" class=\"step_backward form-control form-control-sm\" aria-label=\"Back Steps\" aria-describedby=\"backSteps\">"
                                 default_text +="<button type=\"button\" onclick=\"sectionPermission("+v.id+",1)\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\"><i class=\"fas fa-grip-horizontal\"></i></button>";
-                            default_text +="</div>"
+                            default_text +="</div>";
                         default_text +="</div>";
                     default_text +="</div>";
-                default_text +="</li>"
+                default_text +="</li>"  ;
                 customize_text +="<li class=\"custworkflowstep\">";
                     customize_text +="<div class=\"card w-100 h-25 my-2\">";
                         customize_text +="<div class=\"card-body p-3\">";
                             customize_text +="<button class=\"close closewf\">&times;</button>";
                             customize_text +="<h5 class=\"card-title\"><b>"+v.activity_name+"</b></h5>";
                             customize_text +="<p class=\"card-text\">"+v.description+"</p>";
-                            customize_text +="<button type=\"button\" onclick=\"sectionPermission("+v.id+",1)\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\"><i class=\"fas fa-grip-horizontal\"></i></button>";
-
                         customize_text +="</div>";
                     customize_text +="</div>";
                 customize_text +="</li>"
@@ -495,8 +580,8 @@ jQuery(function($) {  // In case of jQuery conflict
             text +="<div class=\"btn btn-sm btn-primary m-1\" onclick=\"view_workflow("+workflow_k+")\" data-toggle=\"modal\" data-target=\".WFlistView\">View</div>"
             text +="<button class=\"btn btn-sm btn-outline-danger\" onclick=\"$(this).closest('tr').remove();\">Delete</button>";
             text +="</td>";
-            text +="<input name=\"workflow["+workflow_k+"][id]\" value="+workflow_info[workflow_k].id+" type=\"hidden\">";
-            text +="<input name=\"product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_info[workflow_k].sd_company_id+" type=\"hidden\">";
+            text +="<input name=\"workflow["+workflow_k+"][id]\" value="+workflow_list[workflow_k].id+" type=\"hidden\">";
+            text +="<input name=\"product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
             text +="<input name=\"product_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
             $.each(resource_list,function(k,workflow){
                 $.each(workflow,function(k,company){
@@ -505,7 +590,7 @@ jQuery(function($) {  // In case of jQuery conflict
                     })
                     $.each(company.workflow_manager,function(k,personDetail){
                         text +="<input name=\"product_workflow["+workflow_k+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
-                        workflow_info[workflow_k].sd_user_id = personDetail.id;
+                        workflow_list[workflow_k].sd_user_id = personDetail.id;
                     })
                 })
             });
@@ -526,13 +611,13 @@ jQuery(function($) {  // In case of jQuery conflict
             text +="<button class=\"btn btn-sm btn-outline-danger\" onclick=\"$(this).closest('tr').remove();\">Delete</button>";
             text +="</td>";
 
-            text +="<input name=\"workflow["+workflow_k+"][name]\" value="+workflow_info[workflow_k].workflow_name+" type=\"hidden\">";
-            text +="<input name=\"workflow["+workflow_k+"][description]\" value="+workflow_info[workflow_k].workflow_description+" type=\"hidden\">";
-            text +="<input name=\"workflow["+workflow_k+"][country]\" value="+workflow_info[workflow_k].country+" type=\"hidden\">";
+            text +="<input name=\"workflow["+workflow_k+"][name]\" value="+workflow_list[workflow_k].workflow_name+" type=\"hidden\">";
+            text +="<input name=\"workflow["+workflow_k+"][description]\" value="+workflow_list[workflow_k].workflow_description+" type=\"hidden\">";
+            text +="<input name=\"workflow["+workflow_k+"][country]\" value="+workflow_list[workflow_k].country+" type=\"hidden\">";
             text +="<input name=\"workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
             text +="<input name=\"workflow["+workflow_k+"][workflow_type]\" value=\"1\" type=\"hidden\">";
-            text +="<input name=\"product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_info[workflow_k].sd_company_id+" type=\"hidden\">";
-            text +="<input name=\"product_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_info[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
+            text +="<input name=\"product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
+            text +="<input name=\"product_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_list[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
             text +="<input name=\"product_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
             $.each(resource_list,function(k,workflow){
                 $.each(workflow,function(k,company){
@@ -541,11 +626,11 @@ jQuery(function($) {  // In case of jQuery conflict
                     })
                     $.each(company.workflow_manager,function(k,personDetail){
                         text +="<input name=\"product_workflow["+workflow_k+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
-                        workflow_info[workflow_k].sd_user_id = personDetail.id;
+                        workflow_list[workflow_k].sd_user_id = personDetail.id;
                     })
                 })
             });
-            $.each(workflow_info[workflow_k]['activities'], function(k, activity_detail){
+            $.each(workflow_list[workflow_k]['activities'], function(k, activity_detail){
                 console.log(activity_detail['activity_name']);
                 text +="<input name=\"workflow_activity["+workflow_k+"]["+k+"][activity_name]\" value=\""+activity_detail['activity_name']+"\" type=\"hidden\">";
                 text +="<input name=\"workflow_activity["+workflow_k+"]["+k+"][description]\" value=\""+activity_detail['activity_description']+"\" type=\"hidden\">";
@@ -706,42 +791,58 @@ jQuery(function($) {  // In case of jQuery conflict
 });
 
 function sectionPermission(activity_id, readonly){
-    $("div[id^=section]").each(function(){
-        var sectionElement = $(this);
-        if($(this).find("[id^=write]").length){
-            
-            var id = $(this).find("[id^=write]").attr('id').split('-');
-            var flag = 0;
-            $.each(loadPermissions[id[1]].sd_sections[id[2]].sd_activity_section_permissions,function(k,v){
-                if(v.sd_workflow_activity_id == activity_id){
-                    if(v.action == 1) {
-                        sectionElement.find("input[id^=write]").prop('checked',true);
-                        sectionElement.find("input[id^=read]").prop('checked',true);
-                        flag = 1;
+    if(readonly==1){
+        $.ajax({
+            headers: {
+                'X-CSRF-Token': csrfToken
+            },
+            type:'POST',
+            url:'/sd-activity-section-permissions/searchActivityPermission/'+activity_id,
+            success:function(response){
+                console.log(response);
+                var result = $.parseJSON(response);
+                $("div[id^=l1section]").each(function(){
+                    var flag = 0;
+                    var id = $(this).attr('id').split('-');
+                    if((typeof result[id[1]]!="undefined")||(result[id[1]]!="0")){
+                            if(result[id[1]] == 1) {
+                                $(this).find("input[id^=write]").prop('checked',true);
+                                $(this).find("input[id^=read]").prop('checked',true);
+                                flag = 1;
+                            }
+                            else if(result[id[1]] == 2) {
+                                flag = 1;
+                                $(this).find("input[id^=write]").prop('checked',false);
+                                $(this).find("input[id^=read]").prop('checked',true);
+                            }
+                            return true;  
+                    }else{
+                        $(this).find("input[id^=write]").prop('checked',false);
+                        $(this).find("input[id^=read]").prop('checked',false);
                     }
-                    else if(v.action == 2) {
-                        flag = 1;
-                        sectionElement.find("input[id^=write]").prop('checked',false);
-                        sectionElement.find("input[id^=read]").prop('checked',true);
-                    }
-                    return false;
-                }
-            });
-            if(flag==0){
-                sectionElement.find("input[id^=write]").prop('checked',false);
-                sectionElement.find("input[id^=read]").prop('checked',false);
-            }
-        }
-    });
-    if(readonly){
+                });
+            },
+            error:function(response){
+
+            },
+        });
         $("[id^=write]").each(function(){
             $(this).prop('disabled',true);}
         );
         $("[id^=read]").each(function(){
             $(this).prop('disabled',true);});
+    }else{
+        var text ="<button type=\"button\" class=\"btn btn-primary\" onclick=\"savePermission()\">Save</button>";
+        $('#permissionFooter').prepend(text);
+        $("div[id^=section]").each(function(){
+            $(this).find("input[id^=write]").prop('disabled',false);
+            $(this).find("input[id^=read]").prop('disabled',false);
+        });
     }
 }
+function savePermission(workflowType){
 
+}
 function iterateWorkflow(wkfl_name)
 {
     var steps = [];
@@ -805,10 +906,10 @@ function croDroppableArea(){
     });
 }
 function view_workflow(workflow_k){
-    $('#viewWFname').text(workflow_info[workflow_k]['workflow_name']);
-    $('#viewCC').text(call_center_list[workflow_info[workflow_k]['sd_company_id']]['name']);
-    $('#viewCountry').text(workflow_info[workflow_k]['country']);
-    $('#viewDesc').text(workflow_info[workflow_k]['workflow_description']);
+    $('#viewWFname').text(workflow_list[workflow_k]['workflow_name']);
+    $('#viewCC').text(call_center_list[workflow_list[workflow_k]['sd_company_id']]['name']);
+    $('#viewCountry').text(workflow_list[workflow_k]['country']);
+    $('#viewDesc').text(workflow_list[workflow_k]['workflow_description']);
     var team_resources_text="";
     $.each(resource_list[workflow_k], function(company_id, company_detail){
         console.log(company_detail);
@@ -823,7 +924,7 @@ function view_workflow(workflow_k){
     });
     $('#viewRes').html(team_resources_text);
     var activities_text="";
-    $(workflow_info[workflow_k]['activities']).each(function(k,activity_detail){
+    $(workflow_list[workflow_k]['activities']).each(function(k,activity_detail){
         activities_text +="<span class=\"badge badge-info px-5 py-3 m-3\"><h5>"+activity_detail['activity_name']+"</h5><h8>"+activity_detail['activity_description']+"</h8></span><i class=\"fas fa-long-arrow-alt-right\"></i>";
     })
     activities_text+="<span class=\"badge badge-info px-5 py-3 m-3\"><h5>Complete</h5><h8>End of the case</h8></span>"
@@ -858,33 +959,6 @@ function confirm_cust_activity(){
         }
     });
 }
-
-// Dynamic create new distribution ID
-jQuery(function($) {
-        var distriNo = 1;
-        $('#addNewDistri').click(function(){
-            $( ".newDistrictArea" ).append('<div id="newDistri-'+ distriNo + '"><div class="form-group col-md-3 d-inline-block"><label for="">Select Country</label><select class="form-control" id="" name=""><option value="">Select Country</option><option value="USA">Unitied States</option><option value="JPN">Japan</option><option value="EU">Europe</option></select></div><div class="my-2"><button type="button" id="defDistriBtn-'+ distriNo +'" class="btn btn-success workflow w-25"><span>Default Distribution</span></button><div id="defDistriContent-'+ distriNo +'" style="display:none;"><div class="d-flex justify-content-center"><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Generate Report</h5><p class="card-text">Output a report from system</p></div></div><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Submission</h5><p class="card-text">Submit report to regulator</p></div></div></div></div></div><div class="my-2"><button type="button" id="custDistriBtn-'+ distriNo +'" class="btn btn-success workflow w-25"><span>Customize Distribution</span></button><div id="custDistriContent-'+ distriNo +'" class="my-3" style="display:none;"><div class="d-flex justify-content-center"><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Generate Report</h5><p class="card-text">Output a report from system</p></div> </div><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Submission</h5><p class="card-text">Submit report to regulator</p></div></div></div></div></div><button type="button" class="btn btn-sm btn-outline-danger float-right distRmBtn" onclick="$(this).parent().remove();"><i class="fas fa-trash-alt"></i> Remove</button><br><hr></div>');
-            distriNo++;
-        });
-        $('[id^=defDistriBtn]').click(function(){
-            var defDistriSequence = $(this).attr('id').split('-')[1];
-            console.log(defDistriSequence)
-            $('#defDistriContent-' + defDistriSequence).show();
-            $('#custDistriContent-' + defDistriSequence).hide();
-        });
-        $('[id^=custDistriBtn]').click(function(){
-            var custDistriSequence = $(this).attr('id').split('-')[1];
-            console.log(custDistriSequence);
-            $('#custDistriContent-' + custDistriSequence).show();
-            $('#defDistriContent-' + custDistriSequence).hide();
-        });
-        $('#submitDistri').click(function(){
-            $('.distRmBtn, #addNewDistri').hide();
-            $(this).hide();
-            $('#choosecro').show();
-        });
-});
-
 $(document).ready(function(){
     $(".checkAll").click(function () {
         $('.checkboxContent').find('input:checkbox').not(this).prop('checked', this.checked);

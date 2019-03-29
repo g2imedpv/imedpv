@@ -302,8 +302,8 @@ class SdProductsController extends AppController
             $calresult[$company_info->SdCompanies['id']] = $company_info->SdCompanies['company_name'];
         }
         $this->set('call_ctr_companies', $calresult);
-        $loadPermissions = $this->loadPermissions();
-        $this->set('loadPermissions', $loadPermissions);
+        $loadTabs = $this->loadTabs();
+        $this->set('loadTabs', $loadTabs);
     }
 
     public function loadProductTypes()
@@ -394,7 +394,7 @@ class SdProductsController extends AppController
      * In addproduct page 
      * 
      */
-    public function loadPermissions()
+    public function loadTabs()
     {
         $activity_section_permission_table = TableRegistry::get('SdActivitySectionPermissions');
         $activity_section_permissions = $activity_section_permission_table->find();
@@ -402,10 +402,7 @@ class SdProductsController extends AppController
         $sd_tabs = $sd_tabs_table->find()
                     ->contain(['SdSections'=>function($q){
                         return $q->order(['SdSections.section_level'=>'DESC','SdSections.display_order'=>'ASC'])
-                                ->select(['SdSections.id','SdSections.sd_tab_id','SdSections.section_name','SdSections.section_level','SdSections.child_section'])
-                                ->contain(['SdActivitySectionPermissions'=>function($q){
-                                    return $q->select(['sd_section_id','sd_workflow_activity_id','action']);
-                                }]);
+                                ->select(['SdSections.id','SdSections.sd_tab_id','SdSections.section_name','SdSections.section_level','SdSections.child_section']);
                     }])->order(['SdTabs.display_order'=>'ASC']);
         return $sd_tabs->toList();
     }

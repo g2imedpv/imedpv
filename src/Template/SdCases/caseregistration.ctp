@@ -41,8 +41,8 @@
                                 <input type="text" class="form-control" name="field_value[149]" id="event_report_term">
                              </div>
                              <div class="form-group col-md-3">
-                                <label>Reaction Onset Date(B.2.i.4):</label>
-                                <input type="text" class="form-control" name="field_value[159]" id="event_onset_date">
+                                <label>Reaction Onset Date (B.2.i.4b):</label>
+                                <input type="text" class="form-control" name="field_value[156]" id="event_onset_date">
                              </div>
                         </div>
                         <div class="form-row">
@@ -57,7 +57,7 @@
                                 </select>
                              </div>
                             <div class="form-group col-md-5">
-                                <label>Age at time of onset reaction (B.1.2.2a)</label>
+                                <label>Age at Time of Onset of Reaction/event (B.1.2.2a)</label>
                                 <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Field Helper" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
                                 <input type="text" class="form-control" name="field_value[86]" id="patient_age">
                             </div>
@@ -184,7 +184,7 @@
                     <div id="checkbutton" class="d-flex justify-content-center">
                         <div id="caseRegAdvBtn" class="btn btn-outline-info w-25 mx-1"><i class="fas fa-keyboard"></i> Advanced Search</div>
                         <input class="btn btn-success mx-1 w-25" onclick="checkDuplicate()" id="checkbtn" type="button" value="Seach Duplicate">
-                        <div onclick="clearResult()" id="clear" class="btn btn-outline-warning mx-2 w-25" style="display:none;">Search Again</div>
+                        <input onclick="clearResult()" id="clear" class="btn btn-outline-warning mx-2 w-25" style="display:none;" type="button" value="Search Again">
                         <!-- <a role="button" onclick="checkDuplicate()" id="checkbtn" class="completeBtn btn btn-success d-block m-auto w-25">Seach Duplicate</a> -->
                     </div>
 

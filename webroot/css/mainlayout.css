@@ -432,7 +432,7 @@ hr.wfhr {
     color: red;
 }
 
-.DE_search_bar {
+.DE_search_bar, .queryBoxTable, #caseRegAdvBtn{
     cursor: pointer;
 }
 
@@ -448,10 +448,6 @@ ul.queryBoxLeft > a {
 ul.queryBoxLeft > a {
     text-decoration: none;
     color: #000000b8;
-}
-
-.queryBoxTable {
-    cursor: pointer;
 }
 
 .querybox{
@@ -475,4 +471,15 @@ ul.queryBoxLeft > a {
 
 #navbarNavDropdown > ul > li {
     margin-left: 20px;
+}
+
+.queryBackBtn {
+    font-size: 30px !important;
+    margin-top: -50px;
+    margin-left: -10px;
+}
+
+.DEpagination {
+    display: inherit;
+    margin-top: 2px;
 }
