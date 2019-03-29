@@ -1,8 +1,10 @@
 var resource_list={};
 var workflow_k = 0;
-var workflow_list ={};
+var workflow_list =[];
 var cro_list=[];
 var call_center_list = {};
+var permission_list = {}
+var distri_list =[];
 var distriNo = 1;
 $(document).ready(function() {
     var unsaved = false;
@@ -65,6 +67,7 @@ function removeCro(id){
 jQuery(function($) {  // In case of jQuery conflict
     $(document).ready(function(){
         $('#addNewDistri').click(function(){
+            $('#noDistriLabel').hide();
             var text ='';
             text +='<div id="newDistri-'+ distriNo + '">';
             console.log(text);
@@ -121,9 +124,8 @@ jQuery(function($) {  // In case of jQuery conflict
             text +='</div>';
             text +='<button type="button" class="btn btn-sm btn-outline-danger float-right distRmBtn" onclick="$(this).parent().remove();">';
             text +='<i class="fas fa-trash-alt"></i>Remove</button><br><hr></div>';
-            // $( ".newDistrictArea" ).append(text);
-            $( ".newDistrictArea" ).append('<div id="newDistri-'+ distriNo + '"><div class="form-group col-md-3 d-inline-block"><label for="">Select Country</label><select class="form-control" id="" name=""><option value="">Select Country</option><option value="USA">Unitied States</option><option value="JPN">Japan</option><option value="EU">Europe</option></select></div><div class="my-2"><button type="button" id="defDistriBtn-'+ distriNo +'" class="btn btn-success workflow w-25"><span>Default Distribution</span></button><div id="defDistriContent-'+ distriNo +'" style="display:none;"><div class="d-flex justify-content-center"><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Generate Report</h5><p class="card-text">Output a report from system</p></div></div><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Submission</h5><p class="card-text">Submit report to regulator</p></div></div></div></div></div><div class="my-2"><button type="button" id="custDistriBtn-'+ distriNo +'" class="btn btn-success workflow w-25"><span>Customize Distribution</span></button><div id="custDistriContent-'+ distriNo +'" class="my-3" style="display:none;"><div class="d-flex justify-content-center"><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Generate Report</h5><p class="card-text">Output a report from system</p></div> </div><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Submission</h5><p class="card-text">Submit report to regulator</p></div></div></div></div></div><button type="button" class="btn btn-sm btn-outline-danger float-right distRmBtn" onclick="$(this).parent().remove();"><i class="fas fa-trash-alt"></i> Remove</button><br><hr></div>');
-
+            $( ".newDistrictArea" ).append(text);
+            // $( ".newDistrictArea" ).append('<div id="newDistri-'+ distriNo + '"><div class="form-group col-md-3 d-inline-block"><label for="">Select Country</label><select class="form-control" id="" name=""><option value="">Select Country</option><option value="USA">Unitied States</option><option value="JPN">Japan</option><option value="EU">Europe</option></select></div><div class="my-2"><button type="button" id="defDistriBtn-'+ distriNo +'" class="btn btn-success workflow w-25"><span>Default Distribution</span></button><div id="defDistriContent-'+ distriNo +'" style="display:none;"><div class="d-flex justify-content-center"><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Generate Report</h5><p class="card-text">Output a report from system</p></div></div><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Submission</h5><p class="card-text">Submit report to regulator</p></div></div></div></div></div><div class="my-2"><button type="button" id="custDistriBtn-'+ distriNo +'" class="btn btn-success workflow w-25"><span>Customize Distribution</span></button><div id="custDistriContent-'+ distriNo +'" class="my-3" style="display:none;"><div class="d-flex justify-content-center"><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Generate Report</h5><p class="card-text">Output a report from system</p></div> </div><div class="card m-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">Submission</h5><p class="card-text">Submit report to regulator</p></div></div></div></div></div><button type="button" class="btn btn-sm btn-outline-danger float-right distRmBtn" onclick="$(this).parent().remove();"><i class="fas fa-trash-alt"></i> Remove</button><br><hr></div>');
             distriNo++;
         });
         $('[id^=defDistriBtn]').click(function(){
@@ -141,7 +143,6 @@ jQuery(function($) {  // In case of jQuery conflict
         $('#submitDistri').click(function(){
             $('.distRmBtn, #addNewDistri').hide();
             $(this).hide();
-            $('#choosecro').show();
         });
         
         $('[id^=write]').change(function(){
@@ -150,11 +151,11 @@ jQuery(function($) {  // In case of jQuery conflict
         });
 
 
-        // $('#submitchocountry').click(function(){
+        // $('#submit_accessment_country').click(function(){
         //     var default_text = "<p>This is default workflow and cannot be changed</p>";
         //     var customize_text = "";
-        //     var country = $('#select-country').val();
-        //     $(workflowInfo[country]['sd_workflow_activities']).each(function(k,v){
+        //     var country = $('#select-accessment-country').val();
+        //     $(accessmentWorkflowInfo[country]['sd_workflow_activities']).each(function(k,v){
 
         //         default_text +="<li class=\"defworkflowstep\">";
         //             default_text +="<div class=\"card w-100 h-25 my-2\">";
@@ -177,7 +178,7 @@ jQuery(function($) {  // In case of jQuery conflict
         //             customize_text +="</div>";
         //         customize_text +="</li>"
         //     });
-        //     $('#default_workflow').html(default_text);
+        //     $('#default_accessment_workflow').html(default_text);
         //     $('#sortable').html(customize_text);
         // });
         // $("#sd_sponsor_company_id").change(function(){ 
@@ -268,7 +269,7 @@ jQuery(function($) {  // In case of jQuery conflict
         $("#crostaff-"+cro_id).html(textstaff);
     });
 
-    $('#confirm_activities').click(function(){
+    $('#confirm_accessment_activities').click(function(){
 
         $('.step_backward').each(function(){
             $(this).prop("disabled", false);
@@ -276,84 +277,130 @@ jQuery(function($) {  // In case of jQuery conflict
 
         if ($('.defworkflow').is(':visible') && $('.custworkflow').is(':hidden'))
         {
-            $('#cusworkflow, #defbtn').hide();
-            $('#defT, #undochoWF').show();
+            $('#customize_accessment_workflow_div, #default_accessment_btn').hide();
+            $('#default_accessment_T, #undochoAccessmentWF').show();
             $('#ifdef').addClass("mx-auto w-50");
 
-        }
+        }else
         if (($('.defworkflow').is(':hidden') && $('.custworkflow').is(':visible')))
         {
-            if(!$('#custom-workflow_name').val()  ) {
-                $('#custom-workflow_name-validate').show().delay(2000).fadeOut();
+            if(!$('#custom_accessment_workflow_name').val()  ) {
+                $('#custom_accessment_workflow_name-validate').show().delay(2000).fadeOut();
                 return false;
             }
             else if (
-                !$('#custom-workflow_description').val()  ) {
+                !$('#custom_accessment_workflow_description').val()  ) {
                 $('html,body').animate({
-                    scrollTop: $("#cusworkflow").offset().top
+                    scrollTop: $("#customize_accessment_workflow").offset().top
                     });
-                $('#custom-workflow_description-validate').show().delay(2000).fadeOut();
+                $('#custom_accessment_workflow_description-validate').show().delay(2000).fadeOut();
                 return false;
             }
             else {
-                $('#defworkflow, #custbtn, .closewf').hide();
-                $('#cusT, #undochoWF').show();
+                $('#default_accessment_workflow_div, #cust_accessment_btn, .closewf').hide();
+                $('#customize_accessment_T, #undochoAccessmentWF').show();
                 $('#sortable, #draggable').addClass("mx-auto w-50");
-                $('#cusworkflow').find('ul').hide();
-                $('#custom-workflow_name').attr('disabled',true);
-                $('#custom-workflow_description').attr('disabled',true);
+                $('#customize_accessment_workflow').find('ul').hide();
+                $('#custom_accessment_workflow_name').attr('disabled',true);
+                $('#custom_accessment_workflow_description').attr('disabled',true);
                 $('li.custworkflowstep').find('button').hide();
                 var order = 1;
                 $('#sortable').find('.card-body').each(function(){
                     console.log($(this).children('.input-group'));
-                    var text ="<button type=\"button\" onclick=\"sectionPermission("+order+",2)\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\"><i class=\"fas fa-grip-horizontal\"></i></button>";
+                    var text ="<button type=\"button\" id=\"custAccessmentPermission-"+order+"\" onclick=\"sectionPermission("+order+",2)\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\">Set Permission</button>";
                     $(this).append(text);
                     order ++;
                 });
                 $(this).hide();
                 $('#sortable').find('.card-body').append( '<div class="input-group w-25 mx-auto"><i class="fas fa-arrow-up gobackstep"></i><input type="text" class="step_backward form-control form-control-sm backstep_input" aria-label="Back Steps" aria-describedby="backSteps"></div>');
-                $('#custworkflowname').next('#errWorkflow').remove(); // *** this line have been added ***
+                $('#custworkflowname').next('#errAccessmentWorkflow').remove(); // *** this line have been added ***
                 $("#sortable").sortable({ disabled: true });
             }
         };
         $(this).hide();
-        $('#submitworkflow').show();
-        $('#undochocon').hide();
-        $('#undo_activities').show();
+        $('#submit_accessment_workflow').show();
+        $('#undochoaccessmentcon').hide();
+        $('#undo_accessment_activities').show();
 
     });
-    $('#undo_activities').click(function(){
+    $('#undo_accessment_activities').click(function(){
         if ($('.defworkflow').is(':visible') && $('.custworkflow').is(':hidden'))
         {
-            $('#cusworkflow').show();
-            $('#defbtn').show();
-            $('#defT, #undochoWF').hide();
-            $('#ifdef').removeClass("mx-auto w-50");
+            $('#customize_accessment_workflow_div').show();
+            $('#default_accessment_btn').show();
+            $('#default_accessment_T, #undochoAccessmentWF').hide();
         }
         if (($('.defworkflow').is(':hidden') && $('.custworkflow').is(':visible')))
         {
+            $('[id^=custAccessmentPermission]').each(function(){
+                $(this).remove();
+            });
             $("#sortable").sortable({ disabled: false });
             $('#defworkflowstep').hide()
-            $('#defworkflow, #custbtn, .closewf').show();
-            $('#cusT, #undochoWF').hide();
+            $('#default_accessment_workflow_div, #cust_accessment_btn, .closewf').show();
+            $('#customize_accessment_T, #undochoAccessmentWF').hide();
             $('#sortable, #draggable').removeClass("mx-auto w-50");
-            $('#cusworkflow').find('ul').show();
-            $('#custom-workflow_name').attr('disabled',false);
-            $('#custom-workflow_description').attr('disabled',false);
+            $('#customize_accessment_workflow').find('ul').show();
+            $('#custom_accessment_workflow_name').attr('disabled',false);
+            $('#custom_accessment_workflow_description').attr('disabled',false);
             $('li.custworkflowstep').find('button').show();
             $('#sortable').find('.input-group').remove();
 
         }
-        $('#confirm_activities').show();
-        $('#submitworkflow').hide();
+        $('#confirm_accessment_activities').show();
+        $('#submit_accessment_workflow').hide();
         $(this).hide();
-        $('#undochocon').show();
+        $('#undochoaccessmentcon').show();
     })
-    $('#submitworkflow').click(function() {
+    $('#submit_accessment_workflow').click(function() {
+        var finished = 1;
+        $('[id^=custAccessmentPermission]').each(function(){
+            if($(this).text() != "View Permission"){
+                finished = 0;
+                // TODO mention that THIS activity's permission not finished
+                return false;
+            }
+            var activity_Id = $(this).attr('id').split('-')[1];
+            $(this).prop('onclick','sectionPermission('+activity_Id+',3)');
+        });
+        if(!finished){
+            console.log('111');
+            return false;
+        }
         $(this).hide();
-        $('#undo_activities').hide();
-        $('#undochoWF, #submitDistri, #chooseDistri').show();
-        //$('#choosecro').show();
+        $('#undo_accessment_activities').hide();
+        $('#chooseAccessmentCompany').show();
+        // $('#undochoAccessmentWF, #chooseDistri').show();
+        var text ="";
+        if(distri_list.length>0){
+            text += "<table>";
+            text += "<thead>";
+            text +="<tr>";
+            text +="<th></th>"
+            text +="<th>Country</th>";
+            text +="<th>Distribution Name</th>";
+            text +="<th>Team Resources</th>";
+            text +="<th>Actions</th>";
+            text +="</tr>";
+            text += "</thead>";
+            $(distri_list).each(function(k,distri_detail){
+                text +="<tr>";
+                text +="<td><input type=\"checkbox\" id=\"selected-distri-"+k+"\"></td>";
+                text +="<td>"+distri_detail.country+"</td>";
+                text +="<td>"+distri_detail.name+"</td>";
+                text +="<td>";
+                $(distri_detail.members).each(function(key, member_detial){
+                    text += member_detial.firstname+"/"+member_detial.lastname+"; ";
+                });
+                text +="</td>";
+                text +="</tr>";
+            });
+        }else{
+            text +="<div id=\"noDistriLabel\">Please Create a new Distribution Workflow</div>";
+        }
+        console.log('create ');
+        $('#distriList').html(text);
+        //$('#chooseAccessmentCompany').show();
         // var cro_text = "";
         // $.each(cro_list, function(k,cro){
         //     cro_text +="<option value=\""+cro.id+"\">"+cro.name+"</option>";
@@ -364,7 +411,7 @@ jQuery(function($) {  // In case of jQuery conflict
         if ($('.defworkflow').is(':visible') && $('.custworkflow').is(':hidden'))
         {
             var order_no = 1;
-            $('#default_workflow').find(".card-body").each(function(){
+            $('#default_accessment_workflow').find(".card-body").each(function(){
                 var activities_list = {};
                 $(this).find(".card-title").each(function(){
                     activities_list.activity_name = $(this).text();
@@ -379,10 +426,10 @@ jQuery(function($) {  // In case of jQuery conflict
                 workflow_list[workflow_k].activities.push(activities_list);
                 order_no++;
             });
-            workflow_list[workflow_k].id = $('#default-workflow_id').val();
+            workflow_list[workflow_k].id = $('#default_accessment_workflow_id').val();
             workflow_list[workflow_k].workflow_type = 0;
-            workflow_list[workflow_k].workflow_name = $('#default-workflow_name').val();
-            workflow_list[workflow_k].workflow_description= $('#default-workflow_description').val();
+            workflow_list[workflow_k].workflow_name = $('#default_accessment_workflow_name').val();
+            workflow_list[workflow_k].workflow_description= $('#default_accessment_workflow_description').val();
         }
         if (($('.defworkflow').is(':hidden') && $('.custworkflow').is(':visible')))
         {
@@ -407,114 +454,111 @@ jQuery(function($) {  // In case of jQuery conflict
                 order_no++;
             });
             workflow_list[workflow_k].workflow_type = 1;
-            workflow_list[workflow_k].workflow_name = $('#custom-workflow_name').val();
-            workflow_list[workflow_k].workflow_description= $('#custom-workflow_description').val();
+            workflow_list[workflow_k].workflow_name = $('#custom_accessment_workflow_name').val();
+            workflow_list[workflow_k].workflow_description= $('#custom_accessment_workflow_description').val();
         }
         //TODO While customized
     });
     $('#addNewWL').click(function() {
-        function addNewWorkflow() {
+        // function addNewWorkflow() {
             resource_list[workflow_k] = {};
             workflow_list[workflow_k] = {};
             // var call_center_text = "<option value=\"\">Select Call Center</option>";
             // $.each(call_center_list, function(k,call_center){
             //     call_center_text +="<option value=\""+k+"\">"+call_center.name+"</option>";
             //     });
-            $("#select-country, #callCenter").prop("disabled", false);
-            $("#select-country").val();
+            $("#select-accessment-country, #callCenter").prop("disabled", false);
+            $("#select-accessment-country").val("");
             // $('#callCenter').html(call_center_text);
             $('#addNewWL').hide();
             $('#workflowlist').slideUp();
             $('#choworkflow').slideDown();
-            $('#exit_workflow').show();
-            $('#submitchocountry').show();
-            $('#choosewf').hide();
-        }
-        if(
-            !$('#workflow_table > tr > td').first().text()  ) {
-                addNewWorkflow();
-            }
-        else {
-            swal({
-                title: "Do you want to reuse the previous info?",
-                icon: "info",
-                buttons: ["No", "Yes"]
-                })
-                .then((yes) => {
-                    if (yes) {
-                    swal("New Workflow would based on the previous one", {
-                        icon: "success",
-                    });
-                    addNewWorkflow();
-                    }
-                    else {
-                    swal("New Workflow has been added", {
-                        icon: "success",
-                    });
-                    addNewWorkflow();
-                    $('#choworkflow, #chooseDistri, #choosecro').find('select,input').val('');
-                    }
-                });
-            }
+            $('#exit_accessment_workflow').show();
+            $('#submit_accessment_country').show();
+            $('#choose_accessment_wf').hide();
+        // }
+        // if(!$('#workflow_table > tr > td').first().text()  ) {
+        //         addNewWorkflow();
+        //     }
+        // else {
+        //     swal({
+        //         title: "Do you want to reuse the previous info?",
+        //         icon: "info",
+        //         buttons: ["No", "Yes"]
+        //         })
+        //         .then((yes) => {
+        //             if (yes) {
+        //             swal("New Workflow would based on the previous one", {
+        //                 icon: "success",
+        //             });
+        //             addNewWorkflow();
+        //             }
+        //             else {
+        //             swal("New Workflow has been added", {
+        //                 icon: "success",
+        //             });
+        //             addNewWorkflow();
+        //             $('#choworkflow, #chooseDistri, #chooseAccessmentCompany').find('select,input').val('');
+        //             }
+        //         });
+        //     }
 
 
     });
-    $('#exit_workflow').click(function(){
+    $('#exit_accessment_workflow').click(function(){
         $('#choworkflow').slideUp();
         $('#workflowlist').slideDown();
         $('#addNewWL').show();
     });
-    $('#submitchocountry').click(function() {
+    $('#submit_accessment_country').click(function() {
         // if(
-        //     !$('#select-country').val()  ) {
-        //     $('#select-country-validate').show().delay(2000).fadeOut();;
+        //     !$('#select-accessment-country').val()  ) {
+        //     $('#select-accessment-country-validate').show().delay(2000).fadeOut();;
         // }
         // else
-        if (
-            !$('#callCenter').val() ) {
+        if (!$('#callCenter').val()) {
             $('#callCenter-validate').show().delay(2000).fadeOut();;
         }
         else
         {
             $('#defworkflowstep').hide();
-            $('#defworkflow, #custbtn, .closewf').show();
-            $('#cusT, #undochoWF').hide();
-            $('#cusworkflow').find('ul').show();
-            $('#custom-workflow_name').attr('disabled',false);
-            $('#custom-workflow_description').attr('disabled',false);
+            $('#cust_accessment_btn, .closewf').show();
+            $('#customize_accessment_T, #undochoAccessmentWF').hide();
+            $('#customize_accessment_workflow').find('ul').show();
+            $('#custom_accessment_workflow_name').attr('disabled',false);
+            $('#custom_accessment_workflow_description').attr('disabled',false);
             $('li.custworkflowstep').find('button').show();
             $('#sortable').find('.input-group').remove();
 
-            $('#cusworkflow').find('input').prop("disabled", false);
+            $('#customize_accessment_workflow').find('input').prop("disabled", false);
             $("#sortable").sortable({ disabled: false });
             $('#sortable, #draggable').removeClass("mx-auto w-50");
             $('#ifdef').removeClass("mx-auto w-50");
-            $('.defworkflow').hide();
+            $('.default_accessment_workflow').hide();
             $('.custworkflow').hide();
-            $('#submitworkflow').hide();
-            $('#exit_workflow').hide();
-            workflow_list[workflow_k].country = $('#select-country').val();
+            $('#submit_accessment_workflow').hide();
+            $('#exit_accessment_workflow').hide();
+            workflow_list[workflow_k].country = $('#select-accessment-country').val();
             workflow_list[workflow_k].sd_company_id = $('#callCenter').val();
             $(this).hide();
-            $('#undochocon').show();
-            $("#select-country, #callCenter ").prop("disabled", true);
-            $('#choosewf').show();
-            $('#defworkflow').show();
-            $('#cusworkflow').show();
-            $('#defT').hide();
-            $('#cusT').hide();
-            $('#defbtn').show();
-            $('#custbtn').show();
+            $('#undochoaccessmentcon').show();
+            $("#select-accessment-country, #callCenter ").prop("disabled", true);
+            $('#choose_accessment_wf').show();
+            $('#default_accessment_T').hide();
+            $('#customize_accessment_T').hide();
+            $('#default_accessment_btn').show();
+            $('#cust_accessment_btn').show();
             var default_text = "<p>This is default workflow and cannot be changed</p>";
             var customize_text = "";
-            var country = $('#select-country').val();
-            default_text +="<h4>Name: "+ workflowInfo[country]['name']+"</h4>";
-            default_text +="<h5>Description: "+workflowInfo[country]['description']+"</h5>";
-            $('#default-workflow_description').val(workflowInfo[country]['description']);
-            $('#default-workflow_name').val(workflowInfo[country]['name']);
-            $('#custom-workflow_name').val('customize-'+workflowInfo[country]['name']);
-            $('#default-workflow_id').val(workflowInfo[country]['id']);
-            $(workflowInfo[country]['sd_workflow_activities']).each(function(k,v){
+            var country = $('#select-accessment-country').val();
+            default_text +="<h4>Name: "+ accessmentWorkflowInfo[country]['name']+"</h4>";
+            default_text +="<h5>Description: "+accessmentWorkflowInfo[country]['description']+"</h5>";
+            $('#default_accessment_workflow_description').val(accessmentWorkflowInfo[country]['description']);
+            $('#default_accessment_workflow_name').val(accessmentWorkflowInfo[country]['name']);
+            $('#custom_accessment_workflow_name').val('customize-'+accessmentWorkflowInfo[country]['name']);
+            $('#default_accessment_workflow_id').val(accessmentWorkflowInfo[country]['id']);
+            $('#default_accessment_workflow').html('');
+            $(accessmentWorkflowInfo[country]['sd_workflow_activities']).each(function(k,v){
                 default_text +="<li class=\"defworkflowstep\">";
                     default_text +="<div class=\"card w-100 h-25 my-2\">";
                         default_text +="<div class=\"card-body p-3\">";
@@ -523,7 +567,7 @@ jQuery(function($) {  // In case of jQuery conflict
                             default_text +="<div class=\"input-group w-25 mx-auto\">";
                                 default_text +="<i class=\"fas fa-arrow-up gobackstep\"></i>";
                                 default_text +="<input type=\"text\" readonly=\"readonly\" value="+v.step_backward+" class=\"step_backward form-control form-control-sm\" aria-label=\"Back Steps\" aria-describedby=\"backSteps\">"
-                                default_text +="<button type=\"button\" onclick=\"sectionPermission("+v.id+",1)\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\"><i class=\"fas fa-grip-horizontal\"></i></button>";
+                                default_text +="<button type=\"button\" onclick=\"sectionPermission("+v.id+",1)\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\">View Permission</button>";
                             default_text +="</div>";
                         default_text +="</div>";
                     default_text +="</div>";
@@ -538,73 +582,83 @@ jQuery(function($) {  // In case of jQuery conflict
                     customize_text +="</div>";
                 customize_text +="</li>"
             });
-            $('#default_workflow').html(default_text);
+            $('#default_accessment_workflow').html(default_text);
             $('#sortable').html(customize_text);
         };
 
     });
 
 
-    $('#undochoWF').click(function() {
+    $('#undochoAccessmentWF').click(function() {
         $('.step_backward').each(function(){
             $(this).prop("disabled", false);
         });
-        $('#undo_activities, #submitDistri,.distRmBtn, #addNewDistri').show();
-        $('#choosecro').hide();
-        $('#submitworkflow').show();
+        $('#undo_accessment_activities').show();
+        $('#chooseAccessmentCompany').hide();
+        $('#submit_accessment_workflow').show();
     });
-    $('#undochocon').click(function() {
-        $('#exit_workflow').show();
-        $('#choosewf').hide();
-        $('#choosecro').hide();
-        $('#confirm_activities').hide();
-        $('#submitchocountry').show();
-        $("#select-country, #callCenter").prop("disabled", false);
+    $('#undochoaccessmentcon').click(function() {
+        $('#exit_accessment_workflow').show();
+        $('#choose_accessment_wf').hide();
+        $('#chooseAccessmentCompany').hide();
+        $('#undo_accessment_activities').hide();
+        $('#submit_accessment_country').show();
+        $("#select-accessment-country, #callCenter").prop("disabled", false);
     });
-    $('#confirmWFlist').click(function() {
+    $('#confirmAccessmentWFlist').click(function() {
+        $(this).hide();
+        $('#undochoAccessmentWF').hide(); 
+        $('#chooseDistri').show();
+    });
+    $('#backDistri').click(function(){
+        $('#chooseDistri').hide();
+        $('#undochoAccessmentWF').show();
+        $('#confirmAccessmentWFlist').show();
+    })
+    $('#confirmDistriCro').click(function(){
         var text = "";
         var cro_text = "";
         $('[id^=crocompany-').each(function(){
             cro_text +=$(this).text();
             cro_text += " ; "
         });
-        if ($('.defworkflow').is(':visible') && $('.custworkflow').is(':hidden'))
+        if ($('.default_accessment_workflow').is(':visible') && $('.custworkflow').is(':hidden'))
         {
             text +="<tr>";
-            text +="<td>"+$('#default-workflow_name').val()+"</td>";
-            text +="<td>"+$('#default-workflow_description').val()+"</td>";
+            text +="<td>"+$('#default_accessment_workflow_name').val()+"</td>";
+            text +="<td>"+$('#default_accessment_workflow_description').val()+"</td>";
             text +="<td>"+$('#callCenter option:selected').text()+"</td>";
-            text +="<td>"+$('#select-country option:selected').text()+"</td>";
+            text +="<td>"+$('#select-accessment-country option:selected').text()+"</td>";
             text +="<td>"+cro_text+"</td>";
             text +="<td>";
             text +="<div class=\"btn btn-sm btn-primary m-1\" onclick=\"view_workflow("+workflow_k+")\" data-toggle=\"modal\" data-target=\".WFlistView\">View</div>"
             text +="<button class=\"btn btn-sm btn-outline-danger\" onclick=\"$(this).closest('tr').remove();\">Delete</button>";
             text +="</td>";
             text +="<input name=\"workflow["+workflow_k+"][id]\" value="+workflow_list[workflow_k].id+" type=\"hidden\">";
-            text +="<input name=\"product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
-            text +="<input name=\"product_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
+            text +="<input name=\"product_accessment_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
+            text +="<input name=\"product_accessment_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
             $.each(resource_list,function(k,workflow){
                 $.each(workflow,function(k,company){
                     $.each(company.team_resources,function(k,personDetail){
                         text +="<input name=\"user_assignment["+workflow_k+"]["+personDetail.id+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
                     })
                     $.each(company.workflow_manager,function(k,personDetail){
-                        text +="<input name=\"product_workflow["+workflow_k+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
+                        text +="<input name=\"product_accessment_workflow["+workflow_k+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
                         workflow_list[workflow_k].sd_user_id = personDetail.id;
                     })
                 })
             });
 
-            // text +="<input name=\"user_assignment["+workflow_k+"][sd_user_assignments]\" value="+$('#default-workflow_id').val()+" type=\"hidden\">";
+            // text +="<input name=\"user_assignment["+workflow_k+"][sd_user_assignments]\" value="+$('#default_accessment_workflow_id').val()+" type=\"hidden\">";
             text +="</tr>";
         }
-        if (($('.defworkflow').is(':hidden') && $('.custworkflow').is(':visible')))
+        if (($('.default_accessment_workflow').is(':hidden') && $('.custworkflow').is(':visible')))
         {
             text +="<tr>";
-            text +="<td>"+$('#custom-workflow_name').val()+"</td>";
-            text +="<td>"+$('#custom-workflow_description').val()+"</td>";
+            text +="<td>"+$('#custom_accessment_workflow_name').val()+"</td>";
+            text +="<td>"+$('#custom_accessment_workflow_description').val()+"</td>";
             text +="<td>"+$('#callCenter option:selected').text()+"</td>";
-            text +="<td>"+$('#select-country option:selected').text()+"</td>";
+            text +="<td>"+$('#select-accessment-country option:selected').text()+"</td>";
             text +="<td>"+cro_text+"</td>";
             text +="<td>";
             text +="<div class=\"btn btn-sm btn-primary mx-2\" data-toggle=\"modal\" onclick=\"view_workflow("+workflow_k+")\" data-target=\".WFlistView\">View</div>"
@@ -616,16 +670,16 @@ jQuery(function($) {  // In case of jQuery conflict
             text +="<input name=\"workflow["+workflow_k+"][country]\" value="+workflow_list[workflow_k].country+" type=\"hidden\">";
             text +="<input name=\"workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
             text +="<input name=\"workflow["+workflow_k+"][workflow_type]\" value=\"1\" type=\"hidden\">";
-            text +="<input name=\"product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
-            text +="<input name=\"product_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_list[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
-            text +="<input name=\"product_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
+            text +="<input name=\"product_accessment_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
+            text +="<input name=\"product_accessment_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_list[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
+            text +="<input name=\"product_accessment_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
             $.each(resource_list,function(k,workflow){
                 $.each(workflow,function(k,company){
                     $.each(company.team_resources,function(k,personDetail){
                         text +="<input name=\"user_assignment["+workflow_k+"]["+personDetail.id+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
                     })
                     $.each(company.workflow_manager,function(k,personDetail){
-                        text +="<input name=\"product_workflow["+workflow_k+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
+                        text +="<input name=\"product_accessment_workflow["+workflow_k+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
                         workflow_list[workflow_k].sd_user_id = personDetail.id;
                     })
                 })
@@ -641,7 +695,7 @@ jQuery(function($) {  // In case of jQuery conflict
         };
         text +="</tr>";
         $('#addNewWL').show();
-        $('#choworkflow, #chooseDistri, #choosecro').slideUp();
+        $('#choworkflow, #chooseDistri, #chooseAccessmentCompany').slideUp();
         $('#workflowlist').slideDown();
         swal({
             title: "Your New Workflow has been SET",
@@ -665,16 +719,16 @@ jQuery(function($) {  // In case of jQuery conflict
     });
     // Defaultworkflow and Custworkflow button control
 
-    $('#defbtn').click(function() {
-        $('#confirm_activities').show();
-        $('.defworkflow').slideDown();
-        $('.custworkflow').slideUp();
+    $('#default_accessment_btn').click(function() {
+        $('#confirm_accessment_activities').show();
+        $('#default_accessment_workflow').slideDown();
+        $('#customize_accessment_workflow').slideUp();
     });
 
-    $('#custbtn').click(function() {
-        $('#confirm_activities').show();
-        $('.custworkflow').slideDown();
-        $('.defworkflow').slideUp();
+    $('#cust_accessment_btn').click(function() {
+        $('#confirm_accessment_activities').show();
+        $('#customize_accessment_workflow').slideDown();
+        $('#default_accessment_workflow').slideUp();
     });
 
     // Close customworkflow step
@@ -712,7 +766,7 @@ jQuery(function($) {  // In case of jQuery conflict
         });
         // $('#comfirm_activity').click(function(){
         //     $(this).hide();
-        //     $('#new_activity-name').replaceWith('<b>' + $('#new_activity-name').val() + '</b>');
+        //     $('#new_accessment_activity_name').replaceWith('<b>' + $('#new_accessment_activity_name').val() + '</b>');
         //     $('#new_activit-description').replaceWith($('#new_activit-description').val());
         //     $('#customize_activity').attr('id','draggable');
         //     $( "#draggable" ).draggable({
@@ -733,13 +787,13 @@ jQuery(function($) {  // In case of jQuery conflict
         //                 $(this).find('.card-body').append( '<button class="close closewf">' +  '&times;' +  '</button>');
         //                 $(this).find('.input-group').append('<i class="fas fa-arrow-up gobackstep"></i><input type="text" class="step_backward form-control form-control-sm" aria-label="Back Steps" aria-describedby="backSteps">');
         //                 // $(this).change(function() {
-        //                 //     $('#new_activity-name').replaceWith('<h5 id>' + $('#new_activity-name').val() + '</h5>');
+        //                 //     $('#new_accessment_activity_name').replaceWith('<h5 id>' + $('#new_accessment_activity_name').val() + '</h5>');
         //                 // });
         //                 },
         //         // Remove all inputs in original when drag into new place
         //         stop : function (event,ui) {
         //             $(ui.helper).addClass("w-100 h-75");
-        //             $(this).find('h5').replaceWith('<h5><input id="new_activity-name" type="text" placeholder="Type your step name here" class="font-weight-bold" /></h5>');
+        //             $(this).find('h5').replaceWith('<h5><input id="new_accessment_activity_name" type="text" placeholder="Type your step name here" class="font-weight-bold" /></h5>');
         //             $(this).find('p').replaceWith('<p class="card-text"><textarea type="text" id="new_activit-description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>')
         //             $(this).attr('id','customize_activity');
         //             $('#comfirm_activity').show();
@@ -792,6 +846,7 @@ jQuery(function($) {  // In case of jQuery conflict
 
 function sectionPermission(activity_id, readonly){
     if(readonly==1){
+        $('#permissionFooter').find('button').remove();
         $.ajax({
             headers: {
                 'X-CSRF-Token': csrfToken
@@ -832,16 +887,77 @@ function sectionPermission(activity_id, readonly){
         $("[id^=read]").each(function(){
             $(this).prop('disabled',true);});
     }else{
-        var text ="<button type=\"button\" class=\"btn btn-primary\" onclick=\"savePermission()\">Save</button>";
-        $('#permissionFooter').prepend(text);
-        $("div[id^=section]").each(function(){
-            $(this).find("input[id^=write]").prop('disabled',false);
-            $(this).find("input[id^=read]").prop('disabled',false);
+        if(readonly==2){
+            if(!($('#permissionFooter').find('button').length > 0)){
+                var text ="<button type=\"button\" class=\"btn btn-primary\" onclick=\"savePermission("+activity_id+")\" data-dismiss=\"modal\">Save</button>";
+                $('#permissionFooter').prepend(text);
+            }else $('#permissionFooter').find('button').attr('onclick',"savePermission("+activity_id+")");
+        }
+        $("div[id^=l1section]").each(function(){
+            var flag = 0;
+            var id = $(this).attr('id').split('-');
+            $("[id^=write]").each(function(){
+                $(this).prop('disabled',false);}
+            );
+            $("[id^=read]").each(function(){
+                $(this).prop('disabled',false);});
+            // if((typeof permission_list[workflow_k]=="undefined"))
+            // {
+            //     $(this).find("input[id^=write]").prop('checked',false);
+            //     $(this).find("input[id^=read]").prop('checked',false);
+            //     return true;
+            // }else if((typeof permission_list[workflow_k][activity_id]=="undefined"))
+            // {
+                // $(this).find("input[id^=write]").prop('checked',false);
+                // $(this).find("input[id^=read]").prop('checked',false);
+                // return true;
+            // }else 
+            
+            if((typeof permission_list[workflow_k]=="undefined")||(typeof permission_list[workflow_k][activity_id]=="undefined")
+                    ||(typeof permission_list[workflow_k][activity_id][id[1]]=="undefined")){
+                        $(this).find("input[id^=write]").prop('checked',false);
+                        $(this).find("input[id^=read]").prop('checked',false);
+                        return true;
+            }else if(permission_list[workflow_k][activity_id][id[1]] == 1) {
+                        $(this).find("input[id^=write]").prop('checked',true);
+                        $(this).find("input[id^=read]").prop('checked',true);
+                        flag = 1;
+                    }
+                    else if(permission_list[workflow_k][activity_id][id[1]] == 2) {
+                        flag = 1;
+                        $(this).find("input[id^=write]").prop('checked',false);
+                        $(this).find("input[id^=read]").prop('checked',true);
+                    }else{
+                        $(this).find("input[id^=write]").prop('checked',false);
+                        $(this).find("input[id^=read]").prop('checked',false);
+            }
         });
+
     }
 }
-function savePermission(workflowType){
-
+function savePermission(activity_id){
+    if(typeof permission_list[workflow_k]=='undefined') permission_list[workflow_k]=[];
+    if(typeof permission_list[workflow_k][activity_id]=='undefined') permission_list[workflow_k][activity_id]=[];
+    $("div[id^=l2section]").each(function(){
+        var write = 0;
+        var pid = $(this).attr('id').split('-');
+        $(this).find('[id^=l1section]').each(function(){
+            
+            var id = $(this).attr('id').split('-');
+            if($(this).find("input[id^=write]").prop('checked')==true){
+                permission_list[workflow_k][activity_id][id[1]]=1;
+                write=1;
+            }else if($(this).find("input[id^=read]").prop('checked') == true){
+                permission_list[workflow_k][activity_id][id[1]]=2;
+                write=1;
+            }else {
+                permission_list[workflow_k][activity_id][id[1]] = 0;
+            }
+        })
+        if(write) permission_list[workflow_k][activity_id][pid[1]] = 1;
+        else permission_list[workflow_k][activity_id][pid[1]] = 0;
+    });
+    $('#custAccessmentPermission-'+activity_id).text('View Permission');
 }
 function iterateWorkflow(wkfl_name)
 {
@@ -930,12 +1046,15 @@ function view_workflow(workflow_k){
     activities_text+="<span class=\"badge badge-info px-5 py-3 m-3\"><h5>Complete</h5><h8>End of the case</h8></span>"
     $('#view_activities').html(activities_text);
 }
-function confirm_cust_activity(){
+function confirm_cust_activity(type=0){
     // $('#draggable').addClass('ui-draggable ui-draggable-handle');
-    $('#new_activity-name').replaceWith('<b>'+$('#new_activity-name').val()+'</b>');
-    $('#new_activity-description').replaceWith($('#new_activity-description').val());
+    var typestr = "";
+    if(type) typestr="accessment";
+    else typestr="distribution";
+    $('#new_'+typestr+'_activity_name').replaceWith('<b>'+$('#new_'+typestr+'_activity_name').val()+'</b>');
+    $('#new_'+typestr+'_activity_description').replaceWith($('#new_'+typestr+'_activity_description').val());
     $( "#draggable" ).draggable( {disabled: false} )
-    $('#confirm_new_activity').remove();
+    $('#new_'+typestr+'_activity_description').remove();
     $( "#draggable" ).draggable({
         connectToSortable: "#sortable",
         cursor: "pointer",
@@ -944,9 +1063,9 @@ function confirm_cust_activity(){
         revert: "invalid",
         start  : function(event, ui){
             $(ui.helper).addClass("w-100 h-75");
-            $(this).find('h5').replaceWith('<h5 class=\"card-title\"><input type="text" id="new_activity-name" placeholder="Type step name here FIRST" class="font-weight-bold" /></h5>');
-            $(this).find('p').replaceWith('<p class="card-text"><textarea type="text"  id="new_activity-description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>');
-            $(this).find('.card').append("<button id=\"confirm_new_activity\" onclick=\"confirm_cust_activity()\" class=\"btn btn-primary w-25 mx-auto my-2\">Confirm</button>");
+            $(this).find('h5').replaceWith('<h5 class=\"card-title\"><input type="text" id="new_'+typestr+'_activity_name" placeholder="Type step name here FIRST" class="font-weight-bold" /></h5>');
+            $(this).find('p').replaceWith('<p class="card-text"><textarea type="text"  id="new_'+typestr+'_activity_description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>');
+            $(this).find('.card').append("<button id=\"new_'+typestr+'_activity_description\" onclick=\"confirm_cust_activity("+type+")\" class=\"btn btn-primary w-25 mx-auto my-2\">Confirm</button>");
         },
         // Add "close icon" when drag into new place
         create: function( event, ui ) {

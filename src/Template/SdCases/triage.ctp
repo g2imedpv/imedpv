@@ -37,7 +37,6 @@
         echo "</div></div>";
     }
     ?>
-    </div>
     <div id="basicInfo" class="form-group mx-3">
         <h4 class="text-left">Product</h4>
         <div class="form-row">
@@ -114,7 +113,7 @@
                     <?php
                     echo "<input id=\"patientField_dob\" name=\"field_value[85][value]\"";
                     if($field_value_set['85']['field_value']!=null) echo "value=\"".$field_value_set['85']['field_value']."\"";
-                    echo "type=\"hidden\">";
+                    echo " type=\"hidden\">";
                     ?>
                 </div>
             </div>
