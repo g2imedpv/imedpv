@@ -2,3 +2,4 @@
 config/app.php
 logs/
 tmp/
+webroot/uploads/files/

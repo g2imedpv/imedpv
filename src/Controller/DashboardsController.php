@@ -39,7 +39,7 @@ class DashboardsController extends AppController {
             ],
             '3'=>[
                 'id'=>'4',
-                'preferrence_name'=>'Prolonged',
+                'preferrence_name'=>'Hospitalization',
                 'sd_field_id'=>'8',
                 'value_at'=>'4',
                 'value_length'=>'1',

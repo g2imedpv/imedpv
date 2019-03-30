@@ -79,7 +79,7 @@ echo $this->element('generatepdf');
 
     <!-- "Documents" Button -->
     <li class="nav-item">
-        <a class="btn btn-outline-info" href="/sd-documents/add_documents/<?= $caseId ?>" title="Documents Check"><i class="far fa-file-alt"></i> Documents</a>
+        <a class="btn btn-outline-info" href="/sd-documents/add_documents/<?= $caseId ?>" title="Documents Check" target="_blank"><i class="far fa-file-alt"></i> Documents</a>
     </li>
 
     <!-- "Print" Dropdown Button -->
