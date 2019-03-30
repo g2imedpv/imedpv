@@ -334,7 +334,7 @@ class SdCasesController extends AppController
                 ],
                 '3'=>[
                     'id'=>'4',
-                    'preferrence_name'=>'prolonged',
+                    'preferrence_name'=>'Hospitalization',
                     'sd_field_id'=>'8',
                     'value_at'=>'4',
                     'value_length'=>'1',
@@ -342,7 +342,7 @@ class SdCasesController extends AppController
                 ],
                 '4'=>[
                     'id'=>'5',
-                    'preferrence_name'=>'anomaly',
+                    'preferrence_name'=>'Anomaly',
                     'sd_field_id'=>'8',
                     'value_at'=>'5',
                     'value_length'=>'1',
@@ -434,7 +434,7 @@ class SdCasesController extends AppController
                             'type'=>'LEFT',
                             'conditions' => ['clinical_trial.sd_field_id = 40','clinical_trial.sd_case_id = SdCases.id','clinical_trial.field_value = 1'],
                         ]
-                    ])->order(['caseNo'=>'ASC','versions'=>'DESC']);
+                    ])->order(['caseNo'=>'ASC','versions'=>'DESC'])->group(['SdCases.id']);
                 if(array_key_exists('preferrenceId',$searchKey) ) {
                     $preferrence_detail = $preferrence_list[$searchKey['preferrenceId']-1];
                     if(array_key_exists('value_at',$preferrence_detail))
@@ -955,7 +955,7 @@ class SdCasesController extends AppController
                 }
             }
 
-            if (!$this->saveDocuments($requestData, $case->id))
+            if (!$this->saveDocuments($requestData['document'], $case->id))
             {
                 echo "problem in saving documents";
                 return null;
@@ -1051,7 +1051,7 @@ class SdCasesController extends AppController
                 }
             }
             
-            if (!$this->saveDocuments($requestData, $case->id))
+            if (!$this->saveDocuments($requestData['document'], $case->id))
             {
                 echo "problem in saving document!";
                 return null;
@@ -1065,11 +1065,12 @@ class SdCasesController extends AppController
         foreach ($data_arr as $key => $value)
         {
             if ($key == 'field_value')
-                continue;
+                continue; 
             preg_match("/^(doc_\S+)_(\d+)$/", $key, $matches);
+
             $field = $matches[1];
             $index = $matches[2];
-            if (!in_array($value, $document_data[$index][$field]))
+            if ((!in_array($index, $document_data))||(!in_array($field,$document_data[$index]))||(!in_array($value, $document_data[$index][$field])))
             {
                 $document_data[$index][$field] = $value;
             }
@@ -1083,8 +1084,8 @@ class SdCasesController extends AppController
     public function saveDocuments($requested_data,$case_id)
     {
         $userinfo = $this->request->getSession()->read('Auth.User');
-        $document_array = $this->getDocumentParams($requested_data);
-        //debug($document_array);
+        $document_array = $requested_data;
+        // debug($document_array);
         $this->loadModel('SdDocuments');
         $file_saved = false;
         foreach ($document_array as $document_details)
@@ -1156,7 +1157,6 @@ class SdCasesController extends AppController
                     $newDocumentEntity->created_dt = date("Y-m-d H:i:s");
                     $newDocumentEntity->updated_dt = date("Y-m-d H:i:s");
                     $newDocumentEntity->created_by = $userinfo['id'];
-                    
                     if ($this->SdDocuments->save($newDocumentEntity))
                     {
                         $file_saved = true;

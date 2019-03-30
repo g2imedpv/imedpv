@@ -21,7 +21,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
 							<tr class="table-secondary">
 							<th scope="col">Death</th>
 							<th scope="col">Life Threat</th>
-							<th scope="col">Prolong</th>
+							<th scope="col">Hospitalization</th>
 							<th scope="col">Disability</th>
 							<th scope="col">Anomaly</th>
 							<th scope="col">Other</th>

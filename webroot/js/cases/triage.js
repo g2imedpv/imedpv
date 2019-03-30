@@ -58,6 +58,36 @@ $(document).ready(function(){
 
         });
     });
+    $('[id^=add_attachment]').click(function(){
+        var text="";
+        var set_number = $(this).attr('id').split('-')[1];
+        set_number ++;
+        text +="<div class=\"form-row\">";
+            text +="<div class=\"form-group col-md-3\">";
+                text +="<label>Classification<i class=\"fas fa-asterisk reqField\"></i></label>";
+                text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_classification]\" id=\"doc_classification_"+set_number+"\" value=\"\">";
+            text +="</div>"
+            text +="<div class=\"form-group col-md-3\">";
+                text +="<label>Description<i class=\"fas fa-asterisk reqField\"></i></label>";
+                text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_description]\" id=\"doc_description_"+set_number+"\" value=\"\">";
+            text +="</div>";
+            text +="<div class=\"form-group col-md-3\">";
+                text +="<label>File/Reference</label>";
+                text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_path]\" id=\"doc_path_"+set_number+"\" value=\"\" style=\"display:none\">";
+                text +="<input name=\"document["+set_number+"][doc_attachment]\" id=\"doc_attachment_"+set_number+"\" type=\"file\"/>";
+            text +="</div>";
+            text +="<div class=\"form-group col-md-3\">";
+            text +="<label>&nbsp;</label>";
+            text +="<select name=\"document["+set_number+"][doc_source]\" id=\"doc_source_"+set_number+"\">";
+            text +="<option value=\"File Attachment\">File Attachment</option>";
+            text +="<option value=\"URL Reference\">URL Reference</option>";
+            text +="</select>";
+            text +="</div>";
+            text +="<button type=\"button\" onclick=\"$(this).closest('.form-row').remove()\">Delete</button>"
+        text +="</div>";
+        $(this).attr('id','add_attachment-'+set_number);
+        $('#attachmentField').append(text);
+    })
 
     // IF invalid case
     var validCase = 0;
@@ -92,6 +122,7 @@ $(document).ready(function(){
             .then((value) => {
                 if (value) {
                     var request ={};
+                    var form = new FormData(document.getElementById("triageForm"));
                     $("[name^=field_value]").each(function(){
                         request[$(this).attr('name')] = $(this).val();
                     });
@@ -105,8 +136,12 @@ $(document).ready(function(){
                         },
                         type:'POST',
                         url:'/sd-cases/deactivate/'+caseNo+'/'+versionNo,
-                        data:request,
+                        cache:false,
+                        data:form,
+                        contentType:false,
+                        processData:false,
                         success:function(response){
+                            console.log(response);
                             swal("Your case has been inactivated","", "warning",{
                                 buttons: {
                                     continue: true,
