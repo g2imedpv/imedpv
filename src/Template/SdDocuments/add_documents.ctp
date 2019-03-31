@@ -21,12 +21,12 @@
         </div>
         <div class="card-body">
             <!-- Add Document Modal -->
-            <button type="button" class="btn btn-primary float-left" data-toggle="modal" data-target=".uploadDoc"><i class="fas fa-cloud-upload-alt"></i> Upload Document</button>
+            <button type="button" class="btn btn-primary float-left" data-toggle="modal" data-target=".uploadDoc"><i class="fas fa-cloud-upload-alt"></i> Upload Documents</button>
             <div class="modal fade uploadDoc" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalCenterTitle">Upload Document</h5>
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Upload Documents</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
@@ -44,7 +44,20 @@
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="newAttachArea"></tbody>
+                                    <tbody id="newAttachArea">
+                                    <tr>
+                                    <th scope="row"><input class="form-control" name="doc_classification_0" id="doc_classification_0" type="text"></th>
+                                    <td><input class="form-control" name="doc_description_0" id="doc_description_0" type="text"></td>
+                                    <td><select class="custom-select" name="doc_source_0" id="doc_source_0">
+                                        <option value="File Attachment">File Attachment</option>
+                                        <option value="URL Reference">URL Reference</option>
+                                        </select>
+                                        </td>
+                                    <td><input class="form-control" style="display:none;" name="doc_path_0" id="doc_path_0" type="text">
+                                    <input name="doc_attachment_0" id="doc_attachment_0" type="file"></td>                                    
+                                    <td><button type="button" class="btn btn-outline-danger btn-sm my-1 w-100 attachDel">Delete</button></td>
+                                    </tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
