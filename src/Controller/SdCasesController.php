@@ -955,7 +955,7 @@ class SdCasesController extends AppController
                 }
             }
 
-            if (!$this->saveDocuments($requestData, $case->id))
+            if (!$this->saveDocuments($requestData['document'], $case->id))
             {
                 $this->Flash->error(__('Problem in saving documents.'));
             }
