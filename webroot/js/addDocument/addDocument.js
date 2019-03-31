@@ -23,7 +23,7 @@ $(document).ready(function(){
             });
         };
 
-        var attachCount = 0;
+        var attachCount = 1;
         $('#addNewAttach').click(function(){
             var newattach = "";
 

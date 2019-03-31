@@ -955,10 +955,13 @@ class SdCasesController extends AppController
                 }
             }
 
-            if (!$this->saveDocuments($requestData['document'], $case->id))
+            if (!$this->saveDocuments($requestData, $case->id))
             {
-                echo "problem in saving documents";
-                return null;
+                $this->Flash->error(__('Problem in saving documents.'));
+            }
+            else
+            {
+                $this->Flash->success(__('Documents have been uploaded successfully.'));
             }
             // debug($requestData); die();
             if(array_key_exists('endTriage',$requestData))
@@ -1052,7 +1055,7 @@ class SdCasesController extends AppController
                 }
             }
             
-            if (!$this->saveDocuments($requestData['document'], $case->id))
+            if (!$this->saveDocuments($requestData, $case->id))
             {
                 echo "problem in saving document!";
                 return null;
@@ -1086,8 +1089,8 @@ class SdCasesController extends AppController
     public function saveDocuments($requested_data,$case_id)
     {
         $userinfo = $this->request->getSession()->read('Auth.User');
-        $document_array = $requested_data;
-        // debug($document_array);
+        $document_array = $this->getDocumentParams($requested_data);
+        //debug($document_array); die();
         $this->loadModel('SdDocuments');
         $file_saved = false;
         foreach ($document_array as $document_details)
