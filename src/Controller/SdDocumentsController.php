@@ -112,7 +112,7 @@ class SdDocumentsController extends AppController
 
     public function addDocuments($case_id)
     {
-            $this->viewBuilder()->setLayout('simple_layout');
+            $this->viewBuilder()->setLayout('main_layout');
             $docList = $this->SdDocuments->find()->where(['sd_case_id'=>$case_id]);
             $this->loadModel("SdUsers");
             $sdDocList = $docList->toArray();
@@ -133,7 +133,7 @@ class SdDocumentsController extends AppController
                 if (!in_array($value, $document_data[$index][$field]))
                 {
                     $document_data[$index][$field] = $value;
-                }   
+                }
             }
 
             $userinfo = $this->request->getSession()->read('Auth.User');
@@ -146,7 +146,7 @@ class SdDocumentsController extends AppController
                 {
                     $file_uploaded = false;
                     if ($document_details['doc_source'] == 'File Attachment')
-                    {                       
+                    {
                         if(!empty($document_details['doc_attachment']['name'])){
                             $fileName = $document_details['doc_attachment']['name'];
                             $fileType = $document_details['doc_attachment']['type'];
@@ -165,7 +165,7 @@ class SdDocumentsController extends AppController
                                     return false;
                                 }
                             }
-                            
+
                             $uploadFile = $uploadRealPath."/".$fileName;
 
                             if (file_exists($uploadFile))
@@ -208,7 +208,7 @@ class SdDocumentsController extends AppController
                         $newDocumentEntity->created_dt = date("Y-m-d H:i:s");
                         $newDocumentEntity->updated_dt = date("Y-m-d H:i:s");
                         $newDocumentEntity->created_by = $userinfo['id'];
-                        
+
                         if ($this->SdDocuments->save($newDocumentEntity))
                         {
                             $file_saved = true;
@@ -220,7 +220,7 @@ class SdDocumentsController extends AppController
                         }
                     }
                 }
-                
+
             }
             if ($file_saved)
                 echo json_encode(array("result"=>1, "new_row"=>$new_row));

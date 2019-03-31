@@ -197,54 +197,35 @@
         </div>
 
         <!-- Attachment -->
-        <div id="attachmentField">
-            <h4 class="text-left mt-3">Attachments and References</h4>
-            <button type="button" id="add_attachment-0">+Add Attachment</button>
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    <label>Classification<i class="fas fa-asterisk reqField"></i></label>
-                    <input type="text" class="form-control" name="document[0][doc_classification]" id="doc_classification_0" value="">
-                </div>
-                <div class="form-group col-md-3">
-                    <label>Description<i class="fas fa-asterisk reqField"></i></label>
-                    <input type="text" class="form-control" name="document[0][doc_description]" id="doc_description_0" value="">
-                </div>
-                <div class="form-group col-md-3">
-                    <label>File/Reference</label>
-                    <input type="text" class="form-control" name="document[0][doc_path]" id="doc_path_0" value="" style="display:none">
-                    <input name="document[0][doc_attachment]" id="doc_attachment_0" type="file"/>
-                </div>
-                <div class="form-group col-md-3">
-                <label>&nbsp;</label>
-                <select name="document[0][doc_source]" id="doc_source_0">
-                <option value="File Attachment">File Attachment</option>
-                <option value="URL Reference">URL Reference</option>
-                </select>
-                </div>
-            </div>
+        <h4 class="text-left mt-3">Attachments and References
+            <button id="addNewAttach-1" type="button" class="btn btn-outline-primary mx-1">Add New</button>
+        </h4>
+        <div class="form-row mb-3">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Classification</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">File/Reference</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="newAttachArea">
+                <tr>
+                    <td><input type="text" class="form-control" name="document[0][doc_classification]" id="doc_classification_0"></td>
+                    <td><input type="text" class="form-control" name="document[0][doc_description]" id="doc_description_0"></td>
+                    <td><select class="custom-select" onchange="fileUrlSwitcher(0)" name="document[0][doc_source]" id="doc_source_0">
+                            <option value="File Attachment">File Attachment</option>
+                            <option value="URL Reference">URL Reference</option>
+                        </select></td>
+                    <td><input type="text" class="form-control" style="display:none;" name="document[0][doc_path]" id="doc_path_0">
+                        <input type="file" name="document[0][doc_attachment]" id="doc_attachment_0"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <!-- <div class="form-row">
-            <div class="form-group col-md-3">
-                <label>Classification<i class="fas fa-asterisk reqField"></i></label>
-                <input type="text" class="form-control" name="document[doc_classification_1]" id="doc_classification_1" value="">
-            </div>
-            <div class="form-group col-md-3">
-                <label>Description<i class="fas fa-asterisk reqField"></i></label>
-                <input type="text" class="form-control" name="document[doc_description_1]" id="doc_description_1" value="">
-            </div>
-            <div class="form-group col-md-3">
-                <label>File/Reference</label>
-                <input type="text" class="form-control" name="document[doc_path_1]" id="doc_path_1" value="" style="display:none">
-                <input name="document[doc_attachment_1]" id="doc_attachment_1" type="file"/>
-            </div>
-            <div class="form-group col-md-3">
-            <label>&nbsp;</label>
-            <select name="document[doc_source_1]" id="doc_source_1">
-            <option value="File Attachment">File Attachment</option>
-            <option value="URL Reference">URL Reference</option>
-            </select>
-            </div>
-        </div> -->
+
         <?php if($field_value_set['223']['id']!=null)
                 echo "<input type=\"hidden\" id=\"id_validcase\" name=\"field_value[223][id]\" value=\"".$field_value_set['223']['id']."\">";?>
         <?php echo "<input type=\"hidden\" id=\"validcase\" name=\"field_value[223][value]\" value=\"".$field_value_set['223']['field_value']."\">";?>
@@ -346,7 +327,7 @@
             <?php echo "<input type=\"hidden\" id=\"submissionDate_value\" name=\"field_value[415][value]\" disabled value=\"".$field_value_set['415']['field_value']."\">";?>
             <div id="prioritizeType"></div>
             <button type="button" id="prioritizeBack" class="btn btn-outline-warning my-2 mx-2 w-25">Back</button>
-            <a class="btn btn-light text-success mx-1" title="Sign Off" role="button" data-toggle="modal" data-target=".signOff" onclick="endTriage()"><i class="fas fa-share-square"></i>End Triage</a>
+            <button class="btn btn-outline-danger mx-1" title="Sign Off" type="button" data-toggle="modal" data-target=".signOff" onclick="endTriage()">End Triage</button>
         </div>
     </div>
     <div class="modal fade signOff" tabindex="-1" role="dialog" aria-labelledby="signOff" aria-hidden="true">

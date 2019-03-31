@@ -1057,6 +1057,7 @@ class SdCasesController extends AppController
                 echo "problem in saving document!";
                 return null;
             }
+            echo "deactivated success";
         }
     }
 

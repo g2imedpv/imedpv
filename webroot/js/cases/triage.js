@@ -1,59 +1,110 @@
+$('[id^=doc_source]').change(function () {
+    if ($( "#doc_source_"+s+" option:selected" ).val() == 'File Attachment')
+    {
+        $('#doc_attachment_'+s).show();
+        $('#doc_path_'+s).hide();
+    }
+    else if ($( "#doc_source_"+s+" option:selected" ).val() == 'URL Reference')
+    {
+        $('#doc_attachment_'+s).hide();
+        $('#doc_path_'+s).show();
+    }
+});
 $(document).ready(function(){
-    /*
-     Attachment source selections
-     Added by Chloe Wang Mar 23, 2019
-    */
-    $('[id^=doc_source]').each(function(s,v){
-        //console.log($(this));
-        $(this)
-        .change(function () {
-            if ($( "#doc_source_"+s+" option:selected" ).val() == 'File Attachment')
-            {
-                $('#doc_attachment_'+s).show();
-                $('#doc_path_'+s).hide();
-            }
-            else if ($( "#doc_source_"+s+" option:selected" ).val() == 'URL Reference')
-            {
-                $('#doc_attachment_'+s).hide();
-                $('#doc_path_'+s).show();
-            }
-            
-        })
-    });
-    $('[id^=add_attachment]').click(function(){
-        var text="";
-        var set_number = $(this).attr('id').split('-')[1];
-        set_number ++;
-        text +="<div class=\"form-row\">";
-            text +="<div class=\"form-group col-md-3\">";
-                text +="<label>Classification<i class=\"fas fa-asterisk reqField\"></i></label>";
-                text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_classification]\" id=\"doc_classification_"+set_number+"\" value=\"\">";
-            text +="</div>"
-            text +="<div class=\"form-group col-md-3\">";
-                text +="<label>Description<i class=\"fas fa-asterisk reqField\"></i></label>";
-                text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_description]\" id=\"doc_description_"+set_number+"\" value=\"\">";
-            text +="</div>";
-            text +="<div class=\"form-group col-md-3\">";
-                text +="<label>File/Reference</label>";
-                text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_path]\" id=\"doc_path_"+set_number+"\" value=\"\" style=\"display:none\">";
-                text +="<input name=\"document["+set_number+"][doc_attachment]\" id=\"doc_attachment_"+set_number+"\" type=\"file\"/>";
-            text +="</div>";
-            text +="<div class=\"form-group col-md-3\">";
-            text +="<label>&nbsp;</label>";
-            text +="<select name=\"document["+set_number+"][doc_source]\" id=\"doc_source_"+set_number+"\">";
-            text +="<option value=\"File Attachment\">File Attachment</option>";
-            text +="<option value=\"URL Reference\">URL Reference</option>";
-            text +="</select>";
-            text +="</div>";
-            text +="<button type=\"button\" onclick=\"$(this).closest('.form-row').remove()\">Delete</button>"
-        text +="</div>";
-        $(this).attr('id','add_attachment-'+set_number);
-        $('#attachmentField').append(text);
-    })
+    $(function(){
+        // function fileUrlSwitcher () {
+        //     $('[id^=doc_source]').each(function(s,v){
+        //         //console.log($(this));
+        //         $(this)
+        //         .change(function () {
+        //             if ($( "#doc_source_"+s+" option:selected" ).val() == 'File Attachment')
+        //             {
+        //                 $('#doc_attachment_'+s).show();
+        //                 $('#doc_path_'+s).hide();
+        //             }
+        //             else if ($( "#doc_source_"+s+" option:selected" ).val() == 'URL Reference')
+        //             {
+        //                 $('#doc_attachment_'+s).hide();
+        //                 $('#doc_path_'+s).show();
+        //             }
 
-        // IF invalid case
-        var validCase = 0;
+        //         })
+        //     });
+        // };
+
+        $('[id^=addNewAttach]').click(function(){
+            var set_number = $(this).attr('id').split('-')[1];
+            set_number ++;
+            var newattach = "";
+            newattach += "<tr>";
+                newattach += "<td>";
+                    newattach += "<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_classification]\" id=\"doc_classification_" + set_number + "\">";
+                newattach += "</td>";
+                newattach += "<td>";
+                    newattach += "<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_description]\" id=\"doc_description_" + set_number + "\">";
+                newattach += "</td>";
+                newattach += "<td>";
+                    newattach += "<select class=\"custom-select\" onchange=\"fileUrlSwitcher("+set_number+")\" name=\"document["+set_number+"][doc_source]\" id=\"doc_source_" + set_number + "\">";
+                        newattach += "<option value=\"File Attachment\">File Attachment</option>";
+                        newattach += "<option value=\"URL Reference\">URL Reference</option>";
+                    newattach += "</select>";
+                newattach += "</td>";
+                newattach += "<td>";
+                    newattach += "<input type=\"text\" class=\"form-control\" style=\"display:none;\" name=\"document["+set_number+"][doc_path]\" id=\"doc_path_" + set_number + "\">";
+                    newattach += "<input type=\"file\" name=\"document["+set_number+"][doc_attachment]\" id=\"doc_attachment_" + set_number + "\">";
+                newattach += "</td>";
+                newattach += "<td>";
+                    newattach += "<button type=\"button\" class=\"btn btn-outline-danger btn-sm my-1 w-100 attachDel\">Delete</button>";
+                newattach += "</td>";
+            newattach += "</tr>";
+
+            $('#newAttachArea').append(newattach);
+            $(this).attr('id','addNewAttach-'+set_number);
+
+            // Delete row button
+            $('.attachDel').click(function(){
+                $(this).parent().parent().remove();
+            });
+
+        });
+    });
+    // $('[id^=add_attachment]').click(function(){
+    //     var text="";
+    //     var set_number = $(this).attr('id').split('-')[1];
+    //     set_number ++;
+    //     text +="<div class=\"form-row\">";
+    //         text +="<div class=\"form-group col-md-3\">";
+    //             text +="<label>Classification<i class=\"fas fa-asterisk reqField\"></i></label>";
+    //             text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_classification]\" id=\"doc_classification_"+set_number+"\" value=\"\">";
+    //         text +="</div>"
+    //         text +="<div class=\"form-group col-md-3\">";
+    //             text +="<label>Description<i class=\"fas fa-asterisk reqField\"></i></label>";
+    //             text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_description]\" id=\"doc_description_"+set_number+"\" value=\"\">";
+    //         text +="</div>";
+    //         text +="<div class=\"form-group col-md-3\">";
+    //             text +="<label>File/Reference</label>";
+    //             text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_path]\" id=\"doc_path_"+set_number+"\" value=\"\" style=\"display:none\">";
+    //             text +="<input name=\"document["+set_number+"][doc_attachment]\" id=\"doc_attachment_"+set_number+"\" type=\"file\"/>";
+    //         text +="</div>";
+    //         text +="<div class=\"form-group col-md-3\">";
+    //         text +="<label>&nbsp;</label>";
+    //         text +="<select name=\"document["+set_number+"][doc_source]\" id=\"doc_source_"+set_number+"\">";
+    //         text +="<option value=\"File Attachment\">File Attachment</option>";
+    //         text +="<option value=\"URL Reference\">URL Reference</option>";
+    //         text +="</select>";
+    //         text +="</div>";
+    //         text +="<button type=\"button\" onclick=\"$(this).closest('.form-row').remove()\">Delete</button>"
+    //     text +="</div>";
+    //     $(this).attr('id','add_attachment-'+set_number);
+    //     $('#attachmentField').append(text);
+    // })
+
+    // IF invalid case
+    var validCase = 0;
     $("#confirmElements").click(function(){
+        // if(!$('#newAttachArea input').val()) {
+        //     alert ('sss');
+        // };
         var patient_element = 0;
         var reporter_element = 0;
         var event_element = 0;
@@ -179,8 +230,6 @@ $(document).ready(function(){
         }
     });
 
-
-
     $("#reason-3").change(function(){
         if($(this).prop('checked')){
             $('#otherReason').prop('disabled',false);
@@ -253,7 +302,7 @@ $(document).ready(function(){
     $('[id^=prioritize]').change(function(){prioritizeDate()});
 });
 function prioritizeDate(){
-    var text="";    
+    var text="";
     var dueType = 0;
     var submitType = 0
     if($('#prioritize-seriousness-1').prop('checked')) dueType = 1;
@@ -271,8 +320,8 @@ function prioritizeDate(){
         text +=" Report ";
     }else{
         text +=" Case ";
-    }  
-    text+='Due Date:';    
+    }
+    text+='Due Date:';
     var yearText =formatDueDay.getFullYear();
     var monthText =(Number(formatDueDay.getMonth())+1);
     var dayText =formatDueDay.getDate();
@@ -400,4 +449,16 @@ function savenexit(){
         $(this).prop("disabled", false);
     });
     document.getElementById("triageForm").submit();
+}
+function fileUrlSwitcher (set_number) {
+        if ($( "#doc_source_"+set_number+" option:selected" ).val() == 'File Attachment')
+        {
+            $('#doc_attachment_'+set_number).show();
+            $('#doc_path_'+set_number).hide();
+        }
+        else if ($( "#doc_source_"+set_number+" option:selected" ).val() == 'URL Reference')
+        {
+            $('#doc_attachment_'+set_number).hide();
+            $('#doc_path_'+set_number).show();
+        }
 }

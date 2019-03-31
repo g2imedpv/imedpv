@@ -41,6 +41,8 @@
     <!-- For local NavBar CSS/JS link -->
     <?= $this->Html->css('navbar.css') ?>
     <?= $this->Html->script('navbar.js') ?>
+
+    <?php // echo $this->element('layout/footer'); ?>
 </head>
 <body>
 
