@@ -18,7 +18,7 @@
     <!-- Basic Info Fields Set -->
 
     <?php if($versionNo>1){
-        echo "<div id=\"basicInfo\" class=\"form-group\"><h4 class=\"text-left\">Version Info</h4>";
+        echo "<div id=\"versionInfo\" class=\"form-group\"><h4 class=\"text-left\">Version Info</h4>";
         echo "<div class=\"form-row\">";
         echo "<div class=\"form-group col-md-3\">";
         echo "<label>Reason For Version Up</label>";
@@ -344,7 +344,6 @@
             <?php if($field_value_set['415']['id']!=null)
                 echo "<input type=\"hidden\" id=\"submissionDate_id\" name=\"field_value[415][id]\" disabled value=\"".$field_value_set['415']['id']."\">";?>
             <?php echo "<input type=\"hidden\" id=\"submissionDate_value\" name=\"field_value[415][value]\" disabled value=\"".$field_value_set['415']['field_value']."\">";?>
-            <?= $this->Form->end();?>
             <div id="prioritizeType"></div>
             <button type="button" id="prioritizeBack" class="btn btn-outline-warning my-2 mx-2 w-25">Back</button>
             <a class="btn btn-light text-success mx-1" title="Sign Off" role="button" data-toggle="modal" data-target=".signOff" onclick="endTriage()"><i class="fas fa-share-square"></i>End Triage</a>
@@ -357,5 +356,7 @@
             </div>
         </div>
     </div>
+    <input name="endTriage" type="hidden" value="1" disabled>
+            <?= $this->Form->end();?>
   </div>
 </div>

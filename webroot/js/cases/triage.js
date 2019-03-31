@@ -82,12 +82,6 @@ $(document).ready(function(){
                 if (value) {
                     var request ={};
                     var form = new FormData(document.getElementById("triageForm"));
-                    $("[name^=field_value]").each(function(){
-                        request[$(this).attr('name')] = $(this).val();
-                    });
-                    $("[name^=doc_]").each(function(){
-                        request[$(this).attr('name')] = $(this).val();
-                    });
                     console.log(request);
                     $.ajax({
                         headers: {
@@ -144,11 +138,8 @@ $(document).ready(function(){
                         });
                         break;
                     case "No":
-                        $('#validcase').val('1');
-                        var request ={};
-                        $("[name^=field_value]").each(function(){
-                            request[$(this).attr('name')] = $(this).val();
-                        });
+                        $('#validcase').val('2');
+                        var form = new FormData(document.getElementById("triageForm"));
                         console.log(request);
                         $.ajax({
                             headers: {
@@ -156,7 +147,10 @@ $(document).ready(function(){
                             },
                             type:'POST',
                             url:'/sd-cases/deactivate/'+caseNo+'/'+versionNo,
-                            data:request,
+                            cache:false,
+                            data:form,
+                            contentType:false,
+                            processData:false,
                             success:function(response){
                                 swal("Your case has been inactivated","", "warning");
                                 window.location.href = "/sd-cases/caselist";
@@ -290,23 +284,31 @@ function prioritizeDate(){
     $('#prioritizeType').text(text);
 }
 function endTriage(){
-    var request ={};
-    $("[name^=field_value]").each(function(){
-        if($(this).val()!="")
-        {
-            console.log($(this).attr('name'));
-            request[$(this).attr('name')] = $(this).val();
-        }
-    });
-    request['endTriage'] = 1;
-    console.log(request);
+    // var request ={};
+    // $("[name^=field_value]").each(function(){
+    //     if($(this).val()!="")
+    //     {
+    //         console.log($(this).attr('name'));
+    //         request[$(this).attr('name')] = $(this).val();
+    //     }
+    // });      
+    $("select").each(function(){
+        $(this).prop("disabled", false);
+    });                  
+    $('[name=endTriage]').prop('disabled',false);
+    var form = new FormData(document.getElementById("triageForm"));
+    $('[name=endTriage]').prop('disabled',true);
+    console.log(form);
     $.ajax({
         headers: {
             'X-CSRF-Token': csrfToken
         },
         type:'POST',
         url:'/sd-cases/triage/'+caseNo+'/'+versionNo,
-        data:request,
+        cache:false,
+        data:form,
+        contentType:false,
+        processData:false,
         success:function(response){
 
             console.log(response);
@@ -323,6 +325,7 @@ function endTriage(){
         type:'POST',
         url:'/sd-users/searchNextAvailable/'+caseNo+'/'+versionNo,
         success:function(response){
+            console.log(response);
             response = JSON.parse(response);
             console.log(response);
             text +="<div class=\"modal-header\">";

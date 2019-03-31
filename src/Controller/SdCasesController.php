@@ -928,7 +928,7 @@ class SdCasesController extends AppController
             $requestData = $this->request->getData();
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
             //TODO if the case is to push to Data Entry
-
+            // print_r($requestData);die();
             foreach($requestData['field_value'] as $field_id => $detail_data){
                 if((array_key_exists('id',$detail_data))&&($detail_data['id']!=null)) {
                     $previous_field_value = $sdFieldValueTable->get($detail_data['id']);
@@ -960,7 +960,8 @@ class SdCasesController extends AppController
                 echo "problem in saving documents";
                 return null;
             }
-            if(in_array('endTriage',$requestData))
+            // debug($requestData); die();
+            if(array_key_exists('endTriage',$requestData))
             {
                 echo "succuess";
                 die();
