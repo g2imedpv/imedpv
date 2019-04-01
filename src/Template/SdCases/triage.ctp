@@ -221,6 +221,7 @@
                         </select></td>
                     <td><input type="text" class="form-control" style="display:none;" name="document[0][doc_path]" id="doc_path_0">
                         <input type="file" name="document[0][doc_attachment]" id="doc_attachment_0"></td>
+                        <td><button type="button" class="btn btn-outline-danger btn-sm my-1 w-100 attachDel">Delete</button></td>
                 </tr>
                 </tbody>
             </table>
