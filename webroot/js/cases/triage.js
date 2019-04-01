@@ -11,6 +11,7 @@ $('[id^=doc_source]').change(function () {
     }
 });
 $(document).ready(function(){
+    $('#docTable').DataTable();
     $(function(){
         // function fileUrlSwitcher () {
         //     $('[id^=doc_source]').each(function(s,v){
