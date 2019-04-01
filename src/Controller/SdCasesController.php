@@ -955,14 +955,19 @@ class SdCasesController extends AppController
                 }
             }
 
-            if (!$this->saveDocuments($requestData['document'], $case->id))
+            if (!$this->is_empty($requestData['document']))
             {
-                $this->Flash->error(__('Problem in saving documents.'));
+                if (!$this->saveDocuments($requestData['document'], $case->id))
+                {
+                    $this->Flash->error(__('Problem in saving documents.'));
+                }
+                else
+                {
+                    $this->Flash->success(__('Documents have been uploaded successfully.'));
+                }
             }
-            else
-            {
-                $this->Flash->success(__('Documents have been uploaded successfully.'));
-            }
+            
+            
             // debug($requestData); die();
             if(array_key_exists('endTriage',$requestData))
             {
@@ -1086,6 +1091,18 @@ class SdCasesController extends AppController
 
     }
 
+    public function is_empty($document_array)
+    {
+        foreach ($document_array as $doc_details)
+        {
+            if ($doc_details['doc_source'] == 'File Attachment' && $doc_details['doc_attachment']['tmp_name'] != ''
+            || $doc_details['doc_source'] == 'URL Reference' && $doc_details['doc_path'] != '')
+            { 
+                return false;
+            }
+        }
+        return true;
+    }
     public function saveDocuments($requested_data,$case_id)
     {
         $userinfo = $this->request->getSession()->read('Auth.User');
