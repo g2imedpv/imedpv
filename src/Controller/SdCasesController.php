@@ -1018,6 +1018,15 @@ class SdCasesController extends AppController
             }
             $this->set('version_up_set',$version_up_set);
         }
+
+        // Load document list if there is any. 
+        // Chloe Wang @ Mar 31, 2019
+        $this->loadModel("SdDocuments");
+        $docList = $this->SdDocuments->find()->where(['sd_case_id'=>$case['id']]);
+        $sdDocList = $docList->toArray();
+        $this->set(compact('sdDocList'));
+        // end of document list
+
         $this->set(compact('case','caseNo','versionNo','field_value_set'));
     }
 

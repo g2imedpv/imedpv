@@ -226,7 +226,55 @@
                 </tbody>
             </table>
         </div>
+        <?php 
+            if (count($sdDocList) > 0)
+            {
+        ?>
+        <div id="showDocList">
+                <!-- <h5>Document List</h5> -->
+                <table id="docTable" class="table table-striped table-bordered table-hover dataTable w-100" role="grid">
+                <thead>
+                <tr style="cursor: pointer;" role="row">
+                <th class="align-middle sorting_asc" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="ID: activate to sort column descending">ID</th>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Classification: activate to sort column ascending">Classification</th>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Description: activate to sort column ascending">Description</th>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Source: activate to sort column ascending">Source</th>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Doc Name: activate to sort column ascending">Doc Name</th>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Doc Size: activate to sort column ascending">Doc Size</th>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Created User: activate to sort column ascending">Uploaded By</th></tr>
+                </thead>
+                <tbody>
+                <?php
+                    foreach ($sdDocList as $key=>$sdDoc)
+                    {
+                        if ($key/2 == 0)
+                            $odd_even = "even";
+                        else
+                            $odd_even = "odd";
+                        print '<tr class='.'"'.$odd_even.'" '. 'role="row">';
+                        print '<td class="align-middle">'.$sdDoc['id'].'</td>';
+                        print '<td class="align-middle">'.$sdDoc['doc_classification'].'</td>';
+                        print '<td class="align-middle">'.$sdDoc['doc_description'].'</td>';
+                        print '<td class="align-middle">'.$sdDoc['doc_source'].'</td>';
+                        if ($sdDoc['doc_source'] == "File Attachment"){
+                            print '<td class="align-middle"><a href="'.$sdDoc['doc_path'].'">'.$sdDoc['doc_name'].'</a></td>';
+                        }
+                        else{
+                            print '<td class="align-middle"><a href="'.$sdDoc['doc_path'].'">'.$sdDoc['doc_path'].'</a></td>';
+                        }
 
+                        print '<td class="align-middle">'.$sdDoc['doc_size'].'</td>';
+                        print '<td class="align-middle">'.$sdDoc['created_by'].'</td>';
+                        print "</tr>";
+
+                    }
+                ?>
+                </tbody>
+                </table>
+            </div>
+        <?php 
+            }
+        ?>
         <?php if($field_value_set['223']['id']!=null)
                 echo "<input type=\"hidden\" id=\"id_validcase\" name=\"field_value[223][id]\" value=\"".$field_value_set['223']['id']."\">";?>
         <?php echo "<input type=\"hidden\" id=\"validcase\" name=\"field_value[223][value]\" value=\"".$field_value_set['223']['field_value']."\">";?>
