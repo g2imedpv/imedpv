@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 
 /**
  * SdCases Controller
@@ -333,7 +334,7 @@ class SdCasesController extends AppController
                 ],
                 '3'=>[
                     'id'=>'4',
-                    'preferrence_name'=>'prolonged',
+                    'preferrence_name'=>'Hospitalization',
                     'sd_field_id'=>'8',
                     'value_at'=>'4',
                     'value_length'=>'1',
@@ -341,7 +342,7 @@ class SdCasesController extends AppController
                 ],
                 '4'=>[
                     'id'=>'5',
-                    'preferrence_name'=>'anomaly',
+                    'preferrence_name'=>'Anomaly',
                     'sd_field_id'=>'8',
                     'value_at'=>'5',
                     'value_length'=>'1',
@@ -433,7 +434,7 @@ class SdCasesController extends AppController
                             'type'=>'LEFT',
                             'conditions' => ['clinical_trial.sd_field_id = 40','clinical_trial.sd_case_id = SdCases.id','clinical_trial.field_value = 1'],
                         ]
-                    ])->order(['caseNo'=>'ASC','versions'=>'DESC']);
+                    ])->order(['caseNo'=>'ASC','versions'=>'DESC'])->group(['SdCases.id']);
                 if(array_key_exists('preferrenceId',$searchKey) ) {
                     $preferrence_detail = $preferrence_list[$searchKey['preferrenceId']-1];
                     if(array_key_exists('value_at',$preferrence_detail))
@@ -927,7 +928,7 @@ class SdCasesController extends AppController
             $requestData = $this->request->getData();
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
             //TODO if the case is to push to Data Entry
-
+            // print_r($requestData);die();
             foreach($requestData['field_value'] as $field_id => $detail_data){
                 if((array_key_exists('id',$detail_data))&&($detail_data['id']!=null)) {
                     $previous_field_value = $sdFieldValueTable->get($detail_data['id']);
@@ -953,7 +954,22 @@ class SdCasesController extends AppController
                     return null;
                 }
             }
-            if(in_array('endTriage',$requestData))
+
+            if (!$this->is_empty($requestData['document']))
+            {
+                if (!$this->saveDocuments($requestData['document'], $case->id))
+                {
+                    $this->Flash->error(__('Problem in saving documents.'));
+                }
+                else
+                {
+                    $this->Flash->success(__('Documents have been uploaded successfully.'));
+                }
+            }
+            
+            
+            // debug($requestData); die();
+            if(array_key_exists('endTriage',$requestData))
             {
                 echo "succuess";
                 die();
@@ -1002,6 +1018,15 @@ class SdCasesController extends AppController
             }
             $this->set('version_up_set',$version_up_set);
         }
+
+        // Load document list if there is any. 
+        // Chloe Wang @ Mar 31, 2019
+        $this->loadModel("SdDocuments");
+        $docList = $this->SdDocuments->find()->where(['sd_case_id'=>$case['id']]);
+        $sdDocList = $docList->toArray();
+        $this->set(compact('sdDocList'));
+        // end of document list
+
         $this->set(compact('case','caseNo','versionNo','field_value_set'));
     }
 
@@ -1043,6 +1068,141 @@ class SdCasesController extends AppController
                     return null;
                 }
             }
+            
+            if (!$this->saveDocuments($requestData['document'], $case->id))
+            {
+                echo "problem in saving document!";
+                return null;
+            }
+            echo "deactivated success";
         }
+    }
+
+    public function getDocumentParams($data_arr=array())
+    {
+        $document_data = array();
+        foreach ($data_arr as $key => $value)
+        {
+            if ($key == 'field_value')
+                continue; 
+            preg_match("/^(doc_\S+)_(\d+)$/", $key, $matches);
+
+            $field = $matches[1];
+            $index = $matches[2];
+            if ((!in_array($index, $document_data))||(!in_array($field,$document_data[$index]))||(!in_array($value, $document_data[$index][$field])))
+            {
+                $document_data[$index][$field] = $value;
+            }
+                
+        }
+        //debug($document_data);
+        return $document_data;
+
+    }
+
+    public function is_empty($document_array)
+    {
+        foreach ($document_array as $doc_details)
+        {
+            if ($doc_details['doc_source'] == 'File Attachment' && $doc_details['doc_attachment']['tmp_name'] != ''
+            || $doc_details['doc_source'] == 'URL Reference' && $doc_details['doc_path'] != '')
+            { 
+                return false;
+            }
+        }
+        return true;
+    }
+    public function saveDocuments($requested_data,$case_id)
+    {
+        $userinfo = $this->request->getSession()->read('Auth.User');
+        $document_array = $requested_data;
+        //debug($document_array); die();
+        $this->loadModel('SdDocuments');
+        $file_saved = false;
+        foreach ($document_array as $document_details)
+        {
+            //debug($document_details);
+            if (isset($document_details['doc_description']) && $document_details['doc_description'] != '')
+            {
+                $file_uploaded = false;
+                if ($document_details['doc_source'] == 'File Attachment')
+                {                       
+                    if(!empty($document_details['doc_attachment']['name'])){
+                        $fileName = $document_details['doc_attachment']['name'];
+                        $fileType = $document_details['doc_attachment']['type'];
+                        $fileSize = $document_details['doc_attachment']['size'];
+                        $rootPath = 'webroot/';
+                        $uploadPath = $rootPath.'uploads/files/';
+                        //save files into webroot
+                        $uploadRealPath = $uploadPath.$case_id;
+                        //print $uploadRealPath; die();
+                        if (!file_exists($uploadRealPath))
+                        {
+                            if (!mkdir($uploadRealPath, 0755, true))
+                            {
+
+                                $this->Flash->error(__('Unable to create directory, please try again.'));
+                                return false;
+                            }
+                        }
+                        
+                        $uploadFile = $uploadRealPath."/".$fileName;
+
+                        if (file_exists($uploadFile))
+                        {
+                            $uploadFile = $uploadRealPath."/".time().$fileName;
+                        }
+                        if(move_uploaded_file($document_details['doc_attachment']['tmp_name'], $uploadFile))
+                        {
+                            $urlBase = Router::url('/', true);
+                            $url = $urlBase.str_replace("webroot/","",$uploadFile);;
+                            $file_uploaded = true;
+                        }
+                    }
+                }
+                elseif ($document_details['doc_source'] == 'URL Reference')
+                {
+
+                    $file_uploaded = true;
+                }
+
+                if ($file_uploaded)
+                {
+                    $newDocumentEntity = $this->SdDocuments->newEntity();
+                    $newDocumentEntity->sd_case_id =  $case_id;
+                    $newDocumentEntity->doc_classification = $document_details['doc_classification'];
+                    $newDocumentEntity->doc_description = $document_details['doc_description'];
+                    $newDocumentEntity->doc_source = $document_details['doc_source'];
+                    if ($document_details['doc_source'] == 'URL Reference')
+                    {
+                        $newDocumentEntity->doc_path = $document_details['doc_path'];
+                    }
+                    elseif ($document_details['doc_source'] == 'File Attachment')
+                    {
+                        $newDocumentEntity->doc_name = $fileName;
+                        $newDocumentEntity->doc_path = $url;
+                        $newDocumentEntity->doc_type = $fileType;
+                        $newDocumentEntity->doc_size = $fileSize;
+                    }
+                    $newDocumentEntity->is_deleted = 0;
+                    $newDocumentEntity->created_dt = date("Y-m-d H:i:s");
+                    $newDocumentEntity->updated_dt = date("Y-m-d H:i:s");
+                    $newDocumentEntity->created_by = $userinfo['id'];
+                    if ($this->SdDocuments->save($newDocumentEntity))
+                    {
+                        $file_saved = true;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            
+        }
+        if ($file_saved)
+            return true;
+        else
+            return false;
     }
 }

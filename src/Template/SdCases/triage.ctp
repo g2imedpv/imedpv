@@ -14,11 +14,11 @@
   <div class="card-body">
     <div class="alert alert-primary w-50 mx-auto" role="alert"><h4>New Case Number: <?= $caseNo ?></h4></div>
     <hr class="my-3">
-    <?= $this->Form->create($caseNo,['id'=>"triageForm"]) ?>
+    <?= $this->Form->create($caseNo,['id'=>"triageForm", 'enctype'=>"multipart/form-data"]) ?>
     <!-- Basic Info Fields Set -->
 
     <?php if($versionNo>1){
-        echo "<div id=\"basicInfo\" class=\"form-group\"><h4 class=\"text-left\">Version Info</h4>";
+        echo "<div id=\"versionInfo\" class=\"form-group\"><h4 class=\"text-left\">Version Info</h4>";
         echo "<div class=\"form-row\">";
         echo "<div class=\"form-group col-md-3\">";
         echo "<label>Reason For Version Up</label>";
@@ -37,7 +37,6 @@
         echo "</div></div>";
     }
     ?>
-    </div>
     <div id="basicInfo" class="form-group mx-3">
         <h4 class="text-left">Product</h4>
         <div class="form-row">
@@ -114,7 +113,7 @@
                     <?php
                     echo "<input id=\"patientField_dob\" name=\"field_value[85][value]\"";
                     if($field_value_set['85']['field_value']!=null) echo "value=\"".$field_value_set['85']['field_value']."\"";
-                    echo "type=\"hidden\">";
+                    echo " type=\"hidden\">";
                     ?>
                 </div>
             </div>
@@ -198,12 +197,84 @@
         </div>
 
         <!-- Attachment -->
-        <h4 class="text-left mt-3">Attach Documents </h4>
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <!-- <input type="file" class="form-control-file" id=""> -->
-            </div>
+        <h4 class="text-left mt-3">Attachments and References
+            <button id="addNewAttach-1" type="button" class="btn btn-outline-primary mx-1">Add New</button>
+        </h4>
+        <div class="form-row mb-3">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Classification</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">File/Reference</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="newAttachArea">
+                <tr>
+                    <td><input type="text" class="form-control" name="document[0][doc_classification]" id="doc_classification_0"></td>
+                    <td><input type="text" class="form-control" name="document[0][doc_description]" id="doc_description_0"></td>
+                    <td><select class="custom-select" onchange="fileUrlSwitcher(0)" name="document[0][doc_source]" id="doc_source_0">
+                            <option value="File Attachment">File Attachment</option>
+                            <option value="URL Reference">URL Reference</option>
+                        </select></td>
+                    <td><input type="text" class="form-control" style="display:none;" name="document[0][doc_path]" id="doc_path_0">
+                        <input type="file" name="document[0][doc_attachment]" id="doc_attachment_0"></td>
+                        <td><button type="button" class="btn btn-outline-danger btn-sm my-1 w-100 attachDel">Delete</button></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
+        <?php 
+            if (count($sdDocList) > 0)
+            {
+        ?>
+        <div id="showDocList">
+                <!-- <h5>Document List</h5> -->
+                <table id="docTable" class="table table-striped table-bordered table-hover dataTable w-100" role="grid">
+                <thead>
+                <tr style="cursor: pointer;" role="row">
+                <th class="align-middle sorting_asc" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="ID: activate to sort column descending">ID</th>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Classification: activate to sort column ascending">Classification</th>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Description: activate to sort column ascending">Description</th>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Source: activate to sort column ascending">Source</th>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Doc Name: activate to sort column ascending">Doc Name</th>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Doc Size: activate to sort column ascending">Doc Size</th>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Created User: activate to sort column ascending">Uploaded By</th></tr>
+                </thead>
+                <tbody>
+                <?php
+                    foreach ($sdDocList as $key=>$sdDoc)
+                    {
+                        if ($key/2 == 0)
+                            $odd_even = "even";
+                        else
+                            $odd_even = "odd";
+                        print '<tr class='.'"'.$odd_even.'" '. 'role="row">';
+                        print '<td class="align-middle">'.$sdDoc['id'].'</td>';
+                        print '<td class="align-middle">'.$sdDoc['doc_classification'].'</td>';
+                        print '<td class="align-middle">'.$sdDoc['doc_description'].'</td>';
+                        print '<td class="align-middle">'.$sdDoc['doc_source'].'</td>';
+                        if ($sdDoc['doc_source'] == "File Attachment"){
+                            print '<td class="align-middle"><a href="'.$sdDoc['doc_path'].'">'.$sdDoc['doc_name'].'</a></td>';
+                        }
+                        else{
+                            print '<td class="align-middle"><a href="'.$sdDoc['doc_path'].'">'.$sdDoc['doc_path'].'</a></td>';
+                        }
+
+                        print '<td class="align-middle">'.$sdDoc['doc_size'].'</td>';
+                        print '<td class="align-middle">'.$sdDoc['created_by'].'</td>';
+                        print "</tr>";
+
+                    }
+                ?>
+                </tbody>
+                </table>
+            </div>
+        <?php 
+            }
+        ?>
         <?php if($field_value_set['223']['id']!=null)
                 echo "<input type=\"hidden\" id=\"id_validcase\" name=\"field_value[223][id]\" value=\"".$field_value_set['223']['id']."\">";?>
         <?php echo "<input type=\"hidden\" id=\"validcase\" name=\"field_value[223][value]\" value=\"".$field_value_set['223']['field_value']."\">";?>
@@ -303,10 +374,9 @@
             <?php if($field_value_set['415']['id']!=null)
                 echo "<input type=\"hidden\" id=\"submissionDate_id\" name=\"field_value[415][id]\" disabled value=\"".$field_value_set['415']['id']."\">";?>
             <?php echo "<input type=\"hidden\" id=\"submissionDate_value\" name=\"field_value[415][value]\" disabled value=\"".$field_value_set['415']['field_value']."\">";?>
-            <?= $this->Form->end();?>
             <div id="prioritizeType"></div>
             <button type="button" id="prioritizeBack" class="btn btn-outline-warning my-2 mx-2 w-25">Back</button>
-            <a class="btn btn-light text-success mx-1" title="Sign Off" role="button" data-toggle="modal" data-target=".signOff" onclick="endTriage()"><i class="fas fa-share-square"></i>End Triage</a>
+            <button class="btn btn-outline-danger mx-1" title="Sign Off" type="button" data-toggle="modal" data-target=".signOff" onclick="endTriage()">End Triage</button>
         </div>
     </div>
     <div class="modal fade signOff" tabindex="-1" role="dialog" aria-labelledby="signOff" aria-hidden="true">
@@ -316,5 +386,7 @@
             </div>
         </div>
     </div>
+    <input name="endTriage" type="hidden" value="1" disabled>
+            <?= $this->Form->end();?>
   </div>
 </div>

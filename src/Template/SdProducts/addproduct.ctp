@@ -242,7 +242,7 @@
 
                                     <div class="form-group col-md-3">
                                         <label for="">Select Country</label>
-                                        <select class="form-control" id="select-country" name="product_workflow[0][country]">
+                                        <select class="form-control" id="select-accessment-country" name="product_accessment_workflow[0][country]">
                                         <option value="">Select Country</option>
                                         <?php
                                         $country_list=[
@@ -250,12 +250,12 @@
                                             'JPN'=>'Japan',
                                             'CHN'=>'China'
                                         ];
-                                        foreach($workflow_structure as $workflow_structure_detail){
+                                        foreach($accessment_workflow_structure as $workflow_structure_detail){
                                             echo "<option value=".$workflow_structure_detail->country.">".$country_list[$workflow_structure_detail->country]."</option>";
                                         }
                                         ?>
                                         </select>
-                                        <div id="select-country-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
+                                        <div id="select-accessment-country-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
                                             Country is REQUIRED
                                         </div>
                                     </div>
@@ -274,34 +274,34 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button id="exit_workflow" type="button" class="btn btn-outline-warning">Exit</button>
-                                <div id="submitchocountry" class="btn btn-primary w-25">Countinue</div>
+                                <button id="exit_accessment_workflow" type="button" class="btn btn-outline-warning">Exit</button>
+                                <div id="submit_accessment_country" class="btn btn-primary w-25">Countinue</div>
                             </div>
-                            <div id="choosewf">
+                            <div id="choose_accessment_wf">
                                 <div class="row" style="min-height: 740px;">
                                     <!-- Default Workflow -->
-                                    <div class="col" id="defworkflow">
-                                        <button type="button" id="defbtn" class="btn btn-success btn-sm workflow"><span>Default Workflow</span></button>
-                                        <h3 id="defT" style="display:none;">Default Workflow</h3>
+                                    <div class="col" id="default_accessment_workflow_div">
+                                        <button type="button" id="default_accessment_btn" class="btn btn-success btn-sm workflow"><span>Default Workflow</span></button>
+                                        <h3 id="default_accessment_T" style="display:none;">Default Workflow</h3>
                                         <hr class="wfhr">
-                                        <ol id="default_workflow" class="defworkflow">
+                                        <ol class="defworkflow" id="default_accessment_workflow">
                                         </ol>
-                                        <input type="hidden" id="default-workflow_name"/>
-                                        <input type="hidden" id="default-workflow_id"/>
-                                        <input type="hidden" id="default-workflow_description"/>
+                                        <input type="hidden" id="default_accessment_workflow_name"/>
+                                        <input type="hidden" id="default_accessment_workflow_id"/>
+                                        <input type="hidden" id="default_accessment_workflow_description"/>
                                     </div>
 
                                     <!-- Customize Workflow -->
-                                    <div class="col" id="cusworkflow">
-                                        <button type="button" id="custbtn" class="btn btn-success btn-sm workflow"><span>Customize Your Workflow</span></button>
-                                        <h3 id="cusT" style="display:none;">Customize Workflow</h3>
+                                    <div class="col" id="customize_accessment_workflow_div">
+                                        <button type="button" id="cust_accessment_btn" class="btn btn-success btn-sm workflow"><span>Customize Your Workflow</span></button>
+                                        <h3 id="customize_distribution_T" style="display:none;">Customize Workflow</h3>
                                         <hr class="wfhr">
-                                        <div class="custworkflow" id="cusworkflow">
+                                        <div class="custworkflow" id="customize_accessment_workflow">
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
                                                     <h4>Workflow Name: </h4 >
-                                                    <input class="w-75 text-center" type="text" id="custom-workflow_name" value=""/>
-                                                    <div id="custom-workflow_name-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
+                                                    <input class="w-75 text-center" type="text" id="custom_accessment_workflow_name" value=""/>
+                                                    <div id="custom_accessment_workflow_name-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
                                                         Name is REQUIRED
                                                     </div>
                                                 </div>
@@ -309,24 +309,24 @@
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
                                                     <h5>Workflow Description </h5 >
-                                                    <input class="w-75 text-center" type="text" id="custom-workflow_description" value=""/>
-                                                    <div id="custom-workflow_description-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
+                                                    <input class="w-75 text-center" type="text" id="custom_accessment_workflow_description" value=""/>
+                                                    <div id="custom_accessment_workflow_description-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
                                                         Description is REQUIRED
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div id="errWorkflow" class="invalid-feedback" style="display:none;">Workflow name is required!</div>
+                                            <div id="errAccessmentWorkflow" class="invalid-feedback" style="display:none;">Workflow name is required!</div>
 
                                             <p>You can edit the workflow here and please drag the yellow box to anywhere in the workflow for customization</p>
                                             <ul>
                                                 <li id="draggable" class="custworkflowstep">
                                                     <div class="card w-100 h-25 my-2">
                                                         <div class="card-body p-3">
-                                                            <h5 class="card-title"><input type="text" id="new_activity-name" placeholder="Type step name here FIRST" class="font-weight-bold" /> </h5>
-                                                            <p class="card-text"><textarea type="text"  id="new_activity-description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>
+                                                            <h5 class="card-title"><input type="text" id="new_accessment_activity_name" placeholder="Type step name here FIRST" class="font-weight-bold" /> </h5>
+                                                            <p class="card-text"><textarea type="text"  id="new_accessment_activity_description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>
                                                         </div>
-                                                        <button id="confirm_new_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity()">Confirm</button>
+                                                        <button id="confirm_new_accessment_distribution_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity()">Confirm</button>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -352,7 +352,7 @@
                                             <!-- TODO LOAD STRUCTURE OF SECTIONS -->
                                             <?php 
                                             foreach($loadTabs as $tabkey => $tab){
-                                                echo "<div class=\"row\"><div class=\"col-md-12\"><h5 class=\"text-center\">".$tab['tab_name']."</h5></div></div><div class=\"row\">";
+                                                echo "<div class=\"row\"><div class=\"col-md-12\"><h5 class=\"text-center\">".$tab['tab_name']."</h5></div></div>";
                                                 $exsitSectionNo = [];
                                                 foreach($tab['sd_sections'] as $key => $sdSection){
                                                     $exsitSectionNo[$key] = $sdSection['id'];
@@ -361,7 +361,7 @@
                                                     if(!in_array($section['id'], $exsitSectionNo))
                                                     continue;
                                                     if($section['section_level']>1){
-                                                        echo "<div class=\"col-md-12\" id=\"l2section-".$section['id']."\"><label>".$section['section_name']."</label>";
+                                                        echo "<div class=\"row\" id=\"l2section-".$section['id']."\"><div class=\"col-md-12\"><label>".$section['section_name']."</label></div>";
                                                         // debug($section['child_section']);
                                                         $child_sections = explode(',', $section['child_section']);
                                                         foreach($child_sections as $child_section){
@@ -374,7 +374,7 @@
                                                         echo "</div>";
                                                     }
                                                 }
-                                                echo "</div><hr class=\"my-2\">";
+                                                echo "<hr class=\"my-2\">";
                                             }
                                             ?>
                                                 <!-- <div class="row">
@@ -404,85 +404,23 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer" id="permissionFooter">
-                                        <button type="button" class="btn btn-primary" id="savePermission" onclick="savePermission()">Save</button>
                                     </div>
                                     </div>
                                 </div>
                                 </div>
 
                                 <div class="d-block mt-3">
-                                    <button id="undochocon" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
-                                    <button id="confirm_activities" class="btn btn-primary w-25" style="display:none;">Countinue</button>
-                                    <button id="undo_activities" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
-                                    <button id="submitworkflow" class="btn btn-primary w-25" style="display:none;">Countinue</button>
+                                    <button id="undochoaccessmentcon" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
+                                    <button id="confirm_accessment_activities" class="btn btn-primary w-25" style="display:none;">Countinue</button>
+                                    <button id="undo_accessment_activities" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
+                                    <button id="submit_accessment_workflow" class="btn btn-primary w-25" style="display:none;">Countinue</button>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Choose Distribution -->
-                        <div id="chooseDistri" class="prodiff text-center" style="display:none;">
-                            <h3>Choose Distribution</h3>
-                            <hr>
-                            <div id="newDistri-0">
-                                <div class="form-group col-md-3 d-inline-block">
-                                    <label for="">Select Country</label>
-                                    <select class="form-control" id="" name="">
-                                        <option value="">Select Country</option>
-                                        <option value="USA">Unitied States</option>
-                                        <option value="JPN">Japan</option>
-                                        <option value="EU">Europe</option>
-                                    </select>
-                                </div>
-                                <div id="defDistri" class="my-2">
-                                    <button type="button" id="defDistriBtn-0" class="btn btn-success workflow w-25 defDistriBtn"><span>Default Distribution</span></button>
-                                    <div class="defDistriContent" style="display:none;">
-                                        <div class="d-flex justify-content-center">
-                                            <div class="card m-2" style="width: 18rem;">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Generate Report</h5>
-                                                    <p class="card-text">Output a report from system</p>
-                                                </div>
-                                            </div>
-                                            <div class="card m-2" style="width: 18rem;">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Submission</h5>
-                                                    <p class="card-text">Submit report to regulator</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="custDistri" class="my-2">
-                                    <button type="button" id="custDistriBtn-0" class="btn btn-success workflow w-25 custDistriBtn"><span>Customize Distribution</span></button>
-                                    <div class="custDistriContent" class="my-3" style="display:none;">
-                                        <div class="addnNewDistriContent">
-                                            <div class="d-flex justify-content-center">
-                                                <div class="card m-2" style="width: 18rem;">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">Generate Report</h5>
-                                                        <p class="card-text">Output a report from system</p>
-                                                    </div>
-                                                </div>
-                                                <div class="card m-2" style="width: 18rem;">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">Submission</h5>
-                                                        <p class="card-text">Submit report to regulator</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                            </div>
-                            <div class="newDistrictArea"></div>
-                            <button id="addNewDistri" type="button" class="btn btn-sm btn-outline-primary float-left"><i class="fas fa-plus"></i> Add New</button>
-                            <button id="submitDistri" class="btn btn-primary w-25">Countinue</button>
                         </div>
 
                         <!-- Add CROs -->
-                        <div id="choosecro" class="prodiff text-center">
-                            <h3 class="mt-2">Add Resources</h3>
+                        <div id="chooseAccessmentCompany" class="prodiff text-center" style="display:none">
+                            <h3 class="mt-2">Team Members</h3>
                             <hr>
                             <p class="card-text">Add the Resources here and assign personnels</p>
                             <button type="button" class="btn btn-outline-info w-25 mx-auto mb-3" data-toggle="modal" data-target="#addcromodal">Add Resources</button>
@@ -557,25 +495,283 @@
                             </div>
 
                             <div class="d-block mt-3">
-
-
-                            <!-- CROs Resources List -->
-                            <h3 class="mt-3">CROs Resources List</h3>
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">CRO Company</th>
-                                        <th scope="col">Workflow Manager</th>
-                                        <th scope="col">Team Resources</th>
-                                        <th scope="col">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="crotable">
-                                </tbody>
-                            </table>
-                            <button id="undochoWF" type="button" class="btn btn-outline-warning mt-3">Reselect Workflow</button>
-                            <button id="confirmWFlist" type="button" class="btn btn-primary w-25 mt-3 mx-auto">Confirm</button>
+                                <!-- CROs Resources List -->
+                                <h3 class="mt-3">CROs Resources List</h3>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">CRO Company</th>
+                                            <th scope="col">Workflow Manager</th>
+                                            <th scope="col">Team Resources</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="crotable">
+                                    </tbody>
+                                </table>
+                                <button id="undochoAccessmentWF" type="button" class="btn btn-outline-warning mt-3">Reselect Workflow</button>
+                                <button id="confirmAccessmentWFlist" type="button" class="btn btn-primary w-25 mt-3 mx-auto">Continue</button>
+                            </div>
+                        <!-- Choose Distribution -->
+                        <div id="chooseDistri" class="prodiff text-center" style="display:none;">
+                            <h3>Choose Distribution</h3>
+                            <hr>
+                            <div id="distriList"></div>
+                            <!-- <div id="newDistri-0">
+                                <div class="form-group col-md-3 d-inline-block">
+                                    <label for="">Select Country</label>
+                                    <select class="form-control" id="" name="">
+                                        <option value="">Select Country</option>
+                                        <option value="USA">Unitied States</option>
+                                        <option value="JPN">Japan</option>
+                                        <option value="EU">Europe</option>
+                                    </select>
+                                </div>
+                                <div id="defDistri" class="my-2">
+                                    <button type="button" id="defDistriBtn-0" class="btn btn-success workflow w-25 defDistriBtn"><span>Default Distribution</span></button>
+                                    <div class="defDistriContent" style="display:none;">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="card m-2" style="width: 18rem;">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Generate Report</h5>
+                                                    <p class="card-text">Output a report from system</p>
+                                                </div>
+                                            </div>
+                                            <div class="card m-2" style="width: 18rem;">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Submission</h5>
+                                                    <p class="card-text">Submit report to regulator</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="custDistri" class="my-2">
+                                    <button type="button" id="custDistriBtn-0" class="btn btn-success workflow w-25 custDistriBtn"><span>Customize Distribution</span></button>
+                                    <div class="custDistriContent" class="my-3" style="display:none;">
+                                        <div class="addnNewDistriContent">
+                                            <div class="d-flex justify-content-center">
+                                                <div class="card m-2" style="width: 18rem;">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Generate Report</h5>
+                                                        <p class="card-text">Output a report from system</p>
+                                                    </div>
+                                                </div>
+                                                <div class="card m-2" style="width: 18rem;">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Submission</h5>
+                                                        <p class="card-text">Submit report to regulator</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div> -->
+                            <div class="newDistrictArea"></div>
+                            <button id="addNewDistri" type="button" class="btn btn-sm btn-outline-primary float-left"><i class="fas fa-plus"></i> Add New</button>
+                            <button id="backDistri" class="btn btn-outline-warning w-25">Last Step</button>
+                            <button id="submitDistri" class="btn btn-primary w-25">Countinue</button>
                         </div>
+                        <div id="choDistribution" class="prodiff text-center mt-1" style="display:none;">
+                        <!-- Title for "Add New" -->
+                            <div class="jumbotron jumbotron-fluid bg-warning">
+                                <div class="container">
+                                    <h1 class="display-4">Add New Distribution Workflow</h1>
+                                </div>
+                            </div>
+                            <!-- Choose Country  id="choosecon"-->
+                            <div class="prodiff text-center mt-1">
+                                <h3>Choose Country and Call Center</h3>
+                                <hr>
+                                <div class="form-row justify-content-md-center">
+
+                                    <div class="form-group col-md-3">
+                                        <label for="">Select Country</label>
+                                        <select class="form-control" id="select-distribution-country" name="product_distribution_workflow[0][country]">
+                                        <option value="">Select Country</option>
+                                        <?php
+                                        $country_list=[
+                                            'USA'=>'Unitied States',
+                                            'JPN'=>'Japan',
+                                            'CHN'=>'China'
+                                        ];
+                                        foreach($distribution_workflow_structure as $workflow_structure_detail){
+                                            echo "<option value=".$workflow_structure_detail->country.">".$country_list[$workflow_structure_detail->country]."</option>";
+                                        }
+                                        ?>
+                                        </select>
+                                        <div id="select-distribution-country-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
+                                            Country is REQUIRED
+                                        </div>
+                                    </div>
+                                </div>
+                                <button id="exit_distribution_workflow" type="button" class="btn btn-outline-warning">Exit</button>
+                                <div id="submit_distribution_country" class="btn btn-primary w-25">Countinue</div>
+                            </div>
+                            <div id="choose_distribution_wf">
+                                <div class="row" style="min-height: 740px;">
+                                    <!-- Default Workflow -->
+                                    <div class="col" id="default_distribution_workflow">
+                                        <button type="button" id="default_distribution_btn" class="btn btn-success btn-sm workflow"><span>Default Distribution Workflow</span></button>
+                                        <h3 id="default_distribution_T" style="display:none;">Default Workflow</h3>
+                                        <hr class="wfhr">
+                                        <ol id="default_workflow" class="defworkflow">
+                                        </ol>
+                                        <input type="hidden" id="default_distribution_workflow_name"/>
+                                        <input type="hidden" id="default_distribution_workflow_id"/>
+                                        <input type="hidden" id="default_distribution_workflow_description"/>
+                                    </div>
+
+                                    <!-- Customize Workflow -->
+                                    <div class="col" id="customize_distribution_workflow">
+                                        <button type="button" id="cust_distribution_btn" class="btn btn-success btn-sm workflow"><span>Customize Your Workflow</span></button>
+                                        <h3 id="customize_distribution_T" style="display:none;">Customize Workflow</h3>
+                                        <hr class="wfhr">
+                                        <div class="custworkflow" id="customize_distribution_workflow">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-12">
+                                                    <h4>Workflow Name: </h4 >
+                                                    <input class="w-75 text-center" type="text" id="custom_distribution_workflow_name" value=""/>
+                                                    <div id="custom_distribution_workflow_name-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
+                                                        Name is REQUIRED
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-12">
+                                                    <h5>Workflow Description </h5 >
+                                                    <input class="w-75 text-center" type="text" id="custom_distribution_workflow_description" value=""/>
+                                                    <div id="custom_distribution_workflow_description-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
+                                                        Description is REQUIRED
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div id="errAccessmentWorkflow" class="invalid-feedback" style="display:none;">Workflow name is required!</div>
+
+                                            <p>You can edit the workflow here and please drag the yellow box to anywhere in the workflow for customization</p>
+                                            <ul>
+                                                <li id="draggable" class="custworkflowstep">
+                                                    <div class="card w-100 h-25 my-2">
+                                                        <div class="card-body p-3">
+                                                            <h5 class="card-title"><input type="text" id="new_distribution_activity_name" placeholder="Type step name here FIRST" class="font-weight-bold" /> </h5>
+                                                            <p class="card-text"><textarea type="text"  id="new_distribution_activity_description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>
+                                                        </div>
+                                                        <button id="confirm_new_distribution_distribution_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity(1)">Confirm</button>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <ol id="sortable" class="cust">
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-block mt-3">
+                                    <button id="undochodistributioncon" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
+                                    <button id="confirm_distribution_activities" class="btn btn-primary w-25" style="display:none;">Countinue</button>
+                                    <button id="undo_distribution_activities" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
+                                    <button id="submit_distribution_workflow" class="btn btn-primary w-25" style="display:none;">Countinue</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Add CROs -->
+                        <div id="chooseDistributionCompany" class="prodiff text-center" style="display:none">
+                            <h3 class="mt-2">Team Members</h3>
+                            <hr>
+                            <p class="card-text">Add the Resources here and assign personnels</p>
+                            <button type="button" class="btn btn-outline-info w-25 mx-auto mb-3" data-toggle="modal" data-target="#addcromodal">Add Resources</button>
+                            <div class="modal fade" id="addcromodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add Companies</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label for="">Add Resources</label>
+                                        <select class="custom-select" id="croname">
+                                        <?php 
+                                            foreach($cro_companies as $k => $cro_company){
+                                                echo "<option value=\"".$k."\">".$cro_company."</option>";
+                                            }
+                                        ?>
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="croadd"  class="btn btn-primary"  data-dismiss="modal">ADD</button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div id="addcroarea" class="btn-group-vertical w-25">
+                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target=".bd-example-modal-lg">A CRO</button>
+                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target=".bd-example-modal-lg">B CRO</button>
+                                <button type="button" class="btn btn-outline-primary" id ="0" data-toggle="modal" data-target=".bd-example-modal-lg">C CRO</button>
+                            </div> -->
+
+                            <div class="modal fade bd-example-modal-lg" id="addper" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Assign Personnels</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Assign people as manager or team members.</p>
+                                            <!-- Choose Personnels -->
+                                            <div class="card bg-light mb-3 float-left personnelarea">
+                                                <div class="card-header">Candidates of Team Resources</div>
+                                                <div id="personnelDraggable" class="card-body p-2">
+                                                </div>
+                                            </div>
+
+                                            <!-- Droppable Area -->
+                                            <div id="dropZone" class="card bg-light mx-3 mb-3 float-right">
+                                                <div class="card-header">Drag Candidates Here for Assignment</div>
+                                                <div class="stack border-success">
+                                                    <div class="stackHdr">Assign as workflow manager</div>
+                                                    <div class="stackDrop1" id="workflow_manager-add"></div>
+                                                </div>
+                                                <div class="stack border-info">
+                                                    <div class="stackHdr">Assign as team resources</div>
+                                                    <div class="stackDrop2" id="team_resources-add"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="conass" class="btn btn-outline-success" type="submit" data-dismiss="modal">Confirm Assignment</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-block mt-3">
+                                <!-- CROs Resources List -->
+                                <h3 class="mt-3">CROs Resources List</h3>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">CRO Company</th>
+                                            <th scope="col">Workflow Manager</th>
+                                            <th scope="col">Team Resources</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="crotable">
+                                    </tbody>
+                                </table>
+                                <button id="undochoDistributionWF" type="button" class="btn btn-outline-warning mt-3">Reselect Workflow</button>
+                                <button id="confirmDistributionWFlist" type="button" class="btn btn-primary w-25 mt-3 mx-auto">Continue</button>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -584,6 +780,7 @@
 
 </div>
 <script type="text/javascript">
-var workflowInfo = <?php echo json_encode($workflow_structure);?>;
+var accessmentWorkflowInfo = <?php echo json_encode($accessment_workflow_structure);?>;
+var distribution_workflow_structure = <?php echo json_encode($distribution_workflow_structure);?>;
 var loadTabs = <?php echo json_encode($loadTabs);?>;
 </script>

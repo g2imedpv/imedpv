@@ -189,8 +189,8 @@ function onQueryClicked(preferrenceId = null){
                 }
                 text +="</td>";
                 text += "<td class=\"align-middle\">";
-                if(caseDetail.status==1) text+="activate";
-                else text+="inactivate";
+                if(caseDetail.status==1) text+="Active";
+                else text+="Inactive";
                 text+="</td>";
                 text += "<td class=\"align-middle\">";
                 if(caseDetail.sd_user_id == userId)

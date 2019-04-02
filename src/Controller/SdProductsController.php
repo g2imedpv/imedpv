@@ -186,8 +186,10 @@ class SdProductsController extends AppController
     {
         $this->viewBuilder()->setLayout('main_layout');
         // $this->set('sdSponsors', $sponsors);
-        $workflow_structure = $this->loadWorkflowsStructure();
-        $this->set('workflow_structure', $workflow_structure);
+        $accessment_workflow_structure = $this->loadWorkflowsStructure(0);
+        $this->set('accessment_workflow_structure', $accessment_workflow_structure);
+        $distribution_workflow_structure = $this->loadWorkflowsStructure(1);
+        $this->set('distribution_workflow_structure', $distribution_workflow_structure);
         //debug($sponsors);
         //debug($product_types);
 
@@ -356,13 +358,13 @@ class SdProductsController extends AppController
      *
      * for add product add workflows
      */
-    public function loadWorkflowsStructure()
+    public function loadWorkflowsStructure($type)
     {
         $result = array();
         $searchKey = $this->request->getData();
         $default_workflows = TableRegistry::get("sd_workflows");
         $query = $default_workflows->find()
-                        ->where(['workflow_type'=>'0'])
+                        ->where(['workflow_type'=>'0','classification'=>$type])
                         ->contain('SdWorkflowActivities', function ($q) {
                             return $q->select(['SdWorkflowActivities.id','SdWorkflowActivities.step_backward','SdWorkflowActivities.sd_workflow_id','SdWorkflowActivities.activity_name','SdWorkflowActivities.description'])->order(['SdWorkflowActivities.id'=>'ASC']);
                         })
