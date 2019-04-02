@@ -113,11 +113,11 @@
         <tr class="SectionTwo">
             <th class="tg-0pky" colspan="2">
                 <p class="text-left titlesize"> 14. SUSPECT DRUG(S) (include generic name) </p>
-                <p class="text-left textsize">#1)<?php echo $drugone."/".$genericOne?></p>
-                <p class="text-left textsize">#2)<?php echo $drugtwo."/".$genericTwo?></p>
+                <p class="text-left textsize">#1)<?php echo "Proprietary Medicinal Product Name:".$ProductNameOne."/  Active Substance Name:".$SubstanceOne."  /Country Obtained:".$CountryObtainedOne."  /Batch/Lot Number: ".$LotOne?></p>
+                <p class="text-left textsize">#2)<?php echo "Proprietary Medicinal Product Name:".$ProductNameTwo."/  Active Substance Name:".$SubstanceTwo."  /Country Obtained:".$CountryObtainedTwo."  /Batch/Lot Number: ".$LotTwo?></p>
             </th>
             <th class="tg-0pky">
-                <p class="text-center titlesize" style="padding:5px;"> 20. DID REACTION ABATE AFTER STOPPING DRUG?</p>
+                <p class="text-center titlesize" style="padding:5px;line-height: 20px;"> 20. DID REACTION ABATE AFTER STOPPING DRUG?</p>
                 <div class="d-flex justify-content-around" style="font-size:12px;">
                     <input type="checkbox" name="vehicle1" value="Bike" <?php echo $DeYes?> >Yes<br>
                     <input type="checkbox" name="vehicle2" value="Car" <?php echo $DeNo?>>No<br>
@@ -128,8 +128,8 @@
         <tr style="height:15px;" class="SectionTwo">
             <td class="tg-0pky">
                 <p class="text-left titlesize"> 15. DAILY DOSE(S) </p>
-                <p class="text-left textsize">#1)<?php echo $doseOne."  ".$doseUnitOne."  dosage(s)= ".$separateDosageOne."Ïnterval=".$intervalOne." ".$intervalUnitOne?></p>
-                <p class="text-left textsize">#2)<?php echo $doseTwo."  ".$doseUnitTwo."  dosage(s)= ".$separateDosageTwo."Ïnterval=".$intervalTwo." ".$intervalUnitTwo?></p>
+                <p class="text-left textsize">#1)<?php echo $doseOne."  ".$doseUnitOne."  dosage(s)= ".$separateDosageOne."Ïnterval=".$intervalOne." ".$intervalUnitOne."   ".$DosageTextOne?></p>
+                <p class="text-left textsize">#2)<?php echo $doseTwo."  ".$doseUnitTwo."  dosage(s)= ".$separateDosageTwo."Ïnterval=".$intervalTwo." ".$intervalUnitTwo."   ".$DosageTextTwo?></p>
             </td>
             <td class="tg-0pky">
                 <p class=" titlesize"> 16. ROUTE(S) OF ADMINISTRATION </p>
@@ -137,7 +137,7 @@
                 <p class="text-left textsize">#2)<?php echo $routetwo?></p>
             </td>
             <td class="tg-0pky" rowspan="2">
-                <p class="text-center titlesize" style="padding:3px;"> 21. DID REACTION REAPPEAR AFTER REINTRODUCTION?</p>
+                <p class="text-center titlesize" style="padding:3px;line-height: 20px;"> 21. DID REACTION REAPPEAR AFTER REINTRODUCTION?</p>
                 <div class="d-flex justify-content-around" style="font-size:12px;">
                     <input type="checkbox" name="vehicle1" value="Bike" <?php echo $ReYes?>>Yes<br>
                     <input type="checkbox" name="vehicle2" value="Car" <?php echo $ReNo?>>No<br>
@@ -240,7 +240,7 @@
     </table>
     <!-- Page Two -->
     <div class="tg m-5 pageBreak" >
-        <span class="pagetwo secondheader">page 2 of 2</span><span class="pagetwo secondheader float-right">Mfr.Control Number:</span>
+        <span class="pagetwo secondheader">page 2 of 2</span><span class="pagetwo secondheader float-right">Mfr.Control Number:<?php echo $fileName?></span>
         <hr class="secondheader" size=3 color=#000000 >
         <h3 class="tg-0pky text-center align-middle title pagetwo" ><b>ADDITIONAL INFORMATION</b></h3>
         <p class="text-left titlesize pagetwo"> 7 + 13. DESCRIBE REACTION(S) continued </p>

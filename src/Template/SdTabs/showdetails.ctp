@@ -90,7 +90,7 @@ echo $this->element('generatepdf');
         <div class="dropdown-menu">
             <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>">CIOMS</a>
             <a class="dropdown-item" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>">FDA</a>
-            <a class="dropdown-item" target="_blank" href="/sd-export/genXML/<?php echo $caseId ?>">XML</a>
+            <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXML/<?php echo $caseId ?>">XML</a>
             <!-- Add this if location had details
             <div role="separator" class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Separated link</a>
