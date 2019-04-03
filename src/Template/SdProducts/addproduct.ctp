@@ -149,10 +149,10 @@
 
 
                         <!-- Workflow List and Add New -->
-                        <button id="addNewWL" type="button" class="btn btn-outline-info float-right">Add New Workflow <i class="far fa-plus-square"></i></button>
+                        <button id="addNew-accessment-WL" type="button" class="btn btn-outline-info float-right">Add New Workflow <i class="far fa-plus-square"></i></button>
 
                         <!-- Hide this when triggered "Add New" -->
-                        <div id="workflowlist" class="mt-3">
+                        <div id="accessment-workflowlist" class="mt-3">
                             <h3>Workflow List</h3>
 
                             <table class="table table-hover mb-3" id="workflow_list">
@@ -217,7 +217,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div id="distribution_input" style="display:none;"></div>
                             <div id="no_workflow_notice"><h3>There is no workflow linked to this product, please add workflow first;</h3></div>
                             <input type="submit" class="btn btn-success w-25 mt-3 mx-auto">
                             <?= $this->Form->end() ?>
@@ -226,7 +226,7 @@
 
                         <!-- Show this when triggered "Add New" -->
                         <!-- Choose Workflow -->
-                        <div id="choworkflow" class="prodiff text-center mt-1" style="display:none;">
+                        <div id="cho-accessment-workflow" class="prodiff text-center mt-1" style="display:none;">
                         <!-- Title for "Add New" -->
                             <div class="jumbotron jumbotron-fluid bg-warning">
                                 <div class="container">
@@ -294,9 +294,9 @@
                                     <!-- Customize Workflow -->
                                     <div class="col" id="customize_accessment_workflow_div">
                                         <button type="button" id="cust_accessment_btn" class="btn btn-success btn-sm workflow"><span>Customize Your Workflow</span></button>
-                                        <h3 id="customize_distribution_T" style="display:none;">Customize Workflow</h3>
+                                        <h3 id="customize_accessment_T" style="display:none;">Customize Workflow</h3>
                                         <hr class="wfhr">
-                                        <div class="custworkflow" id="customize_accessment_workflow">
+                                        <div class="cust-accessment-workflow" id="customize_accessment_workflow">
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
                                                     <h4>Workflow Name: </h4 >
@@ -326,11 +326,11 @@
                                                             <h5 class="card-title"><input type="text" id="new_accessment_activity_name" placeholder="Type step name here FIRST" class="font-weight-bold" /> </h5>
                                                             <p class="card-text"><textarea type="text"  id="new_accessment_activity_description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>
                                                         </div>
-                                                        <button id="confirm_new_accessment_distribution_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity()">Confirm</button>
+                                                        <button id="confirm_new_accessment_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity()">Confirm</button>
                                                     </div>
                                                 </li>
                                             </ul>
-                                            <ol id="sortable" class="cust">
+                                            <ol id="accessment-sortable" class="cust">
                                             </ol>
                                         </div>
                                     </div>
@@ -410,7 +410,7 @@
                                 </div>
 
                                 <div class="d-block mt-3">
-                                    <button id="undochoaccessmentcon" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
+                                    <button id="undocho-accessment-con" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
                                     <button id="confirm_accessment_activities" class="btn btn-primary w-25" style="display:none;">Countinue</button>
                                     <button id="undo_accessment_activities" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
                                     <button id="submit_accessment_workflow" class="btn btn-primary w-25" style="display:none;">Countinue</button>
@@ -419,12 +419,12 @@
                         </div>
 
                         <!-- Add CROs -->
-                        <div id="chooseAccessmentCompany" class="prodiff text-center" style="display:none">
+                        <div id="choose-accessment-company" class="prodiff text-center" style="display:none">
                             <h3 class="mt-2">Team Members</h3>
                             <hr>
                             <p class="card-text">Add the Resources here and assign personnels</p>
-                            <button type="button" class="btn btn-outline-info w-25 mx-auto mb-3" data-toggle="modal" data-target="#addcromodal">Add Resources</button>
-                            <div class="modal fade" id="addcromodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <button type="button" class="btn btn-outline-info w-25 mx-auto mb-3" data-toggle="modal" data-target="#accessment-addcromodal">Add Resources</button>
+                            <div class="modal fade" id="accessment-addcromodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                     <div class="modal-header">
@@ -435,7 +435,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <label for="">Add Resources</label>
-                                        <select class="custom-select" id="croname">
+                                        <select class="custom-select" id="accessment-croname">
                                         <?php 
                                             foreach($cro_companies as $k => $cro_company){
                                                 echo "<option value=\"".$k."\">".$cro_company."</option>";
@@ -444,7 +444,7 @@
                                         </select>
                                     </div>
                                     <div class="modal-footer">
-                                        <button id="croadd"  class="btn btn-primary"  data-dismiss="modal">ADD</button>
+                                        <button id="accessment-croadd"  class="btn btn-primary"  data-dismiss="modal">ADD</button>
                                     </div>
                                     </div>
                                 </div>
@@ -488,7 +488,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button id="conass" class="btn btn-outline-success" type="submit" data-dismiss="modal">Confirm Assignment</button>
+                                            <button id="conass-accessment" class="btn btn-outline-success" type="submit" data-dismiss="modal">Confirm Assignment</button>
                                         </div>
                                     </div>
                                 </div>
@@ -506,14 +506,14 @@
                                             <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="crotable">
+                                    <tbody id="accessment-crotable">
                                     </tbody>
                                 </table>
-                                <button id="undochoAccessmentWF" type="button" class="btn btn-outline-warning mt-3">Reselect Workflow</button>
-                                <button id="confirmAccessmentWFlist" type="button" class="btn btn-primary w-25 mt-3 mx-auto">Continue</button>
+                                <button id="undocho-accessment-WF" type="button" class="btn btn-outline-warning mt-3">Reselect Workflow</button>
+                                <button id="confirm-accessment-WFlist" type="button" class="btn btn-primary w-25 mt-3 mx-auto">Continue</button>
                             </div>
                         <!-- Choose Distribution -->
-                        <div id="chooseDistri" class="prodiff text-center" style="display:none;">
+                        <div id="distribution-workflowlist" class="prodiff text-center" style="display:none;">
                             <h3>Choose Distribution</h3>
                             <hr>
                             <div id="distriList"></div>
@@ -570,11 +570,11 @@
                                 <hr>
                             </div> -->
                             <div class="newDistrictArea"></div>
-                            <button id="addNewDistri" type="button" class="btn btn-sm btn-outline-primary float-left"><i class="fas fa-plus"></i> Add New</button>
+                            <button id="addNew-distribution-WL" type="button" class="btn btn-sm btn-outline-primary float-left"><i class="fas fa-plus"></i> Add New</button>
                             <button id="backDistri" class="btn btn-outline-warning w-25">Last Step</button>
                             <button id="submitDistri" class="btn btn-primary w-25">Countinue</button>
                         </div>
-                        <div id="choDistribution" class="prodiff text-center mt-1" style="display:none;">
+                        <div id="cho-distribution-workflow" class="prodiff text-center mt-1" style="display:none;">
                         <!-- Title for "Add New" -->
                             <div class="jumbotron jumbotron-fluid bg-warning">
                                 <div class="container">
@@ -592,11 +592,6 @@
                                         <select class="form-control" id="select-distribution-country" name="product_distribution_workflow[0][country]">
                                         <option value="">Select Country</option>
                                         <?php
-                                        $country_list=[
-                                            'USA'=>'Unitied States',
-                                            'JPN'=>'Japan',
-                                            'CHN'=>'China'
-                                        ];
                                         foreach($distribution_workflow_structure as $workflow_structure_detail){
                                             echo "<option value=".$workflow_structure_detail->country.">".$country_list[$workflow_structure_detail->country]."</option>";
                                         }
@@ -613,11 +608,11 @@
                             <div id="choose_distribution_wf">
                                 <div class="row" style="min-height: 740px;">
                                     <!-- Default Workflow -->
-                                    <div class="col" id="default_distribution_workflow">
+                                    <div class="col" id="default_distribution_workflow_div">
                                         <button type="button" id="default_distribution_btn" class="btn btn-success btn-sm workflow"><span>Default Distribution Workflow</span></button>
                                         <h3 id="default_distribution_T" style="display:none;">Default Workflow</h3>
                                         <hr class="wfhr">
-                                        <ol id="default_workflow" class="defworkflow">
+                                        <ol id="default_distribution_workflow" class="defworkflow">
                                         </ol>
                                         <input type="hidden" id="default_distribution_workflow_name"/>
                                         <input type="hidden" id="default_distribution_workflow_id"/>
@@ -625,7 +620,7 @@
                                     </div>
 
                                     <!-- Customize Workflow -->
-                                    <div class="col" id="customize_distribution_workflow">
+                                    <div class="col" id="customize_distribution_workflow_div">
                                         <button type="button" id="cust_distribution_btn" class="btn btn-success btn-sm workflow"><span>Customize Your Workflow</span></button>
                                         <h3 id="customize_distribution_T" style="display:none;">Customize Workflow</h3>
                                         <hr class="wfhr">
@@ -659,18 +654,18 @@
                                                             <h5 class="card-title"><input type="text" id="new_distribution_activity_name" placeholder="Type step name here FIRST" class="font-weight-bold" /> </h5>
                                                             <p class="card-text"><textarea type="text"  id="new_distribution_activity_description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>
                                                         </div>
-                                                        <button id="confirm_new_distribution_distribution_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity(1)">Confirm</button>
+                                                        <button id="confirm_new_distribution_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity(1)">Confirm</button>
                                                     </div>
                                                 </li>
                                             </ul>
-                                            <ol id="sortable" class="cust">
+                                            <ol id="distribution-sortable" class="cust">
                                             </ol>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="d-block mt-3">
-                                    <button id="undochodistributioncon" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
+                                    <button id="undocho-distribution-con" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
                                     <button id="confirm_distribution_activities" class="btn btn-primary w-25" style="display:none;">Countinue</button>
                                     <button id="undo_distribution_activities" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
                                     <button id="submit_distribution_workflow" class="btn btn-primary w-25" style="display:none;">Countinue</button>
@@ -679,12 +674,12 @@
                         </div>
 
                         <!-- Add CROs -->
-                        <div id="chooseDistributionCompany" class="prodiff text-center" style="display:none">
+                        <div id="choose-distribution-company" class="prodiff text-center" style="display:none">
                             <h3 class="mt-2">Team Members</h3>
                             <hr>
                             <p class="card-text">Add the Resources here and assign personnels</p>
-                            <button type="button" class="btn btn-outline-info w-25 mx-auto mb-3" data-toggle="modal" data-target="#addcromodal">Add Resources</button>
-                            <div class="modal fade" id="addcromodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <button type="button" class="btn btn-outline-info w-25 mx-auto mb-3" data-toggle="modal" data-target="#distribution-addcromodal">Add Resources</button>
+                            <div class="modal fade" id="distribution-addcromodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                     <div class="modal-header">
@@ -695,7 +690,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <label for="">Add Resources</label>
-                                        <select class="custom-select" id="croname">
+                                        <select class="custom-select" id="distribution-croname">
                                         <?php 
                                             foreach($cro_companies as $k => $cro_company){
                                                 echo "<option value=\"".$k."\">".$cro_company."</option>";
@@ -704,7 +699,7 @@
                                         </select>
                                     </div>
                                     <div class="modal-footer">
-                                        <button id="croadd"  class="btn btn-primary"  data-dismiss="modal">ADD</button>
+                                        <button id="distribution-croadd"  class="btn btn-primary"  data-dismiss="modal">ADD</button>
                                     </div>
                                     </div>
                                 </div>
@@ -748,7 +743,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button id="conass" class="btn btn-outline-success" type="submit" data-dismiss="modal">Confirm Assignment</button>
+                                            <button id="conass-distribution" class="btn btn-outline-success" type="submit" data-dismiss="modal">Confirm Assignment</button>
                                         </div>
                                     </div>
                                 </div>
@@ -766,12 +761,13 @@
                                             <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="crotable">
+                                    <tbody id="distribution-crotable">
                                     </tbody>
                                 </table>
-                                <button id="undochoDistributionWF" type="button" class="btn btn-outline-warning mt-3">Reselect Workflow</button>
-                                <button id="confirmDistributionWFlist" type="button" class="btn btn-primary w-25 mt-3 mx-auto">Continue</button>
+                                <button id="undocho-distribution-WF" type="button" class="btn btn-outline-warning mt-3">Reselect Workflow</button>
+                                <button id="confirm-distribution-WFlist" type="button" class="btn btn-primary w-25 mt-3 mx-auto">Continue</button>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -780,7 +776,8 @@
 
 </div>
 <script type="text/javascript">
-var accessmentWorkflowInfo = <?php echo json_encode($accessment_workflow_structure);?>;
+var accessment_workflow_structure = <?php echo json_encode($accessment_workflow_structure);?>;
 var distribution_workflow_structure = <?php echo json_encode($distribution_workflow_structure);?>;
 var loadTabs = <?php echo json_encode($loadTabs);?>;
+var cro_companies = <?php echo json_encode($cro_companies);?>
 </script>
