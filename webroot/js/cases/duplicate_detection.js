@@ -64,6 +64,8 @@ $(document).ready(function(){
     //     }
     //     $('#show_selected_sae_name').html(text);
     // })
+
+    $(".lltQuickSearch").addClass("lltQuickSearchForCaseReg")
 });
 
 // function str_pad(str, max){

@@ -2,6 +2,11 @@
 <head>
 <?= $this->Html->script('cases/duplicate_detection.js') ?>
 <head>
+<?php
+// debug($productInfo);
+// foreach ($productInfo as $k){  debug($k->id);  }
+?>
+
 
 <div class="container">
 
@@ -158,24 +163,29 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-3">
-                                    <label>Meddra Browser:</label>
+                            <div class="p-3">
+                                <h6 class="text-left">Meddra Browser</h6>
+                                <div class="form-row">
+                                    <div class="form-group col-md-8">
+                                        <!-- <label>Meddra Browser:</label> -->
                                         <?php
                                         $meddraCell = $this->cell('Meddra');
                                         echo $meddraCell;?>
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label>Meddra PT Term:</label>
-                                    <input type="text" class="form-control" name="field_value[394]" id="meddraptname">
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label>Meddra LLT Term:</label>
-                                    <input type="text" class="form-control" name="field_value[392]" id="meddralltname">
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label>Meddra HLT Term:</label>
-                                    <input type="text" class="form-control" name="field_value[395]" id="meddrahltname">
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label>PT Term:</label>
+                                        <input type="text" class="form-control" name="field_value[394]" id="meddraptname">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>LLT Term:</label>
+                                        <input type="text" class="form-control" name="field_value[392]" id="meddralltname">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>HLT Term:</label>
+                                        <input type="text" class="form-control" name="field_value[395]" id="meddrahltname">
+                                    </div>
                                 </div>
                             </div>
                         </div>
