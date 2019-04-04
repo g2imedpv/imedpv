@@ -1,45 +1,58 @@
+$('[id^=doc_source]').change(function () {
+    if ($( "#doc_source_"+s+" option:selected" ).val() == 'File Attachment')
+    {
+        $('#doc_attachment_'+s).show();
+        $('#doc_path_'+s).hide();
+    }
+    else if ($( "#doc_source_"+s+" option:selected" ).val() == 'URL Reference')
+    {
+        $('#doc_attachment_'+s).hide();
+        $('#doc_path_'+s).show();
+    }
+});
 $(document).ready(function(){
+    $('#docTable').DataTable();
     $(function(){
-        function fileUrlSwitcher () {
-            $('[id^=doc_source]').each(function(s,v){
-                //console.log($(this));
-                $(this)
-                .change(function () {
-                    if ($( "#doc_source_"+s+" option:selected" ).val() == 'File Attachment')
-                    {
-                        $('#doc_attachment_'+s).show();
-                        $('#doc_path_'+s).hide();
-                    }
-                    else if ($( "#doc_source_"+s+" option:selected" ).val() == 'URL Reference')
-                    {
-                        $('#doc_attachment_'+s).hide();
-                        $('#doc_path_'+s).show();
-                    }
+        // function fileUrlSwitcher () {
+        //     $('[id^=doc_source]').each(function(s,v){
+        //         //console.log($(this));
+        //         $(this)
+        //         .change(function () {
+        //             if ($( "#doc_source_"+s+" option:selected" ).val() == 'File Attachment')
+        //             {
+        //                 $('#doc_attachment_'+s).show();
+        //                 $('#doc_path_'+s).hide();
+        //             }
+        //             else if ($( "#doc_source_"+s+" option:selected" ).val() == 'URL Reference')
+        //             {
+        //                 $('#doc_attachment_'+s).hide();
+        //                 $('#doc_path_'+s).show();
+        //             }
 
-                })
-            });
-        };
+        //         })
+        //     });
+        // };
 
-        var attachCount = 0;
-        $('#addNewAttach').click(function(){
+        $('[id^=addNewAttach]').click(function(){
+            var set_number = $(this).attr('id').split('-')[1];
+            set_number ++;
             var newattach = "";
-
             newattach += "<tr>";
-                newattach += "<th scope=\"row\">";
-                    newattach += "<input type=\"text\" class=\"form-control\" name=\"doc_classification_" + attachCount + "\" id=\"doc_classification_" + attachCount + "\">";
-                newattach += "</th>";
                 newattach += "<td>";
-                    newattach += "<input type=\"text\" class=\"form-control\" name=\"doc_description_" + attachCount + "\" id=\"doc_description_" + attachCount + "\">";
+                    newattach += "<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_classification]\" id=\"doc_classification_" + set_number + "\">";
                 newattach += "</td>";
                 newattach += "<td>";
-                    newattach += "<select class=\"custom-select\" name=\"doc_source_" + attachCount + "\" id=\"doc_source_" + attachCount + "\">";
+                    newattach += "<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_description]\" id=\"doc_description_" + set_number + "\">";
+                newattach += "</td>";
+                newattach += "<td>";
+                    newattach += "<select class=\"custom-select\" onchange=\"fileUrlSwitcher("+set_number+")\" name=\"document["+set_number+"][doc_source]\" id=\"doc_source_" + set_number + "\">";
                         newattach += "<option value=\"File Attachment\">File Attachment</option>";
                         newattach += "<option value=\"URL Reference\">URL Reference</option>";
                     newattach += "</select>";
                 newattach += "</td>";
                 newattach += "<td>";
-                    newattach += "<input type=\"text\" class=\"form-control\" style=\"display:none;\" name=\"doc_path_" + attachCount + "\" id=\"doc_path_" + attachCount + "\">";
-                    newattach += "<input type=\"file\" name=\"doc_attachment_" + attachCount + "\" id=\"doc_attachment_" + attachCount + "\">";
+                    newattach += "<input type=\"text\" class=\"form-control\" style=\"display:none;\" name=\"document["+set_number+"][doc_path]\" id=\"doc_path_" + set_number + "\">";
+                    newattach += "<input type=\"file\" name=\"document["+set_number+"][doc_attachment]\" id=\"doc_attachment_" + set_number + "\">";
                 newattach += "</td>";
                 newattach += "<td>";
                     newattach += "<button type=\"button\" class=\"btn btn-outline-danger btn-sm my-1 w-100 attachDel\">Delete</button>";
@@ -47,9 +60,7 @@ $(document).ready(function(){
             newattach += "</tr>";
 
             $('#newAttachArea').append(newattach);
-            attachCount++;
-
-            fileUrlSwitcher();
+            $(this).attr('id','addNewAttach-'+set_number);
 
             // Delete row button
             $('.attachDel').click(function(){
@@ -58,36 +69,36 @@ $(document).ready(function(){
 
         });
     });
-    $('[id^=add_attachment]').click(function(){
-        var text="";
-        var set_number = $(this).attr('id').split('-')[1];
-        set_number ++;
-        text +="<div class=\"form-row\">";
-            text +="<div class=\"form-group col-md-3\">";
-                text +="<label>Classification<i class=\"fas fa-asterisk reqField\"></i></label>";
-                text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_classification]\" id=\"doc_classification_"+set_number+"\" value=\"\">";
-            text +="</div>"
-            text +="<div class=\"form-group col-md-3\">";
-                text +="<label>Description<i class=\"fas fa-asterisk reqField\"></i></label>";
-                text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_description]\" id=\"doc_description_"+set_number+"\" value=\"\">";
-            text +="</div>";
-            text +="<div class=\"form-group col-md-3\">";
-                text +="<label>File/Reference</label>";
-                text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_path]\" id=\"doc_path_"+set_number+"\" value=\"\" style=\"display:none\">";
-                text +="<input name=\"document["+set_number+"][doc_attachment]\" id=\"doc_attachment_"+set_number+"\" type=\"file\"/>";
-            text +="</div>";
-            text +="<div class=\"form-group col-md-3\">";
-            text +="<label>&nbsp;</label>";
-            text +="<select name=\"document["+set_number+"][doc_source]\" id=\"doc_source_"+set_number+"\">";
-            text +="<option value=\"File Attachment\">File Attachment</option>";
-            text +="<option value=\"URL Reference\">URL Reference</option>";
-            text +="</select>";
-            text +="</div>";
-            text +="<button type=\"button\" onclick=\"$(this).closest('.form-row').remove()\">Delete</button>"
-        text +="</div>";
-        $(this).attr('id','add_attachment-'+set_number);
-        $('#attachmentField').append(text);
-    })
+    // $('[id^=add_attachment]').click(function(){
+    //     var text="";
+    //     var set_number = $(this).attr('id').split('-')[1];
+    //     set_number ++;
+    //     text +="<div class=\"form-row\">";
+    //         text +="<div class=\"form-group col-md-3\">";
+    //             text +="<label>Classification<i class=\"fas fa-asterisk reqField\"></i></label>";
+    //             text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_classification]\" id=\"doc_classification_"+set_number+"\" value=\"\">";
+    //         text +="</div>"
+    //         text +="<div class=\"form-group col-md-3\">";
+    //             text +="<label>Description<i class=\"fas fa-asterisk reqField\"></i></label>";
+    //             text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_description]\" id=\"doc_description_"+set_number+"\" value=\"\">";
+    //         text +="</div>";
+    //         text +="<div class=\"form-group col-md-3\">";
+    //             text +="<label>File/Reference</label>";
+    //             text +="<input type=\"text\" class=\"form-control\" name=\"document["+set_number+"][doc_path]\" id=\"doc_path_"+set_number+"\" value=\"\" style=\"display:none\">";
+    //             text +="<input name=\"document["+set_number+"][doc_attachment]\" id=\"doc_attachment_"+set_number+"\" type=\"file\"/>";
+    //         text +="</div>";
+    //         text +="<div class=\"form-group col-md-3\">";
+    //         text +="<label>&nbsp;</label>";
+    //         text +="<select name=\"document["+set_number+"][doc_source]\" id=\"doc_source_"+set_number+"\">";
+    //         text +="<option value=\"File Attachment\">File Attachment</option>";
+    //         text +="<option value=\"URL Reference\">URL Reference</option>";
+    //         text +="</select>";
+    //         text +="</div>";
+    //         text +="<button type=\"button\" onclick=\"$(this).closest('.form-row').remove()\">Delete</button>"
+    //     text +="</div>";
+    //     $(this).attr('id','add_attachment-'+set_number);
+    //     $('#attachmentField').append(text);
+    // })
 
     // IF invalid case
     var validCase = 0;
@@ -123,12 +134,6 @@ $(document).ready(function(){
                 if (value) {
                     var request ={};
                     var form = new FormData(document.getElementById("triageForm"));
-                    $("[name^=field_value]").each(function(){
-                        request[$(this).attr('name')] = $(this).val();
-                    });
-                    $("[name^=doc_]").each(function(){
-                        request[$(this).attr('name')] = $(this).val();
-                    });
                     console.log(request);
                     $.ajax({
                         headers: {
@@ -185,11 +190,8 @@ $(document).ready(function(){
                         });
                         break;
                     case "No":
-                        $('#validcase').val('1');
-                        var request ={};
-                        $("[name^=field_value]").each(function(){
-                            request[$(this).attr('name')] = $(this).val();
-                        });
+                        $('#validcase').val('2');
+                        var form = new FormData(document.getElementById("triageForm"));
                         console.log(request);
                         $.ajax({
                             headers: {
@@ -197,7 +199,10 @@ $(document).ready(function(){
                             },
                             type:'POST',
                             url:'/sd-cases/deactivate/'+caseNo+'/'+versionNo,
-                            data:request,
+                            cache:false,
+                            data:form,
+                            contentType:false,
+                            processData:false,
                             success:function(response){
                                 swal("Your case has been inactivated","", "warning");
                                 window.location.href = "/sd-cases/caselist";
@@ -329,23 +334,31 @@ function prioritizeDate(){
     $('#prioritizeType').text(text);
 }
 function endTriage(){
-    var request ={};
-    $("[name^=field_value]").each(function(){
-        if($(this).val()!="")
-        {
-            console.log($(this).attr('name'));
-            request[$(this).attr('name')] = $(this).val();
-        }
-    });
-    request['endTriage'] = 1;
-    console.log(request);
+    // var request ={};
+    // $("[name^=field_value]").each(function(){
+    //     if($(this).val()!="")
+    //     {
+    //         console.log($(this).attr('name'));
+    //         request[$(this).attr('name')] = $(this).val();
+    //     }
+    // });      
+    $("select").each(function(){
+        $(this).prop("disabled", false);
+    });                  
+    $('[name=endTriage]').prop('disabled',false);
+    var form = new FormData(document.getElementById("triageForm"));
+    $('[name=endTriage]').prop('disabled',true);
+    console.log(form);
     $.ajax({
         headers: {
             'X-CSRF-Token': csrfToken
         },
         type:'POST',
         url:'/sd-cases/triage/'+caseNo+'/'+versionNo,
-        data:request,
+        cache:false,
+        data:form,
+        contentType:false,
+        processData:false,
         success:function(response){
 
             console.log(response);
@@ -362,6 +375,7 @@ function endTriage(){
         type:'POST',
         url:'/sd-users/searchNextAvailable/'+caseNo+'/'+versionNo,
         success:function(response){
+            console.log(response);
             response = JSON.parse(response);
             console.log(response);
             text +="<div class=\"modal-header\">";
@@ -436,4 +450,16 @@ function savenexit(){
         $(this).prop("disabled", false);
     });
     document.getElementById("triageForm").submit();
+}
+function fileUrlSwitcher (set_number) {
+        if ($( "#doc_source_"+set_number+" option:selected" ).val() == 'File Attachment')
+        {
+            $('#doc_attachment_'+set_number).show();
+            $('#doc_path_'+set_number).hide();
+        }
+        else if ($( "#doc_source_"+set_number+" option:selected" ).val() == 'URL Reference')
+        {
+            $('#doc_attachment_'+set_number).hide();
+            $('#doc_path_'+set_number).show();
+        }
 }

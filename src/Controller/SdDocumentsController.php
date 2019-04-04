@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Routing\Router;
 
 /**
  * SdDocuments Controller
@@ -223,9 +224,16 @@ class SdDocumentsController extends AppController
 
             }
             if ($file_saved)
-                echo json_encode(array("result"=>1, "new_row"=>$new_row));
-            else
-                echo json_encode(array("result"=>0));
+            {
+                $this->Flash->success(__('The sd document has been saved.'));
+
+                return $this->redirect(['action' => 'add_documents', $case_id]);
+            }
+            $this->Flash->error(__('The document could not be saved. Please, try again.'));
+            
+                //echo json_encode(array("result"=>1, "new_row"=>$new_row));
+        
+                //echo json_encode(array("result"=>0));
         }
 
     }

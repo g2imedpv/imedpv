@@ -928,7 +928,7 @@ class SdCasesController extends AppController
             $requestData = $this->request->getData();
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
             //TODO if the case is to push to Data Entry
-
+            // print_r($requestData);die();
             foreach($requestData['field_value'] as $field_id => $detail_data){
                 if((array_key_exists('id',$detail_data))&&($detail_data['id']!=null)) {
                     $previous_field_value = $sdFieldValueTable->get($detail_data['id']);
@@ -955,12 +955,21 @@ class SdCasesController extends AppController
                 }
             }
 
-            if (!$this->saveDocuments($requestData['document'], $case->id))
+            if (!$this->is_empty($requestData['document']))
             {
-                echo "problem in saving documents";
-                return null;
+                if (!$this->saveDocuments($requestData['document'], $case->id))
+                {
+                    $this->Flash->error(__('Problem in saving documents.'));
+                }
+                else
+                {
+                    $this->Flash->success(__('Documents have been uploaded successfully.'));
+                }
             }
-            if(in_array('endTriage',$requestData))
+            
+            
+            // debug($requestData); die();
+            if(array_key_exists('endTriage',$requestData))
             {
                 echo "succuess";
                 die();
@@ -1009,6 +1018,15 @@ class SdCasesController extends AppController
             }
             $this->set('version_up_set',$version_up_set);
         }
+
+        // Load document list if there is any. 
+        // Chloe Wang @ Mar 31, 2019
+        $this->loadModel("SdDocuments");
+        $docList = $this->SdDocuments->find()->where(['sd_case_id'=>$case['id']]);
+        $sdDocList = $docList->toArray();
+        $this->set(compact('sdDocList'));
+        // end of document list
+
         $this->set(compact('case','caseNo','versionNo','field_value_set'));
     }
 
@@ -1056,6 +1074,7 @@ class SdCasesController extends AppController
                 echo "problem in saving document!";
                 return null;
             }
+            echo "deactivated success";
         }
     }
 
@@ -1081,11 +1100,23 @@ class SdCasesController extends AppController
 
     }
 
+    public function is_empty($document_array)
+    {
+        foreach ($document_array as $doc_details)
+        {
+            if ($doc_details['doc_source'] == 'File Attachment' && $doc_details['doc_attachment']['tmp_name'] != ''
+            || $doc_details['doc_source'] == 'URL Reference' && $doc_details['doc_path'] != '')
+            { 
+                return false;
+            }
+        }
+        return true;
+    }
     public function saveDocuments($requested_data,$case_id)
     {
         $userinfo = $this->request->getSession()->read('Auth.User');
         $document_array = $requested_data;
-        // debug($document_array);
+        //debug($document_array); die();
         $this->loadModel('SdDocuments');
         $file_saved = false;
         foreach ($document_array as $document_details)

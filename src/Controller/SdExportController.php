@@ -158,11 +158,7 @@ class SdExportController extends AppController
                     $this->set('otherSerious','checked');
                 };
             }
-            
-            //function of no.7+13 narrative
-            public function getCiomsNarrativeValue($caseId,$set_num){
-              
-                 }
+        
 
             //function of no.20 checkbox
             public function getCiomsDechallengeValue($caseId,$field_id,$set_num){
@@ -217,6 +213,13 @@ class SdExportController extends AppController
             // Call the previous function by $caseId,$field_id and $set_num
             public function genCIOMS ($caseId) {
                 $this->viewBuilder()->layout('CIOMS');
+                //MFR number
+                $sdCases = TableRegistry::get('sdCases');
+                $name=$sdCases->find()
+                        ->select(['caseNo'])
+                        ->where(['id='.$caseId,'status=1'])->first();
+                $fileName=$name['caseNo'];
+                $this->set('fileName', $fileName);
                 //1.
                 $this->set('patientInitial', $this->getCiomsDirectValue($caseId,79,1));//B.1.1  patientinitial
                 //1a.
@@ -243,16 +246,23 @@ class SdExportController extends AppController
                 //13
                 $this->set('resultsTestsProcedures', $this->getCiomsDirectValue($caseId,174,1));//B.3.2 resultstestsprocedures
                 //14
-                $this->set('drugone', $this->getCiomsDirectValue($caseId,177,1));//B.4.K.2+B.4.K.3  activesubstancename+obtaindrugcountry
-                $this->set('genericOne', $this->getCiomsDirectValue($caseId,178,1));//B.4.K.3   obtaindrugcountry
-                $this->set('drugtwo', $this->getCiomsDirectValue($caseId,177,2));//B.4.K.2+B.4.K.3  activesubstancename+obtaindrugcountry
-                $this->set('genericTwo', $this->getCiomsDirectValue($caseId,178,2));//B.4.K.3   obtaindrugcountry
+                $this->set('ProductNameOne', $this->getCiomsDirectValue($caseId,176,1));//B.4.K.2.1 Proprietary Medicinal Product Name
+                $this->set('SubstanceOne', $this->getCiomsDirectValue($caseId,177,1));//B.4.K.2.2 Active Substance Name 
+                $this->set('CountryObtainedOne', $this->getCiomsLookupValue($caseId,178,1));//B.4.K.2.3 Country Obtained
+                $this->set('LotOne', $this->getCiomsDirectValue($caseId,179,1));//B.4.K.3 Batch/Lot Number 
+
+                $this->set('ProductNameTwo', $this->getCiomsDirectValue($caseId,176,2));//B.4.K.2.1 Proprietary Medicinal Product Name
+                $this->set('SubstanceTwo', $this->getCiomsDirectValue($caseId,177,2));//B.4.K.2.2 Active Substance Name 
+                $this->set('CountryObtainedTwo', $this->getCiomsLookupValue($caseId,178,2));//B.4.K.2.3 Country Obtained
+                $this->set('LotTwo', $this->getCiomsDirectValue($caseId,179,2));//B.4.K.3 Batch/Lot Number
                 //15
                 $this->set('doseOne', $this->getCiomsDirectValue($caseId,183,1));//B.4.k.5.1Dose(number)
                 $this->set('doseUnitOne', $this->getCiomsLookupValue($caseId,184,1));//Dose(unit) (B.4.k.5.2)
                 $this->set('separateDosageOne', $this->getCiomsDirectValue($caseId,185,1));//Number Of Separate Dosages (B.4.k.5.3)
                 $this->set('intervalOne', $this->getCiomsDirectValue($caseId,186,1));// Interval (B.4.k.5.4)
                 $this->set('intervalUnitOne', $this->getCiomsLookupValue($caseId,187,1));//Interval Unit (B.4.k.5.5)
+                $this->set('DosageTextOne', $this->getCiomsDirectValue($caseId,190,1));// Dosage Text  (B.4.k.6)
+
 
 
                 $this->set('doseTwo', $this->getCiomsDirectValue($caseId,183,2));//B.4.k.5.1Dose(number)
@@ -260,6 +270,7 @@ class SdExportController extends AppController
                 $this->set('separateDosageTwo', $this->getCiomsDirectValue($caseId,185,2));//Number Of Separate Dosages (B.4.k.5.3)
                 $this->set('intervalTwo', $this->getCiomsDirectValue($caseId,186,2));// Interval (B.4.k.5.4)
                 $this->set('intervalUnitTwo', $this->getCiomsLookupValue($caseId,187,2));//Interval Unit (B.4.k.5.5)
+                $this->set('DosageTextTwo', $this->getCiomsDirectValue($caseId,190,2));// Dosage Text  (B.4.k.6)
                 //16
                 $this->set('routeone', $this->getCiomsLookupValue($caseId,192,1));//B.4.k.8    drugadministrationroute
                 $this->set('routetwo', $this->getCiomsLookupValue($caseId,192,2));//B.4.k.8    drugadministrationroute
@@ -293,9 +304,9 @@ class SdExportController extends AppController
                 $this->set('patientMedicalEndDate', $this->getCiomsDateValue($caseId,102,1));//B.1.7.1f   patientmedicalenddate
                 $this->set('patientMedicalComment', $this->getCiomsDirectValue($caseId,103,1));//B.1.7.1g  patientmedicalcomment
                 //24a
-                $this->set('caseSource', $this->getCiomsDateValue($caseId,19,1));//A.1.11.1  Source of the case identifier 
+                $this->set('caseSource', $this->getCiomsDirectValue($caseId,19,1));//A.1.11.1  Source of the case identifier 
                 //24b
-                $this->set('otherCaseIndentifier', $this->getCiomsDateValue($caseId,18,1));//A.1.11 Other case identifiers in previous transmissions
+                $this->set('otherCaseIndentifier', $this->getCiomsDirectValue($caseId,20,1));//A.1.11 Other case identifiers in previous transmissions
                 //24c
                 $this->set('receiptDate', $this->getCiomsDateValue($caseId,12,1));//A.1.7b  Latest received date 
                 //24d
@@ -796,11 +807,12 @@ class SdExportController extends AppController
                     return $text;
                 }
 
+           
 
             public function genFDApdf($caseId)
             {  
-                ////a1 patientID field
-                $result=$result.$this->getPositionByType($caseId,79,1) ;
+                //a1 patientID field
+                $result=$result.$this->getPositionByType($caseId,79,1);
                 //a2 age field  
                 $result=$result.$this->getPositionByType($caseId,86,1);
                 //a2 date of birth 
@@ -958,73 +970,5 @@ class SdExportController extends AppController
 
             }
 
-            /**
-            *  Generate XML files
-            *
-            */
-            //create getValue function
-            public function getFieldValue($caseId,$setNumber){
-                $sdFields = TableRegistry::get('sdFields');
-                $ICSR = $sdFields ->find()
-                ->select(['sdFields.descriptor','fv.field_value','fv.sd_field_id'])
-                ->join([
-                    'fv' =>[
-                        'table' =>'sd_field_values',
-                        'type'=>'INNER',
-                        'conditions'=>['sdFields.id = fv.sd_field_id','fv.sd_case_id='.$caseId,'fv.set_number='.$setNumber ]
-                    ]
-                ]);
-              
-                return $ICSR;
-
-            }
-
-            public function genXML($caseId)
-            {   
-                $this->getFieldValue($caseId,1);
-                $this->autoRender = false;
-                $sdCases = TableRegistry::get('sdCases');
-                $name=$sdCases->find()
-                        ->select(['caseNo'])
-                        ->where(['id='.$caseId,'status=1'])->first();
-                $fileName=$name['caseNo'];
-                $time=date("Y-m-d-H-i-s");
-                $xml = "$fileName-$time";
-                header("Content-Type: text/html/force-download");
-                header("Content-Disposition: attachment; filename=".$xml.".xml");
-                $xml = new \XMLWriter();
-                $xml->openUri("php://output");
-                $xml->setIndentString("\t");
-                $xml->setIndent(true);
-               // create xml Document start
-                $xml->startDocument('1.0', 'ISO-8859-1');//FDA supports only the ISO-8859-1 character set for encoding the submission.
-                    $xml->writeDtd('ichicsr','','https://www.accessdata.fda.gov/xml/icsr-xml-v2.1.dtd');
-                    //A first element ichicsr
-                        $xml->startElement("ichicsr");
-                            // Attribute lang="en"
-                            $xml->writeAttribute("lang","en");
-                                $xml->startElement("ichicsrmessageheader");
-                                    $example=$this->getFieldValue($caseId,1);
-                                        foreach($example as $Example){
-                                            $xml->writeElement($Example['descriptor'],$Example['fv']['field_value']);
-                                        }
-                                    
-                                $xml->endElement();//ichicsrmessageheader
-
-
-                                $xml->startElement("safetyreport");
-                                $xml->endElement();//safetyreport
-                            $xml->endAttribute();
-                        $xml->endElement();//rootelement"ichicsr"
-                    $xml->endDtd();
-                $xml->endDocument();
-                echo $xml->outputMemory(); 
-                
-                        
-
-                        
-
-
-            }
         }
 ?>

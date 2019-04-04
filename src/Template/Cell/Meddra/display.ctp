@@ -261,40 +261,6 @@ function searchMedDra(fieldId, type, llt_name=null) {
                     }
                 });
             });
-
-            //     $('#select-llt-name').val();
-            // });
-            // $('#select-llt-name').val();
-            // $('#select-llt-code').val($('#primary-llt_name').next().val());
-            // $('#select-pt-name').val($('#primary-pt_name').prev().text());
-            // $('#select-pt-code').val($('#primary-pt_name').next().val());
-            // $('#select-hlt-name').val($('#primary-hlt_name').prev().text());
-            // $('#select-hlt-code').val($('#primary-hlt_name').next().val());
-            // $('#select-hlgt-name').val($('#primary-hlgt_name').prev().text());
-            // $('#select-hlgt-code').val($('#primary-hlgt_name').next().val());
-            // $('#select-soc-name').val($('#primary-soc_name').prev().text());
-            // $('#select-soc-code').val($('#primary-soc_name').next().val());
-        // $('[id^=meddradiv]').click(function(){
-        //     console.log('clicked');
-        //     var term = $(this).attr('id').split('-');
-        //     console.log(term);
-        //     if($(this).hasClass('bg-primary')){
-        //         console.log('has primary');
-        //         $(this).removeClass('bg-primary');
-        //         searchMedDra("+fieldId+",2);
-        //         return false;
-        //     }else{
-        //         $('[id^=meddradiv-'+term[1]+']').each(function(){
-        //             if($(this).hasClass('bg-primary')) {$(this).removeClass('bg-primary'); return true;}
-        //         });
-        //         $('[id^=meddradiv-'+term[1]+']').each(function(){
-        //             if($(this).hasClass('bg-warning')) {$(this).removeClass('bg-warning'); return true;}
-        //         });
-        //         $(this).attr('class','bg-primary');
-
-        //     searchMedDra("+fieldId+",2);return false;
-        // }
-        // });
         },
         error:function(response){
                 console.log(response.responseText);

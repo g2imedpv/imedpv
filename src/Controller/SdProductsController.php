@@ -195,6 +195,7 @@ class SdProductsController extends AppController
 
         
         if ($this->request->is('post')) {
+            debug($this->request->getData()); die();
             $sdProduct = $this->SdProducts->newEntity();
             $sdProduct = $this->SdProducts->patchEntity($sdProduct, $this->request->getData()['product']);
             $saved_product = $this->SdProducts->save($sdProduct);
@@ -238,7 +239,7 @@ class SdProductsController extends AppController
 
             //product workflow saving
             $product_workflows_table = TableRegistry::get("sd_product_workflows");
-            foreach($this->request->getData()['product_workflow'] as $product_workflow_k => $product_workflow_detail)
+            foreach($this->request->getData()['product_accessment_workflow'] as $product_workflow_k => $product_workflow_detail)
             {
                 $product_workflow_detail['sd_product_id'] = $saved_product['id'];
                 if(!empty($this->request->getData()['workflow'][$product_workflow_k]['id']))
