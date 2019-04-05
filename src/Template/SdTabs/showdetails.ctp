@@ -26,11 +26,8 @@ echo $this->element('generatepdf');
 </script>
 <title>Data Entry</title>
 <head>
-    <!-- For checking unsaved contents JS link -->
     <?= $this->Html->script('dataentry/dataEntryMain.js') ?>
-    <!-- For select add input  -->
-    <?= $this->Html->css('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css') ?>
-    <?= $this->Html->script("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js") ?>
+    <?= $this->Html->script('dataentry/fieldLogic.js') ?>
 </head>
 <?php if($this->request->getQuery('readonly')!=1):?>
 <!-- Data Entry Top Bar -->

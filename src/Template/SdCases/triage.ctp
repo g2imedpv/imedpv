@@ -166,8 +166,8 @@
                 <label>Reported term (B.2.i.0) <i class="fas fa-asterisk reqField"></i></label>
                 <input type="text" class="form-control" name="field_value[149][value]" id="eventField_term" value="<?= $field_value_set['149']['field_value'] ?>">
             </div>
-            <div class="form-group col-md-2">
-                <label>MedDra Browser</label>
+            <div class="form-group col-md-6">
+                <label> &nbsp; </label>
                 <div>
                     <?php
                     $meddraCell = $this->cell('Meddra');

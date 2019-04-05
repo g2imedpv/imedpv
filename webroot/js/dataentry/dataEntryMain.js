@@ -4,10 +4,6 @@ jQuery(function($) {
 
 $(document).ready(function(){
 
-    $("select").select2({
-        selectOnClose: true
-    });
-
     $('[name$=\\[field_value\\]').change(function(){
         var id = $(this).attr('id').split('-');
         $('[id=section-'+id[1]+'-error_message-'+id[3]+']').text();
@@ -61,28 +57,6 @@ $(document).ready(function(){
     $('select').prop("disabled", true);
     $('textarea').prop("disabled", true);
 };
-    // Datepicker Script
-$( function() {
-    // $( "[id*=date]" ).datepicker({
-    //     changeMonth: true,
-    //     changeYear: true
-    // });
-    $("#section-1-field-355").hide();
-} );
-
-// For Additional documents (A.1.8.1) select in General Tab
-    // If choose "Yes", show "Choose file"
-    $(document).ready(function(){
-        $("#section-1-radio-13-option-1").click(function(){
-            $("#section-1-field-355").show(1000);
-        });
-    });
-    // If choose "No", hide "Choose file"
-    $(document).ready(function(){
-        $("#section-1-radio-13-option-2").click(function(){
-            $("#section-1-field-355").hide(1000);
-        });
-    });
 
     $("#searchFieldKey").keyup(function(){
         var request={
@@ -139,28 +113,6 @@ $(document).ready(function(){
     $('select').prop("disabled", true);
     $('textarea').prop("disabled", true);
 };
-    // Datepicker Script
-$( function() {
-    // $( "[id*=date]" ).datepicker({
-    //     changeMonth: true,
-    //     changeYear: true
-    // });
-    $("#section-1-field-355").hide();
-} );
-
-// For Additional documents (A.1.8.1) select in General Tab
-    // If choose "Yes", show "Choose file"
-    $(document).ready(function(){
-        $("#section-1-radio-13-option-1").click(function(){
-            $("#section-1-field-355").show(1000);
-        });
-    });
-    // If choose "No", hide "Choose file"
-    $(document).ready(function(){
-        $("#section-1-radio-13-option-2").click(function(){
-            $("#section-1-field-355").hide(1000);
-        });
-    });
 
 
     $('input:checkbox[id^=section]').change(
@@ -895,20 +847,6 @@ function backward(){
         });
 }
 
-// Product Tab: If "Ongoing field checked", then Therapy End date (B.4.k.14b) DISABLED
-$(document).ready(function(){
-    $("#section-22-checkbox-434-option-1").change(function(){
-        if($(this).prop('checked')){
-            $('#section-22-date-205').prop('disabled',true);
-        }
-
-        if(!$(this).prop('checked')){
-            $('#section-22-date-205').prop('disabled',false);
-        }
-    });
-
-});
-
 jQuery(function($) {
     // Alert if changes unsaved
     $(document).ready(function() {
@@ -941,7 +879,7 @@ jQuery(function($) {
     $(document).ready(function() {
         $("input,textarea,select").change(function () {
             $(this).parents('.fieldInput').siblings().find("[id^=save-btn]").show();
-         })
+         });
     });
 
     // // Auto populate the selected value into next
@@ -960,11 +898,5 @@ jQuery(function($) {
     //     });
 
     // });
-
-    $(document).ready(function(){
-        $(".js-example-responsive").select2({
-            width: 'resolve'
-        });
-    });
 
 });

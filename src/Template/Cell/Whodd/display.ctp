@@ -14,30 +14,38 @@
             <div class="container">
                 <div class="form-row">
                     <div class="form-group col-md-3">
+                        <label for="">ATC Code</label>
                         <input type="text" class="form-control" id="atc" placeholder="ATC code">
                     </div>
                     <div class="form-group col-md-3">
+                        <label for="">Drug Code</label>
                         <input type="text" class="form-control" id="drugcode" placeholder="Drug code">
                     </div>
                     <div class="form-group col-md-3">
+                        <label for="">Medicinal Prod ID</label>
                         <input type="text" class="form-control" id="medicalProd" placeholder="Medicinal Prod ID">
                     </div>
                     <div class="form-group col-md-3">
+                        <label for="">Trade Name</label>
                         <input type="text" class="form-control" id="tradename" placeholder="Trade Name">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-3">
+                        <label for="">Ingredient</label>
                         <input type="text" class="form-control" id="ingredient" placeholder="Ingredient">
                     </div>
                     <div class="form-group col-md-3">
+                        <label for="">Formulation</label>
                         <input type="text" class="form-control" id="formulation" placeholder="Formulation">
                     </div>
                     <div class="form-group col-md-3">
+                        <label for="">Strength</label>
                         <input type="text" class="form-control" id="strength" placeholder="Strength">
                     </div>
                     <div class="form-group col-md-3">
-                        <select id="country" class="form-control">
+                        <label for="">Choose Country</label>
+                        <select id="country" class="form-control chocon" style="width: 100%">
                             <option value="null" selected>Choose Country</option>
                             <?php foreach($contryList as $key => $contry)
                             echo "<option value=".$contry->CountryCode.">".$contry->CountryName."</option>";
@@ -47,7 +55,7 @@
                 </div>
                 <div class="form-row justify-content-center">
                     <div class="form-group col-sm-3">
-                        <div id="whoddsea" onclick="searchWhoDra()" class="form-control btn btn-primary w-100"><i class="fas fa-search"></i> Search</div>
+                        <div id="whoddsea" onclick="searchWhoDra()" class="form-control btn btn-primary"><i class="fas fa-search"></i> Search</div>
                     </div>
                     <div class="form-group col-sm-1">
                         <div class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> Clear</div>
@@ -208,4 +216,10 @@ function searchWhoDra(){
 //         $pager.insertBefore($table).find('span.page-number:first').addClass('active');
 //     });
 // }
+
+    $(document).ready(function(){
+        $(".chocon").select2({
+            width: 'resolve'
+        });
+    });
 </script>

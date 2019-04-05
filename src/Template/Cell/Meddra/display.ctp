@@ -1,5 +1,8 @@
-<button type="button" class="btn btn-info btn-sm mx-3" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-search"></i> MedDRA Browser</button>
-<input class="my-2" type="text" id="llt-searchbar">
+<button type="button" class="btn btn-info btn-sm mx-3 d-block" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-search"></i> MedDra Browser</button>
+<div class="lltQuickSearch form-group col-md-6">
+    <label>LLT Term Encode</label>
+    <input class="form-control" type="text" id="llt-searchbar">
+</div>
 
 <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document" style="max-width: 1175px !important;">
@@ -258,40 +261,6 @@ function searchMedDra(fieldId, type, llt_name=null) {
                     }
                 });
             });
-
-            //     $('#select-llt-name').val();
-            // });
-            // $('#select-llt-name').val();
-            // $('#select-llt-code').val($('#primary-llt_name').next().val());
-            // $('#select-pt-name').val($('#primary-pt_name').prev().text());
-            // $('#select-pt-code').val($('#primary-pt_name').next().val());
-            // $('#select-hlt-name').val($('#primary-hlt_name').prev().text());
-            // $('#select-hlt-code').val($('#primary-hlt_name').next().val());
-            // $('#select-hlgt-name').val($('#primary-hlgt_name').prev().text());
-            // $('#select-hlgt-code').val($('#primary-hlgt_name').next().val());
-            // $('#select-soc-name').val($('#primary-soc_name').prev().text());
-            // $('#select-soc-code').val($('#primary-soc_name').next().val());
-        // $('[id^=meddradiv]').click(function(){
-        //     console.log('clicked');
-        //     var term = $(this).attr('id').split('-');
-        //     console.log(term);
-        //     if($(this).hasClass('bg-primary')){
-        //         console.log('has primary');
-        //         $(this).removeClass('bg-primary');
-        //         searchMedDra("+fieldId+",2);
-        //         return false;
-        //     }else{
-        //         $('[id^=meddradiv-'+term[1]+']').each(function(){
-        //             if($(this).hasClass('bg-primary')) {$(this).removeClass('bg-primary'); return true;}
-        //         });
-        //         $('[id^=meddradiv-'+term[1]+']').each(function(){
-        //             if($(this).hasClass('bg-warning')) {$(this).removeClass('bg-warning'); return true;}
-        //         });
-        //         $(this).attr('class','bg-primary');
-
-        //     searchMedDra("+fieldId+",2);return false;
-        // }
-        // });
         },
         error:function(response){
                 console.log(response.responseText);

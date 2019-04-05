@@ -483,3 +483,14 @@ ul.queryBoxLeft > a {
     display: inherit;
     margin-top: 2px;
 }
+
+/* Meddra browser */
+.lltQuickSearch {
+    position: absolute !important;
+    top: 0px;
+    left: 190px;
+}
+
+.lltQuickSearchForCaseReg {
+    top: -34px !important;
+}
