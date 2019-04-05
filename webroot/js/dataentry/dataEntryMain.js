@@ -246,10 +246,11 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             var maxindex=0;
             if (section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
                 $.each(section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-                    if ((typeof value != 'undefined')&&value.set_number== pageNo){
+                    if ((typeof value != 'undefined')&&(value.set_number== pageNo)){
                         thisElement.val(value.id);
                         thisElement.attr('id',idholder[0]+'-'+idholder[1]+'-'+idholder[2]+'-'+idholder[3]+'-'+idholder[4]+'-'+index+'-'+idholder[6]);
                         valueFlag = true;
+                        return false;
                     }
                     maxindex = maxindex+1;
                 });
@@ -736,7 +737,6 @@ function action(type){
                 text +="<th scope=\"col\">Field Name</th>";
                 text +="<th scope=\"col\">Set Number</th>";
                 text +="<tr>";
-                var previousTabk = "";
                 $.each(response['caseValidate'],function(tabK,tabDetail){
                     var previousSectionK ="";
                     $.each(tabDetail,function(sectionK, sectionDetail){

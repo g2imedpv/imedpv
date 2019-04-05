@@ -334,7 +334,11 @@ jQuery(function($) {  // In case of jQuery conflict
         if(workflowType=="accessment")
             workflow_list[workflow_k].activities = [];
         else distribution_list[distribution_No].activities = [];
-        $('#crotable').html("");
+        $('#'+workflowType+'-croname').html("");
+        $.each(cro_companies,function(key,value){
+            $('#'+workflowType+'-croname').prepend('<option value="'+key+'">'+value+'</option>');
+        });
+        $('#'+workflowType+'-crotable').html("");
         if (($('#default_'+workflowType+'_workflow').is(':visible') && $('#customize_'+workflowType+'_workflow').is(':hidden')))
         {
             var order_no = 1;
@@ -350,7 +354,8 @@ jQuery(function($) {  // In case of jQuery conflict
                     activities_list.step_backward = $(this).val();
                 });
                 activities_list.order_no = order_no;
-                workflow_list[workflow_k].activities.push(activities_list);
+                if(workflowType=="accessment") workflow_list[workflow_k].activities.push(activities_list);
+                else distribution_list[workflow_k].activities.push(activities_list);
                 order_no++;
             });
             if(workflowType=="accessment"){
@@ -384,7 +389,8 @@ jQuery(function($) {  // In case of jQuery conflict
                     activities_list.step_backward = $(this).val();
                 });
                 activities_list.order_no = order_no;
-                workflow_list[workflow_k].activities.push(activities_list);
+                if(workflowType=="accessment") workflow_list[workflow_k].activities.push(activities_list);
+                else distribution_list[workflow_k].activities.push(activities_list);
                 order_no++;
             });
             if(workflowType=="accessment"){
@@ -578,11 +584,6 @@ jQuery(function($) {  // In case of jQuery conflict
         $('#undocho-'+workflowType+'-WF').hide(); 
         $('#addNew-'+workflowType+'-WL').show();
         var text ="";
-        $('#'+workflowType+'-croname').html("");
-        $.each(cro_companies,function(key,value){
-            $('#'+workflowType+'-croname').prepend('<option value="'+key+'">'+value+'</option>');
-        });
-        $('#'+workflowType+'-crotable').html("");
         if(workflowType == "distribution"){
             $('#cho-distribution-workflow, #choose-distribution-company').hide();
             distribution_No++;
@@ -650,33 +651,41 @@ jQuery(function($) {  // In case of jQuery conflict
         text +="</td>";
 
         if(workflow_list[workflow_k].workflow_type == 0){
-            text +="<input name=\"workflow["+workflow_k+"][id]\" value="+workflow_list[workflow_k].id+" type=\"hidden\">";
+            text +="<input name=\"accessment_workflow["+workflow_k+"][id]\" value="+workflow_list[workflow_k].id+" type=\"hidden\">";
         }else{
-            text +="<input name=\"workflow["+workflow_k+"][name]\" value="+workflow_list[workflow_k].workflow_name+" type=\"hidden\">";
-            text +="<input name=\"workflow["+workflow_k+"][description]\" value="+workflow_list[workflow_k].workflow_description+" type=\"hidden\">";
-            text +="<input name=\"workflow["+workflow_k+"][country]\" value="+workflow_list[workflow_k].country+" type=\"hidden\">";
-            text +="<input name=\"workflow["+workflow_k+"][workflow_type]\" value=\"1\" type=\"hidden\">";
+            text +="<input name=\"accessment_workflow["+workflow_k+"][name]\" value="+workflow_list[workflow_k].workflow_name+" type=\"hidden\">";
+            text +="<input name=\"accessment_workflow["+workflow_k+"][description]\" value="+workflow_list[workflow_k].workflow_description+" type=\"hidden\">";
+            text +="<input name=\"accessment_workflow["+workflow_k+"][country]\" value="+workflow_list[workflow_k].country+" type=\"hidden\">";
+            text +="<input name=\"accessment_workflow["+workflow_k+"][workflow_type]\" value=\"1\" type=\"hidden\">";
+            $.each(workflow_list[workflow_k]['activities'], function(k, activity_detail){
+                console.log(activity_detail['activity_name']);
+                text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][activity_name]\" value=\""+activity_detail['activity_name']+"\" type=\"hidden\">";
+                text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][description]\" value=\""+activity_detail['activity_description']+"\" type=\"hidden\">";
+                text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][step_backward]\" value=\""+activity_detail['step_backward']+"\" type=\"hidden\">";
+                text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][order_no]\"  value=\""+activity_detail['order_no']+"\" type=\"hidden\">";
+            });
         }
-        text +="<input name=\"product_accessment_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
-        text +="<input name=\"product_accessment_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_list[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
-        text +="<input name=\"product_accessment_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
+        text +="<input name=\"accessment_product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
+        text +="<input name=\"accessment_product_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_list[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
+        text +="<input name=\"accessment_product_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
+        //accessment-distribution relation
+        $('[id^=selected-distri-]').each(function(){
+            var key = $(this).attr('id').split('-')[2];
+            if($(this).prop('checked')){
+                text +="<input name=\"accessment_distribution["+workflow_k+"]["+key+"][status]\" value=\"1\" type=\"hidden\">";
+            }
+        });
+        //accessment user assignment
         $.each(accessment_resource_list,function(key,workflow){
             $.each(workflow,function(k,company){
                 $.each(company.team_resources,function(k,personDetail){
                     text +="<input name=\"accessment_user_assignment["+key+"]["+personDetail.id+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
                 })
                 $.each(company.workflow_manager,function(k,personDetail){
-                    text +="<input name=\"product_accessment_workflow["+key+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
-                    accessment_list[key].sd_user_id = personDetail.id;
+                    text +="<input name=\"accessment_product_workflow["+key+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
+                    accessment_resource_list[key].sd_user_id = personDetail.id;
                 })
             })
-        });
-        $.each(workflow_list[workflow_k]['activities'], function(k, activity_detail){
-            console.log(activity_detail['activity_name']);
-            text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][activity_name]\" value=\""+activity_detail['activity_name']+"\" type=\"hidden\">";
-            text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][description]\" value=\""+activity_detail['activity_description']+"\" type=\"hidden\">";
-            text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][step_backward]\" value=\""+activity_detail['step_backward']+"\" type=\"hidden\">";
-            text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][order_no]\"  value=\""+activity_detail['order_no']+"\" type=\"hidden\">";
         });
         text +="</tr>";
         $.each(distribution_resource_list,function(k,workflow){
@@ -685,32 +694,31 @@ jQuery(function($) {  // In case of jQuery conflict
                     distribution_text +="<input name=\"distribution_user_assignment["+workflow_k+"]["+personDetail.id+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
                 })
                 $.each(company.workflow_manager,function(k,personDetail){
-                    distribution_text +="<input name=\"product_distribution_workflow["+workflow_k+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
+                    distribution_text +="<input name=\"distribution_workflow["+workflow_k+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
                     distribution_list[workflow_k].sd_user_id = personDetail.id;
                 })
             })
         });
         $.each(distribution_list, function(key, distribution_workflow){
+            text +="<input name=\"distribution_product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
+            text +="<input name=\"distribution_product_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_list[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
+            text +="<input name=\"distribution_product_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
             if(distribution_workflow.workflow_type == 0){
-                distribution_text +="<input name=\"workflow["+key+"][id]\" value="+distribution_workflow.id+" type=\"hidden\">";
+                distribution_text +="<input name=\"distribution_workflow["+key+"][id]\" value="+distribution_workflow.id+" type=\"hidden\">";
             }else{
-                distribution_text +="<input name=\"workflow["+key+"][name]\" value="+distribution_workflow.workflow_name+" type=\"hidden\">";
-                distribution_text +="<input name=\"workflow["+key+"][description]\" value="+distribution_workflow.workflow_description+" type=\"hidden\">";
-                distribution_text +="<input name=\"workflow["+key+"][country]\" value="+distribution_workflow.country+" type=\"hidden\">";
-                distribution_text +="<input name=\"workflow["+key+"][workflow_type]\" value=\"1\" type=\"hidden\">";
-            }
-            distribution_text +="<input name=\"product_distribution_workflow["+key+"][sd_company_id]\" value="+distribution_workflow.sd_company_id+" type=\"hidden\">";
-            distribution_text +="<input name=\"product_distribution_workflow["+key+"][sd_user_id]\" value="+distribution_workflow.sd_user_id+" type=\"hidden\">";//TODO
-            distribution_text +="<input name=\"product_distribution_workflow["+key+"][status]\" value=\"1\" type=\"hidden\">";
-            $.each(distribution_workflow['activities'],function(k, activity_detail){
-                distribution_text +="<input name=\"distribution_workflow_activity["+key+"]["+k+"][activity_name]\" value=\""+activity_detail['activity_name']+"\" type=\"hidden\">";
-                distribution_text +="<input name=\"distribution_workflow_activity["+key+"]["+k+"][description]\" value=\""+activity_detail['activity_description']+"\" type=\"hidden\">";
-                distribution_text +="<input name=\"distribution_workflow_activity["+key+"]["+k+"][step_backward]\" value=\""+activity_detail['step_backward']+"\" type=\"hidden\">";
-                distribution_text +="<input name=\"distribution_workflow_activity["+key+"]["+k+"][order_no]\"  value=\""+activity_detail['order_no']+"\" type=\"hidden\">";
-            });
-           
+                distribution_text +="<input name=\"distribution_workflow["+key+"][name]\" value="+distribution_workflow.workflow_name+" type=\"hidden\">";
+                distribution_text +="<input name=\"distribution_workflow["+key+"][description]\" value="+distribution_workflow.workflow_description+" type=\"hidden\">";
+                distribution_text +="<input name=\"distribution_workflow["+key+"][country]\" value="+distribution_workflow.country+" type=\"hidden\">";
+                distribution_text +="<input name=\"distribution_workflow["+key+"][workflow_type]\" value=\"1\" type=\"hidden\">";
+                $.each(distribution_workflow['activities'],function(k, activity_detail){
+                    distribution_text +="<input name=\"distribution_workflow_activity["+key+"]["+k+"][activity_name]\" value=\""+activity_detail['activity_name']+"\" type=\"hidden\">";
+                    distribution_text +="<input name=\"distribution_workflow_activity["+key+"]["+k+"][description]\" value=\""+activity_detail['activity_description']+"\" type=\"hidden\">";
+                    distribution_text +="<input name=\"distribution_workflow_activity["+key+"]["+k+"][step_backward]\" value=\""+activity_detail['step_backward']+"\" type=\"hidden\">";
+                    distribution_text +="<input name=\"distribution_workflow_activity["+key+"]["+k+"][order_no]\"  value=\""+activity_detail['order_no']+"\" type=\"hidden\">";
+                });
+            }           
         });
-         $('#distribution_input').html(distribution_text);
+        $('#distribution_input').html(distribution_text);
         $('#addNew-accessment-WL').show();
         $('#cho-accessment-workflow, #distribution-workflowlist, #chooseaccessmentCompany').slideUp();
         $('#accessment-workflowlist').slideDown();
