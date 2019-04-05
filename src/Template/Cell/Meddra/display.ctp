@@ -1,5 +1,8 @@
-<button type="button" class="btn btn-info btn-sm mx-3" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-search"></i> MedDRA Browser</button>
-<input class="my-2" type="text" id="llt-searchbar">
+<button type="button" class="btn btn-info btn-sm mx-3 d-block" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-search"></i> MedDra Browser</button>
+<div class="lltQuickSearch form-group col-md-6">
+    <label>LLT Term Encode</label>
+    <input class="form-control" type="text" id="llt-searchbar">
+</div>
 
 <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document" style="max-width: 1175px !important;">
