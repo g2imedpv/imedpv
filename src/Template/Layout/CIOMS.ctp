@@ -113,8 +113,7 @@
         <tr class="SectionTwo">
             <th class="tg-0pky" colspan="2">
                 <p class="text-left titlesize"> 14. SUSPECT DRUG(S) (include generic name) </p>
-                <p class="text-left textsize">#1)<?php echo "Proprietary Medicinal Product Name:".$ProductNameOne."/  Active Substance Name:".$SubstanceOne."  /Country Obtained:".$CountryObtainedOne."  /Batch/Lot Number: ".$LotOne?></p>
-                <p class="text-left textsize">#2)<?php echo "Proprietary Medicinal Product Name:".$ProductNameTwo."/  Active Substance Name:".$SubstanceTwo."  /Country Obtained:".$CountryObtainedTwo."  /Batch/Lot Number: ".$LotTwo?></p>
+                <p class="text-left textsize suspect" ><?php echo $suspectProducts?></p>
             </th>
             <th class="tg-0pky">
                 <p class="text-center titlesize" style="padding:5px;line-height: 20px;"> 20. DID REACTION ABATE AFTER STOPPING DRUG?</p>
@@ -128,13 +127,12 @@
         <tr style="height:15px;" class="SectionTwo">
             <td class="tg-0pky">
                 <p class="text-left titlesize"> 15. DAILY DOSE(S) </p>
-                <p class="text-left textsize">#1)<?php echo $doseOne."  ".$doseUnitOne."  dosage(s)= ".$separateDosageOne."Ïnterval=".$intervalOne." ".$intervalUnitOne."   ".$DosageTextOne?></p>
-                <p class="text-left textsize">#2)<?php echo $doseTwo."  ".$doseUnitTwo."  dosage(s)= ".$separateDosageTwo."Ïnterval=".$intervalTwo." ".$intervalUnitTwo."   ".$DosageTextTwo?></p>
+                <p class="text-left textsize suspect"><?php echo $dailyDose?></p>
+                
             </td>
             <td class="tg-0pky">
                 <p class=" titlesize"> 16. ROUTE(S) OF ADMINISTRATION </p>
-                <p class="text-left textsize">#1)<?php echo $routeone?></p>
-                <p class="text-left textsize">#2)<?php echo $routetwo?></p>
+                <p class="text-left textsize suspect"><?php echo $route?></p>
             </td>
             <td class="tg-0pky" rowspan="2">
                 <p class="text-center titlesize" style="padding:3px;line-height: 20px;"> 21. DID REACTION REAPPEAR AFTER REINTRODUCTION?</p>
@@ -155,13 +153,12 @@
         <tr class="SectionTwo">
             <td class="tg-0lax">
                 <p class=" titlesize"> 18. THERAPY DATES (from/to) </p>
-                <p class="text-left textsize">#1)<?php echo $TherapyStartOne."/".$TherapyStopOne?></p>
-                <p class="text-left textsize">#2)<?php echo $TherapyStartTwo."/".$TherapyStopTwo?></p>
+                <p class="text-left textsize suspect"><?php echo $therapy?></p>
+                
             </td>
             <td class="tg-0lax" colspan="2">
                 <p class=" titlesize"> 19. THERAPY  DURATION </p>
-                <p class="text-left textsize">#1)<?php echo $TherapyDurationOne."        ".$TherapyDurationUnitOne?></p>
-                <p class="text-left textsize">#2)<?php echo $TherapyDurationTwo."        ".$TherapyDurationUnitTwo?></p>
+                <p class="text-left textsize suspect"><?php echo $duration?></p>
             </td>
         </tr>
     </table>
@@ -175,13 +172,13 @@
         <tr>
             <th class="tg-0pky">
                 <p class="text-left titlesize"> 22. CONCOMITANT DRUG(S) AND DATES OF ADMINISTRATION (exclude those used to treat reaction) </p>
-                <p class="text-left textsize"><?php  $productName."/".$substanceName."/".$countryObtain."</br>".$startDate."/".$stopDate?></p>
+                <p class="text-left textsize"><?php echo $concomitantProducts?></p>
             </th>
         </tr>
         <tr>
             <td class="tg-0lax">
                 <p class="text-left titlesize"> 23. OTHER RELEVANT HISTORY (e.g. diagnostics, allergics, pregnancy with last month of period, etc.) </p>
-                <p class="text-left textsize"> <?PHP echo $patientEpisodeName."          ".$patientMedicalStartDate."/".$patientMedicalEndDate."          ".$patientMedicalContinue."comment:".$patientMedicalComment?> </p>
+                <p class="text-left textsize suspect"> <?PHP echo $relevant?> </p>
             </td>
         </tr>
     </table>

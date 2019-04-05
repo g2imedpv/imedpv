@@ -145,9 +145,12 @@ echo $this->element('generatepdf');
         //     $exsitSectionNo[$i] = $sdSections->id;
         //     next($sdSections);
         // }
+        displaySectionInTabList($sdSections);
+        echo "<div class=\"tab-content\" id=\"nav-tabContent\">";
         foreach($sdSections as $sdSection_detail){
             $exsitSectionNo = displaySection($sdSection_detail, $exsitSectionNo, $sdSections, $setNo, $this, $activitySectionPermissions);
         }
+        echo "</div>";
 
     ?>
     <?php if(($writePermission)&&($this->request->getQuery('readonly')!=1)):?>
@@ -184,13 +187,39 @@ echo $this->element('generatepdf');
 </div>
 
 <?php
+/*
+* Show sections in tab list
+* Modified by Chloe Wang @ April 2, 2019
+*/
+function displaySectionInTabList($sections)
+{
+    echo "<nav>";
+    echo "<div class=\"nav nav-tabs\" id=\"nav-tab\" role=\"tablist\">";
+    foreach ($sections as $eachSection)
+    {
+        if ($eachSection->section_level == 2)
+        {
+            echo "<a class=\"nav-item";
+            if($eachSection->display_order ==10) echo" active";
+            echo " nav-link\" id=\"nav-".$eachSection->id."-tab\" data-toggle=\"tab\" href=\"#secdiff-".$eachSection->id."\" role=\"tab\" aria-controls=\"secdiff-".$eachSection->id."\" aria-selected=\"true\">";
+            echo $eachSection->section_name;
+            echo "</a>";
+        }
+    }
+    echo "</div>";
+    echo "</nav>";
+}
 function displaySection($section, $exsitSectionNo, $sdSections, $setNo, $html, $permission){
     if(empty($exsitSectionNo)) return null;
     if(in_array($section->id,$exsitSectionNo)){
         $sectionKey = array_search($section->id,$exsitSectionNo);
-        echo"<div class=\"secdiff\" id=\"secdiff-".$section->id."\">";
+        if(!empty($section->child_section)) {
+            echo"<div class=\"tab-pane";
+            if($section->display_order ==10)echo" show active\"";else echo " fade\"";
+            echo " aria-labelledby=\"nav-".$section->id."-tab\" role=\"tabpanel\" class=\"secdiff\" id=\"secdiff-".$section->id."\">";
+        }
         displaySingleSection($section, $setNo, $sectionKey, $html, $permission);
-        echo"</div>";
+
         $exsitSectionNo[$sectionKey]= null;
         if(!empty($section->child_section)){
             $child_array = explode(",",$section->child_section);
@@ -198,7 +227,9 @@ function displaySection($section, $exsitSectionNo, $sdSections, $setNo, $html, $
                 if(array_search($sdSectionKey,$exsitSectionNo))
                 $exsitSectionNo=displaySection($sdSections[array_search($sdSectionKey,$exsitSectionNo)],$exsitSectionNo,$sdSections, $setNo, $html, $permission);
             }
+            echo"</div>";
         }
+
         return $exsitSectionNo;
 
     }
@@ -223,10 +254,58 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
             echo "<div class=\"showpagination\" id=\"showpagination-".$section->id."\"></div>";
         }
     }elseif($section->section_level ==1 ){
-        echo "<div class=\"fieldInput\">";
-        echo "<hr class=\"my-2\">";
 
         $max_set_No = 0;
+        foreach($section->sd_section_structures as $sd_section_structureK =>$sd_section_structure_detail){
+            foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
+                if($value_detail_field_values->set_number>=$max_set_No)
+                    $max_set_No = $value_detail_field_values->set_number;
+            }
+        }
+        echo "<div class=\"header-section\">";
+        echo "<h3 id=\"section_label-".$section->id."\"class=\"secspace\">".$section->section_name;
+        echo "<input id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-primary\" type=\"button\" value=\"Save\" style=\"display:none\">";
+        //echo"<a role=\"button\" id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
+        echo "</h3>";
+            if(($section->is_addable == 1)&&($permission==1))
+            {
+                echo "<div id=\"pagination-section-".$section->id."\" class=\"DEpagination\">";
+                if($max_set_No != 0)
+                //echo "<a role=\"button\" id=\"delete-btn".$section->id."-".$sectionKey."\" onclick=\"deleteSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\">delete</a>";
+                echo "<input id=\"delete-btn".$section->id."-".$sectionKey."\" onclick=\"deleteSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-danger\" type=\"button\" value=\"Delete\">";
+
+                echo "<input type=\"button\" id=\"add_set-".$section->id."-sectionKey-".$sectionKey."-setNo-".$max_set_No."\" onclick=\"setPageChange(".$section->id.",1,1)\" class=\"float-right px-3 mx-3 btn btn-info\" value=\"Add\"";
+                if($max_set_No == 0) echo "style=\"display:none\">";
+                echo "<nav class=\"float-right ml-3\" title=\"Pagination\" aria-label=\"Page navigation example\">";
+                echo "<ul class=\"pagination mb-0 mx-2\">";
+                echo    "<li class=\"page-item\" id=\"left_set-".$section->id."-sectionKey-".$sectionKey."-setNo-1\" onclick=\"setPageChange(".$section->id.",0)\">";
+                echo    "<a class=\"page-link\" aria-label=\"Previous\">";
+                echo        "<span aria-hidden=\"true\">&laquo;</span>";
+                echo        "<span class=\"sr-only\">Previous</span>";
+                echo    "</a>";
+                echo    "</li>";
+                if($max_set_No != 0){
+                    for($pageNo = 1; $pageNo<=$max_set_No; $pageNo++ ){
+                        echo    "<li class=\"page-item\" id=\"section-".$section->id."-page_number-".$pageNo."\" onclick=\"setPageChange(".$section->id.",".$pageNo.")\"><a class=\"page-link\">".$pageNo."</a></li>";
+                    }
+                }else{
+                    echo    "<li class=\"page-item\" style=\"font-weight:bold\" id=\"section-".$section->id."-page_number-1\" onclick=\"setPageChange(".$section->id.",1)\"><a class=\"page-link\">1</a></li>";
+
+                }
+                echo    "<li class=\"page-item\" id=\"right_set-".$section->id."-sectionKey-".$sectionKey."-setNo-1\" onclick=\"setPageChange(".$section->id.",2)\">";
+                echo    "<a class=\"page-link\" aria-label=\"Next\">";
+                echo        "<span aria-hidden=\"true\">&raquo;</span>";
+                echo        "<span class=\"sr-only\">Next</span>";
+                echo    "</a>";
+                echo    "</li>";
+                echo "</ul>";
+                echo "</nav>";
+                echo"</div>";
+            }
+            echo "<div id=\"addbtnalert-".$section->id."\" class=\"addbtnalert mx-3 alert alert-danger\" role=\"alert\" style=\"display:none;\">You are adding a new record</div>";
+            echo"</div>";
+        echo "<div class=\"fieldInput\">";
+        echo "<hr class=\"my-2\">";
         $length_taken = 0;
         $cur_row_no = 0;
         foreach($section->sd_section_structures as $sd_section_structureK =>$sd_section_structure_detail){
@@ -247,8 +326,6 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                 if($value_detail_field_values->set_number==$setNo){
                     $j = $key_detail_field_values;
                 }
-                if($value_detail_field_values->set_number>=$max_set_No)
-                    $max_set_No = $value_detail_field_values->set_number;
             }
             if ($j==-1) $j = $jflag;
             echo "<div id=\"section-".$section->id."-field-".$sd_section_structure_detail->sd_field->id."\" class=\"form-group col-md-".$sd_section_structure_detail->field_length." offset-md-".($sd_section_structure_detail->field_start_at-$length_taken)."\">";
@@ -389,48 +466,6 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
         }
         if($i!=0) echo"</div>";
         echo "</div>";
-        echo "<div class=\"header-section\">";
-        echo "<h3 id=\"section_label-".$section->id."\"class=\"secspace\">".$section->section_name;
-        echo "<input id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-primary\" type=\"button\" value=\"Save\" style=\"display:none\">";
-        //echo"<a role=\"button\" id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
-        echo "</h3>";
-            if(($section->is_addable == 1)&&($permission==1))
-            {
-                echo "<div id=\"pagination-section-".$section->id."\" class=\"DEpagination\">";
-                if($max_set_No != 0)
-                //echo "<a role=\"button\" id=\"delete-btn".$section->id."-".$sectionKey."\" onclick=\"deleteSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\">delete</a>";
-                echo "<input id=\"delete-btn".$section->id."-".$sectionKey."\" onclick=\"deleteSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-danger\" type=\"button\" value=\"Delete\">";
-
-                echo "<input type=\"button\" id=\"add_set-".$section->id."-sectionKey-".$sectionKey."-setNo-".$max_set_No."\" onclick=\"setPageChange(".$section->id.",1,1)\" class=\"float-right px-3 mx-3 btn btn-info\" value=\"Add\"";
-                if($max_set_No == 0) echo "style=\"display:none\">";
-                echo "<nav class=\"float-right ml-3\" title=\"Pagination\" aria-label=\"Page navigation example\">";
-                echo "<ul class=\"pagination mb-0 mx-2\">";
-                echo    "<li class=\"page-item\" id=\"left_set-".$section->id."-sectionKey-".$sectionKey."-setNo-1\" onclick=\"setPageChange(".$section->id.",0)\">";
-                echo    "<a class=\"page-link\" aria-label=\"Previous\">";
-                echo        "<span aria-hidden=\"true\">&laquo;</span>";
-                echo        "<span class=\"sr-only\">Previous</span>";
-                echo    "</a>";
-                echo    "</li>";
-                if($max_set_No != 0){
-                    for($pageNo = 1; $pageNo<=$max_set_No; $pageNo++ ){
-                        echo    "<li class=\"page-item\" id=\"section-".$section->id."-page_number-".$pageNo."\" onclick=\"setPageChange(".$section->id.",".$pageNo.")\"><a class=\"page-link\">".$pageNo."</a></li>";
-                    }
-                }else{
-                    echo    "<li class=\"page-item\" style=\"font-weight:bold\" id=\"section-".$section->id."-page_number-1\" onclick=\"setPageChange(".$section->id.",1)\"><a class=\"page-link\">1</a></li>";
-
-                }
-                echo    "<li class=\"page-item\" id=\"right_set-".$section->id."-sectionKey-".$sectionKey."-setNo-1\" onclick=\"setPageChange(".$section->id.",2)\">";
-                echo    "<a class=\"page-link\" aria-label=\"Next\">";
-                echo        "<span aria-hidden=\"true\">&raquo;</span>";
-                echo        "<span class=\"sr-only\">Next</span>";
-                echo    "</a>";
-                echo    "</li>";
-                echo "</ul>";
-                echo "</nav>";
-                echo"</div>";
-            }
-            echo "<div id=\"addbtnalert-".$section->id."\" class=\"addbtnalert mx-3 alert alert-danger\" role=\"alert\" style=\"display:none;\">You are adding a new record</div>";
-            echo"</div>";
     }
 }
 ?>

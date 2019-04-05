@@ -142,7 +142,7 @@ function level2setPageChange(section_id, pageNo, addFlag=null){
     $(child_section_id).each(function(k, v){
         var sectionKey = $("[id^=add_set-"+v+"]").attr('id').split('-')[3];
         $(section[sectionKey].sd_section_structures).each(function(k,v){
-            $.each(v.sd_field.sd_field_values,function(key, value){console.log("v:");console.log(v);console.log(value);console.log(value.set_number);
+            $.each(v.sd_field.sd_field_values,function(key, value){
                 max_set_no = Math.max(value.set_number, max_set_no);
             })
         })
@@ -198,10 +198,11 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             var maxindex=0;
             if (section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
                 $.each(section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-                    if ((typeof value != 'undefined')&&value.set_number== pageNo){
+                    if ((typeof value != 'undefined')&&(value.set_number== pageNo)){
                         thisElement.val(value.id);
                         thisElement.attr('id',idholder[0]+'-'+idholder[1]+'-'+idholder[2]+'-'+idholder[3]+'-'+idholder[4]+'-'+index+'-'+idholder[6]);
                         valueFlag = true;
+                        return false;
                     }
                     maxindex = maxindex+1;
                 });
@@ -217,6 +218,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             $(this).val(newSetNumber);
         });
         $("[id^=section-"+sectionId[1]+"][name$=\\[field_value\\]]").each(function(){
+            
             var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
             var thisId = $(this).attr('id').split('-');
             var valueFlag = false;
@@ -225,7 +227,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                 $.each(section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
                     if ((typeof value != 'undefined')&&(value.set_number== pageNo)){
                         if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-                            thisElement.val(value.field_value);
+                            thisElement.val(value.field_value).trigger('change');
                             valueFlag = true;
                         }else{
                             if(thisElement.attr('id').split('-')[2]=='radio'){
@@ -233,7 +235,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                                     thisElement.prop('checked',true);
                                     valueFlag = true;
                                 }else thisElement.prop('checked',false);
-                            }if(thisElement.attr('id').split('-')[2]=='checkbox'){
+                            }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
                                 valueFlag = true;
                                 if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
                                     thisElement.prop('checked',true);
@@ -246,7 +248,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             }
             if(valueFlag == false) {
                 if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-                    thisElement.val(null);
+                    thisElement.val(null).trigger('change');;
                 }else{
                     thisElement.prop('checked',false);
                     if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {
@@ -688,7 +690,6 @@ function action(type){
                 text +="<th scope=\"col\">Field Name</th>";
                 text +="<th scope=\"col\">Set Number</th>";
                 text +="<tr>";
-                var previousTabk = "";
                 $.each(response['caseValidate'],function(tabK,tabDetail){
                     var previousSectionK ="";
                     $.each(tabDetail,function(sectionK, sectionDetail){
