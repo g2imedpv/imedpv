@@ -78,6 +78,7 @@ table {
 .titlesize {
     font-weight: bold;
     font-size: 14px;
+    margin-bottom: 6px;
 }
 
 .textsize {
@@ -99,4 +100,8 @@ table {
 .secondheader{
     font-weight: bold;
     color:black;
+}
+
+.suspect{
+    line-height:13px;
 }
