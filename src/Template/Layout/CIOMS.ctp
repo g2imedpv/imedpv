@@ -113,8 +113,7 @@
         <tr class="SectionTwo">
             <th class="tg-0pky" colspan="2">
                 <p class="text-left titlesize"> 14. SUSPECT DRUG(S) (include generic name) </p>
-                <p class="text-left textsize">#1)<?php echo "Proprietary Medicinal Product Name:".$ProductNameOne."/  Active Substance Name:".$SubstanceOne."  /Country Obtained:".$CountryObtainedOne."  /Batch/Lot Number: ".$LotOne?></p>
-                <p class="text-left textsize">#2)<?php echo "Proprietary Medicinal Product Name:".$ProductNameTwo."/  Active Substance Name:".$SubstanceTwo."  /Country Obtained:".$CountryObtainedTwo."  /Batch/Lot Number: ".$LotTwo?></p>
+                <p class="text-left textsize"><?php echo $suspectProducts?></p>
             </th>
             <th class="tg-0pky">
                 <p class="text-center titlesize" style="padding:5px;line-height: 20px;"> 20. DID REACTION ABATE AFTER STOPPING DRUG?</p>
@@ -175,7 +174,7 @@
         <tr>
             <th class="tg-0pky">
                 <p class="text-left titlesize"> 22. CONCOMITANT DRUG(S) AND DATES OF ADMINISTRATION (exclude those used to treat reaction) </p>
-                <p class="text-left textsize"><?php  $productName."/".$substanceName."/".$countryObtain."</br>".$startDate."/".$stopDate?></p>
+                <p class="text-left textsize"><?php echo $concomitantProducts?></p>
             </th>
         </tr>
         <tr>
