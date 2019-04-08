@@ -7,8 +7,8 @@ $(document).ready(function(){
         selectOnClose: true
     });
 
-    // Logic for show or hide some field by options
-    function showORhide (target, optionA, optionB) {
+    // Logic for show or hide some field by SELECT options
+    function selectShowORhide (target, optionA, optionB) {
         $(target).hide();
         $(optionA).click(function() {
             $(target).show();
@@ -17,15 +17,33 @@ $(document).ready(function(){
             $(target).hide();
         });
     }
+
+    // Logic for show or hide some field by RADIO options
+    function checkboxShowORhide (target, option) {
+        $(target).hide();
+        $(option).change(function(){
+            if($(this).prop('checked')){
+                $(target).show();
+            }
+            if(!$(this).prop('checked')){
+                $(target).hide();
+            }
+        });
+    }
+
     // General Tab:
         // Admin section
             // For Additional documents (A.1.8.1) select
-            showORhide ("#section-1-field-355","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
+            selectShowORhide ("#section-1-field-355, #section-1-field-14","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
+            // For Report Nullification (A.1.13) checkbox
+            checkboxShowORhide ('#section-1-field-23',"#section-1-checkbox-22-option-1");
+            // For Exist Other Case Identifiers? (A.1.11) checkbox
+            checkboxShowORhide ('#section-1-field-19, #section-1-field-20', "#section-1-checkbox-18-option-1");
 
     // Patient Tab:
         // Congenital Anomaly section
             // Congenital Anomaly field
-            showORhide ("#section-16-field-277","#section-16-radio-273-option-1","#section-16-radio-273-option-2");
+            selectShowORhide ("#section-16-field-277","#section-16-radio-273-option-1","#section-16-radio-273-option-2");
 
     // Product Tab:
         // If "Ongoing field checked", then Therapy End date (B.4.k.14b) DISABLED

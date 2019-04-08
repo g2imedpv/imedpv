@@ -305,7 +305,7 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
             echo "<div id=\"addbtnalert-".$section->id."\" class=\"addbtnalert mx-3 alert alert-danger\" role=\"alert\" style=\"display:none;\">You are adding a new record</div>";
             echo"</div>";
         echo "<div class=\"fieldInput\">";
-        echo "<hr class=\"my-2\">";        
+        echo "<hr class=\"my-2\">";
         $length_taken = 0;
         $cur_row_no = 0;
         foreach($section->sd_section_structures as $sd_section_structureK =>$sd_section_structure_detail){
@@ -450,6 +450,14 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                             echo "<input id=\"section-".$section->id."-".$sd_section_structure_detail->sd_field->descriptor."-".$sd_section_structure_detail->sd_field->id."\" class=\"form-control\" name=".$field_value_nameHolder." type=\"text\"";
                             echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?"value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":null;
                             echo "readonly=\"readonly\">";
+                            continue;
+                        case 'precise date':
+                            echo "<input id=\"section-".$section->id."-field_rule-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][field_rule]\" value=".$sd_section_structure_detail->sd_field->field_length."-".$sd_section_structure_detail->sd_field->field_type." type=\"hidden\">";
+                            echo "<input type=\"date\" class=\"form-control\" name=".$field_value_nameHolder." id=\"section-".$section->id."-date-".$sd_section_structure_detail->sd_field->id."\" ";
+                            if($permission==2) echo " disabled ";
+                            echo "value=\"";
+                            echo (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value:null;
+                            echo "\">";
                             continue;
                     }
                 echo"</div>";
