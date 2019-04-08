@@ -97,7 +97,7 @@
     <tr style="height:130px;">
         <td class="tg-0lax" colspan="10">
             <p class="text-left titlesize"> 7 + 13. DESCRIBE REACTION(S) (including relevant tests/lab data) </p>
-            <p class="text-left textsize"><?php echo substr($primarySourceReaction.$reactionOutcome.$actionDrug.$narrativeIncludeClinical.$resultsTestsProcedures,0,1000)?></p>
+            <p class="text-left textsize"><?php echo substr($describe,0,1000)?></p>
         </td>
     </tr>
     </table>
@@ -113,6 +113,7 @@
         <tr class="SectionTwo">
             <th class="tg-0pky" colspan="2">
                 <p class="text-left titlesize"> 14. SUSPECT DRUG(S) (include generic name) </p>
+                <p class="text-left textsize" style="margin-bottom: 8px;margin-top: 10px;"><?php echo $suspecttitle?></p>
                 <p class="text-left textsize suspect" ><?php echo $suspectProducts?></p>
             </th>
             <th class="tg-0pky">
@@ -173,13 +174,13 @@
             <th class="tg-0pky">
                 <p class="text-left titlesize"> 22. CONCOMITANT DRUG(S) AND DATES OF ADMINISTRATION (exclude those used to treat reaction) </p>
                 <p class="text-left textsize"><?php echo $concomitanttitle?></p>
-                <p class="text-left textsize"><?php echo $concomitantProducts?></p>
+                <p class="text-left textsize suspect"><?php echo $concomitantProducts?></p>
             </th>
         </tr>
         <tr>
             <td class="tg-0lax">
                 <p class="text-left titlesize"> 23. OTHER RELEVANT HISTORY (e.g. diagnostics, allergics, pregnancy with last month of period, etc.) </p>
-                <p class="text-left textsize suspect"> <?PHP echo $relevanttitle?> </p>
+                <p class="text-left textsize "> <?PHP echo $relevanttitle?> </p>
                 <p class="text-left textsize suspect"> <?PHP echo $relevant?> </p>
             </td>
         </tr>
@@ -231,8 +232,8 @@
             <td class="tg-0lax">
                 <p class=" titlesize"> 25a. REPORT TYPE </p>
                 <div class="d-flex justify-content-around" style="font-size:12px;">
-                    <input type="checkbox" name="vehicle1" value="Bike">INITIAL
-                    <input type="checkbox" name="vehicle2" value="Car">FOLLOW UP
+                    <input type="checkbox" name="vehicle1" value="Bike"  <?php echo $initial?>>INITIAL
+                    <input type="checkbox" name="vehicle2" value="Car"  <?php echo $followup?>>FOLLOW UP
                 </div>
             </td>
         </tr>
@@ -243,7 +244,7 @@
         <hr class="secondheader" size=3 color=#000000 >
         <h3 class="tg-0pky text-center align-middle title pagetwo" ><b>ADDITIONAL INFORMATION</b></h3>
         <p class="text-left titlesize pagetwo"> 7 + 13. DESCRIBE REACTION(S) continued </p>
-        <p class="textsize pagetwo"><?php echo substr($primarySourceReaction.$reactionOutcome.$actionDrug.$narrativeIncludeClinical.$resultsTestsProcedures,1000)?></p>
+        <p class="textsize pagetwo"><?php echo substr($describe,1000)?></p>
     </div>
 
 </body>
