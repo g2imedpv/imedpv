@@ -5,88 +5,7 @@ use Cake\ORM\TableRegistry;
 
 class SdExportController extends AppController
         {
-            /**
-            *  Generate CIOMS files
-            *
-            */
-            // function of get direct value
-            public function getCiomsDirectValue($caseId,$field_id,$set_num){
-                $sdFieldValues = TableRegistry::get('sdFieldValues');
-                $direct =$sdFieldValues->find()
-                    ->select(['field_value'])
-                    ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'set_number='.$set_num,'status=1'])->first();
-                $directValue=$direct['field_value'];
-                return $directValue;
-            }
-
-            //function of get caption value by join table sd_field_value_look_ups
-            public function getCiomsLookupValue($caseId,$field_id,$set_num){
-                $sdFieldValues = TableRegistry::get('sdFieldValues');
-                $lookup= $sdFieldValues ->find()
-                    ->select(['look.caption'])
-                     ->join([
-                            'look' =>[
-                                'table' =>'sd_field_value_look_ups',
-                                'type'=>'INNER',
-                                'conditions'=>['sd_case_id='.$caseId,'look.sd_field_id = sdFieldValues.sd_field_id','set_number='.$set_num,'status=1',
-                                             'sdFieldValues.sd_field_id='.$field_id,'sdFieldValues.field_value=look.value']
-                                ]
-                            ])->first(); 
-                $lookupValue=$lookup['look']['caption'];
-                return $lookupValue;
-            }
-
-            //function of convert date into dd-mmm-yyy format
-            public function getCiomsDateValue($caseId,$field_id,$set_num){
-                $sdFieldValues = TableRegistry::get('sdFieldValues');
-                $dateFormat =$sdFieldValues->find()
-                    ->select(['field_value'])
-                    ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'set_number='.$set_num,'status=1'])->first();
-                        switch(substr($dateFormat['field_value'],2,2)){
-                            case '00':
-                                $monthFormat="-MMM-";
-                                break;
-                            case '01':
-                                $monthFormat="-JAN-";
-                                break;
-                            case '02':
-                                $monthFormat="-FEB-";
-                                break;
-                            case '03':
-                                $monthFormat="-Mar-";
-                                break;
-                            case '04':
-                                $monthFormat="-APR-";
-                                break;
-                            case '05':
-                                $monthFormat="-MAY-";
-                                break;
-                            case '06':
-                                $monthFormat="-JUN-";
-                                break;
-                            case '07':
-                                $monthFormat="-JUL-";
-                                break;
-                            case '08':
-                                $monthFormat="-AUG-";
-                                break;
-                            case '09':
-                                $monthFormat="-SEP-";
-                                break;
-                            case '10':
-                                $monthFormat="-OCT-";
-                                break;
-                            case '11':
-                                $monthFormat="-NOV-";
-                                break;
-                            case '12':
-                                $monthFormat="-DEC-";
-                                default;
-                            }
-                return substr($dateFormat['field_value'],0,2).$monthFormat.substr($dateFormat['field_value'],4,4);
-            } 
-
-            //function of convert month into mmm format
+            //publlic function for CIOMS and MEDWATCH: convert month into mmm format
             public function getMonthValue($caseId,$field_id,$set_num){
                 $sdFieldValues = TableRegistry::get('sdFieldValues');
                 $monthFormat =$sdFieldValues->find()
@@ -135,6 +54,48 @@ class SdExportController extends AppController
                         }
                 return $monthFormat;
             }
+
+            //function of convert date into dd-mmm-yyy format
+            public function getDateValue($caseId,$field_id,$set_num){
+                $sdFieldValues = TableRegistry::get('sdFieldValues');
+                $dateFormat =$sdFieldValues->find()
+                    ->select(['field_value'])
+                    ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'set_number='.$set_num,'status=1'])->first();        
+                return substr($dateFormat['field_value'],0,2)."-".$this->getMonthValue($caseId,$field_id,$set_num)."-".substr($dateFormat['field_value'],4,4);
+            } 
+
+            /**
+            *  Generate CIOMS files
+            *
+            */
+            // function of get direct value
+            public function getCiomsDirectValue($caseId,$field_id,$set_num){
+                $sdFieldValues = TableRegistry::get('sdFieldValues');
+                $direct =$sdFieldValues->find()
+                    ->select(['field_value'])
+                    ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'set_number='.$set_num,'status=1'])->first();
+                $directValue=$direct['field_value'];
+                return $directValue;
+            }
+
+            //function of get caption value by join table sd_field_value_look_ups
+            public function getCiomsLookupValue($caseId,$field_id,$set_num){
+                $sdFieldValues = TableRegistry::get('sdFieldValues');
+                $lookup= $sdFieldValues ->find()
+                    ->select(['look.caption'])
+                     ->join([
+                            'look' =>[
+                                'table' =>'sd_field_value_look_ups',
+                                'type'=>'INNER',
+                                'conditions'=>['sd_case_id='.$caseId,'look.sd_field_id = sdFieldValues.sd_field_id','set_number='.$set_num,'status=1',
+                                             'sdFieldValues.sd_field_id='.$field_id,'sdFieldValues.field_value=look.value']
+                                ]
+                            ])->first(); 
+                $lookupValue=$lookup['look']['caption'];
+                return $lookupValue;
+            }
+
+            
 
             //function of no.8-12 checkbox
             public function getCiomsSeriousValue($caseId,$field_id,$set_num){
@@ -248,10 +209,10 @@ class SdExportController extends AppController
                 $length=count($suspect,0);
                     for($i=0;$i<$length;$i++){
                         $setNumber=$suspect[$i]['set_number'];
-                        $query1=$this->getCiomsDirectValue($caseId,199,$setNumber);
-                        $query2=$this->getCiomsDirectValue($caseId,205,$setNumber);
+                        $query1=$this->getDateValue($caseId,199,$setNumber);
+                        $query2=$this->getDateValue($caseId,205,$setNumber);
                         $j=$i+1;
-                        $therapy .= "#".$j."  ".$this->DateConvert($query1)."/".$this->DateConvert($query2)."<br>";  
+                        $therapy .= "#".$j."  ".$query1."/".$query2."<br>";  
                     }
                 return $therapy;
             }
@@ -320,18 +281,17 @@ class SdExportController extends AppController
                             if($query3!=null){
                                 $countryObtained="(".$query3.")";
                             }
-                        $query4=$this->getCiomsDirectValue($caseId,199,$setNumber);
-                            $startdate=$this->DateConvert($query4);
-                            if($startdate==null){
-                                $startdate="unknown";
+                        $query4=$this->getDateValue($caseId,199,$setNumber);
+                            if($query4==null){
+                                $query4="unknown";
                             }
                             else{
-                                $startdate=$startdate." - ";
+                                $query4=$query4." / ";
                             }
-                        $query5=$this->getCiomsDirectValue($caseId,205,$setNumber);
-                            $stopdate=$this->DateConvert($query5);
-                            if($stopdate==null){
-                                $stopdate="unknown";
+                        $query5=$this->getDateValue($caseId,205,$setNumber);
+                            
+                            if($query5==null){
+                                $query5="unknown";
                             }
                         $query6=$this->getCiomsDirectValue($caseId,183,$setNumber);
                             if($query6==null){
@@ -342,7 +302,7 @@ class SdExportController extends AppController
                             if($query8==null){
                                 $query8="unknown";
                             }
-                        $description=$query1.$substance.$countryObtained." | ".$startdate.$stopdate." | ".$query6." ".$query7." | ".$query8; 
+                        $description=$query1.$substance.$countryObtained." | ".$query4.$query5." | ".$query6." ".$query7." | ".$query8; 
                         $j=$i+1;
                         $concomitantProducts .= "#".$j."  ".$description."<br>";
                         $concomitantAll="Drug | Therapy Start and Stop Date | Dose | Indication"."<br>".$concomitantProducts;
@@ -376,11 +336,7 @@ class SdExportController extends AppController
                     }
                 return $relevant;
             }
-            // $this->set('patientEpisodeName', $this->getCiomsDirectValue($caseId,97,1));//B.1.7.1a.2  patientepisodename
-            // $this->set('patientMedicalStartDate', $this->getCiomsDateValue($caseId,99,1));//B.1.7.1c	patientmedicalstartdate
-            // $this->set('patientMedicalContinue', $this->getCiomsLooKupValue($caseId,100,1));//B.1.7.1d  patientmedicalcontinue
-            // $this->set('patientMedicalEndDate', $this->getCiomsDateValue($caseId,102,1));//B.1.7.1f   patientmedicalenddate
-            // $this->set('patientMedicalComment', $this->getCiomsDirectValue($caseId,103,1));//B.1.7.1g  patientmedicalcomment
+           
 
             //function of no.24d checkbox
             public function getCiomsReportSourceValue($caseId,$set_num){
@@ -462,7 +418,7 @@ class SdExportController extends AppController
                 //24b
                 $this->set('otherCaseIndentifier', $this->getCiomsDirectValue($caseId,20,1));//A.1.11 Other case identifiers in previous transmissions
                 //24c
-                $this->set('receiptDate', $this->getCiomsDateValue($caseId,12,1));//A.1.7b  Latest received date 
+                $this->set('receiptDate', $this->getDateValue($caseId,12,1));//A.1.7b  Latest received date 
                 //24d
                 $this->getCiomsReportSourceValue($caseId,1);
 
