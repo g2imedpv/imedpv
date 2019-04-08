@@ -146,8 +146,8 @@
         <tr style="height:20px;" class="SectionTwo">
             <td class="tg-0lax" colspan="2">
                 <p class=" titlesize"> 17. INDICATION(S) FOR USE </p>
-                <p class="text-left textsize">#1)<?php echo $indicationOne?></p>
-                <p class="text-left textsize">#2)<?php echo $indicationTwo?></p>
+                <p class="text-left textsize suspect"><?php echo $indication?></p>
+                
             </td>
         </tr>
         <tr class="SectionTwo">
@@ -172,12 +172,14 @@
         <tr>
             <th class="tg-0pky">
                 <p class="text-left titlesize"> 22. CONCOMITANT DRUG(S) AND DATES OF ADMINISTRATION (exclude those used to treat reaction) </p>
+                <p class="text-left textsize"><?php echo $concomitanttitle?></p>
                 <p class="text-left textsize"><?php echo $concomitantProducts?></p>
             </th>
         </tr>
         <tr>
             <td class="tg-0lax">
                 <p class="text-left titlesize"> 23. OTHER RELEVANT HISTORY (e.g. diagnostics, allergics, pregnancy with last month of period, etc.) </p>
+                <p class="text-left textsize suspect"> <?PHP echo $relevanttitle?> </p>
                 <p class="text-left textsize suspect"> <?PHP echo $relevant?> </p>
             </td>
         </tr>
