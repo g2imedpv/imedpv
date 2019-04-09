@@ -5,7 +5,8 @@ use Cake\ORM\TableRegistry;
 
 class SdExportController extends AppController
         {
-            // function of get direct value
+            //function for CIOMS and MEDWATCH: 
+            //get direct value from sd_field_values table
             public function getDirectValue($caseId,$field_id,$set_num){
                 $sdFieldValues = TableRegistry::get('sdFieldValues');
                 $direct =$sdFieldValues->find()
@@ -15,7 +16,7 @@ class SdExportController extends AppController
                 return $directValue;
             }
 
-            //function of get caption value by join table sd_field_value_look_ups
+            //get caption value by join table sd_field_value_look_ups and sd_field_values together
             public function getLookupValue($caseId,$field_id,$set_num){
                 $sdFieldValues = TableRegistry::get('sdFieldValues');
                 $lookup= $sdFieldValues ->find()
@@ -32,7 +33,7 @@ class SdExportController extends AppController
                 return $lookupValue;
             }
 
-            //publlic function for CIOMS and MEDWATCH: convert month into mmm format
+            // convert month into MMM format
             public function getMonthValue($caseId,$field_id,$set_num){
                 $sdFieldValues = TableRegistry::get('sdFieldValues');
                 $monthFormat =$sdFieldValues->find()
@@ -82,7 +83,7 @@ class SdExportController extends AppController
                 return $monthFormat;
             }
 
-            //function of convert date into dd-mmm-yyy format
+            //convert date into dd-mmm-yyy format
             public function getDateValue($caseId,$field_id,$set_num){
                 $sdFieldValues = TableRegistry::get('sdFieldValues');
                 $dateFormat =$sdFieldValues->find()
@@ -107,6 +108,7 @@ class SdExportController extends AppController
                 return $dayFormat.$this->getMonthValue($caseId,$field_id,$set_num).$yearFormat;
             } 
 
+            //get suspect drugs' set number
             public function SuspectRole($caseId){
                 $sdFieldValues = TableRegistry::get('sdFieldValues');
                 $suspect= $sdFieldValues->find()
@@ -114,7 +116,7 @@ class SdExportController extends AppController
                     ->where(['sd_case_id='.$caseId,'sd_field_id=175','status=1','field_value=1'])->toArray();
                 return $suspect;
             }
-
+            //get concomitant drugs' set number
             public function ConcomitantRole($caseId){
                 $sdFieldValues = TableRegistry::get('sdFieldValues');
                 $concomitant= $sdFieldValues->find()
@@ -129,29 +131,64 @@ class SdExportController extends AppController
             */
            
             //function of no.7+13
-            public function getDescribeValue($caseId,$set_num){
-                $primarySourceReaction= $this->getDirectValue($caseId,149,$set_num);
-                if($primarySourceReaction=="null"){
-                    $primarySourceReaction=" ";
+            public function getDescribeValue($caseId){
+                $sdFieldValues = TableRegistry::get('sdFieldValues');
+                $eventQuantity= $sdFieldValues->find()
+                ->select(['set_number'])
+                ->where(['sd_case_id='.$caseId,'sd_field_id=149','status=1'])->toArray();
+                $length=count($eventQuantity);
+                for($i=0;$i<$length;$i++){
+                    $set_num=$eventQuantity[$i]['set_number'];
+                    $primarySourceReaction= $this->getDirectValue($caseId,149,$set_num);
+                        if($primarySourceReaction=="null"){
+                            $primarySourceReaction=" ";
+                        }
+                        else{
+                            $primarySourceReaction="Report term:".$primarySourceReaction;
+                        }
+                    $LLT=$this->getDirectValue($caseId,392,$set_num);
+                        if($LLT=="null"){
+                            $LLT=" ";
+                        }
+                        else{
+                            $LLT="/LLT:".$LLT;
+                        }
+                    $PT=$this->getDirectValue($caseId,394,$set_num);
+                        if($PT=="null"){
+                            $PT=" ";
+                        }
+                        else{
+                            $PT="/PT:".$PT;
+                        }
+                    $reactionOutcome= $this->getLookupValue($caseId,165,$set_num);
+                        if ($reactionOutcome=="null"){
+                            $reactionOutcome=" ";
+                        }
+                        else{
+                            $reactionOutcome="/Reporter Assessment Outcome:".$reactionOutcome;
+                        }
+                    $actionDrug= $this->getLookupValue($caseId,208,$set_num);
+                        if ($actionDrug=="null"||$actionDrug==null){
+                            $actionDrug=" ";
+                        }
+                        else{
+                            $actionDrug="/Actions Taken With Drug:".$actionDrug;
+                        }
+                    $j=$i+1;
+                    $describe=$primarySourceReaction.$LLT.$PT."     ".$reactionOutcome."     ".$actionDrug;
+                    $description.="#".$j.")  ".$describe."<br>";
                 }
-                $reactionOutcome= $this->getLookupValue($caseId,165,$set_num);
-                if ($reactionOutcome=="null"){
-                    $reactionOutcome=" ";
-                }
-                $actionDrug= $this->getLookupValue($caseId,208,$set_num);
-                if ($actionDrug=="null"){
-                    $actionDrug=" ";
-                }
-                $narrativeIncludeClinical= $this->getDirectValue($caseId,218,$set_num);
-                if ($narrativeIncludeClinical=="null"){
-                    $narrativeIncludeClinical=" ";
-                }
-                $resultsTestsProcedures=$this->getDirectValue($caseId,174,$set_num);
-                if ($resultsTestsProcedures=="null"){
-                    $resultsTestsProcedures=" ";
-                }
-                $describe=$primarySourceReaction."   ".$reactionOutcome."   ".$actionDrug."<br>".$narrativeIncludeClinical."<br>".$resultsTestsProcedures;
-                return $describe;
+                    $narrativeIncludeClinical= $this->getDirectValue($caseId,218,1);
+                        if ($narrativeIncludeClinical=="null"){
+                            $narrativeIncludeClinical=" ";
+                        }
+                    $resultsTestsProcedures=$this->getDirectValue($caseId,174,1);
+                        if ($resultsTestsProcedures=="null"){
+                            $resultsTestsProcedures=" ";
+                        }
+                    $result=$description."<br>".$narrativeIncludeClinical."<br>".$resultsTestsProcedures;
+                   
+                return $result;
             }
 
             //function of no.8-12 checkbox
@@ -468,7 +505,7 @@ class SdExportController extends AppController
                 $this->set('reaction', $this->getDirectValue($caseId,156,1));//B.2.i.4b  reactionstartdate
                 $this->set('reactionMonth', $this->getMonthValue($caseId,156,1));//B.2.i.4b  reactionstartdate
                 //7+13
-                $this->set('describe', $this->getDescribeValue($caseId,1));//B.2.i.0  primarysourcereaction
+                $this->set('describe', $this->getDescribeValue($caseId));//B.2.i.0  primarysourcereaction
                 //8-12
                 $this->getCiomsSeriousValue($caseId,354,1);
                 //14
