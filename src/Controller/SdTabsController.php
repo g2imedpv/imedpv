@@ -34,9 +34,8 @@
              *
              * @return \Cake\Http\Response|void
              */
-            public function showdetails($caseNo, $version = 1,$tabid = 1)
+            public function showdetails($caseNo, $version = 1,$tabid = 1, $distribution_id = null)
             {
-
                 $writePermission= 0;
                 $userinfo = $this->request->getSession()->read('Auth.User');
                 $sdCasesTable = TableRegistry::get('SdCases');
@@ -94,7 +93,8 @@
                                 'ua'=>[
                                     'table'=>'sd_user_assignments',
                                     'type'=>'INNER',
-                                    'conditions'=>['ua.sd_product_workflow_id ='.$sdCases['sd_product_workflow_id'],'ua.sd_user_id ='.$userinfo['id'],'ua.sd_workflow_activity_id = SdActivitySectionPermissions.sd_workflow_activity_id']
+                                    'conditions'=>['ua.sd_product_workflow_id ='.$sdCases['sd_product_workflow_id'],
+                                                'ua.sd_user_id ='.$userinfo['id'],'ua.sd_workflow_activity_id = SdActivitySectionPermissions.sd_workflow_activity_id']
                                 ]
                             ])->toArray();
                     if($sdCases['sd_user_id'] != $userinfo['id']){
@@ -119,19 +119,22 @@
                 $this->set(compact('activitySectionPermissions'));
                 //For readonly status, donot render layout
                 $readonly = $this->request->getQuery('readonly');
-                if ($readonly!=1) $this->viewBuilder()->setLayout('main_layout'); else $this->viewBuilder()->setLayout('readonly_layout');
+                if ($readonly != 1) $this->viewBuilder()->setLayout('main_layout'); else $this->viewBuilder()->setLayout('readonly_layout');
                 $case_versions = $sdCasesTable->find()->where(['caseNo'=>$caseNo])->select(['version_no']);
                 $product_name = $sdCases['sd_product_workflow']['sd_product']['product_name'];
 
                 //Fetch tab structures
                 //TODO according to model
                 $sdTab = TableRegistry::get('SdSections');
+                if($distribution_id == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
+                else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";
                 $sdSections = $sdTab ->find()->where(['sd_tab_id'=>$tabid,'status'=>true])
                                     ->order(['SdSections.section_level'=>'DESC','SdSections.display_order'=>'ASC'])
-                                    ->contain(['SdSectionStructures'=>function($q)use($caseId){
+                                    ->contain(['SdSectionStructures'=>function($q)use($caseId,$distribution_condition){
                                         return $q->order(['SdSectionStructures.row_no'=>'ASC','SdSectionStructures.field_start_at'=>'ASC'])
-                                            ->contain(['SdFields'=>['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId) {
-                                                return $q->where(['SdFieldValues.sd_case_id'=>$caseId, 'SdFieldValues.status'=>true]);
+                                            ->contain(['SdFields'=>['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
+                                                return $q->where(['SdFieldValues.sd_case_id'=>$caseId, 'SdFieldValues.sd_case_distribution_id IS NULL',$distribution_condition,
+                                                                 'SdFieldValues.status'=>true]);
                                             }, 'SdElementTypes'=> function($q){
                                             return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
                                                 }]]);
