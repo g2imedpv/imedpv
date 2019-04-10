@@ -97,7 +97,7 @@
     <tr style="height:130px;">
         <td class="tg-0lax" colspan="10">
             <p class="text-left titlesize"> 7 + 13. DESCRIBE REACTION(S) (including relevant tests/lab data) </p>
-            <p class="text-left textsize"><?php echo substr($primarySourceReaction.$reactionOutcome.$actionDrug.$narrativeIncludeClinical.$resultsTestsProcedures,0,1000)?></p>
+            <p class="text-left textsize"><?php echo substr($describe,0,1000)?></p>
         </td>
     </tr>
     </table>
@@ -113,7 +113,8 @@
         <tr class="SectionTwo">
             <th class="tg-0pky" colspan="2">
                 <p class="text-left titlesize"> 14. SUSPECT DRUG(S) (include generic name) </p>
-                <p class="text-left textsize"><?php echo $suspectProducts?></p>
+                <p class="text-left textsize" style="margin-bottom: 8px;margin-top: 10px;"><?php echo $suspecttitle?></p>
+                <p class="text-left textsize suspect" ><?php echo $suspectProducts?></p>
             </th>
             <th class="tg-0pky">
                 <p class="text-center titlesize" style="padding:5px;line-height: 20px;"> 20. DID REACTION ABATE AFTER STOPPING DRUG?</p>
@@ -127,13 +128,12 @@
         <tr style="height:15px;" class="SectionTwo">
             <td class="tg-0pky">
                 <p class="text-left titlesize"> 15. DAILY DOSE(S) </p>
-                <p class="text-left textsize">#1)<?php echo $doseOne."  ".$doseUnitOne."  dosage(s)= ".$separateDosageOne."Ïnterval=".$intervalOne." ".$intervalUnitOne."   ".$DosageTextOne?></p>
-                <p class="text-left textsize">#2)<?php echo $doseTwo."  ".$doseUnitTwo."  dosage(s)= ".$separateDosageTwo."Ïnterval=".$intervalTwo." ".$intervalUnitTwo."   ".$DosageTextTwo?></p>
+                <p class="text-left textsize suspect"><?php echo $dailyDose?></p>
+                
             </td>
             <td class="tg-0pky">
                 <p class=" titlesize"> 16. ROUTE(S) OF ADMINISTRATION </p>
-                <p class="text-left textsize">#1)<?php echo $routeone?></p>
-                <p class="text-left textsize">#2)<?php echo $routetwo?></p>
+                <p class="text-left textsize suspect"><?php echo $route?></p>
             </td>
             <td class="tg-0pky" rowspan="2">
                 <p class="text-center titlesize" style="padding:3px;line-height: 20px;"> 21. DID REACTION REAPPEAR AFTER REINTRODUCTION?</p>
@@ -147,20 +147,19 @@
         <tr style="height:20px;" class="SectionTwo">
             <td class="tg-0lax" colspan="2">
                 <p class=" titlesize"> 17. INDICATION(S) FOR USE </p>
-                <p class="text-left textsize">#1)<?php echo $indicationOne?></p>
-                <p class="text-left textsize">#2)<?php echo $indicationTwo?></p>
+                <p class="text-left textsize suspect"><?php echo $indication?></p>
+                
             </td>
         </tr>
         <tr class="SectionTwo">
             <td class="tg-0lax">
                 <p class=" titlesize"> 18. THERAPY DATES (from/to) </p>
-                <p class="text-left textsize">#1)<?php echo $TherapyStartOne."/".$TherapyStopOne?></p>
-                <p class="text-left textsize">#2)<?php echo $TherapyStartTwo."/".$TherapyStopTwo?></p>
+                <p class="text-left textsize suspect"><?php echo $therapy?></p>
+                
             </td>
             <td class="tg-0lax" colspan="2">
                 <p class=" titlesize"> 19. THERAPY  DURATION </p>
-                <p class="text-left textsize">#1)<?php echo $TherapyDurationOne."        ".$TherapyDurationUnitOne?></p>
-                <p class="text-left textsize">#2)<?php echo $TherapyDurationTwo."        ".$TherapyDurationUnitTwo?></p>
+                <p class="text-left textsize suspect"><?php echo $duration?></p>
             </td>
         </tr>
     </table>
@@ -174,13 +173,15 @@
         <tr>
             <th class="tg-0pky">
                 <p class="text-left titlesize"> 22. CONCOMITANT DRUG(S) AND DATES OF ADMINISTRATION (exclude those used to treat reaction) </p>
-                <p class="text-left textsize"><?php echo $concomitantProducts?></p>
+                <p class="text-left textsize"><?php echo $concomitanttitle?></p>
+                <p class="text-left textsize suspect"><?php echo $concomitantProducts?></p>
             </th>
         </tr>
         <tr>
             <td class="tg-0lax">
                 <p class="text-left titlesize"> 23. OTHER RELEVANT HISTORY (e.g. diagnostics, allergics, pregnancy with last month of period, etc.) </p>
-                <p class="text-left textsize"> <?PHP echo $patientEpisodeName."          ".$patientMedicalStartDate."/".$patientMedicalEndDate."          ".$patientMedicalContinue."comment:".$patientMedicalComment?> </p>
+                <p class="text-left textsize "> <?PHP echo $relevanttitle?> </p>
+                <p class="text-left textsize suspect"> <?PHP echo $relevant?> </p>
             </td>
         </tr>
     </table>
@@ -231,8 +232,8 @@
             <td class="tg-0lax">
                 <p class=" titlesize"> 25a. REPORT TYPE </p>
                 <div class="d-flex justify-content-around" style="font-size:12px;">
-                    <input type="checkbox" name="vehicle1" value="Bike">INITIAL
-                    <input type="checkbox" name="vehicle2" value="Car">FOLLOW UP
+                    <input type="checkbox" name="vehicle1" value="Bike"  <?php echo $initial?>>INITIAL
+                    <input type="checkbox" name="vehicle2" value="Car"  <?php echo $followup?>>FOLLOW UP
                 </div>
             </td>
         </tr>
@@ -243,7 +244,7 @@
         <hr class="secondheader" size=3 color=#000000 >
         <h3 class="tg-0pky text-center align-middle title pagetwo" ><b>ADDITIONAL INFORMATION</b></h3>
         <p class="text-left titlesize pagetwo"> 7 + 13. DESCRIBE REACTION(S) continued </p>
-        <p class="textsize pagetwo"><?php echo substr($primarySourceReaction.$reactionOutcome.$actionDrug.$narrativeIncludeClinical.$resultsTestsProcedures,1000)?></p>
+        <p class="textsize pagetwo"><?php echo substr($describe,1000)?></p>
     </div>
 
 </body>
