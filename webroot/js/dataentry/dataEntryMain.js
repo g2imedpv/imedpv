@@ -218,7 +218,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             $(this).val(newSetNumber);
         });
         $("[id^=section-"+sectionId[1]+"][name$=\\[field_value\\]]").each(function(){
-            
+
             var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
             var thisId = $(this).attr('id').split('-');
             var valueFlag = false;
@@ -329,7 +329,7 @@ function paginationReady(){
             $("[id=delete_section-"+hsectionid+"]").show();
         }
         var text= "";
-        text += "<nav class=\"d-inline-block float-right\" title=\"Pagination\" aria-label=\"Page navigation example\">";
+        text += "<nav class=\"d-inline-block float-right\" title=\"Pagination\" aria-label=\"Data Entry Set Pagination\">";
         text += "<ul class=\"pagination mb-0\">";
         text +=    "<li class=\"page-item\" id=\"left_set-"+hsectionid+"-setNo-1\" onclick=\"level2setPageChange("+hsectionid+",0)\" >";
         text +=    "<a  class=\"page-link\" aria-label=\"Previous\">";
