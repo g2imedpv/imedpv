@@ -129,7 +129,7 @@
                 if($distribution_id == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
                 else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";
                 $sdSections = $sdTab ->find()->where(['sd_tab_id'=>$tabid,'status'=>true])
-                                    ->order(['SdSections.section_level'=>'DESC','SdSections.display_order'=>'ASC'])
+                                    ->order(['SdSections.section_level'=>'ASC','SdSections.display_order'=>'ASC'])
                                     ->contain(['SdSectionStructures'=>function($q)use($caseId,$distribution_condition){
                                         return $q->order(['SdSectionStructures.row_no'=>'ASC','SdSectionStructures.field_start_at'=>'ASC'])
                                             ->contain(['SdFields'=>['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
@@ -144,7 +144,89 @@
                         if(!array_key_exists($sdSection['id'],$activitySectionPermissions)) unset($sdSections[$sectionKey]);
                     }
                 }
-
+                // $sdSections = [
+                //     1=>[
+                //         "child_section"=>[
+                //             5=>[
+                //                 "field"=>"hello5",
+                //                 "level"=>"1"
+                //             ],
+                //             3=>[
+                //                 "child_section"=>[
+                //                     6=>[
+                //                         "field"=>"hello6",
+                //                         "level"=>"2"
+                //                     ]
+                //                 ],
+                //                 "level"=>"1"  
+                //             ],
+                //             4=>[
+                //                 "child_section"=>[
+                //                     7=>[
+                //                         "field"=>"hello7",
+                //                         "level"=>"2"
+                //                     ]
+                //                 ],
+                //                 "level"=>"1"
+                //             ]
+                //         ],
+                //         "level"=>"0"
+                //     ],
+                //     2=>[
+                //         "child_section"=>[
+                //             8=>[
+                //                 "field"=>"hello8"
+                //             ]
+                //         ],
+                //         "level"=>"0"
+                //     ]
+                // ];
+                // $sdSections = [
+                //     0=>[
+                //         "id"=>"0",
+                //         "child_section"=>[1,2],
+                //     ],
+                //     1=>[
+                //         "id"=>"1",
+                //         "child_section"=>[5,3,4],
+                //         "level"=>"0"
+                //     ],
+                //     2=>[
+                //         "id"=>"2",
+                //         "child_section"=>[8],
+                //         "level"=>"0"
+                //     ],
+                //     3=>[
+                //         "id"=>"3",
+                //         "child_section"=>[6],
+                //         "level"=>"1"  
+                //     ],
+                //     4=>[
+                //         "id"=>"4",
+                //         "child_section"=>[7],
+                //         "level"=>"1"
+                //     ],
+                //     5=>[
+                //         "id"=>"5",
+                //         "field"=>"hello5",
+                //         "level"=>"1"
+                //     ],
+                //     6=>[
+                //         "id"=>"6",
+                //         "field"=>"hello6",
+                //         "level"=>"2"
+                //     ],
+                //     7=>[
+                //         "id"=>"7",
+                //         "field"=>"hello7",
+                //         "level"=>"2"
+                //     ],
+                //     8=>[
+                //         "id"=>"8",
+                //         "field"=>"hello8",
+                //         "level"=>"1"
+                //     ]
+                // ];
                 $this->set(compact('validatedDatas','sdSections','caseNo','version','tabid','caseId','product_name','case_versions','writePermission'));
             }
             /**
