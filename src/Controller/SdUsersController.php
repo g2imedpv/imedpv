@@ -232,6 +232,11 @@ class SdUsersController extends AppController
             $this->autoRender = false;
             $searchKey = $this->request->getData();
             $case = TableRegistry::get('SdCases')->find()->where(['caseNo'=>$caseNo,'version_no'=>$versionNo])->first();
+            if($case['sd_workflow_activity_id'] == '9999'){
+                //already in distribution
+                //search distribution table
+                $distributionCase = TableRegistry::get('SdCaseDistributions');
+            }
             $currentActivity = TableRegistry::get('SdWorkflowActivities')->get($case['sd_workflow_activity_id']);
             $newtOrder = $currentActivity['order_no']+1;
             $nextActivity = TableRegistry::get('SdWorkflowActivities')->find()
@@ -244,6 +249,9 @@ class SdUsersController extends AppController
                             ]
                         ])
                         ->where(['SdWorkflowActivities.order_no'=>$newtOrder])->first();
+            if($nextActivity==""){
+
+            }
             $previousUserOnNextActivity = TableRegistry::get('SdCaseHistories')->find()
                         ->select(['sd_user_id','user.firstname','user.lastname','company.company_name'])
                         ->join([

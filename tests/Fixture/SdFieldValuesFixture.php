@@ -24,6 +24,7 @@ class SdFieldValuesFixture extends TestFixture
         'field_value' => ['type' => 'text', 'length' => null, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null],
         'created_time' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'status' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
+        'sd_case_distribution_id' => ['type' => 'integer', 'length' => 20, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         '_indexes' => [
             'case_index' => ['type' => 'index', 'columns' => ['sd_case_id'], 'length' => []],
             'structure_index' => ['type' => 'index', 'columns' => ['sd_field_id'], 'length' => []],
@@ -54,8 +55,9 @@ class SdFieldValuesFixture extends TestFixture
                 'sd_field_id' => 1,
                 'set_number' => 1,
                 'field_value' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'created_time' => '2019-02-14 22:44:41',
-                'status' => 1
+                'created_time' => '2019-04-09 15:34:14',
+                'status' => 1,
+                'sd_case_distribution_id' => 1
             ],
         ];
         parent::init();
