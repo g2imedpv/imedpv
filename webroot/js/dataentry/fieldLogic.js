@@ -6,6 +6,7 @@ $(document).ready(function(){
     $("select").select2({
         selectOnClose: true
     });
+    $("span.select2").addClass("d-block w-100");
 
     // Logic for show or hide some field by SELECT options
     function selectShowORhide (target, optionA, optionB) {
@@ -59,16 +60,17 @@ $(document).ready(function(){
 
     // Causality Tab:
         // If Rechallenge (B.4.k.17.1) answer "Yes", B.4.k.17.2* Meddra should be answer as well
-            var target = $('#section-44-field-211').parent();
-            target.hide();
-            $("#section-44-field-209").change(function(){
-                if($('#select2-section-44-select-209-container').text() == "Yes"){
-                    target.show();
-                }
-                else {
-                    target.hide();
-                }
-            });
+            // var target = $('#section-44-field-210').parent();
+            // var target1 = $('#section-44-field-211').parent();
+            // (target,target1).hide();
+            // $("#section-44-field-209").change(function(){
+            //     if($('#select2-section-44-select-209-container').text() == "Yes"){
+            //         (target,target1).show();
+            //     }
+            //     else {
+            //         (target,target1).hide();
+            //     }
+            // });
 
 
 
