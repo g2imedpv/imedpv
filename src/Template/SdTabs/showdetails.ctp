@@ -243,20 +243,20 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
     $text ="";
     if($permission == null) $permission = 1;
     else $permission = $permission[$section['id']];
-    if($section->section_level == 2){
-        $text =$text. "<div id=\"section_label-".$section->id."\" class=\"subtabtitle col-md-12\">".$section->section_name."</div>";
-        if(($section->is_addable == 1)&&($permission==1))
-        {
-            $text =$text. "<div id=\"pagination-l2-section-".$section->id."\">";
-            $text =$text. "<input type=\"button\" id=\"delete_section-".$section->id."\"  class=\"float-right px-3 mx-3 btn btn-outline-danger\" onclick=\"l2deleteSection(".$section->id.")\" value=\"Delete\" style=\"display:none\">";
-            $text =$text. "<input type=\"button\" id=\"child_section-";
-            $child_array = explode(",",$section->child_section);
-            foreach($child_array as $Key => $sdSectionKey) echo "[".$sdSectionKey."]";
-            $text =$text. "-sectionKey-".$sectionKey."-setNo-1-section-".$section->id."\" onclick=\"level2setPageChange(".$section->id.",1,1)\" class=\"float-right px-3 mx-3 btn btn-info\" value=\"Add\">";
-            $text =$text. "</div>";
-            $text =$text. "<div class=\"showpagination\" id=\"showpagination-".$section->id."\"></div>";
-        }
-    }elseif($section->section_level ==1 ){
+    // if($section->section_level == 2){
+    //     $text =$text. "<div id=\"section_label-".$section->id."\" class=\"subtabtitle col-md-12\">".$section->section_name."</div>";
+    //     if(($section->is_addable == 1)&&($permission==1))
+    //     {
+    //         $text =$text. "<div id=\"pagination-l2-section-".$section->id."\">";
+    //         $text =$text. "<input type=\"button\" id=\"delete_section-".$section->id."\"  class=\"float-right px-3 mx-3 btn btn-outline-danger\" onclick=\"l2deleteSection(".$section->id.")\" value=\"Delete\" style=\"display:none\">";
+    //         $text =$text. "<input type=\"button\" id=\"child_section-";
+    //         $child_array = explode(",",$section->child_section);
+    //         foreach($child_array as $Key => $sdSectionKey) echo "[".$sdSectionKey."]";
+    //         $text =$text. "-sectionKey-".$sectionKey."-setNo-1-section-".$section->id."\" onclick=\"level2setPageChange(".$section->id.",1,1)\" class=\"float-right px-3 mx-3 btn btn-info\" value=\"Add\">";
+    //         $text =$text. "</div>";
+    //         $text =$text. "<div class=\"showpagination\" id=\"showpagination-".$section->id."\"></div>";
+    //     }
+    // }elseif($section->section_level ==1 ){
 
         $max_set_No = 0;
         foreach($section->sd_section_structures as $sd_section_structureK =>$sd_section_structure_detail){
@@ -461,7 +461,7 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
         }
         if($i!=0) $text =$text."</div>";
         $text =$text. "</div>";
-    }
+    // }
     return $text;
 }
 function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permission){
@@ -473,10 +473,20 @@ function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permi
     $child_Div_Text = "";
     $child_Nav_Text = "";
     $childchild_Field_Text ="";
-    if(!empty($sdSections['sd_section_structures'])) $field_Text = displaySingleSection($sdSections, 1, $sectionKey, $html, $permission);//display single section's fields, iterater sectioin's strucutures
+    $nav_Text = "<a class=\"nav-item";
+    if($sdSections->display_order ==10) $nav_Text = $nav_Text ." active";
+    $nav_Text = $nav_Text." nav-link\" id=\"nav-".$sdSections->id."-tab\" data-toggle=\"tab\" href=\"#secdiff-".$sdSections->id."\" role=\"tab\" aria-controls=\"secdiff-".$sdSections->id."\" aria-selected=\"true\">";
+    $nav_Text = $nav_Text.$sdSections->section_name;
+    $nav_Text = $nav_Text."</a>";
+    if(!empty($sdSections['sd_section_structures'])) 
+        $field_Text = displaySingleSection($sdSections, 1, $sectionKey, $html, $permission);//display single section's fields, iterater sectioin's strucutures
     if(empty($sdSections['child_section'])){
         $exsitSectionNo[$sectionKey]= null;
         $result = array("field_Text"=>$field_Text,
+                        "nav_Text" => $nav_Text,
+                        "child_Field_Text"=>$child_Field_Text,
+                        "nav_Text" => $nav_Text,
+                        "child_Div_Text" => $child_Div_Text,
                         "exsitSectionNo"=>$exsitSectionNo);//add section label in "field";
         return $result;
     }
@@ -488,13 +498,14 @@ function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permi
         $sectionKey = array_search($child_section,$exsitSectionNo);
         if($sectionKey === FALSE) continue;
         $result = displaySection($allsdSections[$sectionKey], $allsdSections,$exsitSectionNo,$html,$permission);  
-        if(!empty($result['nav_Text'])){
+        if($allsdSections[$sectionKey]['section_type']){
             $child_Nav_Text = $child_Nav_Text.$result['nav_Text'];
             $div_front ="";
             $div_front =  $div_front."<div class=\"tab-pane";
             if($allsdSections[$sectionKey]->display_order ==10)$div_front = $div_front." show active";
             $div_front =$div_front." fade\" aria-labelledby=\"nav-".$allsdSections[$sectionKey]->id."-tab\" role=\"tabpanel\" class=\"secdiff\" id=\"secdiff-".$allsdSections[$sectionKey]->id."\">";
             $child_Div_Text = $child_Div_Text.$div_front.$result['field_Text'].$result['child_Field_Text'].$result['child_Div_Text']."</div>";  //add label and div in "div"
+
         }else{
             $child_Field_Text = $child_Field_Text.$result['field_Text'];
         }    
