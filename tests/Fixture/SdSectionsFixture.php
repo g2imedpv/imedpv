@@ -25,6 +25,7 @@ class SdSectionsFixture extends TestFixture
         'is_addable' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'display_order' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'status' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
+        'section_type' => ['type' => 'integer', 'length' => 1, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         '_indexes' => [
             'tab_index' => ['type' => 'index', 'columns' => ['sd_tab_id'], 'length' => []],
         ],
@@ -54,7 +55,8 @@ class SdSectionsFixture extends TestFixture
                 'sd_tab_id' => 1,
                 'is_addable' => 1,
                 'display_order' => 1,
-                'status' => 1
+                'status' => 1,
+                'section_type' => 1
             ],
         ];
         parent::init();

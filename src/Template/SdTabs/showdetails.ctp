@@ -476,10 +476,20 @@ function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permi
     $child_Div_Text = "";
     $child_Nav_Text = "";
     $childchild_Field_Text ="";
-    if(!empty($sdSections['sd_section_structures'])) $field_Text = displaySingleSection($sdSections, 1, $sectionKey, $html, $permission);//display single section's fields, iterater sectioin's strucutures
+    $nav_Text = "<a class=\"nav-item";
+    if($sdSections->display_order ==10) $nav_Text = $nav_Text ." active";
+    $nav_Text = $nav_Text." nav-link\" id=\"nav-".$sdSections->id."-tab\" data-toggle=\"tab\" href=\"#secdiff-".$sdSections->id."\" role=\"tab\" aria-controls=\"secdiff-".$sdSections->id."\" aria-selected=\"true\">";
+    $nav_Text = $nav_Text.$sdSections->section_name;
+    $nav_Text = $nav_Text."</a>";
+    if(!empty($sdSections['sd_section_structures']))
+        $field_Text = displaySingleSection($sdSections, 1, $sectionKey, $html, $permission);//display single section's fields, iterater sectioin's strucutures
     if(empty($sdSections['child_section'])){
         $exsitSectionNo[$sectionKey]= null;
         $result = array("field_Text"=>$field_Text,
+                        "nav_Text" => $nav_Text,
+                        "child_Field_Text"=>$child_Field_Text,
+                        "nav_Text" => $nav_Text,
+                        "child_Div_Text" => $child_Div_Text,
                         "exsitSectionNo"=>$exsitSectionNo);//add section label in "field";
         return $result;
     }
@@ -491,13 +501,14 @@ function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permi
         $sectionKey = array_search($child_section,$exsitSectionNo);
         if($sectionKey === FALSE) continue;
         $result = displaySection($allsdSections[$sectionKey], $allsdSections,$exsitSectionNo,$html,$permission);
-        if(!empty($result['nav_Text'])){
+        if($allsdSections[$sectionKey]['section_type']){
             $child_Nav_Text = $child_Nav_Text.$result['nav_Text'];
             $div_front ="";
             $div_front =  $div_front."<div class=\"tab-pane";
             if($allsdSections[$sectionKey]->display_order ==10)$div_front = $div_front." show active";
             $div_front =$div_front." fade\" aria-labelledby=\"nav-".$allsdSections[$sectionKey]->id."-tab\" role=\"tabpanel\" class=\"secdiff\" id=\"secdiff-".$allsdSections[$sectionKey]->id."\">";
             $child_Div_Text = $child_Div_Text.$div_front.$result['field_Text'].$result['child_Field_Text'].$result['child_Div_Text']."</div>";  //add label and div in "div"
+
         }else{
             $child_Field_Text = $child_Field_Text.$result['field_Text'];
         }
