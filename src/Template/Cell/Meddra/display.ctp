@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-info btn-sm mx-3 d-block" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-search"></i> MedDra Browser</button>
+<button type="button" class="btn btn-info btn-sm mx-3 d-block" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-search"></i> MedDRA Browser</button>
 <div class="lltQuickSearch form-group col-md-6">
     <label>LLT Term Encode</label>
     <input class="form-control" type="text" id="llt-searchbar">

@@ -351,10 +351,6 @@ hr.wfhr {
     padding: 15px;
 }
 
-.active {
-    font-weight: 500;
-}
-
 .checkboxstyle {
     width: 25px;
     height: 20px;
@@ -399,8 +395,9 @@ hr.wfhr {
 
 .showpagination {
     position: relative;
-    top: 10px;
+    top: -60px;
     right: 15px;
+    cursor: pointer;
 }
 
 .resourceDropzone {
@@ -482,6 +479,7 @@ ul.queryBoxLeft > a {
 .DEpagination {
     display: inherit;
     margin-top: 2px;
+    cursor: pointer;
 }
 
 /* Meddra browser */
@@ -493,4 +491,26 @@ ul.queryBoxLeft > a {
 
 .lltQuickSearchForCaseReg {
     top: -34px !important;
+}
+
+.fieldInput:nth-child(odd) {
+    background-color: #F8F9FC;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+[id^="pagination-l2"] {
+    position: relative;
+    top: -60px;
+    right: -12px;
+  }
+
+#nav-tab > a.active {
+    color: #007bff !important;
+    font-weight: 700;
+    background-color: white !important;
+}
+#nav-tab > a.nav-item {
+    color: #000000;
+    background-color: #eee;
 }

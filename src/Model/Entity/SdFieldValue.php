@@ -13,6 +13,7 @@ use Cake\ORM\Entity;
  * @property string $field_value
  * @property \Cake\I18n\FrozenTime $created_time
  * @property bool $status
+ * @property int $sd_case_distribution_id
  *
  * @property \App\Model\Entity\SdCase $sd_case
  * @property \App\Model\Entity\SdField $sd_field
@@ -36,6 +37,7 @@ class SdFieldValue extends Entity
         'field_value' => true,
         'created_time' => true,
         'status' => true,
+        'sd_case_distribution_id' => true,
         'sd_case' => true,
         'sd_field' => true
     ];

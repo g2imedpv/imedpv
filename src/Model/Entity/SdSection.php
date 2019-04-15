@@ -14,9 +14,10 @@ use Cake\ORM\Entity;
  * @property bool $is_addable
  * @property int $display_order
  * @property bool $status
+ * @property int $section_type
  *
  * @property \App\Model\Entity\SdTab $sd_tab
- * @property \App\Model\Entity\SdPhaseRoleSectionPermission[] $sd_phase_role_section_permissions
+ * @property \App\Model\Entity\SdActivitySectionPermission[] $sd_activity_section_permissions
  * @property \App\Model\Entity\SdSectionStructure[] $sd_section_structures
  */
 class SdSection extends Entity
@@ -39,8 +40,9 @@ class SdSection extends Entity
         'is_addable' => true,
         'display_order' => true,
         'status' => true,
+        'section_type' => true,
         'sd_tab' => true,
-        'sd_phase_role_section_permissions' => true,
+        'sd_activity_section_permissions' => true,
         'sd_section_structures' => true
     ];
 }

@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
  * SdSections Model
  *
  * @property \App\Model\Table\SdTabsTable|\Cake\ORM\Association\BelongsTo $SdTabs
- * @property |\Cake\ORM\Association\HasMany $SdActivitySectionPermissions
+ * @property \App\Model\Table\SdActivitySectionPermissionsTable|\Cake\ORM\Association\HasMany $SdActivitySectionPermissions
  * @property \App\Model\Table\SdSectionStructuresTable|\Cake\ORM\Association\HasMany $SdSectionStructures
  *
  * @method \App\Model\Entity\SdSection get($primaryKey, $options = [])
@@ -93,6 +93,11 @@ class SdSectionsTable extends Table
             ->boolean('status')
             ->requirePresence('status', 'create')
             ->notEmpty('status');
+
+        $validator
+            ->integer('section_type')
+            ->requirePresence('section_type', 'create')
+            ->notEmpty('section_type');
 
         return $validator;
     }

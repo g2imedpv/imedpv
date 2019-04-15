@@ -4,7 +4,8 @@ var workflow_k = 0;
 var workflow_list =[];
 var cro_list=[];
 var call_center_list = {};
-var permission_list = {};
+var accessment_permission_list = {};
+var distribution_permission_list ={};
 var distribution_list =[];
 var distribution_No = 0;
 $(document).ready(function() {
@@ -258,14 +259,15 @@ jQuery(function($) {  // In case of jQuery conflict
                 var order = 1;
                 $('#'+workflowType+'-sortable').find('.card-body').each(function(){
                     console.log($(this).children('.input-group'));
-                    var text ="<button type=\"button\" id=\"cust-"+workflowType+"-permission-"+order+"\" onclick=\"sectionPermission("+order+",2)\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\">Set Permission</button>";
+                    var workflowTypeFlag = 0;
+                    if(workflowType=="distribution") workflowTypeFlag = 1;
+                    var text ="<button type=\"button\" id=\"cust-"+workflowType+"-permission-"+order+"\" onclick=\"sectionPermission("+order+",2,"+workflowTypeFlag+")\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\">Set Permission</button>";
                     $(this).append(text);
                     order ++;
                 });
                 $(this).hide();
                 $('#'+workflowType+'-sortable').find('.card-body').append( '<div class="input-group w-25 mx-auto"><i class="fas fa-arrow-up gobackstep"></i><input type="text" class="step_backward form-control form-control-sm backstep_input" aria-label="Back Steps" aria-describedby="backSteps"></div>');
                 $('#custworkflowname').next('#erraccessmentWorkflow').remove(); // *** this line have been added ***
-                //??
                 $("#"+workflowType+"-sortable").sortable({ disabled: true });
             }
         };
@@ -310,11 +312,13 @@ jQuery(function($) {  // In case of jQuery conflict
         $('[id^=cust-'+workflowType+'-permission]').each(function(){
             if($(this).text() != "View Permission"){
                 finished = 0;
-                // TODO mention that THIS activity's permission not finished
+                // TODO notify that THIS activity's permission not finished
                 return false;
             }
             var activity_Id = $(this).attr('id').split('-')[3];
-            $(this).prop('onclick','sectionPermission('+activity_Id+',3)');
+            var workflowTypeFlag = 0;
+            if (workflowType =="distribution") workflowTypeFlag = 1;
+            $(this).prop('onclick','sectionPermission('+activity_Id+',3,'+workflowTypeFlag+')');
         });
         if(!finished){
             console.log('111');
@@ -528,6 +532,8 @@ jQuery(function($) {  // In case of jQuery conflict
                 $('#default_distribution_workflow').html('');
                 activities = distribution_workflow_structure[country]['sd_workflow_activities'];
             }
+            var workflowTypeFlag = 0;
+            if (workflowType =="distribution") workflowTypeFlag = 1;
             $(activities).each(function(k,v){
                 default_text +="<li class=\"def-"+workflowType+"-workflowstep\">";
                     default_text +="<div class=\"card w-100 h-25 my-2\">";
@@ -537,7 +543,7 @@ jQuery(function($) {  // In case of jQuery conflict
                             default_text +="<div class=\"input-group w-25 mx-auto\">";
                                 default_text +="<i class=\"fas fa-arrow-up gobackstep\"></i>";
                                 default_text +="<input type=\"text\" readonly=\"readonly\" value="+v.step_backward+" class=\"step_backward form-control form-control-sm\" aria-label=\"Back Steps\" aria-describedby=\"backSteps\">"
-                                default_text +="<button type=\"button\" onclick=\"sectionPermission("+v.id+",1)\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\">View Permission</button>";
+                                default_text +="<button type=\"button\" onclick=\"sectionPermission("+v.id+",1,"+workflowTypeFlag+")\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\">View Permission</button>";
                             default_text +="</div>";
                         default_text +="</div>";
                     default_text +="</div>";
@@ -627,7 +633,7 @@ jQuery(function($) {  // In case of jQuery conflict
         $('#distribution-workflowlist').hide();
         $('#undocho-accessment-WF').show();
         $('#confirm-accessment-WFlist').show();
-    })
+    });
 
     //confirm Distribution company
     $('#submitDistri').click(function(){
@@ -668,6 +674,7 @@ jQuery(function($) {  // In case of jQuery conflict
         text +="<input name=\"accessment_product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
         text +="<input name=\"accessment_product_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_list[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
         text +="<input name=\"accessment_product_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
+
         //accessment-distribution relation
         $('[id^=selected-distri-]').each(function(){
             var key = $(this).attr('id').split('-')[2];
@@ -699,6 +706,24 @@ jQuery(function($) {  // In case of jQuery conflict
                 })
             })
         });
+        //accessment permission
+        $.each(accessment_permission_list[workflow_k],function(activity_order,activity_permissions){
+            $.each(activity_permissions,function(section_id, permission_action){
+                if(section_id == 0) return true;
+                text +="<input name=\"accessment_permission["+workflow_k+"]["+activity_order+"]["+section_id+"][action]\" value=\""+permission_action+"\" type=\"hidden\">"
+            });
+        });
+
+        //distribution permission
+        $.each(distribution_permission_list,function(distribution_k, workflow_permissions){
+            $.each(workflow_permissions,function(activity_order,activity_permissions){
+                $.each(activity_permissions,function(section_id, permission_action){
+                    if(section_id == 0) return true;
+                    distribution_text +="<input name=\"distribution_permission["+distribution_k+"]["+activity_order+"]["+section_id+"][action]\" value=\""+permission_action+"\" type=\"hidden\">"
+                });
+            });
+        });
+        
         $.each(distribution_list, function(key, distribution_workflow){
             text +="<input name=\"distribution_product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
             text +="<input name=\"distribution_product_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_list[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
@@ -887,7 +912,9 @@ jQuery(function($) {  // In case of jQuery conflict
      });
 });
 
-function sectionPermission(activity_id, readonly){
+function sectionPermission(activity_id, readonly, workflowTypeFlag){
+    var workflowType = "accessment";
+    if(workflowTypeFlag == "1") workflowType = "distribution";
     if(readonly==1){
         $('#permissionFooter').find('button').remove();
         $.ajax({
@@ -932,9 +959,9 @@ function sectionPermission(activity_id, readonly){
     }else{
         if(readonly==2){
             if(!($('#permissionFooter').find('button').length > 0)){
-                var text ="<button type=\"button\" class=\"btn btn-primary\" onclick=\"savePermission("+activity_id+")\" data-dismiss=\"modal\">Save</button>";
+                var text ="<button type=\"button\" class=\"btn btn-primary\" onclick=\"savePermission("+activity_id+","+workflowTypeFlag+")\" data-dismiss=\"modal\">Save</button>";
                 $('#permissionFooter').prepend(text);
-            }else $('#permissionFooter').find('button').attr('onclick',"savePermission("+activity_id+")");
+            }else $('#permissionFooter').find('button').attr('onclick',"savePermission("+activity_id+","+workflowTypeFlag+")");
         }
         $("div[id^=l1section]").each(function(){
             var flag = 0;
@@ -955,18 +982,27 @@ function sectionPermission(activity_id, readonly){
                 // $(this).find("input[id^=read]").prop('checked',false);
                 // return true;
             // }else 
-            
-            if((typeof permission_list[workflow_k]=="undefined")||(typeof permission_list[workflow_k][activity_id]=="undefined")
-                    ||(typeof permission_list[workflow_k][activity_id][id[1]]=="undefined")){
+            var permission_key = 0;
+            if(workflowTypeFlag==0)
+            {
+                permission_list = accessment_permission_list;
+                permission_key = workflow_k
+            } 
+            else {
+                permission_list = distribution_permission_list;
+                permission_key = distribution_No;
+            }
+            if((typeof permission_list[permission_key]=="undefined")||(typeof permission_list[permission_key][activity_id]=="undefined")
+                    ||(typeof permission_list[permission_key][activity_id][id[1]]=="undefined")){
                         $(this).find("input[id^=write]").prop('checked',false);
                         $(this).find("input[id^=read]").prop('checked',false);
                         return true;
-            }else if(permission_list[workflow_k][activity_id][id[1]] == 1) {
+            }else if(permission_list[permission_key][activity_id][id[1]] == 1) {
                         $(this).find("input[id^=write]").prop('checked',true);
                         $(this).find("input[id^=read]").prop('checked',true);
                         flag = 1;
                     }
-                    else if(permission_list[workflow_k][activity_id][id[1]] == 2) {
+                    else if(permission_list[permission_key][activity_id][id[1]] == 2) {
                         flag = 1;
                         $(this).find("input[id^=write]").prop('checked',false);
                         $(this).find("input[id^=read]").prop('checked',true);
@@ -978,9 +1014,20 @@ function sectionPermission(activity_id, readonly){
 
     }
 }
-function savePermission(activity_id){
-    if(typeof permission_list[workflow_k]=='undefined') permission_list[workflow_k]=[];
-    if(typeof permission_list[workflow_k][activity_id]=='undefined') permission_list[workflow_k][activity_id]=[];
+function savePermission(activity_id, workflowTypeFlag){
+    var workflowType = "";
+    if(workflowTypeFlag == 0)
+    {
+        workflowType = "accessment";
+        permission_list = accessment_permission_list;
+        permission_key = workflow_k;
+    }else{
+        workflowType = "distribution";
+        permission_list = distribution_permission_list;
+        permission_key = distribution_No;
+    } 
+    if(typeof permission_list[permission_key]=='undefined') permission_list[permission_key]=[];
+    if(typeof permission_list[permission_key][activity_id]=='undefined') permission_list[permission_key][activity_id]=[];
     $("div[id^=l2section]").each(function(){
         var write = 0;
         var pid = $(this).attr('id').split('-');
@@ -988,19 +1035,19 @@ function savePermission(activity_id){
             
             var id = $(this).attr('id').split('-');
             if($(this).find("input[id^=write]").prop('checked')==true){
-                permission_list[workflow_k][activity_id][id[1]]=1;
+                permission_list[permission_key][activity_id][id[1]]=1;
                 write=1;
             }else if($(this).find("input[id^=read]").prop('checked') == true){
-                permission_list[workflow_k][activity_id][id[1]]=2;
+                permission_list[permission_key][activity_id][id[1]]=2;
                 write=1;
             }else {
-                permission_list[workflow_k][activity_id][id[1]] = 0;
+                permission_list[permission_key][activity_id][id[1]] = 0;
             }
         })
-        if(write) permission_list[workflow_k][activity_id][pid[1]] = 1;
-        else permission_list[workflow_k][activity_id][pid[1]] = 0;
+        if(write) permission_list[permission_key][activity_id][pid[1]] = 1;
+        else permission_list[permission_key][activity_id][pid[1]] = 0;
     });
-    $('#cust'+workflowType+'Permission-'+activity_id).text('View Permission');
+    $('#cust-'+workflowType+'-permission-'+activity_id).text('View Permission');
 }
 function iterateWorkflow(wkfl_name)
 {
