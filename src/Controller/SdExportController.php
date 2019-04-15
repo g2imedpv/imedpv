@@ -272,7 +272,7 @@ class SdExportController extends AppController
                             $interval=" ";
                         }
                         $query5=$this->getLookupValue($caseId,187,$setNumber);
-                        $description=$query1.$query2."     ".$dosage."     ".$interval.$query5; 
+                        $description=$query1.$query2."     ".$dosage."     ".$interval." ".$query5; 
                         $j=$i+1;
                         $dailyDose .= "#".$j.")  ".$description."<br>";  
                     }
@@ -574,7 +574,7 @@ class SdExportController extends AppController
                             ])->first();
                             $text = $text." <style> p {position: absolute;}  </style>";
                             $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                       .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$positions['fv']['field_value'].'</p>';
+                                       .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$positions['fv']['field_value'].'</p>';
                             break;
                         case '2'://simple checkbox output
                             $positions= $sdMedwatchPositions ->find()
@@ -588,9 +588,9 @@ class SdExportController extends AppController
                                 ]
                             ])->first();
                             $text = $text." <style> p {position: absolute;font-size:15px;}  </style>";
-                            $text = $text.'<p style="top: 203px; left: 366px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
+                            $text = $text.'<p style="top: 203px; left: 366px; width: 18px;  height: 18px; color:black;">'.'X'.'</p>';
                             $text = $text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'X'.'</p>';
+                                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
                             break;
                         case '3': // distinct different suspect product according to set_numbers and direct output
                             $positions= $sdMedwatchPositions ->find()
@@ -606,7 +606,7 @@ class SdExportController extends AppController
                             //debug($positions);die();
                             $text = $text." <style> p {position: absolute;}  </style>";
                             $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                            .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$positions['fv']['field_value'].'</p>';
+                            .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$positions['fv']['field_value'].'</p>';
                             break;     
                         case '4':// convert date xxxxxxxx to dd-mmm-yyyy
                             $positions= $sdMedwatchPositions ->find()
@@ -627,72 +627,72 @@ class SdExportController extends AppController
                                             switch(substr($position_details['fv']['field_value'],0,2)){
                                                 case '00':
                                                     $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                    .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'  '.'</p>';
+                                                    .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'  '.'</p>';
                                                     break;
                                                 default:
                                                     $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                    .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.substr($position_details['fv']['field_value'],0,2).'</p>';
+                                                    .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.substr($position_details['fv']['field_value'],0,2).'</p>';
                                             }
                                             continue;
                                         case "month":
                                             switch(substr($position_details['fv']['field_value'],2,2)){
                                                 case '00':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'  '.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'  '.'</p>';
                                                         continue;
                                                 case '01':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'JAN'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'JAN'.'</p>';
                                                         continue;
                                                 case '02':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'FEB'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'FEB'.'</p>';
                                                         continue;
                                                 case '03':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'MAR'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'MAR'.'</p>';
                                                         continue;
                                                 case '04':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'APR'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'APR'.'</p>';
                                                         continue;
                                                 case '05':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'MAY'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'MAY'.'</p>';
                                                         continue;
                                                 case '06':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'JUN'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'JUN'.'</p>';
                                                         continue;
                                                 case '07':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'JUL'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'JUL'.'</p>';
                                                         continue;
                                                 case '08':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'AUG'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'AUG'.'</p>';
                                                         continue;
                                                 case '09':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'SEP'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'SEP'.'</p>';
                                                         continue;
                                                 case '10':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'OCT'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'OCT'.'</p>';
                                                         continue;
                                                 case '11':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'NOV'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'NOV'.'</p>';
                                                         continue;
                                                 case '12':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'DEC'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'DEC'.'</p>';
                                                         default;
                                             }
                                             continue;
                                         case "year":
                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.substr($position_details['fv']['field_value'],4,4).'</p>';
+                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.substr($position_details['fv']['field_value'],4,4).'</p>';
                                         default;
                                     }
                             }
@@ -713,7 +713,7 @@ class SdExportController extends AppController
                             $count_words = $line*70;
                             $pageone=substr($positions['fv']['field_value'],0,$count_words);
                             $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pageone.'</p>';
+                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$pageone.'</p>';
                         case '6'://use set_number and date convert c8
                             $positions= $sdMedwatchPositions ->find()
                             ->select(['sdMedwatchPositions.id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
@@ -731,63 +731,63 @@ class SdExportController extends AppController
                                     switch($date[1]){
                                         case "day":
                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.substr($position_details['fv']['field_value'],0,2).'</p>';
+                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.substr($position_details['fv']['field_value'],0,2).'</p>';
                                         continue;
                                         case "month":
                                             switch(substr($position_details['fv']['field_value'],2,2)){
                                                 case '01':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'JAN'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'JAN'.'</p>';
                                                         continue;
                                                 case '02':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'FEB'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'FEB'.'</p>';
                                                         continue;
                                                 case '03':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'MAR'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'MAR'.'</p>';
                                                         continue;
                                                 case '04':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'APR'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'APR'.'</p>';
                                                         continue;
                                                 case '05':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'MAY'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'MAY'.'</p>';
                                                         continue;
                                                 case '06':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'JUN'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'JUN'.'</p>';
                                                         continue;
                                                 case '07':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'JUL'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'JUL'.'</p>';
                                                         continue;
                                                 case '08':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'AUG'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'AUG'.'</p>';
                                                         continue;
                                                 case '09':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'SEP'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'SEP'.'</p>';
                                                         continue;
                                                 case '10':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'OCT'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'OCT'.'</p>';
                                                         continue;
                                                 case '11':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'NOV'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'NOV'.'</p>';
                                                         continue;
                                                 case '12':
                                                         $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'DEC'.'</p>';
+                                                        .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'DEC'.'</p>';
                                                         default;
                                             }
                                         continue;
                                         case "year":
                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.substr($position_details['fv']['field_value'],4,4).'</p>';
+                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.substr($position_details['fv']['field_value'],4,4).'</p>';
                                         default;
 
                                         }
@@ -851,7 +851,7 @@ class SdExportController extends AppController
                                     }
                             $startyear=substr($position_details['fv']['field_value'],4,4);
                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.$startday.'-'.$startmon.$startyear.'</p>';
+                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.$startday.'-'.$startmon.$startyear.'</p>';
                                 }
                             break;
                         case '8'://use set_number and checkbox
@@ -867,7 +867,7 @@ class SdExportController extends AppController
                             ])->first();
                             $text = $text." <style> p {position: absolute;font-size:15px;}  </style>";
                             $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'X'.'</p>';
+                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
                             break; 
                         case '9': //narrative continue in page3
                             $positions= $sdMedwatchPositions ->find()
@@ -885,7 +885,7 @@ class SdExportController extends AppController
                                 $count_words = $line*70;
                                 $pagethree=substr($positions['fv']['field_value'],$count_words);
                                 $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pagethree.'</p>'; 
+                                .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$pagethree.'</p>'; 
                         case '10'://e3 occupation convert
                             $positions= $sdMedwatchPositions ->find()
                             ->select(['sdMedwatchPositions.id','sdMedwatchPositions.position_top','sdMedwatchPositions.position_left',
@@ -901,23 +901,23 @@ class SdExportController extends AppController
                             switch($positions['fv']['field_value']){
                                 case '1':
                                     $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'Phisician'.'</p>';
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'Phisician'.'</p>';
                                     break;
                                 case '2':
                                     $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'Pharmacist'.'</p>';
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'Pharmacist'.'</p>';
                                     break;
                                 case '3':
                                     $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'Other health professional'.'</p>';
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'Other health professional'.'</p>';
                                     break;
                                 case '4':
                                     $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'Lawyer'.'</p>';
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'Lawyer'.'</p>';
                                     break;
                                 case '5':
                                     $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'Consumer or other non health professional'.'</p>';
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'Consumer or other non health professional'.'</p>';
                                     break;
                             }
                         case '11'://set numbers and get caption by joining table sd_field_value_look_ups c3#route
@@ -940,7 +940,7 @@ class SdExportController extends AppController
                             ])->first();
                             $text = $text." <style> p {position: absolute;}  </style>";
                             $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$positions['look']['caption'].'</p>';
+                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$positions['look']['caption'].'</p>';
                             break;           
                         case '12'://describe event and problem in page1
                             $query1=$fv->find()
@@ -969,7 +969,7 @@ class SdExportController extends AppController
                                 $text = $text."<style> p {position: absolute;font-size:10px;font-family: courier;}  </style>";
                                 $pageone=substr($description,0,400);
                                 $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pageone.'</p>';
+                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$pageone.'</p>';
                                 break;
                         case '13':  //describe event and problem in page3
                             $query1=$fv->find()
@@ -998,7 +998,7 @@ class SdExportController extends AppController
                                 $text = $text."<style> p {position: absolute;font-size:10px;font-family: courier;}  </style>";
                                 $pagethree=substr($description,400);
                                 $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pagethree.'</p>';    
+                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$pagethree.'</p>';    
                                 break;
                         case '14': //b2 checkbox field to solve 8 digital value format
                             $positions= $sdMedwatchPositions ->find()
@@ -1013,23 +1013,23 @@ class SdExportController extends AppController
                             ])->first();
                             $text = $text." <style> p {position: absolute;font-size:15px;}  </style>";
                             if(substr($positions['fv']['field_value'],0,1)==1){
-                                $text = $text.'<p style="top: 336px; left: 44px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
+                                $text = $text.'<p style="top: 336px; left: 44px; width: 18px;  height: 18px; color:black;">'.'X'.'</p>';
                                
                             };
                             if(substr($positions['fv']['field_value'],1,1)==1){
-                                $text = $text.'<p style="top: 353px; left: 44px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
+                                $text = $text.'<p style="top: 353px; left: 44px; width: 18px;  height: 18px; color:black;">'.'X'.'</p>';
                             };
                             if(substr($positions['fv']['field_value'],2,1)==1){
-                                $text = $text.'<p style="top: 353px; left: 232px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
+                                $text = $text.'<p style="top: 353px; left: 232px; width: 18px;  height: 18px; color:black;">'.'X'.'</p>';
                             };
                             if(substr($positions['fv']['field_value'],3,1)==1){
-                                $text = $text.'<p style="top: 369px; left: 44px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
+                                $text = $text.'<p style="top: 369px; left: 44px; width: 18px;  height: 18px; color:black;">'.'X'.'</p>';
                             };
                             if(substr($positions['fv']['field_value'],4,1)==1){
-                                $text = $text.'<p style="top: 369px; left: 232px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
+                                $text = $text.'<p style="top: 369px; left: 232px; width: 18px;  height: 18px; color:black;">'.'X'.'</p>';
                             };
                             if(substr($positions['fv']['field_value'],5,1)==1){
-                                $text = $text.'<p style="top: 384px; left: 44px; width: 18px;  height: 18px; color:red;">'.'X'.'</p>';
+                                $text = $text.'<p style="top: 384px; left: 44px; width: 18px;  height: 18px; color:black;">'.'X'.'</p>';
                             };
                             break;
                         case '15':
@@ -1045,7 +1045,7 @@ class SdExportController extends AppController
                             ])->first();
                             $text = $text." <style> p {position: absolute;}  </style>";
                             $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                            .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$positions['fv']['field_value'].'</p>';
+                            .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$positions['fv']['field_value'].'</p>';
                             break;  
                             case '16':
                             $positions= $sdMedwatchPositions ->find()
@@ -1067,7 +1067,7 @@ class SdExportController extends AppController
                             ])->first();
                             $text = $text." <style> p {position: absolute;}  </style>";
                             $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$positions['look']['caption'].'</p>';
+                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$positions['look']['caption'].'</p>';
                             break;  
                         case '17':    
                             $positions= $sdMedwatchPositions ->find()
@@ -1127,7 +1127,7 @@ class SdExportController extends AppController
                                     }
                             $startyear=substr($position_details['fv']['field_value'],4,4);
                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.$startday.'-'.$startmon.$startyear.'</p>';
+                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.$startday.'-'.$startmon.$startyear.'</p>';
                                 }
                             break;  
                         case '18':  
@@ -1143,7 +1143,7 @@ class SdExportController extends AppController
                             ])->first();
                             $text = $text." <style> p {position: absolute;font-size:15px;}  </style>";
                             $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'X'.'</p>';
+                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
                             break; 
                         case '19':
                             $positions= $sdMedwatchPositions ->find()
@@ -1162,63 +1162,63 @@ class SdExportController extends AppController
                                         switch($date[1]){
                                             case "day":
                                                 $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.substr($position_details['fv']['field_value'],0,2).'</p>';
+                                                .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.substr($position_details['fv']['field_value'],0,2).'</p>';
                                             continue;
                                             case "month":
                                                 switch(substr($position_details['fv']['field_value'],2,2)){
                                                     case '01':
                                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'JAN'.'</p>';
+                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'JAN'.'</p>';
                                                             continue;
                                                     case '02':
                                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'FEB'.'</p>';
+                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'FEB'.'</p>';
                                                             continue;
                                                     case '03':
                                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'MAR'.'</p>';
+                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'MAR'.'</p>';
                                                             continue;
                                                     case '04':
                                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'APR'.'</p>';
+                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'APR'.'</p>';
                                                             continue;
                                                     case '05':
                                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'MAY'.'</p>';
+                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'MAY'.'</p>';
                                                             continue;
                                                     case '06':
                                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'JUN'.'</p>';
+                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'JUN'.'</p>';
                                                             continue;
                                                     case '07':
                                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'JUL'.'</p>';
+                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'JUL'.'</p>';
                                                             continue;
                                                     case '08':
                                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'AUG'.'</p>';
+                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'AUG'.'</p>';
                                                             continue;
                                                     case '09':
                                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'SEP'.'</p>';
+                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'SEP'.'</p>';
                                                             continue;
                                                     case '10':
                                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'OCT'.'</p>';
+                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'OCT'.'</p>';
                                                             continue;
                                                     case '11':
                                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'NOV'.'</p>';
+                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'NOV'.'</p>';
                                                             continue;
                                                     case '12':
                                                             $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.'DEC'.'</p>';
+                                                            .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.'DEC'.'</p>';
                                                             default;
                                                 }
                                             continue;
                                             case "year":
                                                 $text =$text.'<p style="top: '.$position_details['position_top'].'px; left: '.$position_details['position_left']
-                                                .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:red;">'.substr($position_details['fv']['field_value'],4,4).'</p>';
+                                                .'px; width: '.$position_details['position_width'].'px;  height: '.$position_details['position_height'].'px; color:black;">'.substr($position_details['fv']['field_value'],4,4).'</p>';
                                             default;
 
                                             }
@@ -1243,7 +1243,7 @@ class SdExportController extends AppController
                             $text = $text."<style> p {position: absolute;font-size:10px;font-family: courier;}  </style>";
                             $pageone=substr($concomitantProducts,0,200);
                             $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pageone.'</p>';
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$pageone.'</p>';
                             break;
                         case '21'://c2 in page three
                             $concomitant=$this->ConcomitantRole($caseId);
@@ -1264,7 +1264,7 @@ class SdExportController extends AppController
                             $text = $text."<style> p {position: absolute;font-size:10px;font-family: courier;}  </style>";
                             $pagethree=substr($concomitantProducts,200);
                             $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$pagethree.'</p>';
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$pagethree.'</p>';
                             break;
 
                     }   
@@ -1288,11 +1288,11 @@ class SdExportController extends AppController
                     ->first();
                 $text = $text."<style> p {position: absolute;font-size:10px;font-family: courier;}  </style>";
                 $text =$text.'<p style="top: '.$query1['position_top'].'px; left: '.$query1['position_left']
-                    .'px; width: '.$query1['position_width'].'px;  height: '.$query1['position_height'].'px; color:red;">'.substr($reportDate,0,2).'</p>';
+                    .'px; width: '.$query1['position_width'].'px;  height: '.$query1['position_height'].'px; color:black;">'.substr($reportDate,0,2).'</p>';
                 $text =$text.'<p style="top: '.$query2['position_top'].'px; left: '.$query2['position_left']
-                .'px; width: '.$query2['position_width'].'px;  height: '.$query2['position_height'].'px; color:red;">'.strtoupper(substr($reportDate,3,3)).'</p>';
+                .'px; width: '.$query2['position_width'].'px;  height: '.$query2['position_height'].'px; color:black;">'.strtoupper(substr($reportDate,3,3)).'</p>';
                 $text =$text.'<p style="top: '.$query3['position_top'].'px; left: '.$query3['position_left']
-                    .'px; width: '.$query3['position_width'].'px;  height: '.$query3['position_height'].'px; color:red;">'.substr($reportDate,-4).'</p>';
+                    .'px; width: '.$query3['position_width'].'px;  height: '.$query3['position_height'].'px; color:black;">'.substr($reportDate,-4).'</p>';
                 return $text;
             }
 
