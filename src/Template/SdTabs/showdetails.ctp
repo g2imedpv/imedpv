@@ -14,7 +14,7 @@ echo $this->element('generatepdf');
     var caseNo = "<?= $caseNo ?>";
     var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
     var version = <?= $version ?>;
-    var distribution_id = <?php if(empty($distribution_id)) echo "null"; else echo $distribution_id;?>; 
+    var distribution_id = <?php if(empty($distribution_id)) echo "null"; else echo $distribution_id;?>;
     var tabId = <?= $tabid?>;
     var section = <?php $sdSections;
     echo json_encode($sdSections)?>;
@@ -135,6 +135,7 @@ echo $this->element('generatepdf');
 
 <!-- Data Entry Body -->
 <div class="dataentry">
+    <div><?= $sdSections[0]['section_name']?></div>
     <?= $this->Form->create($sdSections,['id'=> 'dataEntry']);?>
     <?php
         $setNo = "1";
@@ -147,6 +148,8 @@ echo $this->element('generatepdf');
         //     next($sdSections);
         // }
         $result = displaySection($sdSections[0],$sdSections,$exsitSectionNo, $this, $activitySectionPermissions);
+        print_r($result['field_Text']);
+        print_r($result['child_Field_Text']);
         print_r($result['child_Div_Text']);
         // displaySectionInTabList($result['nav_Text']);
         // echo "<div class=\"tab-content\" id=\"nav-tabContent\">";
@@ -310,7 +313,7 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
     //     }
     // }elseif($section->section_level ==1 ){
             $text =$text. "<div class=\"fieldInput\">";
-            $text =$text. "<hr class=\"my-2\">";        
+            $text =$text. "<hr class=\"my-2\">";
         $length_taken = 0;
         $cur_row_no = 0;
         foreach($section->sd_section_structures as $sd_section_structureK =>$sd_section_structure_detail){
@@ -542,7 +545,7 @@ function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permi
         if(empty($exsitSectionNo)) break;
         $sectionKey = array_search($child_section,$exsitSectionNo);
         if($sectionKey === FALSE) continue;
-        $result = displaySection($allsdSections[$sectionKey], $allsdSections,$exsitSectionNo,$html,$permission);  
+        $result = displaySection($allsdSections[$sectionKey], $allsdSections,$exsitSectionNo,$html,$permission);
         if($allsdSections[$sectionKey]['section_type']){
             $child_Nav_Text = $child_Nav_Text.$result['nav_Text'];
             $div_front ="";
@@ -561,11 +564,11 @@ function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permi
     $nav_Text = $nav_Text." nav-link\" id=\"nav-".$sdSections->id."-tab\" data-toggle=\"tab\" href=\"#secdiff-".$sdSections->id."\" role=\"tab\" aria-controls=\"secdiff-".$sdSections->id."\" aria-selected=\"true\">";
     $nav_Text = $nav_Text.$sdSections->section_name;
     $nav_Text = $nav_Text."</a>";
-    // $nav_Text = "".$sdSections['id']."</div></nav>"; //add page style here 
+    // $nav_Text = "".$sdSections['id']."</div></nav>"; //add page style here
     if($child_Nav_Text!="") {
-        $child_Nav_Text = "<nav class=\"my-3\"><div class=\"nav nav-tabs\" id=\"nav-tab\" role=\"tablist\">".$child_Nav_Text."</div></nav>"; //add navigation bar style here 
-        $child_Div_Text = $child_Nav_Text."<div class=\"tab-content\" id=\"nav-tabContent\">".$child_Div_Text."</div>"; 
-    } 
+        $child_Nav_Text = "<nav class=\"my-3\"><div class=\"nav nav-tabs\" id=\"nav-tab\" role=\"tablist\">".$child_Nav_Text."</div></nav>"; //add navigation bar style here
+        $child_Div_Text = "<div>".$child_Nav_Text."<div class=\"tab-content\" id=\"nav-tabContent\">".$child_Div_Text."</div></div>"; //pagination style
+    }
     $exsitSectionNo[$sectionKey]= null;
     $result = [
         "child_Field_Text"=>$child_Field_Text,

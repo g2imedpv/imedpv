@@ -72,7 +72,13 @@ $(document).ready(function(){
             //     }
             // });
 
-
+    //Cauculate duration according to therapy start day and end date
+    var start = $('#section-22-text-199').val();
+    var end = $('#section-22-date-205').val();
+    var startHours=start.substr(0,2)*24+start.substr(2,2)*24*30+start.substr(4,4)*24*30*12;
+    var endHours=end.substr(0,2)*24+end.substr(2,2)*24*30+end.substr(4,4)*24*30*12;
+    var duration=(endHours-startHours)/24;
+    $('#section-22-text-206').val(duration)
 
 
 });
