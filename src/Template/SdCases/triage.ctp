@@ -100,7 +100,6 @@
                     <div class="col-sm-4">
                         <select class="custom-select js-example-basic-single yearSelect" placeholder="Year" id="patientField_dob_year" name="field_value[85][value]">
                         <?php
-                        echo "<option value=\"00\">Day</option>";
                         for($i=1900;$i<=2050;$i++){
                             echo "<option value=\"".sprintf("%04d",$i)."\"";
                             if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],4,4)==sprintf("%02d",$i))) echo "selected";
