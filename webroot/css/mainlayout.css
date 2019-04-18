@@ -22,8 +22,6 @@ ul.topbar > li.nav-item {
     margin-right: 10px;
 }
 
-.navLogo {
-}
 
 .searchHighlight {
     background-color: rgb(255, 130, 130);
@@ -81,6 +79,7 @@ ul.topbar > li.nav-item {
 
 .dataentrychange {
     top:55px;
+    
 }
 
 .caseNumber {
@@ -123,6 +122,8 @@ ul.topbar > li.nav-item {
     font-family: 'Quattrocento-Regular';
     text-align: center;
     font-size: 3.5em;
+    color:#ffc107;
+   
 }
 
 .modalheader {
@@ -189,12 +190,11 @@ tr:nth-child(even) {
 }
 
 .fieldInput {
-    order: 2;
+    background-color: aliceblue;
+    padding:0 20px;
+    margin-bottom: 40px;
 }
 
-.secdiff > row {
-    order: 1;
-}
 
 .secdiff > .secspace > nav {
     font-size: 15px;
@@ -224,9 +224,6 @@ tr:nth-child(even) {
     padding: 20px;
 }
 
-tbody > tr {
-    /*cursor: pointer;*/
-}
 
 #choosecon, #choosewf, #choosecro, .defworkflow {
     display: none;
@@ -447,8 +444,6 @@ ul.queryBoxLeft > a {
     color: #000000b8;
 }
 
-.querybox{
-}
 
 .querybox:hover{
     color: #007bff !important;
@@ -469,6 +464,18 @@ ul.queryBoxLeft > a {
 #navbarNavDropdown > ul > li {
     margin-left: 20px;
 }
+#navbarNavDropdown > ul > li > a.nav-link{
+    color:rgba(225,225,225); 
+}
+#navbarNavDropdown > ul > li > a.nav-link:hover{
+    background-color:#ffc107;
+    color:rgba(0,0,0);
+    
+}
+#navbarNavDropdown > ul > li > a.active{
+    color:rgba(0,0,0);
+}
+
 
 .queryBackBtn {
     font-size: 30px !important;
@@ -493,12 +500,6 @@ ul.queryBoxLeft > a {
     top: -34px !important;
 }
 
-.fieldInput:nth-child(odd) {
-    background-color: #F8F9FC;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
 [id^="pagination-l2"] {
     position: relative;
     top: -60px;
@@ -509,8 +510,37 @@ ul.queryBoxLeft > a {
     color: #007bff !important;
     font-weight: 700;
     background-color: white !important;
+    border-top-color:#007bff;
+    border-top-width: 3.5px;
 }
 #nav-tab > a.nav-item {
     color: #000000;
     background-color: #eee;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    
 }
+.form-row{
+    line-height:0.8;
+}
+.topNav{
+    background-color: aliceblue;
+}
+.tab-content{
+    border-left:1px solid rgba(0, 0, 0, 0.1);
+    border-right:1px solid rgba(0, 0, 0, 0.1);
+    margin-top:-17px;
+}
+.folder .header-section{
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.folder .fieldInput{
+    background-color:rgba(135,172,213,0.25);
+}
+#folder-39{
+    padding:0 20px;
+    margin-top:-40px;
+    background-color:aliceblue;
+}
+

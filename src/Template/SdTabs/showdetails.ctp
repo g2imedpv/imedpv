@@ -56,7 +56,7 @@ echo $this->element('generatepdf');
 
     <!-- "Version Switch" Dropdown Button -->
     <li class="nav-item">
-        <a class="btn btn-outline-warning" href="#" title="Version Switch" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="btn btn-outline-info" href="#" title="Version Switch" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-code-branch"></i> Switch Version
         </a>
         <?php
@@ -113,8 +113,8 @@ echo $this->element('generatepdf');
     <!-- "Save All" Button -->
     <li class="nav-item">
     <?php if($writePermission==1){
-       echo "<button class=\"btn btn-light text-success mx-1\" title=\"Sign Off\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(1)\"><i class=\"fas fa-share-square\"></i> Next Step</button>";
-       echo "<button class=\"btn btn-light text-success mx-1\" title=\"Push Backward\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(2)\"><i class=\"fab fa-pushed\"></i> Previous Step</button>";
+       echo "<button class=\"btn btn-outline-warning mx-1\" title=\"Sign Off\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(1)\"><i class=\"fas fa-share-square\"></i> Next Step</button>";
+       echo "<button class=\"btn btn-outline-warning mx-1\" title=\"Push Backward\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(2)\"><i class=\"fab fa-pushed\"></i> Previous Step</button>";
     }?>
     </li>
 
@@ -135,6 +135,7 @@ echo $this->element('generatepdf');
 
 <!-- Data Entry Body -->
 <div class="dataentry">
+    <div class="subtabtitle"><?= $sdSections[0]['section_name']?></div>
     <?= $this->Form->create($sdSections,['id'=> 'dataEntry']);?>
     <?php
         $setNo = "1";
@@ -374,12 +375,12 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
             if($i == 0){
                 $length_taken = 0;
                 $cur_row_no = $sd_section_structure_detail->row_no;
-                $text =$text."<div class=\"form-row\">";
+                $text =$text."<div class=\"form-row \">";
             }
             elseif($cur_row_no != $sd_section_structure_detail->row_no){
                 $length_taken = 0;
                 $cur_row_no = $sd_section_structure_detail->row_no;
-                $text =$text."</div><div class=\"form-row\">";
+                $text =$text."</div><div class=\"form-row \">";
             }
             $j = 0;
             foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
@@ -582,7 +583,8 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
     if(!in_array($sdSections->id,$exsitSectionNo)) return ["exsitSectionNo"=>$exsitSectionNo];
     $sectionKey = array_search($sdSections->id,$exsitSectionNo);
     $field_Text= "";
-    $field_Text = $field_Text.displayTitle($sdSections->id, $sdSections->section_name,$sectionKey, $permission);
+    if($sdSections->section_type)
+        $field_Text = $field_Text.displayTitle($sdSections->id, $sdSections->section_name,$sectionKey, $permission);
     if($sdSections->is_addable){
         array_push($setArray, $sdSections->id);
         if(!empty($sdSections->sd_section_summary))
@@ -640,7 +642,7 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
     // $nav_Text = "".$sdSections['id']."</div></nav>"; //add page style here
     if($child_Nav_Text!="") {
         $child_Nav_Text = "<nav class=\"my-3\"><div class=\"nav nav-tabs\" id=\"nav-tab\" role=\"tablist\">".$child_Nav_Text."</div></nav>"; //add navigation bar style here
-        $child_Div_Text = "<div>".$child_Nav_Text."<div class=\"tab-content\" id=\"nav-tabContent\">".$child_Div_Text."</div></div>"; //pagination style
+        $child_Div_Text = "<div class=\"folder\"  id=\"folder-".$sdSections->id."\">".$child_Nav_Text."<div class=\"tab-content\" id=\"nav-tabContent\">".$child_Div_Text."</div></div>"; //pagination style
     }
     $exsitSectionNo[$sectionKey]= null;
     $result = [
