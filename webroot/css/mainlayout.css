@@ -81,6 +81,7 @@ ul.topbar > li.nav-item {
 
 .dataentrychange {
     top:55px;
+    
 }
 
 .caseNumber {
@@ -123,6 +124,8 @@ ul.topbar > li.nav-item {
     font-family: 'Quattrocento-Regular';
     text-align: center;
     font-size: 3.5em;
+    color:#ffc107;
+   
 }
 
 .modalheader {
@@ -189,12 +192,9 @@ tr:nth-child(even) {
 }
 
 .fieldInput {
-    order: 2;
+    background-color: aliceblue;
 }
 
-.secdiff > row {
-    order: 1;
-}
 
 .secdiff > .secspace > nav {
     font-size: 15px;
@@ -469,6 +469,18 @@ ul.queryBoxLeft > a {
 #navbarNavDropdown > ul > li {
     margin-left: 20px;
 }
+#navbarNavDropdown > ul > li > a.nav-link{
+    color:rgba(225,225,225); 
+}
+#navbarNavDropdown > ul > li > a.nav-link:hover{
+    background-color:#ffc107;
+    color:rgba(0,0,0);
+    
+}
+#navbarNavDropdown > ul > li > a.active{
+    color:rgba(0,0,0);
+}
+
 
 .queryBackBtn {
     font-size: 30px !important;
@@ -493,12 +505,6 @@ ul.queryBoxLeft > a {
     top: -34px !important;
 }
 
-.fieldInput:nth-child(odd) {
-    background-color: #F8F9FC;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
 [id^="pagination-l2"] {
     position: relative;
     top: -60px;
@@ -509,8 +515,22 @@ ul.queryBoxLeft > a {
     color: #007bff !important;
     font-weight: 700;
     background-color: white !important;
+    border-top-color:#007bff;
+    border-top-width: 3.5px;
 }
 #nav-tab > a.nav-item {
     color: #000000;
     background-color: #eee;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    
 }
+.form-row{
+    line-height:0.8;
+}
+.topNav{
+    background-color: aliceblue;
+}
+
+
+

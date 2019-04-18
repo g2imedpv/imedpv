@@ -56,7 +56,7 @@ echo $this->element('generatepdf');
 
     <!-- "Version Switch" Dropdown Button -->
     <li class="nav-item">
-        <a class="btn btn-outline-warning" href="#" title="Version Switch" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="btn btn-outline-info" href="#" title="Version Switch" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-code-branch"></i> Switch Version
         </a>
         <?php
@@ -113,8 +113,8 @@ echo $this->element('generatepdf');
     <!-- "Save All" Button -->
     <li class="nav-item">
     <?php if($writePermission==1){
-       echo "<button class=\"btn btn-light text-success mx-1\" title=\"Sign Off\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(1)\"><i class=\"fas fa-share-square\"></i> Next Step</button>";
-       echo "<button class=\"btn btn-light text-success mx-1\" title=\"Push Backward\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(2)\"><i class=\"fab fa-pushed\"></i> Previous Step</button>";
+       echo "<button class=\"btn btn-outline-warning mx-1\" title=\"Sign Off\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(1)\"><i class=\"fas fa-share-square\"></i> Next Step</button>";
+       echo "<button class=\"btn btn-outline-warning mx-1\" title=\"Push Backward\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(2)\"><i class=\"fab fa-pushed\"></i> Previous Step</button>";
     }?>
     </li>
 
@@ -135,7 +135,7 @@ echo $this->element('generatepdf');
 
 <!-- Data Entry Body -->
 <div class="dataentry">
-    <div><?= $sdSections[0]['section_name']?></div>
+    <div class="subtabtitle"><?= $sdSections[0]['section_name']?></div>
     <?= $this->Form->create($sdSections,['id'=> 'dataEntry']);?>
     <?php
         $setNo = "1";
@@ -268,9 +268,9 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                     $max_set_No = $value_detail_field_values->set_number;
             }
         }
-        $text =$text. "<div class=\"header-section\">";
+        $text =$text. "<div class=\"header-section\" id=\"header-section-$section->id\">";
         $text =$text. "<h3 id=\"section_label-".$section->id."\"class=\"secspace\">".$section->section_name;
-        $text =$text. "<input id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-primary\" type=\"button\" value=\"Save\" style=\"display:none\">";
+        $text =$text. "<input   id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-primary\" type=\"button\" value=\"Save\" style=\"display:none\">";
         //echo"<a role=\"button\" id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
         $text =$text. "</h3>";
             if(($section->is_addable == 1)&&($permission==1))
@@ -310,7 +310,7 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
             }
             $text =$text. "<div id=\"addbtnalert-".$section->id."\" class=\"addbtnalert mx-3 alert alert-danger\" role=\"alert\" style=\"display:none;\">You are adding a new record</div>";
             $text =$text."</div>";
-            $text =$text. "<div class=\"fieldInput\">";
+            $text =$text. "<div class=\"fieldInput mb-5 px-3\" id=\"Input-$section->id\" >";
             $text =$text. "<hr class=\"my-2\">";
         $length_taken = 0;
         $cur_row_no = 0;
@@ -318,12 +318,12 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
             if($i == 0){
                 $length_taken = 0;
                 $cur_row_no = $sd_section_structure_detail->row_no;
-                $text =$text."<div class=\"form-row\">";
+                $text =$text."<div class=\"form-row \">";
             }
             elseif($cur_row_no != $sd_section_structure_detail->row_no){
                 $length_taken = 0;
                 $cur_row_no = $sd_section_structure_detail->row_no;
-                $text =$text."</div><div class=\"form-row\">";
+                $text =$text."</div><div class=\"form-row \">";
             }
             $j = -1;
             $jflag = 0;
@@ -334,7 +334,7 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                 }
             }
             if ($j==-1) $j = $jflag;
-            $text =$text. "<div id=\"section-".$section->id."-field-".$sd_section_structure_detail->sd_field->id."\" class=\"form-group col-md-".$sd_section_structure_detail->field_length." offset-md-".($sd_section_structure_detail->field_start_at-$length_taken)."\">";
+            $text =$text. "<div id=\"section-".$section->id."-field-".$sd_section_structure_detail->sd_field->id."\" class=\"form-group col-md-".$sd_section_structure_detail->field_length." offset-md-".($sd_section_structure_detail->field_start_at-$length_taken)." \">";
             $text =$text. "<label id= \"section-".$section->id."-field_label-".$sd_section_structure_detail->sd_field->id."\" >".$sd_section_structure_detail->sd_field->field_label."</label>";
             if(!empty($sd_section_structure_detail->sd_field->comment))
             $text =$text. " <a id=\"field_helper-".$sd_section_structure_detail->sd_field->id."\" tabindex=\"0\" role=\"button\" data-toggle=\"popover\" title=\"Field Helper\" data-content=\"<div>".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->comment)."</div>\"><i class=\"qco fas fa-info-circle\"></i></a>";
@@ -522,7 +522,7 @@ function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permi
     // $nav_Text = "".$sdSections['id']."</div></nav>"; //add page style here
     if($child_Nav_Text!="") {
         $child_Nav_Text = "<nav class=\"my-3\"><div class=\"nav nav-tabs\" id=\"nav-tab\" role=\"tablist\">".$child_Nav_Text."</div></nav>"; //add navigation bar style here
-        $child_Div_Text = "<div>".$child_Nav_Text."<div class=\"tab-content\" id=\"nav-tabContent\">".$child_Div_Text."</div></div>"; //pagination style
+        $child_Div_Text = "<div class=\"folder\">".$child_Nav_Text."<div class=\"tab-content\" id=\"nav-tabContent\">".$child_Div_Text."</div></div>"; //pagination style
     }
     $exsitSectionNo[$sectionKey]= null;
     $result = [

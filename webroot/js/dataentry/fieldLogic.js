@@ -72,13 +72,53 @@ $(document).ready(function(){
             //     }
             // });
 
-    //Cauculate duration according to therapy start day and end date
-    var start = $('#section-22-text-199').val();
-    var end = $('#section-22-date-205').val();
-    var startHours=start.substr(0,2)*24+start.substr(2,2)*24*30+start.substr(4,4)*24*30*12;
-    var endHours=end.substr(0,2)*24+end.substr(2,2)*24*30+end.substr(4,4)*24*30*12;
-    var duration=(endHours-startHours)/24;
-    $('#section-22-text-206').val(duration)
-
-
+    // //Cauculate duration according to therapy start day and end date
+    // var start = $('#section-22-text-199').val();
+    // var end = $('#section-22-date-205').val();
+    // var startHours=start.substr(0,2)*24+start.substr(2,2)*24*30+start.substr(4,4)*24*30*12;
+    // var endHours=end.substr(0,2)*24+end.substr(2,2)*24*30+end.substr(4,4)*24*30*12;
+    // var duration=(endHours-startHours)/24;
+    // $('#section-22-text-206').val(duration)
+    
+    //specific css of the product to display attributes belongs to the product information
+        $('#nav-tabContent').parent().css("background-color", "aliceblue");
+        $('#nav-tabContent').parent().css({
+            "padding":"0px 30px",
+            "margin-top":"-48px"
+        });
+        $('#nav-tabContent').css({
+            "border-left":"1px solid rgba(0,0,0,.1)",
+            "border-right":"1px solid rgba(0,0,0,.1)",
+            "margin-top":"-16px"
+        });
+        //dosing regiment
+        $('#header-section-22').css({
+            "margin-top":"20px",
+            "margin-left":"10px"
+        });
+        $('#Input-22').css({"background-color":" rgba(135, 172, 213, 0.25)"});
+        //additional information
+        $('#header-section-25').css({
+            "margin-top":"20px",
+            "margin-left":"10px"
+        });
+        $('#Input-25').css({"background-color":" rgba(135, 172, 213, 0.25)"});
+        //App.no 
+        $('#header-section-24').css({
+            "margin-top":"20px",
+            "margin-left":"10px"
+        });
+        $('#Input-24').css({"background-color":" rgba(135, 172, 213, 0.25)"});
+        //Lot.no
+        $('#header-section-23').css({
+            "margin-top":"10px",
+            "margin-left":"10px"
+        });
+        $('#Input-23').css({"background-color":" rgba(135, 172, 213, 0.25)"});
+        //indication
+        $('#header-section-56').css({
+            "margin-top":"20px",
+            "margin-left":"10px"
+        });
+        $('#Input-56').css({"background-color":" rgba(135, 172, 213, 0.25)"});
 });
