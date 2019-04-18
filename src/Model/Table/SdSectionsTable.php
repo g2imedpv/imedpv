@@ -11,7 +11,9 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\SdTabsTable|\Cake\ORM\Association\BelongsTo $SdTabs
  * @property \App\Model\Table\SdActivitySectionPermissionsTable|\Cake\ORM\Association\HasMany $SdActivitySectionPermissions
+ * @property \App\Model\Table\SdSectionSetsTable|\Cake\ORM\Association\HasMany $SdSectionSets
  * @property \App\Model\Table\SdSectionStructuresTable|\Cake\ORM\Association\HasMany $SdSectionStructures
+ * @property \App\Model\Table\SdSectionSummariesTable|\Cake\ORM\Association\HasMany $SdSectionSummaries
  *
  * @method \App\Model\Entity\SdSection get($primaryKey, $options = [])
  * @method \App\Model\Entity\SdSection newEntity($data = null, array $options = [])
@@ -46,7 +48,13 @@ class SdSectionsTable extends Table
         $this->hasMany('SdActivitySectionPermissions', [
             'foreignKey' => 'sd_section_id'
         ]);
+        $this->hasMany('SdSectionSets', [
+            'foreignKey' => 'sd_section_id'
+        ]);
         $this->hasMany('SdSectionStructures', [
+            'foreignKey' => 'sd_section_id'
+        ]);
+        $this->hasOne('SdSectionSummaries', [
             'foreignKey' => 'sd_section_id'
         ]);
     }

@@ -125,108 +125,57 @@
 
                 //Fetch tab structures
                 //TODO according to model
+                $sdFieldTable = TableRegistry::get('SdFields');
                 $sdTab = TableRegistry::get('SdSections');
                 if($distribution_id == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
                 else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";
                 $sdSections = $sdTab ->find()->where(['sd_tab_id'=>$tabid,'status'=>true])
                                     ->order(['SdSections.section_level'=>'ASC','SdSections.display_order'=>'ASC'])
-                                    ->contain(['SdSectionStructures'=>function($q)use($caseId,$distribution_condition){
+                                    ->contain(['SdSectionSummaries','SdSectionStructures'=>function($q)use($caseId,$distribution_condition){
                                         return $q->order(['SdSectionStructures.row_no'=>'ASC','SdSectionStructures.field_start_at'=>'ASC'])
                                             ->contain(['SdFields'=>['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
-                                                return $q->where(['SdFieldValues.sd_case_id'=>$caseId, 'SdFieldValues.sd_case_distribution_id IS NULL',$distribution_condition,
+                                                return $q->contain(['SdSectionSets'])->where(['SdFieldValues.sd_case_id'=>$caseId, 'SdFieldValues.sd_case_distribution_id IS NULL',$distribution_condition,
                                                                  'SdFieldValues.status'=>true]);
                                             }, 'SdElementTypes'=> function($q){
                                             return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
                                                 }]]);
                                     }])->toArray();
+                foreach($sdSections as $sdSection){
+                    //select correct set
+                    foreach($sdSection->sd_section_structures as $structures){
+                        $setMatch = 0;
+                        foreach($structures->sd_field->sd_field_values as $field_values){
+                            foreach($field_values->sd_section_sets as $section_set){
+                                if($section_set->sd_section_id == $sdSection->id) {
+                                    $field_values->sd_section_sets = $section_set;
+                                    $setMatch = 1;
+                                    break;
+                                }
+                            }
+                            if($setMatch) break;
+                        }
+                    }
+                    if(empty($sdSection->sd_section_summary)) continue;
+                    $fields = explode(',',$sdSection->sd_section_summary->fields);
+                    $sdFields = [];
+                    foreach($fields as $sdField){
+                        
+                        array_push($sdFields, $sdFieldTable->find()->where(['SdFields.id'=>$sdField])->contain(['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$sdSection,$distribution_condition) {
+                            return $q->contain(['SdSectionSets'=>function($q)use($sdSection){
+                                return $q->where(['SdSectionSets.sd_section_id'=>$sdSection->id]);
+                            }])->where(['SdFieldValues.sd_case_id'=>$caseId, 'SdFieldValues.sd_case_distribution_id IS NULL',$distribution_condition,
+                                             'SdFieldValues.status'=>true]);
+                        }, 'SdElementTypes'=> function($q){
+                        return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
+                            }])->first());
+                    }
+                    $sdSection->sd_section_summary['sdFields'] = $sdFields;
+                }
                 if($userinfo['sd_role_id']>2){
                     foreach($sdSections as $sectionKey => $sdSection){
                         if(!array_key_exists($sdSection['id'],$activitySectionPermissions)) unset($sdSections[$sectionKey]);
                     }
                 }
-                // $sdSections = [
-                //     1=>[
-                //         "child_section"=>[
-                //             5=>[
-                //                 "field"=>"hello5",
-                //                 "level"=>"1"
-                //             ],
-                //             3=>[
-                //                 "child_section"=>[
-                //                     6=>[
-                //                         "field"=>"hello6",
-                //                         "level"=>"2"
-                //                     ]
-                //                 ],
-                //                 "level"=>"1"  
-                //             ],
-                //             4=>[
-                //                 "child_section"=>[
-                //                     7=>[
-                //                         "field"=>"hello7",
-                //                         "level"=>"2"
-                //                     ]
-                //                 ],
-                //                 "level"=>"1"
-                //             ]
-                //         ],
-                //         "level"=>"0"
-                //     ],
-                //     2=>[
-                //         "child_section"=>[
-                //             8=>[
-                //                 "field"=>"hello8"
-                //             ]
-                //         ],
-                //         "level"=>"0"
-                //     ]
-                // ];
-                // $sdSections = [
-                //     0=>[
-                //         "id"=>"0",
-                //         "child_section"=>[1,2],
-                //     ],
-                //     1=>[
-                //         "id"=>"1",
-                //         "child_section"=>[5,3,4],
-                //         "level"=>"0"
-                //     ],
-                //     2=>[
-                //         "id"=>"2",
-                //         "child_section"=>[8],
-                //         "level"=>"0"
-                //     ],
-                //     3=>[
-                //         "id"=>"3",
-                //         "child_section"=>[6],
-                //         "level"=>"1"  
-                //     ],
-                //     4=>[
-                //         "id"=>"4",
-                //         "child_section"=>[7],
-                //         "level"=>"1"
-                //     ],
-                //     5=>[
-                //         "id"=>"5",
-                //         "field"=>"hello5",
-                //         "level"=>"1"
-                //     ],
-                //     6=>[
-                //         "id"=>"6",
-                //         "field"=>"hello6",
-                //         "level"=>"2"
-                //     ],
-                //     7=>[
-                //         "id"=>"7",
-                //         "field"=>"hello7",
-                //         "level"=>"2"
-                //     ],
-                //     8=>[
-                //         "id"=>"8",
-                //         "field"=>"hello8",
-                //         "level"=>"1"
-                //     ]
-                // ];
                 $this->set(compact('validatedDatas','sdSections','caseNo','version','tabid','caseId','product_name','case_versions','writePermission'));
             }
             /**

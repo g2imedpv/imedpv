@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\SdSectionsTable;
+use App\Model\Table\SdSectionSetsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\SdSectionsTable Test Case
+ * App\Model\Table\SdSectionSetsTable Test Case
  */
-class SdSectionsTableTest extends TestCase
+class SdSectionSetsTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\SdSectionsTable
+     * @var \App\Model\Table\SdSectionSetsTable
      */
-    public $SdSections;
+    public $SdSectionSets;
 
     /**
      * Fixtures
@@ -24,12 +24,9 @@ class SdSectionsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.sd_sections',
-        'app.sd_tabs',
-        'app.sd_activity_section_permissions',
         'app.sd_section_sets',
-        'app.sd_section_summaries',
-        'app.sd_section_structures'
+        'app.sd_sections',
+        'app.sd_field_values'
     ];
 
     /**
@@ -40,8 +37,8 @@ class SdSectionsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('SdSections') ? [] : ['className' => SdSectionsTable::class];
-        $this->SdSections = TableRegistry::getTableLocator()->get('SdSections', $config);
+        $config = TableRegistry::getTableLocator()->exists('SdSectionSets') ? [] : ['className' => SdSectionSetsTable::class];
+        $this->SdSectionSets = TableRegistry::getTableLocator()->get('SdSectionSets', $config);
     }
 
     /**
@@ -51,7 +48,7 @@ class SdSectionsTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->SdSections);
+        unset($this->SdSectionSets);
 
         parent::tearDown();
     }

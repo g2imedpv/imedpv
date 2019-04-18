@@ -25,9 +25,9 @@ class SdFieldsFixture extends TestFixture
         'is_e2b' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'field_length' => ['type' => 'integer', 'length' => 10, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'field_type' => ['type' => 'string', 'length' => 50, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'AN- Alpha Numeric and special Character,N- Numeric,ANO-Alphanumeric Only 	', 'precision' => null, 'fixed' => null],
-        'field_label' => ['type' => 'string', 'length' => 100, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'Form Element Label ', 'precision' => null, 'fixed' => null],
+        'field_label' => ['type' => 'string', 'length' => 200, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'Form Element Label ', 'precision' => null, 'fixed' => null],
         'sd_element_type_id' => ['type' => 'integer', 'length' => 3, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'comment' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'Comment for field', 'precision' => null, 'fixed' => null],
+        'comment' => ['type' => 'string', 'length' => 1000, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'Comment for field', 'precision' => null, 'fixed' => null],
         '_indexes' => [
             'organization' => ['type' => 'index', 'columns' => ['organization'], 'length' => []],
             'descriptor' => ['type' => 'index', 'columns' => ['descriptor'], 'length' => []],

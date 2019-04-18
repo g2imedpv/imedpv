@@ -28,6 +28,7 @@ class SdFieldsTableTest extends TestCase
         'app.sd_element_types',
         'app.sd_field_value_look_ups',
         'app.sd_field_values',
+        'app.sd_medwatch_positions',
         'app.sd_section_structures'
     ];
 

@@ -135,7 +135,6 @@ echo $this->element('generatepdf');
 
 <!-- Data Entry Body -->
 <div class="dataentry">
-    <div><?= $sdSections[0]['section_name']?></div>
     <?= $this->Form->create($sdSections,['id'=> 'dataEntry']);?>
     <?php
         $setNo = "1";
@@ -147,7 +146,7 @@ echo $this->element('generatepdf');
         //     $exsitSectionNo[$i] = $sdSections->id;
         //     next($sdSections);
         // }
-        $result = displaySection($sdSections[0],$sdSections,$exsitSectionNo, $this, $activitySectionPermissions);
+        $result = displaySection($sdSections[0],$sdSections,[],$exsitSectionNo, $this, $activitySectionPermissions);
         print_r($result['field_Text']);
         print_r($result['child_Field_Text']);
         print_r($result['child_Div_Text']);
@@ -240,60 +239,115 @@ function displaySectionOld($section, $exsitSectionNo, $sdSections, $setNo, $html
     }
     return $exsitSectionNo;
 }
-function displayTitle($section, $sectionKey, $permission){
+function displayTitle($sectionId, $section_name, $sectionKey, $permission){
     $text ="";
-    $max_set_No = 0;
-    foreach($section->sd_section_structures as $sd_section_structureK =>$sd_section_structure_detail){
-        foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
-            if($value_detail_field_values->set_number>=$max_set_No)
-                $max_set_No = $value_detail_field_values->set_number;
-        }
-    }
+    // $max_set_No = 0;
+    // foreach($section->sd_section_structures as $sd_section_structureK =>$sd_section_structure_detail){
+    //     foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
+    //         if($value_detail_field_values->set_number>=$max_set_No)
+    //             $max_set_No = $value_detail_field_values->set_number;
+    //     }
+    // }
     $text =$text. "<div class=\"header-section\">";
-    $text =$text. "<h3 id=\"section_label-".$section->id."\"class=\"secspace\">".$section->section_name;
-    $text =$text. "<input id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-primary\" type=\"button\" value=\"Save\" style=\"display:none\">";
-    //echo"<a role=\"button\" id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
+    $text =$text. "<h3 id=\"section_label-".$sectionId."\"class=\"secspace\">".$section_name."</h3>";
+    $text =$text. "<input id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.")\" class=\"ml-3 px-5 btn btn-outline-primary\" type=\"button\" value=\"Save\">";
+    //echo"<a role=\"button\" id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
     $text =$text. "</h3>";
-        if(($section->is_addable == 1)&&($permission==1))
-        {
-            $text =$text. "<div id=\"pagination-section-".$section->id."\" class=\"DEpagination\">";
-            if($max_set_No != 0)
-            //echo "<a role=\"button\" id=\"delete-btn".$section->id."-".$sectionKey."\" onclick=\"deleteSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\">delete</a>";
-            $text =$text. "<input id=\"delete-btn".$section->id."-".$sectionKey."\" onclick=\"deleteSection(".$section->id.")\" class=\"ml-3 px-5 btn btn-outline-danger\" type=\"button\" value=\"Delete\">";
+        // if(($section->is_addable == 1)&&($permission==1))
+        // {
+        //     $text =$text. "<div id=\"pagination-section-".$sectionId."\" class=\"DEpagination\">";
+        //     if($max_set_No != 0)
+        //     //echo "<a role=\"button\" id=\"delete-btn".$sectionId."-".$sectionKey."\" onclick=\"deleteSection(".$sectionId.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\">delete</a>";
+        //     $text =$text. "<input id=\"delete-btn".$sectionId."-".$sectionKey."\" onclick=\"deleteSection(".$sectionId.")\" class=\"ml-3 px-5 btn btn-outline-danger\" type=\"button\" value=\"Delete\">";
 
-            $text =$text. "<input type=\"button\" id=\"add_set-".$section->id."-sectionKey-".$sectionKey."-setNo-".$max_set_No."\" onclick=\"setPageChange(".$section->id.",1,1)\" class=\"float-right px-3 mx-3 btn btn-info\" value=\"Add\"";
-            if($max_set_No == 0) $text =$text. "style=\"display:none\">";
-            $text =$text. "<nav class=\"float-right ml-3\" title=\"Pagination\" aria-label=\"Page navigation example\">";
-            $text =$text. "<ul class=\"pagination mb-0 mx-2\">";
-            $text =$text.    "<li class=\"page-item\" id=\"left_set-".$section->id."-sectionKey-".$sectionKey."-setNo-1\" onclick=\"setPageChange(".$section->id.",0)\">";
-            $text =$text.    "<a class=\"page-link\" aria-label=\"Previous\">";
-            $text =$text.        "<span aria-hidden=\"true\">&laquo;</span>";
-            $text =$text.        "<span class=\"sr-only\">Previous</span>";
-            $text =$text.    "</a>";
-            $text =$text.    "</li>";
-            if($max_set_No != 0){
-                for($pageNo = 1; $pageNo<=$max_set_No; $pageNo++ ){
-                    $text =$text.    "<li class=\"page-item\" id=\"section-".$section->id."-page_number-".$pageNo."\" onclick=\"setPageChange(".$section->id.",".$pageNo.")\"><a class=\"page-link\">".$pageNo."</a></li>";
-                }
-            }else{
-                $text =$text.    "<li class=\"page-item\" style=\"font-weight:bold\" id=\"section-".$section->id."-page_number-1\" onclick=\"setPageChange(".$section->id.",1)\"><a class=\"page-link\">1</a></li>";
+        //     $text =$text. "<input type=\"button\" id=\"add_set-".$sectionId."-sectionKey-".$sectionKey."-setNo-".$max_set_No."\" onclick=\"setPageChange(".$sectionId.",1,1)\" class=\"float-right px-3 mx-3 btn btn-info\" value=\"Add\"";
+        //     if($max_set_No == 0) $text =$text. "style=\"display:none\">";
+        //     $text =$text. "<nav class=\"float-right ml-3\" title=\"Pagination\" aria-label=\"Page navigation example\">";
+        //     $text =$text. "<ul class=\"pagination mb-0 mx-2\">";
+        //     $text =$text.    "<li class=\"page-item\" id=\"left_set-".$sectionId."-sectionKey-".$sectionKey."-setNo-1\" onclick=\"setPageChange(".$sectionId.",0)\">";
+        //     $text =$text.    "<a class=\"page-link\" aria-label=\"Previous\">";
+        //     $text =$text.        "<span aria-hidden=\"true\">&laquo;</span>";
+        //     $text =$text.        "<span class=\"sr-only\">Previous</span>";
+        //     $text =$text.    "</a>";
+        //     $text =$text.    "</li>";
+        //     if($max_set_No != 0){
+        //         for($pageNo = 1; $pageNo<=$max_set_No; $pageNo++ ){
+        //             $text =$text.    "<li class=\"page-item\" id=\"section-".$sectionId."-page_number-".$pageNo."\" onclick=\"setPageChange(".$sectionId.",".$pageNo.")\"><a class=\"page-link\">".$pageNo."</a></li>";
+        //         }
+        //     }else{
+        //         $text =$text.    "<li class=\"page-item\" style=\"font-weight:bold\" id=\"section-".$sectionId."-page_number-1\" onclick=\"setPageChange(".$sectionId.",1)\"><a class=\"page-link\">1</a></li>";
 
-            }
-            $text =$text.    "<li class=\"page-item\" id=\"right_set-".$section->id."-sectionKey-".$sectionKey."-setNo-1\" onclick=\"setPageChange(".$section->id.",2)\">";
-            $text =$text.    "<a class=\"page-link\" aria-label=\"Next\">";
-            $text =$text.        "<span aria-hidden=\"true\">&raquo;</span>";
-            $text =$text.        "<span class=\"sr-only\">Next</span>";
-            $text =$text.    "</a>";
-            $text =$text.    "</li>";
-            $text =$text. "</ul>";
-            $text =$text. "</nav>";
-            $text =$text."</div>";
-        }
-        $text =$text. "<div id=\"addbtnalert-".$section->id."\" class=\"addbtnalert mx-3 alert alert-danger\" role=\"alert\" style=\"display:none;\">You are adding a new record</div>";
+        //     }
+        //     $text =$text.    "<li class=\"page-item\" id=\"right_set-".$sectionId."-sectionKey-".$sectionKey."-setNo-1\" onclick=\"setPageChange(".$sectionId.",2)\">";
+        //     $text =$text.    "<a class=\"page-link\" aria-label=\"Next\">";
+        //     $text =$text.        "<span aria-hidden=\"true\">&raquo;</span>";
+        //     $text =$text.        "<span class=\"sr-only\">Next</span>";
+        //     $text =$text.    "</a>";
+        //     $text =$text.    "</li>";
+        //     $text =$text. "</ul>";
+        //     $text =$text. "</nav>";
+        //     $text =$text."</div>";
+        // }
+        $text =$text. "<div id=\"addbtnalert-".$sectionId."\" class=\"addbtnalert mx-3 alert alert-danger\" role=\"alert\" style=\"display:none;\">You are adding a new record</div>";
         $text =$text."</div>";
     return $text;
 }
-function displaySingleSection($section, $setNo, $sectionKey, $html, $permission){
+function displaySummary($fields, $sectionId){
+    $text = "<table id=\"sectionSummary-".$sectionId."\">";
+    $text = $text."<thead>";
+    $text = $text."<tr>";
+    foreach($fields as $field_detail){
+        $text = $text."<th id=\"col-".$sectionId."-".$field_detail->id."\">".$field_detail->field_label."</th>";
+    }
+    $noMatchFlag = 0;
+    $row = 1;
+    do{
+        $rowtext = "";
+        $noValue = sizeof($fields);
+        foreach($fields as $field_detail){
+            foreach($field_detail->sd_field_values as $field_value){
+                if(empty($field_value->sd_section_sets)) continue;
+                $setArray = explode(',',$field_value->sd_section_sets[0]->set_array);
+                //Only display the first set
+                $levelMatch = 1;
+                for($i = sizeof($setArray) - 1 ; $i > 0 ; $i--){
+                    if($setArray[$i] != 1){
+                        $levelMatch = 0;
+                        break;
+                    }
+                }
+                if($levelMatch && !empty($field_value->sd_section_sets) && $field_value->sd_section_sets[0]->set_array == $row){
+                    $rowtext = $rowtext."<td id=\"row-".$row."-".$field_detail->id."\">";
+                    if($field_detail->sd_element_type_id != 1 && $field_detail->sd_element_type_id != 3 && $field_detail->sd_element_type_id != 4)
+                        $rowtext = $rowtext.$field_value->field_value;
+                    else {
+                        foreach($field_detail->sd_field_value_look_ups as $look_ups){
+                            if($look_ups->value == $field_value->field_value){
+                                $rowtext = $rowtext.$look_ups->caption;
+                                break;
+                            }
+                        }
+                    }
+                    $rowtext = $rowtext."</td>";
+                    $noValue --;
+                    $noMatchFlag = 1;
+                    continue;
+                }
+            }
+            if(!$noMatchFlag) $rowtext = $rowtext."<td id=\"row-".$row."-".$field_detail->id."\"></td>";
+        }
+        if($noValue != sizeof($fields)) $text = $text."<tr>".$rowtext."</tr>";
+        //TODO ADD JS FUNCTION TO DISPLAY SET
+        $row++;
+    }while($noValue != sizeof($fields));
+    $text = $text."</tr>"; 
+    $text = $text."</thead>";
+    $text = $text."<tbody>";
+    $text = $text."</tbody>";
+    $text = $text."</table>";
+    return $text;
+}
+function displaySingleSection($section, $setArray, $sectionKey, $html, $permission){
     $i = 0;
     $text ="";
     if($permission == null) $permission = 1;
@@ -327,15 +381,19 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                 $cur_row_no = $sd_section_structure_detail->row_no;
                 $text =$text."</div><div class=\"form-row\">";
             }
-            $j = -1;
-            $jflag = 0;
+            $j = 0;
             foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
-                $jflag ++;
-                if($value_detail_field_values->set_number==$setNo){
-                    $j = $key_detail_field_values;
+                if(empty($value_detail_field_values->sd_section_sets)) continue;
+                $sectionSetArray = explode(',',$value_detail_field_values->set_array);
+                for($i = sizeof($sectionSetArray) - 1 ; $i >= 0 ; $i--){
+                    if($sectionSetArray[$i] != 1){
+                        $levelMatch = 0;
+                        break;
+                    }
                 }
-            }
-            if ($j==-1) $j = $jflag;
+                if(!$levelMatch) break;
+                $j = $key_detail_field_values;
+            }            
             $text =$text. "<div id=\"section-".$section->id."-field-".$sd_section_structure_detail->sd_field->id."\" class=\"form-group col-md-".$sd_section_structure_detail->field_length." offset-md-".($sd_section_structure_detail->field_start_at-$length_taken)."\">";
             $text =$text. "<label id= \"section-".$section->id."-field_label-".$sd_section_structure_detail->sd_field->id."\" >".$sd_section_structure_detail->sd_field->field_label."</label>";
             if(!empty($sd_section_structure_detail->sd_field->comment))
@@ -355,7 +413,12 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                     if($sd_section_structure_detail->is_required) $text =$text. "1" ;else $text =$text. "0";
                     $text =$text. " type=\"hidden\">";
                     $text =$text. "<div id= \"section-".$section->id."-error_message-".$sd_section_structure_detail->sd_field->id."\" style=\"display:none\"></div>";
-                    $text =$text. "<input id= \"section-".$section->id."-set_number-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][set_number]\" value=".$setNo." type=\"hidden\">";
+                    //  $text =$text. "<input id= \"section-".$section->id."-set_number-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][set_number]\" value=".$setNo." type=\"hidden\">";
+                    if(!empty($setArray)){
+                        foreach($setArray as $setKey => $setNo){
+                            $text =$text. "<input id= \"section-".$section->id."-set_array-".$sd_section_structure_detail->sd_field->id."-addabelSectionNo-".$setNo."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][set_array][".$setKey."][".$setNo."]\" value=\"1\" type=\"hidden\">";      
+                        }
+                    }
                     $text =$text. "<input id= \"section-".$section->id."-sd_field_id-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][sd_field_id]\" value=".$sd_section_structure_detail->sd_field->id." type=\"hidden\">";
                 }
                     switch($sd_section_structure_detail->sd_field->sd_element_type->type_name){
@@ -402,12 +465,12 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
                                 $text = $text."</div>";
                                 $text = $text."<div class=\"col-sm-4\">";
                                     $text = $text."<select class=\"custom-select js-example-basic-single yearSelect\" placeholder=\"Year\" id=\"patientField_dob_year\">";
+                                        $text = $text."<option value=\"0000\">Year</option>";
                                         for($i=1900;$i<=2050;$i++){
                                             $text = $text."<option value=\"".sprintf("%04d",$i)."\"";
                                             if (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j])&&(substr($sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value,4,4)==sprintf("%02d",$i))) $text = $text."selected";
                                             $text = $text.">".$i."</option>";
                                         }
-                                        $text = $text."<option value=\"0000\">Year</option>";
                                     $text = $text."</select>";
                                 $text = $text."</div>";
                             $text = $text."</div>";
@@ -510,12 +573,22 @@ function displaySingleSection($section, $setNo, $sectionKey, $html, $permission)
     // }
     return $text;
 }
-function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permission){
+//TODO DISPLAY SECTION SELECT BAR
+function displaySelectBar($section){
+
+}
+function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,$html,$permission){
     if(empty($exsitSectionNo)) return null;
     if(!in_array($sdSections->id,$exsitSectionNo)) return ["exsitSectionNo"=>$exsitSectionNo];
     $sectionKey = array_search($sdSections->id,$exsitSectionNo);
     $field_Text= "";
-    $field_Text = $field_Text.displayTitle($sdSections,$sectionKey, $permission);
+    $field_Text = $field_Text.displayTitle($sdSections->id, $sdSections->section_name,$sectionKey, $permission);
+    if($sdSections->is_addable){
+        array_push($setArray, $sdSections->id);
+        if(!empty($sdSections->sd_section_summary))
+            $field_Text = $field_Text.displaySummary($sdSections->sd_section_summary->sdFields,$sdSections->id);
+        else $field_Text = $field_Text.displaySelectBar($sdSections);
+    }
     // debug($field_Text);
     $child_Field_Text = "";
     $child_Div_Text = "";
@@ -527,7 +600,7 @@ function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permi
     $nav_Text = $nav_Text.$sdSections->section_name;
     $nav_Text = $nav_Text."</a>";
     if(!empty($sdSections['sd_section_structures'])) 
-        $field_Text = $field_Text.displaySingleSection($sdSections, 1, $sectionKey, $html, $permission);//display single section's fields, iterater sectioin's strucutures
+        $field_Text = $field_Text.displaySingleSection($sdSections, $setArray, $sectionKey, $html, $permission);//display single section's fields, iterater sectioin's strucutures
     if(empty($sdSections['child_section'])){
         $exsitSectionNo[$sectionKey]= null;
         $result = array("field_Text"=>$field_Text,
@@ -545,7 +618,7 @@ function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permi
         if(empty($exsitSectionNo)) break;
         $sectionKey = array_search($child_section,$exsitSectionNo);
         if($sectionKey === FALSE) continue;
-        $result = displaySection($allsdSections[$sectionKey], $allsdSections,$exsitSectionNo,$html,$permission);
+        $result = displaySection($allsdSections[$sectionKey], $allsdSections, $setArray, $exsitSectionNo, $html, $permission);
         if($allsdSections[$sectionKey]['section_type']){
             $child_Nav_Text = $child_Nav_Text.$result['nav_Text'];
             $div_front ="";
@@ -555,7 +628,7 @@ function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permi
             $child_Div_Text = $child_Div_Text.$div_front.$result['field_Text'].$result['child_Field_Text'].$result['child_Div_Text']."</div>";  //add label and div in "div"
 
         }else{
-            $child_Field_Text = $child_Field_Text.$result['field_Text'];//add section label here
+            $child_Field_Text = $child_Field_Text.$result['field_Text'].$result['child_Field_Text'];//add section label here
         }    
         $exsitSectionNo = $result['exsitSectionNo'];
     }

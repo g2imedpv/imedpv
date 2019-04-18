@@ -18,6 +18,8 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\SdTab $sd_tab
  * @property \App\Model\Entity\SdActivitySectionPermission[] $sd_activity_section_permissions
+ * @property \App\Model\Entity\SdSectionSet[] $sd_section_sets
+ * @property \App\Model\Entity\SdSectionSummary[] $sd_section_summaries
  * @property \App\Model\Entity\SdSectionStructure[] $sd_section_structures
  */
 class SdSection extends Entity
@@ -43,6 +45,8 @@ class SdSection extends Entity
         'section_type' => true,
         'sd_tab' => true,
         'sd_activity_section_permissions' => true,
+        'sd_section_sets' => true,
+        'sd_section_summaries' => true,
         'sd_section_structures' => true
     ];
 }

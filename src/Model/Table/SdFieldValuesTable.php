@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\SdCasesTable|\Cake\ORM\Association\BelongsTo $SdCases
  * @property \App\Model\Table\SdFieldsTable|\Cake\ORM\Association\BelongsTo $SdFields
  * @property |\Cake\ORM\Association\BelongsTo $SdCaseDistributions
+ * @property |\Cake\ORM\Association\HasMany $SdSectionSets
  *
  * @method \App\Model\Entity\SdFieldValue get($primaryKey, $options = [])
  * @method \App\Model\Entity\SdFieldValue newEntity($data = null, array $options = [])
@@ -46,6 +47,12 @@ class SdFieldValuesTable extends Table
         $this->belongsTo('SdFields', [
             'foreignKey' => 'sd_field_id',
             'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('SdCaseDistributions', [
+            'foreignKey' => 'sd_case_distribution_id'
+        ]);
+        $this->hasMany('SdSectionSets', [
+            'foreignKey' => 'sd_field_value_id'
         ]);
     }
 
@@ -95,6 +102,8 @@ class SdFieldValuesTable extends Table
     {
         $rules->add($rules->existsIn(['sd_case_id'], 'SdCases'));
         $rules->add($rules->existsIn(['sd_field_id'], 'SdFields'));
+        $rules->add($rules->existsIn(['sd_case_distribution_id'], 'SdCaseDistributions'));
+
         return $rules;
     }
 }

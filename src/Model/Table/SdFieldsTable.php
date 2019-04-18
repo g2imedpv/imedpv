@@ -12,8 +12,9 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\SdElementTypesTable|\Cake\ORM\Association\BelongsTo $SdElementTypes
  * @property \App\Model\Table\SdFieldValueLookUpsTable|\Cake\ORM\Association\HasMany $SdFieldValueLookUps
  * @property \App\Model\Table\SdFieldValuesTable|\Cake\ORM\Association\HasMany $SdFieldValues
- * @property |\Cake\ORM\Association\HasMany $SdMedwatchPositions
+ * @property \App\Model\Table\SdMedwatchPositionsTable|\Cake\ORM\Association\HasMany $SdMedwatchPositions
  * @property \App\Model\Table\SdSectionStructuresTable|\Cake\ORM\Association\HasMany $SdSectionStructures
+ * @property |\Cake\ORM\Association\HasMany $SdUserPreferrences
  *
  * @method \App\Model\Entity\SdField get($primaryKey, $options = [])
  * @method \App\Model\Entity\SdField newEntity($data = null, array $options = [])
@@ -108,12 +109,12 @@ class SdFieldsTable extends Table
 
         $validator
             ->scalar('field_label')
-            ->maxLength('field_label', 100)
+            ->maxLength('field_label', 200)
             ->allowEmpty('field_label');
 
         $validator
             ->scalar('comment')
-            ->maxLength('comment', 255)
+            ->maxLength('comment', 1000)
             ->requirePresence('comment', 'create')
             ->notEmpty('comment');
 
