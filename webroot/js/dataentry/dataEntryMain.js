@@ -196,7 +196,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             var thisElement = $(this);
             var idholder = thisElement.attr('id').split('-');
             var maxindex=0;
-            if (section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
+            if (section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
                 $.each(section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
                     if ((typeof value != 'undefined')&&(value.set_number== pageNo)){
                         thisElement.val(value.id);
@@ -223,7 +223,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             var thisId = $(this).attr('id').split('-');
             var valueFlag = false;
             var thisElement = $(this);
-            if (section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
+            if (section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
                 $.each(section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
                     if ((typeof value != 'undefined')&&(value.set_number== pageNo)){
                         if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
