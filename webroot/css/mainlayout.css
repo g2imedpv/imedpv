@@ -22,8 +22,6 @@ ul.topbar > li.nav-item {
     margin-right: 10px;
 }
 
-.navLogo {
-}
 
 .searchHighlight {
     background-color: rgb(255, 130, 130);
@@ -193,6 +191,8 @@ tr:nth-child(even) {
 
 .fieldInput {
     background-color: aliceblue;
+    padding:0 20px;
+    margin-bottom: 40px;
 }
 
 
@@ -224,9 +224,6 @@ tr:nth-child(even) {
     padding: 20px;
 }
 
-tbody > tr {
-    /*cursor: pointer;*/
-}
 
 #choosecon, #choosewf, #choosecro, .defworkflow {
     display: none;
@@ -447,8 +444,6 @@ ul.queryBoxLeft > a {
     color: #000000b8;
 }
 
-.querybox{
-}
 
 .querybox:hover{
     color: #007bff !important;
@@ -531,6 +526,21 @@ ul.queryBoxLeft > a {
 .topNav{
     background-color: aliceblue;
 }
-
-
+.tab-content{
+    border-left:1px solid rgba(0, 0, 0, 0.1);
+    border-right:1px solid rgba(0, 0, 0, 0.1);
+    margin-top:-17px;
+}
+.folder .header-section{
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.folder .fieldInput{
+    background-color:rgba(135,172,213,0.25);
+}
+#folder-39{
+    padding:0 20px;
+    margin-top:-40px;
+    background-color:aliceblue;
+}
 

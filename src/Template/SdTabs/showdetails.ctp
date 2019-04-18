@@ -148,7 +148,7 @@ echo $this->element('generatepdf');
         //     next($sdSections);
         // }
         $result = displaySection($sdSections[0],$sdSections,$exsitSectionNo, $this, $activitySectionPermissions);
-        print_r($result['field_Text']);
+        // print_r($result['field_Text']);
         print_r($result['child_Field_Text']);
         print_r($result['child_Div_Text']);
         // displaySectionInTabList($result['nav_Text']);
@@ -515,7 +515,8 @@ function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permi
     if(!in_array($sdSections->id,$exsitSectionNo)) return ["exsitSectionNo"=>$exsitSectionNo];
     $sectionKey = array_search($sdSections->id,$exsitSectionNo);
     $field_Text= "";
-    $field_Text = $field_Text.displayTitle($sdSections,$sectionKey, $permission);
+    if(!$sdSections->section_type)
+        $field_Text = $field_Text.displayTitle($sdSections,$sectionKey, $permission);
     // debug($field_Text);
     $child_Field_Text = "";
     $child_Div_Text = "";
@@ -567,7 +568,7 @@ function displaySection($sdSections, $allsdSections,$exsitSectionNo,$html,$permi
     // $nav_Text = "".$sdSections['id']."</div></nav>"; //add page style here
     if($child_Nav_Text!="") {
         $child_Nav_Text = "<nav class=\"my-3\"><div class=\"nav nav-tabs\" id=\"nav-tab\" role=\"tablist\">".$child_Nav_Text."</div></nav>"; //add navigation bar style here
-        $child_Div_Text = "<div class=\"folder\">".$child_Nav_Text."<div class=\"tab-content\" id=\"nav-tabContent\">".$child_Div_Text."</div></div>"; //pagination style
+        $child_Div_Text = "<div class=\"folder\"  id=\"folder-".$sdSections->id."\">".$child_Nav_Text."<div class=\"tab-content\" id=\"nav-tabContent\">".$child_Div_Text."</div></div>"; //pagination style
     }
     $exsitSectionNo[$sectionKey]= null;
     $result = [
