@@ -300,12 +300,12 @@ function displaySummary($fields, $sectionId){
     foreach($fields as $field_detail){
         $text = $text."<th id=\"col-".$sectionId."-".$field_detail->id."\">".$field_detail->field_label."</th>";
     }
-    $noMatchFlag = 0;
     $row = 1;
     do{
         $rowtext = "";
         $noValue = sizeof($fields);
         foreach($fields as $field_detail){
+            $noMatchFlag = 0;
             foreach($field_detail->sd_field_values as $field_value){
                 if(empty($field_value->sd_section_sets)) continue;
                 $setArray = explode(',',$field_value->sd_section_sets[0]->set_array);
