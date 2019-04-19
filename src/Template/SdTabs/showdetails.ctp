@@ -294,18 +294,27 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
     return $text;
 }
 function displaySummary($fields, $sectionId){
-    $text = "<table id=\"sectionSummary-".$sectionId."\">";
+    $text="<div class='card mt-1 mb-5'>";
+    $text=$text."<div class='card-header'>";
+    $text=$text."<h3 id=\"card-header-".$sectionId."\"></h3>";
+    $text=$text."</div>"; 
+    $text=$text."<div class='card-body p-0'>";
+    $text = $text."<table class=\"table table-bordered table-hover\" id=\"sectionSummary-".$sectionId."\">";
     $text = $text."<thead>";
-    $text = $text."<tr>";
+    $text = $text."<tr class='table-secondary'>";
     foreach($fields as $field_detail){
-        $text = $text."<th id=\"col-".$sectionId."-".$field_detail->id."\">".$field_detail->field_label."</th>";
+        $text = $text."<th scope=\"col\" id=\"col-".$sectionId."-".$field_detail->id."\">".$field_detail->field_label."</th>";
     }
-    $noMatchFlag = 0;
+    
     $row = 1;
+    $text = $text."</thead>";
+    $text = $text."<tbody>";
     do{
+        
         $rowtext = "";
         $noValue = sizeof($fields);
         foreach($fields as $field_detail){
+            $noMatchFlag = 0;
             foreach($field_detail->sd_field_values as $field_value){
                 if(empty($field_value->sd_section_sets)) continue;
                 $setArray = explode(',',$field_value->sd_section_sets[0]->set_array);
@@ -342,10 +351,10 @@ function displaySummary($fields, $sectionId){
         $row++;
     }while($noValue != sizeof($fields));
     $text = $text."</tr>"; 
-    $text = $text."</thead>";
-    $text = $text."<tbody>";
     $text = $text."</tbody>";
     $text = $text."</table>";
+    $text = $text."</div>";
+    $text = $text."</div>";
     return $text;
 }
 function displaySingleSection($section, $setArray, $sectionKey, $html, $permission){
@@ -583,7 +592,7 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
     if(!in_array($sdSections->id,$exsitSectionNo)) return ["exsitSectionNo"=>$exsitSectionNo];
     $sectionKey = array_search($sdSections->id,$exsitSectionNo);
     $field_Text= "";
-    if($sdSections->section_type)
+    if(!$sdSections->section_type)
         $field_Text = $field_Text.displayTitle($sdSections->id, $sdSections->section_name,$sectionKey, $permission);
     if($sdSections->is_addable){
         array_push($setArray, $sdSections->id);
