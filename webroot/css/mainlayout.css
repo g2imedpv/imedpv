@@ -529,7 +529,7 @@ ul.queryBoxLeft > a {
 .tab-content{
     border-left:1px solid rgba(0, 0, 0, 0.1);
     border-right:1px solid rgba(0, 0, 0, 0.1);
-    margin-top:-17px;
+    margin-top:60px;
 }
 .folder .header-section{
     padding-top: 10px;
@@ -543,7 +543,10 @@ ul.queryBoxLeft > a {
     margin-top:-40px;
     background-color:aliceblue;
 }
-#card-header-44:before{
-    content:"causality imformation";
+
+.nested-section{
+    padding: 30px;
+    margin-top: -60px;
+    
 }
 

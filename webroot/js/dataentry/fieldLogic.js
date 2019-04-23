@@ -72,5 +72,15 @@ $(document).ready(function(){
             //     }
             // });
     
-  
+  // product page:
+  $("#section_label-21").parent().parent().css({
+      "padding":"0px",
+      "margin-top":"0px"
+  })
+
+  $("#section-45-field-212").parent().parent().css({
+    "margin-bottom":"0px"
+})
 });
+    
+    
