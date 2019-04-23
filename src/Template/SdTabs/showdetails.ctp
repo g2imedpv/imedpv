@@ -296,10 +296,10 @@ function displayTitle($sectionId, $section_level, $section_name, $sectionKey, $p
 function displaySummary($SectionInfo, $section_level){
     $fields = $SectionInfo->sd_section_summary->sdFields;
     $sectionId = $SectionInfo->id;
-    $text = $text."<a class='btn btn-outline-primary float-right' href='#' role='button' title='add'><i class='fas fa-plus'></i> Add</a>";
+    $text = "<a class='btn btn-outline-primary float-right' href='#' role='button' title='add'><i class='fas fa-plus'></i> Add</a>";
     $text = $text."<div class='card mt-1 mb-2'>";
     $text = $text."<div class='card-header '>";
-    $text=$text."<div class='summary layer ".$section_level."' style=\"overflow:auto;\">";
+    $text = $text."<div class='summary layer ".$section_level."' style=\"overflow:auto;\">";
     $text = $text."<table class=\"table table-bordered table-hover layer".$section_level."\" id=\"sectionSummary-".$sectionId."\">";
     $text = $text."<thead>";
     $text = $text."<tr class='table-secondary'>";
@@ -681,7 +681,7 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
             $div_front =$div_front." fade\" aria-labelledby=\"nav-".$allsdSections[$sectionKey]->id."-tab\" role=\"tabpanel\" class=\"secdiff\" id=\"secdiff-".$allsdSections[$sectionKey]->id."\">";
             $child_Div_Text = $child_Div_Text.$div_front.$result['field_Text']."<div>".$result['child_Field_Text']."</div>".$result['child_Div_Text']."</div>";  //add label and div in "div"
         }else{
-            $child_Field_Text = $child_Field_Text."<div class=\"nested-section layer-".$sdSections->section_level."\" id=\" child_section-".$sdSectionKey."-sectionKey-".$sectionKey."-setNo-1-section-".$section->id."\">".$result['field_Text'].$result['child_Field_Text']."</div>";//add section label here TODO YULI
+            $child_Field_Text = $child_Field_Text."1111".$sectionKey."sss"."<div class=\"nested-section layer-".$sdSections->section_level."\" id=\" child_section-".$sdSectionKey."-sectionKey-".$sectionKey."-setNo-1-section-".$section->id."\">".$result['field_Text'].$result['child_Field_Text']."</div>";//add section label here TODO YULI
         }    
         $exsitSectionNo = $result['exsitSectionNo'];
     }
