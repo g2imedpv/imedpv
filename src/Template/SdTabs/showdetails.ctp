@@ -312,7 +312,7 @@ function displaySummary($fields, $sectionId){
                 //Only display the first set
                 $levelMatch = 1;
                 for($i = sizeof($setArray) - 1 ; $i > 0 ; $i--){
-                    if($setArray[$i] != 1){
+                    if($setArray[$i] != '1' && $setArray[$i] != '*'){
                         $levelMatch = 0;
                         break;
                     }
@@ -382,19 +382,21 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                 $cur_row_no = $sd_section_structure_detail->row_no;
                 $text =$text."</div><div class=\"form-row \">";
             }
-            $j = 0;
+            $j = -1;
             foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
+                $levelMatch = 1;
                 if(empty($value_detail_field_values->sd_section_sets)) continue;
-                $sectionSetArray = explode(',',$value_detail_field_values->set_array);
-                for($i = sizeof($sectionSetArray) - 1 ; $i >= 0 ; $i--){
-                    if($sectionSetArray[$i] != 1){
+                // debug($value_detail_field_values->sd_section_sets);
+                $sectionSetArray = explode(',',$value_detail_field_values->sd_section_sets->set_array);
+                for($count = sizeof($sectionSetArray) - 1 ; $count >= 0 ; $count--){
+                    if($sectionSetArray[$count] != '*'&& $sectionSetArray[$count] != '1'){
                         $levelMatch = 0;
-                        break;
+                        break;               
                     }
                 }
-                if(!$levelMatch) break;
+                if(!$levelMatch) continue;
                 $j = $key_detail_field_values;
-            }            
+            }
             $text =$text. "<div id=\"section-".$section->id."-field-".$sd_section_structure_detail->sd_field->id."\" class=\"form-group col-md-".$sd_section_structure_detail->field_length." offset-md-".($sd_section_structure_detail->field_start_at-$length_taken)."\">";
             $text =$text. "<label id= \"section-".$section->id."-field_label-".$sd_section_structure_detail->sd_field->id."\" >".$sd_section_structure_detail->sd_field->field_label."</label>";
             if(!empty($sd_section_structure_detail->sd_field->comment))
@@ -410,22 +412,23 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                         $text =$text."<input id= ".$id_idHolder." name=".$id_nameHolder." value=\"\" type=\"hidden\">";
                     }
                     if($sd_section_structure_detail->is_required) $text =$text. "<i class=\"fas fa-asterisk reqField\"></i>" ;
-                    $text =$text. "<input id= \"section-".$section->id."-is_required-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][is_required]\" value=";
+                    $text =$text. "<input id= \"section-".$section->id."-is_required-".$sd_section_structure_detail->sd_field->id."\" value=";
                     if($sd_section_structure_detail->is_required) $text =$text. "1" ;else $text =$text. "0";
                     $text =$text. " type=\"hidden\">";
                     $text =$text. "<div id= \"section-".$section->id."-error_message-".$sd_section_structure_detail->sd_field->id."\" style=\"display:none\"></div>";
                     //  $text =$text. "<input id= \"section-".$section->id."-set_number-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][set_number]\" value=".$setNo." type=\"hidden\">";
                     if(!empty($setArray)){
                         foreach($setArray as $setKey => $setNo){
-                            $text =$text. "<input id= \"section-".$section->id."-set_array-".$sd_section_structure_detail->sd_field->id."-addabelSectionNo-".$setNo."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][set_array][".(sizeof($setArray)-$setKey-1)."][".$setNo."]\" value=\"1\" type=\"hidden\">";      
+                            $text =$text. "<input id= \"section-".$section->id."-set_array-".$sd_section_structure_detail->sd_field->id."-addableSectionNo-".$setNo."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][set_array][".$setNo."]\" value=\"1\" type=\"hidden\">";      
                         }
                     }
+                    $text =$text. "<input id= \"section-".$section->id."-set_array-".$sd_section_structure_detail->sd_field->id."-sectionNo\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][sd_section_id]\" value=\"".$section['id']."\" type=\"hidden\">";      
                     $text =$text. "<input id= \"section-".$section->id."-sd_field_id-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][sd_field_id]\" value=".$sd_section_structure_detail->sd_field->id." type=\"hidden\">";
                 }
                     switch($sd_section_structure_detail->sd_field->sd_element_type->type_name){
                         case 'select':
                         $text =$text. "<select class=\"form-control\" id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."\" name=".$field_value_nameHolder.">";
-                        $text =$text."<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-null\" value=\"null\" ></option>";
+                        $text =$text."<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-null\" value=\"\" ></option>";
                                 foreach($sd_section_structure_detail->sd_field->sd_field_value_look_ups as $option_no=>$option_detail){
                                     $text =$text. "<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-".$option_detail['value']."\" value=".$option_detail['value'];
                                     if($permission==2) $text =$text. " disabled";
@@ -585,8 +588,9 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
     $field_Text= "";
     if(!$sdSections->section_type)
         $field_Text = $field_Text.displayTitle($sdSections->id, $sdSections->section_name,$sectionKey, $permission);
-    if($sdSections->is_addable){
+    if(($sdSections->is_addable)&&($sdSections->section_level!="0"))
         array_push($setArray, $sdSections->id);
+    if($sdSections->is_addable){
         if(!empty($sdSections->sd_section_summary))
             $field_Text = $field_Text.displaySummary($sdSections->sd_section_summary->sdFields,$sdSections->id);
         else $field_Text = $field_Text.displaySelectBar($sdSections);

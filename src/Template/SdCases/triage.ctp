@@ -7,7 +7,7 @@
     var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
     var caseNo = "<?= $caseNo ?>";
     var versionNo = <?= $versionNo?>;
-    var dayZero = "<?= $field_value_set['225']['field_value']?>";
+    var dayZero = "<?= $field_value_set['12']['field_value']?>";
 </script>
 <div class="card text-center w-75 mx-auto my-3">
   <div class="card-header text-center"><h3>Create New Case</h3></div>
@@ -84,19 +84,19 @@
                         ?>
                         </select>
                     </div>
-                    <div class="col-sm-4">
-                        <select class="custom-select js-example-basic-single"  name="field_value[85][value]" placeholder="Month" id="patientField_dob_month">
-                        <?php
-                        $month_str = ['Jan-1','Feb-2','Mar-3','Apr-4','May-5','Jun-6','Jul-7','Aug-8','Sep-9','Oct-10','Nov-11','Dec-12'];
-                        echo "<option value=\"00\">Month</option>";
-                        foreach($month_str as $i => $month){
-                            echo "<option value=\"".sprintf("%02d",$i+1)."\"";
-                            if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],2,2)==sprintf("%02d",$i+1))) echo "selected";
-                            echo ">".$month."</option>";
-                        }
-                        ?>
-                        </select>
-                    </div>
+                        <div class="col-sm-4">
+                            <select class="custom-select js-example-basic-single"  name="field_value[85][value]" placeholder="Month" id="patientField_dob_month">
+                            <?php
+                            $month_str = ['Jan-1','Feb-2','Mar-3','Apr-4','May-5','Jun-6','Jul-7','Aug-8','Sep-9','Oct-10','Nov-11','Dec-12'];
+                            echo "<option value=\"00\">Month</option>";
+                            foreach($month_str as $i => $month){
+                                echo "<option value=\"".sprintf("%02d",$i+1)."\"";
+                                if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],2,2)==sprintf("%02d",$i+1))) echo "selected";
+                                echo ">".$month."</option>";
+                            }
+                            ?>
+                            </select>
+                        </div>
                     <div class="col-sm-4">
                         <select class="custom-select js-example-basic-single yearSelect" placeholder="Year" id="patientField_dob_year" name="field_value[85][value]">
                         <?php
@@ -156,6 +156,20 @@
                 echo "<input type=\"hidden\" id=\"id_reporterField_lastname_id\" name=\"field_value[28][id]\" value=\"".$field_value_set['28']['id']."\">";?>
                 <input type="text" class="form-control" name="field_value[28][value]" id="reporterField_lastname" value="<?= $field_value_set['28']['field_value']?>">
             </div>
+            <div class="form-group col-md-3">
+                <label>Latest Received Date(A.1.7.b)</label>
+                <?php if($field_value_set['26']['id']!=null)
+                echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[12][id]\" value=\"".$field_value_set['12']['id']."\">";?>
+                <input type="text" class="form-control" name="field_value[12][value]" id="reporterField_latestreceiveddate" value="<?= $field_value_set['12']['field_value']?>">
+            </div>
+            <div class="form-group col-md-3">
+                <label>Initial Received Date(A.1.7.b)</label>
+                <?php if($field_value_set['10']['id']!=null)
+                echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[10][id]\" value=\"".$field_value_set['10']['id']."\">";?>
+                <input type="text" class="form-control" name="field_value[10][value]" id="reporterField_latestreceiveddate" value="<?= $field_value_set['10']['field_value']?>">
+            </div>
+            <input type="text" class="form-control" name="field_value[225][value]" id="reporterField_regulatoryclockstartddate" type="hidden">
+
         </div>
         <h4 class="text-left mt-3">Event</h4>
         <div class="form-row bg-light">

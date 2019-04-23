@@ -230,7 +230,13 @@ $(document).ready(function(){
             $('#prioritize :input').prop('disabled',false);
         }
     });
-
+    $("#reporterField_latestreceiveddate").change(function(){
+        dayZero = $(this).val();
+        $("#reporterField_regulatoryclockstartddate") = $(this).val()
+        if(versionNo == 1){
+            $("#reporterField_latestreceiveddate") =  $(this).val();
+        }
+    })
     $("#reason-3").change(function(){
         if($(this).prop('checked')){
             $('#otherReason').prop('disabled',false);
