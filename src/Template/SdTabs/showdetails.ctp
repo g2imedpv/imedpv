@@ -591,8 +591,43 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
     return $text;
 }
 //TODO DISPLAY SECTION SELECT BAR
-function displaySelectBar($section){
+function displaySelectBar($sdSections, $setArray, $sectionKey){
+  
+    $max_set_No = 0;
+    foreach($sdSections->sd_section_structures as $SdSectionStructure =>$SdSectionStructure_detail){
+        foreach ($SdSectionStructure_detail->sd_field->sd_field_values as $SdSectionStructure_detail_field_values=>$SdSectionStructure_detail_values){
+            if($SdSectionStructure_detail_values->set_number>=$max_set_No)
+                $max_set_No = $SdSectionStructure_detail_values->set_number;
+        }
+    }
+   
+    $text = "";
+    $text = $text. "<div id=\"pagination-section-".$sdSections->id."\" class=\"DEpagination float-right\">";
+    $text =$text. "<ul class=\"pagination mb-0 mx-2\">";
+    $text =$text.    "<li class=\"page-item\" id=\"left_set-".$sdSections->id."-sectionKey-".$sectionKey."-setNo-1\" onclick=\"setPageChange(".$sdSections->id.",0)\" >";
+    $text =$text.    "<a class=\"page-link\" aria-label=\"Previous\">";
+    $text =$text.        "<span aria-hidden=\"true\">&laquo;</span>";
+    $text =$text.        "<span class=\"sr-only\">Previous</span>";
+    $text =$text.    "</a>";
+    $text =$text.    "</li>";
+    if($max_set_No != 0){
+        for($pageNo = 1; $pageNo<=$max_set_No; $pageNo++ ){
+            $text =$text.    "<li class=\"page-item\" id=\"section-".$sdSections->id."-page_number-".$pageNo."\" onclick=\"setPageChange(".$sdSections->id.",".$pageNo.")\"><a class=\"page-link\">".$pageNo."</a></li>";
+        }
+    }else{
+        $text =$text.    "<li class=\"page-item\" style=\"font-weight:bold\" id=\"section-".$sdSections->id."-page_number-1\" onclick=\"setPageChange(".$sdSections->id.",1)\"><a class=\"page-link\">1</a></li>";
 
+    }
+    $text =$text.    "<li class=\"page-item\" id=\"right_set-".$sdSections->id."-sectionKey-".$sectionKey."-setNo-1\" onclick=\"setPageChange(".$sdSections->id.",2)\">";
+    $text =$text.    "<a class=\"page-link\" aria-label=\"Next\">";
+    $text =$text.        "<span aria-hidden=\"true\">&raquo;</span>";
+    $text =$text.        "<span class=\"sr-only\">Next</span>";
+    $text =$text.    "</a>";
+    $text =$text.    "</li>";
+    $text =$text. "</ul>";
+    $text =$text."</div>";
+    return $text;
+    
 }
 function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,$html,$permission){
     if(empty($exsitSectionNo)) return null;
@@ -606,7 +641,7 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
     if($sdSections->is_addable){
         if(!empty($sdSections->sd_section_summary))
         $field_Text = $field_Text.displaySummary($sdSections, $sdSections->section_level);
-        else $field_Text = $field_Text.displaySelectBar($sdSections);
+        else $field_Text = $field_Text.displaySelectBar($sdSections, $setArray,$sectionKey);
     }
     // debug($field_Text);
     $child_Field_Text = "";
