@@ -88,6 +88,11 @@ class SdSectionsTable extends Table
             ->notEmpty('child_section');
 
         $validator
+            ->integer('parent_section')
+            ->requirePresence('parent_section', 'create')
+            ->notEmpty('parent_section');
+
+        $validator
             ->boolean('is_addable')
             ->requirePresence('is_addable', 'create')
             ->notEmpty('is_addable');

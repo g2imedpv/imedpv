@@ -28,8 +28,8 @@ class SdSectionsTableTest extends TestCase
         'app.sd_tabs',
         'app.sd_activity_section_permissions',
         'app.sd_section_sets',
-        'app.sd_section_summaries',
-        'app.sd_section_structures'
+        'app.sd_section_structures',
+        'app.sd_section_summaries'
     ];
 
     /**

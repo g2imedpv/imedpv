@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  * @property string $section_name
  * @property int $section_level
  * @property string $child_section
+ * @property int $parent_section
  * @property int $sd_tab_id
  * @property bool $is_addable
  * @property int $display_order
@@ -19,8 +20,8 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\SdTab $sd_tab
  * @property \App\Model\Entity\SdActivitySectionPermission[] $sd_activity_section_permissions
  * @property \App\Model\Entity\SdSectionSet[] $sd_section_sets
- * @property \App\Model\Entity\SdSectionSummary[] $sd_section_summaries
  * @property \App\Model\Entity\SdSectionStructure[] $sd_section_structures
+ * @property \App\Model\Entity\SdSectionSummary $sd_section_summary
  */
 class SdSection extends Entity
 {
@@ -38,6 +39,7 @@ class SdSection extends Entity
         'section_name' => true,
         'section_level' => true,
         'child_section' => true,
+        'parent_section' => true,
         'sd_tab_id' => true,
         'is_addable' => true,
         'display_order' => true,
@@ -46,7 +48,7 @@ class SdSection extends Entity
         'sd_tab' => true,
         'sd_activity_section_permissions' => true,
         'sd_section_sets' => true,
-        'sd_section_summaries' => true,
-        'sd_section_structures' => true
+        'sd_section_structures' => true,
+        'sd_section_summary' => true
     ];
 }
