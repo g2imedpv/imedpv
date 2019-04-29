@@ -123,7 +123,7 @@ class MedDraController extends AppController
             $qptb = $conn->newQuery();
 
             try{
-                if($searchKey['type']==1){
+                if($searchKey['type']==1||$searchKey['type']==3){
                     foreach($formats as $testk => $testv){
                         if(array_key_exists($testv, $searchKey)){
                             $countTyped = $countTyped+1;
@@ -207,7 +207,6 @@ class MedDraController extends AppController
                             $drugList[$formatV]['primary'] = $conn->execute($qptb->distinct())->fetchAll();
                         }
                     }
-                    $drugList['type']= 1;
                 }else if($searchKey['type']==2){
                     foreach($formats as $formatK => $formatV){
                         $qptb = $conn->newQuery();
@@ -251,30 +250,29 @@ class MedDraController extends AppController
                         }
                         $drugList[$formatV]['primary'] = $conn->execute($qptb->distinct())->fetchAll();
                     }
-                    $drugList['type']= 2;
                 }else{
-                    $qptb = $conn->newQuery();
-                        $qptb->select(['meddra.llt_name','meddra.llt_code','meddra.pt_name',
-                                    'meddra.pt_code','meddra.hlt_name','meddra.hlt_code','meddra.hlgt_name','meddra.hlgt_name',
-                                    'meddra.soc_name','meddra.soc_code'])->from("meddra");
-                        $qptb->join([
-                            'pt' =>[
-                                'table' =>'mdr_pref_term',
-                                'type' =>'INNER',
-                                'conditions'=>['meddra.pt_code = pt.pt_code'],
-                            ],
-                            'soc' =>[
-                                'table' =>'mdr_soc_term',
-                                'type'=>'INNER',
-                                'conditions'=>['pt.pt_soc_code = soc.soc_code'],
-                                ]
-                            ]);
-                        foreach($formats as $exisitKey => $exisitValue){
-                            if(array_key_exists($exisitValue, $searchKey))$qptb->where(['meddra.llt_name LIKE \''.$searchKey['llt_name'].'\'']);
-                        }
-                        $drugList['primary'] = $conn->execute($qptb->distinct())->fetchAll();
-                        $drugList['type'] = 3;
-                }
+                        $qptb = $conn->newQuery();
+                            $qptb->select(['meddra.llt_name','meddra.llt_code','meddra.pt_name',
+                                        'meddra.pt_code','meddra.hlt_name','meddra.hlt_code','meddra.hlgt_name','meddra.hlgt_name',
+                                        'meddra.soc_name','meddra.soc_code'])->from("meddra");
+                            $qptb->join([
+                                'pt' =>[
+                                    'table' =>'mdr_pref_term',
+                                    'type' =>'INNER',
+                                    'conditions'=>['meddra.pt_code = pt.pt_code'],
+                                ],
+                                'soc' =>[
+                                    'table' =>'mdr_soc_term',
+                                    'type'=>'INNER',
+                                    'conditions'=>['pt.pt_soc_code = soc.soc_code'],
+                                    ]
+                                ]);
+                            foreach($formats as $exisitKey => $exisitValue){
+                                if(array_key_exists($exisitValue, $searchKey))$qptb->where(['meddra.llt_name LIKE \''.$searchKey['llt_name'].'\'']);
+                            }
+                            $drugList['primary'] = $conn->execute($qptb->distinct())->fetchAll();
+                    }
+                    $drugList['type']=$searchKey['type'];
                 echo json_encode($drugList);
             }catch (\PDOException $e){
                 echo $qptb;

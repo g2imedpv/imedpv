@@ -1104,7 +1104,8 @@ function saveSection(sectionId){
             savedArray = $.parseJSON(response);
             var sectionIdOriginal =  $("[id^=save-btn"+sectionId+"]").attr('id');
             var section_Id = sectionIdOriginal.split('-');
-            var max_set_no  = 0
+            var max_set_no  = 0;
+            //TODO 
             for(var k in savedArray){
                 var sectionStructureK = $("[id^=section-"+sectionId+"-set_number-"+k+"]").attr('name').split(/[\[\]]/)[3];
                 var fieldvalueK = $("[id$=field-"+k+"]").children("[id^=section-"+sectionId+"-sd_section_structures]").attr('id').split('-')[5];
@@ -1342,7 +1343,7 @@ function forward(){
         data:request,
         success:function(response){
             console.log(response);
-            // window.location.href = "/sd-cases/caselist";
+            window.location.href = "/sd-cases/caselist";
         },
         error:function(response){
             console.log(response.responseText);

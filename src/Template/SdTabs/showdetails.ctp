@@ -166,29 +166,29 @@ echo $this->element('generatepdf');
     <?php endif;?>
     <?= $this->Form->end() ?>
     <?php
-    if($this->request->getQuery('readonly')!=1){
-        if($tabid==1){
-            $sectionTableCell = $this->cell('SectionTable::general', [$caseId]);
-            echo $sectionTableCell;
-        }elseif($tabid==2)
-        {
-            $sectionTableCell = $this->cell('SectionTable::reporter', [$caseId]);
-            echo $sectionTableCell;
-        }elseif($tabid==3)
-        {
-            $sectionTableCell = $this->cell('SectionTable::patient', [$caseId]);
-            echo $sectionTableCell;
-        }elseif($tabid==4)
-        {
-            $sectionTableCell = $this->cell('SectionTable::product', [$caseId]);
-            echo $sectionTableCell;
-        }elseif($tabid==5)
-        {
-            $sectionTableCell = $this->cell('SectionTable::event', [$caseId]);
-            echo $sectionTableCell;
-        }
-    }
-    ?>
+    // if($this->request->getQuery('readonly')!=1){
+    //     if($tabid==1){
+    //         $sectionTableCell = $this->cell('SectionTable::general', [$caseId]);
+    //         echo $sectionTableCell;
+    //     }elseif($tabid==2)
+    //     {
+    //         $sectionTableCell = $this->cell('SectionTable::reporter', [$caseId]);
+    //         echo $sectionTableCell;
+    //     }elseif($tabid==3)
+    //     {
+    //         $sectionTableCell = $this->cell('SectionTable::patient', [$caseId]);
+    //         echo $sectionTableCell;
+    //     }elseif($tabid==4)
+    //     {
+    //         $sectionTableCell = $this->cell('SectionTable::product', [$caseId]);
+    //         echo $sectionTableCell;
+    //     }elseif($tabid==5)
+    //     {
+    //         $sectionTableCell = $this->cell('SectionTable::event', [$caseId]);
+    //         echo $sectionTableCell;
+    //     }
+    // }
+    // ?>
 </div>
 
 <?php
@@ -398,7 +398,8 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                 $cur_row_no = $sd_section_structure_detail->row_no;
                 $text =$text."</div><div class=\"form-row \">";
             }
-            $j = 1;
+            $j = -1;
+            if(empty($setArray)) $j = sizeof($sd_section_structure_detail->sd_field->sd_field_values);
             foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
                 $levelMatch = 1;
                 if(empty($value_detail_field_values->sd_section_sets)) continue;
@@ -576,13 +577,18 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                             $text =$text. " readonly=\"readonly\">";
                             continue;
                         case 'Meddra browser':
-                            $meddraCell = $html->cell('Meddra',[$sd_section_structure_detail->sd_field->id]);
-                            $text =$text. $meddraCell;
+                            $meddraCell = $html->cell('Meddra',[$sd_section_structure_detail->sd_field->descriptor, $sd_section_structure_detail->sd_field->id]);
+                            $text =$text.$meddraCell;
+                            $text =$text."<input id=\"section-".$section->id."-meddraResult-".$sd_section_structure_detail->sd_field->id."\" class=\"form-control\" name=".$field_value_nameHolder." type=\"hidden\"";
+                            (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?$text =$text."value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":$text =$text.null;
+                            if($permission==2) $text =$text. " disabled ";
+                            $text =$text. ">";
                             continue;
                         case 'Meddra show':
-                        $text =$text. "<input id=\"section-".$section->id."-".$sd_section_structure_detail->sd_field->descriptor."-".$sd_section_structure_detail->sd_field->id."\" class=\"form-control\" name=".$field_value_nameHolder." type=\"text\"";
-                         (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?$text =$text."value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":$text =$text.null;
-                        $text =$text. "readonly=\"readonly\">";
+                            $text =$text. "<input id=\"section-".$section->id."-meddrashow-".$sd_section_structure_detail->sd_field->id."\" class=\"form-control\" name=".$field_value_nameHolder." type=\"text\"";
+                            (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?$text =$text."value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":$text =$text.null;
+                            if($permission==2) $text =$text. " disabled ";
+                            $text =$text. "readonly=\"readonly\">";
                             continue;
                     }
                     $text =$text."</div>";

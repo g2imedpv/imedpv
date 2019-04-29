@@ -555,6 +555,7 @@ class SdCasesController extends AppController
                 ];
                 foreach($fieldId_product_set as $fieldId =>$product_info)
                 {
+                    if(empty($product_data[$product_info])) continue;
                     $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                     $dataSet = [
                         'sd_case_id' => $savedCase->id,
@@ -567,6 +568,7 @@ class SdCasesController extends AppController
                     $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
                     if(!$sdFieldValueTable->save($savedFieldValueEntity)){
                         echo "problem in saving".$product_info."sdfields";
+                        debug($savedFieldValueEntity);
                         return null;
                     }
                 }
@@ -584,7 +586,35 @@ class SdCasesController extends AppController
                 ];
                 $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
                 if(!$sdFieldValueTable->save($savedFieldValueEntity)){
-                    echo "problem in saving WHODD_name sdfields";
+                    echo "problem in saving latest received date sdfields";
+                    return null;
+                }
+                $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                $dataSet = [
+                    'sd_case_id' => $savedCase->id,
+                    'sd_field_id' => '225',
+                    'set_number' => '1',
+                    'created_time' =>date("Y-m-d H:i:s"),
+                    'field_value' =>date("dmY"),
+                    'status' =>'1',
+                ];
+                $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                if(!$sdFieldValueTable->save($savedFieldValueEntity)){
+                    echo "problem in saving regulatory clock start date sdfields";
+                    return null;
+                }
+                $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                $dataSet = [
+                    'sd_case_id' => $savedCase->id,
+                    'sd_field_id' => '10',
+                    'set_number' => '1',
+                    'created_time' =>date("Y-m-d H:i:s"),
+                    'field_value' =>date("dmY"),
+                    'status' =>'1',
+                ];
+                $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                if(!$sdFieldValueTable->save($savedFieldValueEntity)){
+                    echo "problem in saving initial received date sdfields";
                     return null;
                 }
                 foreach($requestData['field_value'] as $field_id => $detail_data){
@@ -715,14 +745,15 @@ class SdCasesController extends AppController
      *
      *
      */
-    public function forward($caseNo, $version, $operator){
+    public function forward($caseNo, $version, $operator, $distribution_id = null){
         if($this->request->is('POST')){
             $this->autoRender = false;
             $requstData = $this->request->getData();
-
+            if($distribution_id == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
+            else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";
             //save new activity into case
             $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$version])
-                                ->select(['id','SdCases.sd_product_workflow_id','pd.product_name','sd_workflow_activity_id','sd_user_id'])
+                                ->select(['id','SdCases.sd_product_workflow_id','pd.product_name','sd_workflow_activity_id','sd_user_id','case_type'])
                                 ->join([
                                     'pw'=>[
                                         'table'=>'sd_product_workflows',
@@ -758,6 +789,18 @@ class SdCasesController extends AppController
                 echo "error in saving next history";
                 return;
             };
+            //change Activity Due Date according case type and its due date
+            $sdFieldValuesTable =TableRegistry::get('SdFieldValues');
+            $sdWorkflowActivity = TableRegistry::get('SdWorkflowActivities')->get($requstData['next-activity-id']);
+            $activityDueDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>12, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
+            $date = date_create_from_format("dmY", $activityDueDateEntity['field_value']);
+            date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$case['case_type']].' days'));
+            $activityDueDateEntity['field_value'] = $date->format('dmY');
+            if(!$sdFieldValuesTable->save($activityDueDateEntity)){
+                echo "error in saving history";
+                debug($activityDueDateEntity);
+                return;
+            };
             $case['sd_user_id'] = $requstData['receiverId'];
             $case['sd_workflow_activity_id'] = $requstData['next-activity-id'];
             if(!$this->SdCases->save($case)){
@@ -782,9 +825,7 @@ class SdCasesController extends AppController
                 'receiver_status'=>1,
                 'send_date'=>date("Y-m-d H:i:s"),
             ];
-            
-            
-            $patchedQuery = $queryTable->patchEntity($sdQuery, $dataSet);debug($patchedQuery);debug($dataSet);
+            $patchedQuery = $queryTable->patchEntity($sdQuery, $dataSet);
             if(!$queryTable->save($patchedQuery)){
                  echo "error in saving query";
                  return;
@@ -792,8 +833,6 @@ class SdCasesController extends AppController
             $this->request->getSession()->delete('caseValidate.'.$case['id']);
             echo "success";
             $this->Flash->success(__('You\'ve successfully Signed-Off.'));
-            die();
-
         }
     }
 

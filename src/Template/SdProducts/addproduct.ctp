@@ -352,7 +352,7 @@
                                             <!-- TODO LOAD STRUCTURE OF SECTIONS -->
                                             <?php 
                                             foreach($loadTabs as $tabkey => $tab){
-                                                echo "<div class=\"row\"><div class=\"col-md-12\"><h5 class=\"text-center\">".$tab['tab_name']."</h5></div></div>";
+                                                // echo "<div class=\"row\"><div class=\"col-md-12\"><h5 class=\"text-center\">".$tab['tab_name']."</h5></div></div>";
                                                 $exsitSectionNo = [];
                                                 foreach($tab['sd_sections'] as $key => $sdSection){
                                                     $exsitSectionNo[$key] = $sdSection['id'];
@@ -360,19 +360,25 @@
                                                 foreach($tab['sd_sections'] as $section){
                                                     if(!in_array($section['id'], $exsitSectionNo))
                                                     continue;
-                                                    if($section['section_level']>1){
-                                                        echo "<div class=\"row\" id=\"l2section-".$section['id']."\"><div class=\"col-md-12\"><label>".$section['section_name']."</label></div>";
+                                                    // if($section['section_level']>1){
+                                                        $sectionKey = array_search($section['id'],$exsitSectionNo);
+                                                        echo "<div class=\"row\" id=\"l2section-".$section['id']."\"><div class=\"col-md-12\">".$section['section_name'];
+                                                        echo "<label class=\"mx-1\"><input type=\"checkbox\" id=\"write-".$tabkey."-".$sectionKey."\" class=\"checkItem\" value=\"\">Write</label>";
+                                                        echo "<label class=\"mx-1\"><input type=\"checkbox\" id=\"read-".$tabkey."-".$sectionKey."\" class=\"checkItem\" value=\"\">Read</label>";
+                                                        echo "</div>";
                                                         // debug($section['child_section']);
-                                                        $child_sections = explode(',', $section['child_section']);
-                                                        foreach($child_sections as $child_section){
-                                                            $childSectionKey = array_search($child_section,$exsitSectionNo);
-                                                            echo "<div class=\"col-md-6\" id=\"l1section-".$child_section."\">".$tab['sd_sections'][$childSectionKey]['section_name'];
-                                                            echo "<label class=\"mx-1\"><input type=\"checkbox\" id=\"write-".$tabkey."-".$childSectionKey."\" class=\"checkItem\" value=\"\">Write</label>";
-                                                            echo "<label class=\"mx-1\"><input type=\"checkbox\" id=\"read-".$tabkey."-".$childSectionKey."\" class=\"checkItem\" value=\"\">Read</label></div>";
-                                                            $exsitSectionNo[$childSectionKey]= null;
+                                                        if($section['child_section']!=""){
+                                                            $child_sections = explode(',', $section['child_section']);
+                                                            foreach($child_sections as $child_section){
+                                                                $childSectionKey = array_search($child_section,$exsitSectionNo);
+                                                                echo "<div class=\"col-md-6\" id=\"l1section-".$child_section."\">".$tab['sd_sections'][$childSectionKey]['section_name'];
+                                                                echo "<label class=\"mx-1\"><input type=\"checkbox\" id=\"write-".$tabkey."-".$childSectionKey."\" class=\"checkItem\" value=\"\">Write</label>";
+                                                                echo "<label class=\"mx-1\"><input type=\"checkbox\" id=\"read-".$tabkey."-".$childSectionKey."\" class=\"checkItem\" value=\"\">Read</label></div>";
+                                                                $exsitSectionNo[$childSectionKey]= null;
+                                                            }
                                                         }
                                                         echo "</div>";
-                                                    }
+                                                    // }
                                                 }
                                                 echo "<hr class=\"my-2\">";
                                             }
