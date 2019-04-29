@@ -232,9 +232,10 @@ $(document).ready(function(){
     });
     $("#reporterField_latestreceiveddate").change(function(){
         dayZero = $(this).val();
-        $("#reporterField_regulatoryclockstartddate") = $(this).val()
+        console.log(dayZero);
+        $("#reporterField_regulatoryclockstartddate").val(dayZero);
         if(versionNo == 1){
-            $("#reporterField_latestreceiveddate") =  $(this).val();
+            $("#reporterField_initialreceiveddate").val(dayZero);
         }
     })
     $("#reason-3").change(function(){
@@ -303,24 +304,24 @@ $(document).ready(function(){
 
     $(document).ready(function() {
         $('.js-example-basic-single').select2();
-        prioritizeDate();
     });
 
     $('[id^=prioritize]').change(function(){prioritizeDate()});
 });
 function prioritizeDate(){
+    console.log(dayZero);
     var text="";
     var dueType = 0;
     var submitType = 0
     if($('#prioritize-seriousness-1').prop('checked')) dueType = 1;
     if($('#prioritize-related-1').prop('checked')&&$('#prioritize-unlabelled-1').prop('checked')) submitType = 1;
     var formatDayZero = new Date(dayZero.substring(2,4)+" "+dayZero.substring(0,2)+" "+dayZero.substring(4,8));
-    var formatDueDay = new Date();
+    console.log(formatDayZero);
     if(dueType == 1){
-        formatDueDay.setDate(formatDayZero.getDate()+8);
+        formatDayZero.setDate(formatDayZero.getDate()+8);
         text +="Priority: High, 7 Days";
     }else{
-        formatDueDay.setDate(formatDayZero.getDate()+16);
+        formatDayZero.setDate(formatDayZero.getDate()+16);
         text +="Priority: Normal, 15 Days";
     }
     if(submitType == 1){
@@ -329,9 +330,9 @@ function prioritizeDate(){
         text +=" Case ";
     }
     text+='Due Date:';
-    var yearText =formatDueDay.getFullYear();
-    var monthText =(Number(formatDueDay.getMonth())+1);
-    var dayText =formatDueDay.getDate();
+    var yearText =formatDayZero.getFullYear();
+    var monthText =(Number(formatDayZero.getMonth())+1);
+    var dayText =formatDayZero.getDate();
     if(dayText<10){dayText="0"+dayText;}
     if(monthText<10){monthText="0"+monthText;}
     text += yearText+'/'+monthText+'/'+dayText;

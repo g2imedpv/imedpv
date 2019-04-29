@@ -12,7 +12,9 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\SdProductWorkflowsTable|\Cake\ORM\Association\BelongsTo $SdProductWorkflows
  * @property \App\Model\Table\SdWorkflowActivitiesTable|\Cake\ORM\Association\BelongsTo $SdWorkflowActivities
  * @property \App\Model\Table\SdUsersTable|\Cake\ORM\Association\BelongsTo $SdUsers
- * @property \App\Model\Table\SdCaseGeneralInfosTable|\Cake\ORM\Association\HasMany $SdCaseGeneralInfos
+ * @property |\Cake\ORM\Association\HasMany $SdCaseDistributions
+ * @property |\Cake\ORM\Association\HasMany $SdCaseHistories
+ * @property |\Cake\ORM\Association\HasMany $SdDocuments
  * @property \App\Model\Table\SdFieldValuesTable|\Cake\ORM\Association\HasMany $SdFieldValues
  *
  * @method \App\Model\Entity\SdCase get($primaryKey, $options = [])
@@ -53,7 +55,13 @@ class SdCasesTable extends Table
             'foreignKey' => 'sd_user_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('SdCaseGeneralInfos', [
+        $this->hasMany('SdCaseDistributions', [
+            'foreignKey' => 'sd_case_id'
+        ]);
+        $this->hasMany('SdCaseHistories', [
+            'foreignKey' => 'sd_case_id'
+        ]);
+        $this->hasMany('SdDocuments', [
             'foreignKey' => 'sd_case_id'
         ]);
         $this->hasMany('SdFieldValues', [
@@ -90,24 +98,8 @@ class SdCasesTable extends Table
             ->notEmpty('status');
 
         $validator
-            ->integer('priority')
-            ->allowEmpty('priority', 'create');
-
-        $validator
-            ->scalar('activity_due_date')
-            ->allowEmpty('activity_due_date', 'create');
-
-        $validator
-            ->scalar('submission_due_date')
-            ->allowEmpty('submission_due_date', 'create');
-
-        $validator
-            ->integer('product_type')
-            ->allowEmpty('product_type', 'create');
-
-        $validator
-            ->scalar('classification')
-            ->allowEmpty('classification', 'create');
+            ->integer('case_type')
+            ->allowEmpty('case_type');
 
         return $validator;
     }
