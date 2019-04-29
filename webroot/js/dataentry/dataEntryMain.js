@@ -108,15 +108,6 @@ $(document).ready(function(){
     };
 
 $(document).ready(function(){
-    $("[id^=unspecified").change(function(){
-        
-        let actualId = $(this).attr('id').split('_')[1];
-        let day = $('#unspecified-day_'+actualId).val();
-        let month = $('#unspecified-month_'+actualId).val();
-        let year = $('#unspecified-year_'+actualId).val();
-        let dob_string = day + month + year;
-        $("#"+actualId).val(dob_string);console.log($('#unspecified-day_'+actualId).val());
-    })
  if(readonly) {
     $('input').prop("disabled", true);
     $('select').prop("disabled", true);
@@ -466,7 +457,7 @@ function level2setPageChange(section_id, pageNo, addFlag=null){
 function setPageChange(section_id, pageNo) {
     if($("[name^=Input-"+section_id+"]").length){
         var sectionId = $("[name^=Input-"+section_id+"]").attr('name').split('-');// ["Input", "65", "sectionKey", "1"]
-        //get inheritance
+        //get inherit relationship
         var children = new Array();////get child relationship
         var i=1;
         children[0]=section_id;
@@ -495,7 +486,7 @@ function setPageChange(section_id, pageNo) {
             $(this).val(newSetNumber);
         });
         $("[id^=section-"+sectionId[1]+"][name$=\\[id\\]]").each(function(){
-            var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
+            var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];//field key
             var thisElement = $(this);
             var idholder = thisElement.attr('id').split('-');//section-65-sd_section_structures-0-sd_field_values-0-id
             var maxindex=0;
@@ -615,7 +606,7 @@ function setPageChange(section_id, pageNo) {
                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
                         if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
                             var set_number=value.sd_section_sets.set_array.split(",");
-                            if ((typeof value != 'undefined')&&(set_number[0]== 1)&&(set_number[1]==pageNo)){
+                            if ((typeof value != 'undefined')&&(set_number[0]== 1)&&((set_number[1]==pageNo)||(set_number[1]=='*'))){
                                 if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
                                     thisElement.val(value.field_value).trigger('change');
                                 }else{
@@ -768,7 +759,7 @@ function setPageChange(section_id, pageNo) {
                 var thisId = $(this).attr('id').split('-');
                 var thisElement = $(this);
                 thisElement.val(" ").trigger('change');
-                if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
+                if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
                         if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
                             var set_number=value.sd_section_sets.set_array.split(",");
