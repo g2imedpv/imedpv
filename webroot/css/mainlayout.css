@@ -466,6 +466,7 @@ ul.queryBoxLeft > a {
 }
 #navbarNavDropdown > ul > li > a.nav-link{
     color:rgba(225,225,225); 
+    font-weight: bolder;
 }
 #navbarNavDropdown > ul > li > a.nav-link:hover{
     background-color:#ffc107;
