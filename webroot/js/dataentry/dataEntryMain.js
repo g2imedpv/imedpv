@@ -108,6 +108,15 @@ $(document).ready(function(){
     };
 
 $(document).ready(function(){
+    $("[id^=unspecified").change(function(){
+        
+        let actualId = $(this).attr('id').split('_')[1];
+        let day = $('#unspecified-day_'+actualId).val();
+        let month = $('#unspecified-month_'+actualId).val();
+        let year = $('#unspecified-year_'+actualId).val();
+        let dob_string = day + month + year;
+        $("#"+actualId).val(dob_string);console.log($('#unspecified-day_'+actualId).val());
+    })
  if(readonly) {
     $('input').prop("disabled", true);
     $('select').prop("disabled", true);

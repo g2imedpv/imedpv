@@ -464,7 +464,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                             $text =$text. "\" type=\"hidden\">";
                             $text = $text."<div class=\"form-row\">";
                                 $text = $text."<div class=\"col-sm-4\">";
-                                    $text = $text."<select class=\"custom-select js-example-basic-single\" placeholder=\"Day\" id=\"patientField_dob_day\">";
+                                    $text = $text."<select class=\"custom-select js-example-basic-single\" placeholder=\"Day\" id=\"unspecified-day_section-".$section->id."-unspecifieddate-".$sd_section_structure_detail->sd_field->id."\" >";
                                         $text = $text."<option value=\"00\">Day</option>";
                                         for($i=1;$i<32;$i++){
                                             $text = $text."<option value=\"".sprintf("%02d",$i)."\"";
@@ -474,7 +474,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                                     $text = $text."</select>";
                                 $text = $text."</div>";
                                 $text = $text."<div class=\"col-sm-4\">";
-                                    $text = $text."<select class=\"custom-select js-example-basic-single\" placeholder=\"Month\" id=\"patientField_dob_month\">";
+                                    $text = $text."<select class=\"custom-select js-example-basic-single\" placeholder=\"Month\" id=\"unspecified-month_section-".$section->id."-unspecifieddate-".$sd_section_structure_detail->sd_field->id."\" >";
                                     $month_str = ['Jan-1','Feb-2','Mar-3','Apr-4','May-5','Jun-6','Jul-7','Aug-8','Sep-9','Oct-10','Nov-11','Dec-12'];
                                         $text = $text."<option value=\"00\">Month</option>";
                                         foreach($month_str as $i => $month){
@@ -485,7 +485,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                                     $text = $text."</select>";
                                 $text = $text."</div>";
                                 $text = $text."<div class=\"col-sm-4\">";
-                                    $text = $text."<select class=\"custom-select js-example-basic-single yearSelect\" placeholder=\"Year\" id=\"patientField_dob_year\">";
+                                    $text = $text."<select class=\"custom-select js-example-basic-single yearSelect\" placeholder=\"Year\" id=\"unspecified-year_section-".$section->id."-unspecifieddate-".$sd_section_structure_detail->sd_field->id."\" >";
                                         $text = $text."<option value=\"0000\">Year</option>";
                                         for($i=1900;$i<=2050;$i++){
                                             $text = $text."<option value=\"".sprintf("%04d",$i)."\"";
