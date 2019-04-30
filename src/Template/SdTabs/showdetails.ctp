@@ -298,7 +298,7 @@ function displaySummary($SectionInfo, $section_level){
     $text = "<a class='btn btn-outline-primary float-right' href='#' role='button' title='add'><i class='fas fa-plus'></i> Add</a><br><br>";
     $text = $text."<div class='card mt-1 mb-2'>";
     $text = $text."<div class='card-header '>";
-    $text = $text."<div class='summary layer ".$section_level."' style=\"overflow:auto;\">";
+    $text = $text."<div class='summary layer ".$section_level."' style=\"overflow:scroll; max-height:380px;\">";
     $text = $text."<table class=\"table table-bordered layer".$section_level."\" id=\"sectionSummary-".$sectionId."\">";
     $text = $text."<thead>";
     $text = $text."<tr >";
