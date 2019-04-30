@@ -86,15 +86,15 @@
                                 if(empty($set_array)) continue;
                                 foreach($set_array as $setSectionId => $set_no){
                                     $sdSectionSetsEntity['set_array'] = $set_no.",".$sdSectionSetsEntity['set_array']; 
-                                    $sdSectionSetsEntity['sd_section_id'] = $setSectionId;
                                 }
+                                $sdSectionSetsEntity['sd_section_id'] = $section_id;
                                 if(strlen($sdSectionSetsEntity['set_array']) > 1)
                                 $sdSectionSetsEntity['set_array'] = substr($sdSectionSetsEntity['set_array'], 0, -1);
                                 $setDataSet = [
                                     'set_array' =>$sdSectionSetsEntity['set_array'],
                                     'sd_field_value_id'=>$savedFieldValue['id'],
                                 ];
-                                $sdSectionSetsEntity['sd_field_value_id'] = $savedFieldValue['id'];              
+                                $sdSectionSetsEntity['sd_field_value_id'] = $savedFieldValue['id'];   
                                 if(!$sdSectionSetsTable->save($sdSectionSetsEntity)){
                                     echo "error in adding sets!" ; 
                                     debug($sdSectionSetsEntity);
@@ -212,7 +212,6 @@
                                 }
                             }if(!$setMatch) $field_values->sd_section_sets = "";
                         }
-                        
                     }
                 }
                 foreach($sdSections as $sdSection){

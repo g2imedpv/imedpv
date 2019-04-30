@@ -333,6 +333,7 @@ function displaySummary($SectionInfo, $section_level){
                     if($field_detail->sd_element_type_id != 1 && $field_detail->sd_element_type_id != 3 && $field_detail->sd_element_type_id != 4)
                         $rowtext = $rowtext.$field_value->field_value;
                     else {
+                        // debug($field_value->field_value);
                         foreach($field_detail->sd_field_value_look_ups as $look_ups){
                             if($look_ups->value == $field_value->field_value){
                                 $rowtext = $rowtext.$look_ups->caption;
@@ -604,6 +605,7 @@ function displaySelectBar($sdSections,$section_key){
     $max_set_No = 0;
     foreach($sdSections->sd_section_structures as $sd_section_structureK =>$sd_section_structure_detail){
         foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
+            if(empty($set_array=$value_detail_field_values->sd_section_sets)) continue;
             $set_array=$value_detail_field_values->sd_section_sets->set_array;
             if(explode(",",$set_array)[0]>=$max_set_No)
             $max_set_No = explode(",",$set_array)[0];      
@@ -645,9 +647,8 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
     $field_Text= "";
     if(!$sdSections->section_type)
         $field_Text = $field_Text.displayTitle($sdSections->id, $sdSections->section_name,$sectionKey, $permission);
-    if(($sdSections->is_addable)&&($sdSections->section_level!="0"))
-        array_push($setArray, $sdSections->id);
     if($sdSections->is_addable){
+        array_push($setArray, $sdSections->id);
         if(!empty($sdSections->sd_section_summary))
         $field_Text = $field_Text.displaySummary($sdSections, $sdSections->section_level);
         else {
