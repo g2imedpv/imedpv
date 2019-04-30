@@ -103,7 +103,7 @@
                                     ->join(['sections' =>[
                                         'table' =>'sd_sections',
                                         'type'=>'INNER',
-                                        'conditions'=>['sd_sections.id = SdSectionStructures.sd_section_id'],
+                                        'conditions'=>['sections.id = SdSectionStructures.sd_section_id'],
                                         ]])            
                                     ->where(['sd_field_id'=>$sectionFieldValue['sd_field_id'],'sd_section_id !='=>$section_id,'sections.status'=>true]);
                                 foreach($sections as $sectionDetail){

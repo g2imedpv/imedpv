@@ -293,7 +293,6 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
     return $text;
 }
 function displaySummary($SectionInfo, $section_level){
-    
     $fields = $SectionInfo->sd_section_summary->sdFields;
     $sectionId = $SectionInfo->id;
     $text = "<a class='btn btn-outline-primary float-right' href='#' role='button' title='add'><i class='fas fa-plus'></i> Add</a>";
@@ -359,7 +358,7 @@ function displaySummary($SectionInfo, $section_level){
     $text = $text."</tbody>";
     $text = $text."</table>";
     $text = $text."</div>";
-    $text = $text."</div>";
+    $text = $text."</div>"; $text =$text. "</div>";
     
     return $text;
 }
