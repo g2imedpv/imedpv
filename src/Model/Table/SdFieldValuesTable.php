@@ -75,8 +75,7 @@ class SdFieldValuesTable extends Table
 
         $validator
             ->scalar('field_value')
-            ->requirePresence('field_value', 'create')
-            ->notEmpty('field_value');
+            ->allowEmpty('field_value');
 
         $validator
             ->dateTime('created_time')

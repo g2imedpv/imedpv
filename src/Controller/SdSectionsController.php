@@ -115,27 +115,80 @@ class SdSectionsController extends AppController
     public function saveSection($caseId){
         if($this->request->is('POST')){
             $this->autoRender = false;
-            $sdFieldValues = TableRegistry::get('SdFieldValues');
+            $sdSectionSetsTable = TableRegistry::get('SdSectionSets');
+            $SdSectionStructuresTable = TableRegistry::get('SdSectionStructures');
+            $sdFieldValueTable = TableRegistry::get('SdFieldValues');
             $savedField = [];
-            foreach($requstData = $this->request->getData() as $sectionFieldK =>$sectionFieldValue){                
-                if($sectionFieldValue['id']!=null){//add judging whether updateing Using Validate
-                    $sdFieldValueEntity = $sdFieldValues->get($sectionFieldValue['id']);/**add last-updated time */                            
-                    $sdFieldValues->patchEntity($sdFieldValueEntity,$sectionFieldValue);
-                    if(!$sdFieldValues->save($sdFieldValueEntity)) {print_r($sdFieldValueEntity);echo "error in updating!" ;}
-                    $savedField[$sdFieldValueEntity['sd_field_id']] = $sdFieldValueEntity['id'];
+            foreach($requstData = $this->request->getData() as $sectionFieldK =>$sectionFieldValue){     
+                if($sectionFieldValue['id']!=''){
+                    $sdFieldValueEntity = $sdFieldValueTable->get($sectionFieldValue['id']);/**add last-updated time */
+                    $sdFieldValueTable->patchEntity($sdFieldValueEntity,$sectionFieldValue);
+                    if(!$sdFieldValueTable->save($sdFieldValueEntity)) {
+                        echo "error in updating!" ;
+                        debug($sdFieldValueEntity);
+                    }
                 }elseif(!empty($sectionFieldValue['field_value'])){
-                    $sdFieldValueEntity = $sdFieldValues->newEntity();
+                    $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                    if(key_exists('set_array',$sectionFieldValue))
+                        $set_array = $sectionFieldValue['set_array'];
+                    $section_id = $sectionFieldValue['sd_section_id'];
+                    unset($sectionFieldValue['set_array']);
+                    unset($sectionFieldValue['sd_section_id']);
                     $dataSet = [
                         'sd_case_id' => $caseId,
                         'sd_field_id' => $sectionFieldValue['sd_field_id'],
-                        'set_number' => $sectionFieldValue['set_number'],
+                        'set_number' => "1",//TODO SET NUMBER REMOVE
                         'created_time' =>date("Y-m-d H:i:s"),
                         'field_value' =>$sectionFieldValue['field_value'],
                         'status' =>'1',
                     ];
-                    $sdFieldValueEntity = $sdFieldValues->patchEntity($sdFieldValueEntity, $dataSet);
-                    if(!$sdFieldValues->save($sdFieldValueEntity)) echo "error in adding!" ;
-                }$savedField[$sectionFieldValue['sd_field_id']] = $sdFieldValues->find()->where(['sd_field_id'=>$sectionFieldValue['sd_field_id'],'status'=>1,'sd_case_id'=>$caseId]);
+                    $sdFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                    $savedFieldValue = $sdFieldValueTable->save($sdFieldValueEntity);
+                    if(!$savedFieldValue){
+                        echo "error in adding values!" ;
+                        debug($savedFieldValue);
+                    } 
+                    $sdSectionSetsEntity = $sdSectionSetsTable->newEntity(); 
+                    if(empty($set_array)) continue;
+                    foreach($set_array as $setSectionId => $set_no){
+                        $sdSectionSetsEntity['set_array'] = $set_no.",".$sdSectionSetsEntity['set_array']; 
+                        $sdSectionSetsEntity['sd_section_id'] = $setSectionId;
+                    }
+                    if(strlen($sdSectionSetsEntity['set_array']) > 1)
+                    $sdSectionSetsEntity['set_array'] = substr($sdSectionSetsEntity['set_array'], 0, -1);
+                    $setDataSet = [
+                        'set_array' =>$sdSectionSetsEntity['set_array'],
+                        'sd_field_value_id'=>$savedFieldValue['id'],
+                    ];
+                    $sdSectionSetsEntity['sd_field_value_id'] = $savedFieldValue['id'];              
+                    if(!$sdSectionSetsTable->save($sdSectionSetsEntity)){
+                        echo "error in adding sets!" ; 
+                        debug($sdSectionSetsEntity);
+                    }                
+                    $sections = $SdSectionStructuresTable->find()->select(['sd_section_id'])
+                        ->join(['sections' =>[
+                            'table' =>'sd_sections',
+                            'type'=>'INNER',
+                            'conditions'=>['sd_sections.id = SdSectionStructures.sd_section_id'],
+                            ]])            
+                        ->where(['sd_field_id'=>$sectionFieldValue['sd_field_id'],'sd_section_id !='=>$section_id,'sections.status'=>true]);
+                    foreach($sections as $sectionDetail){
+                        $sdSectionSetsEntityNew = $sdSectionSetsTable->newEntity();
+                        $sdSectionSetsEntityNew = $sdSectionSetsTable->patchEntity($sdSectionSetsEntityNew, $setDataSet);
+                        $sdSectionSetsEntityNew['sd_section_id'] = $sectionDetail['sd_section_id'];
+                        if($sectionFieldValue['sd_field_id'] == '200'){
+                            $sdSectionSetsEntityNew['set_array'] = substr($sdSectionSetsEntityNew['set_array'], 0, -1);
+                            $sdSectionSetsEntityNew['set_array'] = $sdSectionSetsEntityNew['set_array'].'*';
+                        }
+                        $sdSectionSetsEntityNew['sd_field_value_id'] = $savedFieldValue['id'];                           
+                        if(!$sdSectionSetsTable->save($sdSectionSetsEntityNew)){
+                            echo "error in adding NEW sets!" ;// ADD INTO ANOTHER SET
+                            debug($sdSectionSetsEntityNew);
+                        } 
+                    }
+
+                }
+                $savedField[$sectionFieldValue['sd_field_id']] = $sdFieldValueTable->find()->where(['sd_field_id'=>$sectionFieldValue['sd_field_id'],'status'=>1,'sd_case_id'=>$caseId]);
 
             }
         }else $this->autoRender = true;

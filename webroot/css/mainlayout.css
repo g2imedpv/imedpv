@@ -466,6 +466,7 @@ ul.queryBoxLeft > a {
 }
 #navbarNavDropdown > ul > li > a.nav-link{
     color:rgba(225,225,225); 
+    font-weight: bolder;
 }
 #navbarNavDropdown > ul > li > a.nav-link:hover{
     background-color:#ffc107;
@@ -492,8 +493,14 @@ ul.queryBoxLeft > a {
 /* Meddra browser */
 .lltQuickSearch {
     position: absolute !important;
-    top: 0px;
+    top:0;
     left: 190px;
+}
+.meddralabel{
+    line-height:25px;
+}
+.meddralabel:hover{
+    background-color: #007bff;
 }
 
 .lltQuickSearchForCaseReg {
@@ -529,7 +536,7 @@ ul.queryBoxLeft > a {
 .tab-content{
     border-left:1px solid rgba(0, 0, 0, 0.1);
     border-right:1px solid rgba(0, 0, 0, 0.1);
-    margin-top:60px;
+    margin-top: -16px;
 }
 .folder .header-section{
     padding-top: 10px;
@@ -543,10 +550,28 @@ ul.queryBoxLeft > a {
     margin-top:-40px;
     background-color:aliceblue;
 }
-
-.nested-section{
+.nested-section.layer-2{
     padding: 30px;
-    margin-top: -60px;
-    
 }
 
+ .btn[title="add"]{
+    display:inline-block;
+   
+} 
+.card{
+    display:block;
+}
+/* table row selected */
+.table tbody tr{
+    background-color: #b5d0f7;
+}
+.table thead tr{
+    background-color: #7ea4e2;
+}
+.table tbody tr:hover {
+    color: #212529;
+    background-color: #ffc107 !important;
+}
+.highlight{
+    background-color: #ffc107!important;
+}

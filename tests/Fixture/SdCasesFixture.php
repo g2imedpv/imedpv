@@ -24,11 +24,7 @@ class SdCasesFixture extends TestFixture
         'sd_workflow_activity_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => 'current activity', 'precision' => null, 'autoIncrement' => null],
         'status' => ['type' => 'integer', 'length' => 1, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'sd_user_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => 'current working on user id', 'precision' => null, 'autoIncrement' => null],
-        'priority' => ['type' => 'integer', 'length' => 1, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '1=High,2=Medium,3=Low', 'precision' => null, 'autoIncrement' => null],
-        'activity_due_date' => ['type' => 'string', 'length' => 10, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'submission_due_date' => ['type' => 'string', 'length' => 10, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'product_type' => ['type' => 'integer', 'length' => 1, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'classification' => ['type' => 'string', 'length' => 6, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '1st:Spontaneous, 2nd:Study, 3rd:Literature, 4th: Pregnancy, 5th: Others, 6th: Unkown', 'precision' => null, 'fixed' => null],
+        'case_type' => ['type' => 'integer', 'length' => 3, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -55,11 +51,7 @@ class SdCasesFixture extends TestFixture
                 'sd_workflow_activity_id' => 1,
                 'status' => 1,
                 'sd_user_id' => 1,
-                'priority' => 1,
-                'activity_due_date' => 'Lorem ip',
-                'submission_due_date' => 'Lorem ip',
-                'product_type' => 1,
-                'classification' => 'Lore'
+                'case_type' => 1
             ],
         ];
         parent::init();

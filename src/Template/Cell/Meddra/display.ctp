@@ -1,7 +1,9 @@
-<button type="button" class="btn btn-info btn-sm mx-3 d-block" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-search"></i> MedDRA Browser</button>
+<button type="button" class="btn btn-info btn-sm mx-3 d-block" id="meddraBtn_<?php echo $meddraFieldId;?>" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-search"></i> MedDRA Browser</button>
 <div class="lltQuickSearch form-group col-md-6">
     <label>LLT Term Encode</label>
-    <input class="form-control" type="text" id="llt-searchbar">
+    <input class="form-control" type="text" id="llt-searchbar_<?php echo $meddraFieldId;?>" >
+    <div id="meddraQuickSearch_<?php echo $meddraFieldId;?>"></div>
+    <input class="form-control" type="hidden" id="descriptor_<?php echo $meddraFieldId;?>" value="<?php echo $descriptor;?>">
 </div>
 
 <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -30,13 +32,13 @@
                         <input type="text" class="form-control" id="wildcard_search"  placeholder="Search by SMQ">
                     </div>
                     <div class="form-group">
-                        <label for="meddra-full_text">Full Text</label>
+                        <label for="meddra-full_text">Full Search</label>
                         <input type="checkbox" class="form-control" id="meddra-full_text">
                     </div>
                 </div>
                 <!-- <div class="form-row justify-content-center">
                     <div class="form-group col-sm-3">
-                        <div id="meddrasea" onclick="searchMedDra(<?= $fieldId ?>)" class="form-control btn btn-primary w-100"><i class="fas fa-search"></i> Search</div>
+                        <div id="meddrasea" onclick="searchMedDra()" class="form-control btn btn-primary w-100"><i class="fas fa-search"></i> Search</div>
                     </div>
                     <div class="form-group col-sm-1">
                         <div class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> Clear</div>
@@ -81,58 +83,58 @@
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-4">
                             <label for="">LLT Name</label>
-                            <input type="text" class="form-control" id="select-llt-name">
+                            <input type="text" class="form-control" id="select-llt-n">
                         </div>
                         <div class="form-group col-md-3 offset-md-1">
                             <label for="">LLT Code</label>
-                            <input type="text" class="form-control" id="select-llt-code">
+                            <input type="text" class="form-control" id="select-llt-c">
                         </div>
                     </div>
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-4">
                             <label for="">PT Name</label>
-                            <input type="text" class="form-control" id="select-pt-name">
+                            <input type="text" class="form-control" id="select-pt-n">
                         </div>
                         <div class="form-group col-md-3 offset-md-1">
                             <label for="">PT Code</label>
-                            <input type="text" class="form-control" id="select-pt-code">
+                            <input type="text" class="form-control" id="select-pt-c">
                         </div>
                     </div>
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-4">
                             <label for="">HLT Name</label>
-                            <input type="text" class="form-control" id="select-hlt-name">
+                            <input type="text" class="form-control" id="select-hlt-n">
                         </div>
                         <div class="form-group col-md-3 offset-md-1">
                             <label for="">HLT Code</label>
-                            <input type="text" class="form-control" id="select-hlt-code">
+                            <input type="text" class="form-control" id="select-hlt-c">
                         </div>
                     </div>
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-4">
                             <label for="">HLGT Name</label>
-                            <input type="text" class="form-control" id="select-hlgt-name">
+                            <input type="text" class="form-control" id="select-hlgt-n">
                         </div>
                         <div class="form-group col-md-3 offset-md-1">
                             <label for="">HLGT Code</label>
-                            <input type="text" class="form-control" id="select-hlgt-code">
+                            <input type="text" class="form-control" id="select-hlgt-c">
                         </div>
                     </div>
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-4">
                             <label for="">SOC Name</label>
-                            <input type="text" class="form-control" id="select-soc-name">
+                            <input type="text" class="form-control" id="select-soc-n">
                         </div>
                         <div class="form-group col-md-3 offset-md-1">
                             <label for="">SOC Code</label>
-                            <input type="text" class="form-control" id="select-soc-code">
+                            <input type="text" class="form-control" id="select-soc-c">
                         </div>
                     </div>
                 </fieldset>
             </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success w-25 mx-auto"  onclick="selectMeddraButton(<?php echo $fieldId?>)" data-dismiss="modal">Select</button>
+        <button type="button" class="btn btn-success w-25 mx-auto"  onclick="selectMeddraButton(<?php echo $meddraFieldId?>)" data-dismiss="modal">Select</button>
       </div>
     </div>
   </div>
@@ -140,24 +142,80 @@
 
 
 <script>
-<?php
-    if($fieldId!=null)
-    echo "var fieldId =".$fieldId." ;";
-    else     echo "var fieldId =0 ;";
-?>
+var meddraFieldId = 0;
+var formats = ['llt_name','pt_name','hlt_name','hlgt_name','soc_name'];
 $(document).ready(function(){
-    $('[id^=typed]').change(function(){
-        var type = $(this).attr('id').split('-')[1];
-        searchMedDra(fieldId,1);
-        console.log('typed')
+    $('[id^=meddraBtn_]').click(function(){
+        console.log("clicked");
+        if(meddraFieldId!=$(this).attr('id').split('_')[1]){
+            $(formats).each(function(formatK,formatV){
+                $('#field-'+formatV).html("");
+            });
+        }
+        meddraFieldId = $(this).attr('id').split('_')[1];
+        if($('[id$=meddraResult-'+meddraFieldId+']').val()!=""){
+            $.each($('[id$=meddraResult-'+meddraFieldId+']').val().split(','), function(k,fieldDetail){
+                console.log(k);
+                console.log(fieldDetail);
+                switch(k){
+                    case 0:
+                        $('#select-llt-n').val(fieldDetail);
+                        return true;
+                    case 1:
+                        $('#select-llt-c').val(fieldDetail);
+                        return true;
+                    case 2:
+                        $('#select-pt-n').val(fieldDetail);
+                        return true;
+                    case 3:
+                        $('#select-pt-c').val(fieldDetail);
+                        return true;
+                    case 4:
+                        $('#select-hlt-n').val(fieldDetail);
+                        return true;
+                    case 5:
+                        $('#select-hlt-c').val(fieldDetail);
+                        return true;
+                    case 6:
+                        $('#select-hlgt-n').val(fieldDetail);
+                        return true;
+                    case 7:
+                        $('#select-hlgt-c').val(fieldDetail);
+                        return true;
+                    case 8:
+                        $('#select-soc-n').val(fieldDetail);
+                        return true;
+                    case 9:
+                        $('#select-soc-c').val(fieldDetail);
+                        return true;
+                }
+            });
+        }else{
+            $('#select-llt-n').val("");
+            $('#select-llt-c').val("");
+            $('#select-pt-n').val("");
+            $('#select-pt-c').val("");
+            $('#select-hlt-n').val("");
+            $('#select-hlt-c').val("");
+            $('#select-hlgt-n').val("");
+            $('#select-hlgt-c').val("");
+            $('#select-soc-n').val("");
+            $('#select-soc-c').val("");
+        }
     });
-    $('#llt-searchbar').change(function(){
-        searchMedDra(fieldId, 3, $(this).val());
+    $('[id^=typed]').change(function(){
+        searchMedDra(meddraFieldId,1);//TODO 
+    });
+    $('[id^=llt-searchbar]').keyup(function(){
+        meddraFieldId = $(this).attr('id').split('_')[1];
+        $('#meddraQuickSearch_'+meddraFieldId).show();
+        if($(this).val().length >=3)
+            searchMedDra(meddraFieldId, 3, $(this).val());
+        else $('#meddraQuickSearch_'+meddraFieldId).hide();
     });
 });
-function searchMedDra(fieldId, type, llt_name=null) {
+function searchMedDra(meddraFieldId, type, llt_name=null) {
     var request ={};
-    var formats = ['llt_name','pt_name','hlt_name','hlgt_name','soc_name'];
     if(type==1){
         request ={};
         $('[id^=typed]').each(function(){
@@ -191,7 +249,8 @@ function searchMedDra(fieldId, type, llt_name=null) {
         request['type'] = 2;
     }else{
         request['llt_name'] = llt_name;
-        request['type'] = 3;
+        request['full_text'] = 0;
+        request['type'] = type;
     }
     console.log(request);
     $.ajax({
@@ -202,23 +261,56 @@ function searchMedDra(fieldId, type, llt_name=null) {
         url:'/med-dra/search',
         data:request,
         success:function(response){
-            console.log('su');
             console.log(response);
             var result = $.parseJSON(response);
+            console.log(meddraFieldId);
+            $('[id$=-meddraResult-'+meddraFieldId+']').val(result['primary']);
             if(result['type']==3){
-                $('[id*=reactionmeddrallt]').val(result['primary'][0][1]);
-                $('[id*=meddralltname]').val(result['primary'][0][0]);
-                $('[id*=meddralltcode]').val(result['primary'][0][1]);
-                $('[id*=reactionmeddrapt]').val(result['primary'][0][3]);
-                $('[id*=meddraptname]').val(result['primary'][0][2]);
-                $('[id*=meddraptcode]').val(result['primary'][0][3]);
-                $('[id*=meddrahltname]').val(result['primary'][0][4]);
-                $('[id*=meddrahltcode]').val(result['primary'][0][5]);
-                $('[id*=meddrahlgtname]').val(result['primary'][0][6]);
-                $('[id*=meddrahlgtcode]').val(result['primary'][0][7]);
-                $('[id*=meddrasocname]').val(result['primary'][0][8]);
-                $('[id*=meddrasoccode]').val(result['primary'][0][9]);
-                $('[id*=meddraversion]').val('18.1');
+                let text = "<ul>";
+                $.each(result['llt_name']['codes'],function(k,details){
+                    text +="<li id=\"quickSearchResult-"+meddraFieldId+"-"+k+"\">"+details[0]+"-"+details[1]+"</li>";
+                })
+                text +="</ul>";
+                $("#meddraQuickSearch_"+meddraFieldId).html(text);
+                $('[id*=quickSearchResult]').click(function(){
+                    let meddraFieldId = $(this).attr('id').split('-')[1];
+                    searchMedDra(meddraFieldId, 4, $(this).text().split('-')[0]);
+                    $('#meddraQuickSearch_'+meddraFieldId).hide();
+                });
+                return false;
+            }
+            if(result['type']==4){
+                let descriptor = $('#descriptor_'+meddraFieldId).val().split(',');
+                $.each(descriptor, function(k,fieldDetail){
+                    let mappedId = fieldDetail.split(':')[1];
+                    let mappedLabel = fieldDetail.split(':')[0].split('-');
+                    if(mappedLabel=="ver") {
+                        $('[id$='+mappedId+'][name$=\\[field_value\\]]').val('18.1');
+                        return true;
+                    }
+                    switch(mappedLabel[0]){
+                        case "llt":
+                            if(mappedLabel[1] == "c") $('[id$='+mappedId+'][name$=\\[field_value\\]]').val(result['primary'][0][1]);
+                            else $('[id$='+mappedId+'][name$=\\[field_value\\]]').val(result['primary'][0][0]);
+                            return true;
+                        case "pt":
+                            if(mappedLabel[1] == "c") $('[id$='+mappedId+'][name$=\\[field_value\\]]').val(result['primary'][0][3]);
+                            else $('[id$='+mappedId+'][name$=\\[field_value\\]]').val(result['primary'][0][2]);
+                            return true;
+                        case "hlt":
+                            if(mappedLabel[1] == "c") $('[id$='+mappedId+'][name$=\\[field_value\\]]').val(result['primary'][0][5]);
+                            else $('[id$='+mappedId+'][name$=\\[field_value\\]]').val(result['primary'][0][4]);
+                            return true;
+                        case "hlgt":
+                            if(mappedLabel[1] == "c") $('[id$='+mappedId+'][name$=\\[field_value\\]]').val(result['primary'][0][7]);
+                            else $('[id$='+mappedId+'][name$=\\[field_value\\]]').val(result['primary'][0][6]);
+                            return true;
+                        case "soc":
+                            if(mappedLabel[1] == "c") $('[id$='+mappedId+'][name$=\\[field_value\\]]').val(result['primary'][0][9]);
+                            else $('[id$='+mappedId+'][name$=\\[field_value\\]]').val(result['primary'][8][0]);
+                            return true;
+                    }
+                });
                 return false;
             }
             $(formats).each(function(formatK,formatV){
@@ -231,13 +323,13 @@ function searchMedDra(fieldId, type, llt_name=null) {
                             if((typeof result[formatV]['primary']!='undefined')&&(v[1]==result[formatV]['primary'][0][0])) text +=" class=\"bg-warning\"";
                             text +=" onclick=\"clickOption('"+formatV+"',"+k+")\" id=\"meddradiv-"+formatV+"-"+k+"\"";
                             text +=">";
-                            text +="<label id=\"meddralabel-"+formatV+"-"+k+"\" for=\"meddraoption-"+formatV+"-"+k+"\">";
+                            text +="<label class=\"meddralabel\" id=\"meddralabel-"+formatV+"-"+k+"\" for=\"meddraoption-"+formatV+"-"+k+"\">";
                             text +=v[0];
                             text +="</label>";
                             // if((typeof result[formatV]['primary']!='undefined')&&(v[1]==result[formatV]['primary'][0][0]))
                             // text +="<input id=\"primary-"+formatV+"\" type=\"hidden\" > ***";
                             text +="<input type=\"hidden\" id=\"meddracode-"+formatV+"-"+k+"\" value=\""+v[1]+"\" >";
-                            // text +="<input onclick=\"searchMedDra("+fieldId+",2)\" type=\"checkbox\" id=\"meddraoption-"+formatV+"-"+k+"\" >";
+                            // text +="<input onclick=\"searchMedDra("+meddraFieldId+",2)\" type=\"checkbox\" id=\"meddraoption-"+formatV+"-"+k+"\" >";
                             text +="</div>"
                         });
                         $('#field-'+formatV).html(text);
@@ -246,17 +338,17 @@ function searchMedDra(fieldId, type, llt_name=null) {
                 $('[id^=meddradiv-'+formatV+']').each(function(){
                     var hasP = 0;
                     if($(this).hasClass('bg-primary')){
-                        console.log($('#select-'+formatV.split('_')[0]+'-name'));
-                        console.log($('#select-'+formatV.split('_')[0]+'-code'));
-                        $('#select-'+formatV.split('_')[0]+'-name').val($(this).find('label').text());
-                        $('#select-'+formatV.split('_')[0]+'-code').val($(this).find('[id^=meddracode]').val());
+                        console.log($('#select-'+formatV.split('_')[0]+'-n'));
+                        console.log($('#select-'+formatV.split('_')[0]+'-c'));
+                        $('#select-'+formatV.split('_')[0]+'-n').val($(this).find('label').text());
+                        $('#select-'+formatV.split('_')[0]+'-c').val($(this).find('[id^=meddracode]').val());
                         hasP = 1;
                         return false;
                     }
                     if(hasP) return true;
                     else if($(this).hasClass('bg-warning')){
-                        $('#select-'+formatV.split('_')[0]+'-name').val($(this).find('label').text());
-                        $('#select-'+formatV.split('_')[0]+'-code').val($(this).find('[id^=meddracode]').val());
+                        $('#select-'+formatV.split('_')[0]+'-n').val($(this).find('label').text());
+                        $('#select-'+formatV.split('_')[0]+'-c').val($(this).find('[id^=meddracode]').val());
                         return false;
                     }
                 });
@@ -290,37 +382,21 @@ function clickOption(term, key){
             return false;
         }
     });
-    if(hasP) searchMedDra("+fieldId+",2);
+    if(hasP) searchMedDra(meddraFieldId,2);
 }
-function selectMeddraButton(fieldId){
-    console.log($('#whodrug-code'+fieldId));
-    $('[id*=meddralltname]').val($('#select-llt-name').val());
-    $('[id*=reactionmeddrallt]').val($('#select-llt-code').val());
-    $('[id*=patientdeathreport').val($('#select-llt-code').val());
-    $('[id*=meddralltcode]').val($('#select-llt-code').val());
-    $('[id*=meddraptname]').val($('#select-pt-name').val());
-    $('[id*=meddraptcode]').val($('#select-pt-code').val());
-    $('[id*=reactionmeddrapt]').val($('#select-hlt-code').val());
-    $('[id*=meddrahltname]').val($('#select-hlt-name').val());
-    $('[id*=meddrahltcode]').val($('#select-hlt-code').val());
-    $('[id*=meddrahlgtname]').val($('#select-hlgt-name').val());
-    $('[id*=meddrahlgtcode]').val($('#select-hlgt-code').val());
-    $('[id*=meddrasocname]').val($('#select-soc-name').val());
-    $('[id*=meddrasoccode]').val($('#select-soc-code').val());
-    $('[id*=meddraversion]').val('18.1');
+function selectMeddraButton(meddraFieldId){
+    console.log($('#whodrug-code'+meddraFieldId));
+    let descriptor = $('#descriptor_'+meddraFieldId).val().split(',');
+    
+    $.each(descriptor, function(k,fieldDetail){
+        let mappedId = fieldDetail.split(':')[1];
+        let mappedLabel = fieldDetail.split(':')[0];
+        if(mappedLabel=="ver"){
+            $('[id$='+mappedId+'][name$=\\[field_value\\]]').val('18.1');
+            return true;
+        } 
+        $('[id$='+mappedId+'][name$=\\[field_value\\]]').val($('#select-'+mappedLabel.split('-')[0]+'-'+mappedLabel.split('-')[1]).val());
+    });
+    return false;
 }
-function selectMedDra(key){
-    var meddra_detail = $('#meddra_detail'+key).html();
-    var result = $.parseJSON(meddra_detail);
-    $('#select-llt-name').val(result[0]);
-    $('#select-llt-code').val(result[1]);
-    $('#select-pt-name').val(result[2]);
-    $('#select-pt-code').val(result[3]);
-    $('#select-hlt-name').val(result[4]);
-    $('#select-hlt-code').val(result[5]);
-    $('#select-hlgt-name').val(result[6]);
-    $('#select-hlgt-code').val(result[7]);
-    $('#select-soc-name').val(result[9]);
-    $('#select-soc-code').val(result[8]);
-};
 </script>

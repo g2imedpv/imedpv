@@ -40,7 +40,7 @@
     <div id="basicInfo" class="form-group mx-3">
         <h4 class="text-left">Product</h4>
         <div class="form-row">
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-12">
                 <label>Product Name (B.4.k.2.1)<i class="fas fa-asterisk reqField"></i></label>
                 <p><b><?= $field_value_set['176']['field_value'] ?></b><p>
             </div>
@@ -160,15 +160,15 @@
                 <label>Latest Received Date(A.1.7.b)</label>
                 <?php if($field_value_set['26']['id']!=null)
                 echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[12][id]\" value=\"".$field_value_set['12']['id']."\">";?>
-                <input type="text" class="form-control" name="field_value[12][value]" id="reporterField_latestreceiveddate" value="<?= $field_value_set['12']['field_value']?>">
+                <input type="date" class="form-control" name="field_value[12][value]" id="reporterField_latestreceiveddate" value="<?= $field_value_set['12']['field_value']?>">
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-3" >
                 <label>Initial Received Date(A.1.7.b)</label>
                 <?php if($field_value_set['10']['id']!=null)
                 echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[10][id]\" value=\"".$field_value_set['10']['id']."\">";?>
-                <input type="text" class="form-control" name="field_value[10][value]" id="reporterField_latestreceiveddate" value="<?= $field_value_set['10']['field_value']?>">
+                <input type="date" class="form-control" name="field_value[10][value]" id="reporterField_initialreceiveddate" value="<?= $field_value_set['10']['field_value']?>">
             </div>
-            <input type="text" class="form-control" name="field_value[225][value]" id="reporterField_regulatoryclockstartddate" type="hidden">
+            <input type="hidden" class="form-control" name="field_value[225][value]" id="reporterField_regulatoryclockstartddate">
 
         </div>
         <h4 class="text-left mt-3">Event</h4>
@@ -202,11 +202,18 @@
                 <input type="text" class="form-control" name="field_value[392][value]" id="eventField_meddraptname" value="<?= $field_value_set['392']['field_value'] ?>">
             </div>
             <div class="form-group col-md-3">
-                <label>HLT Name</label>
+                <label>PT Code</label>
                 <?php if($field_value_set['395']['id']!=null)
                 echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[395][id]\" value=\"".$field_value_set['395']['id']."\">";?>
                 <input type="text" class="form-control" name="field_value[395][value]" id="eventField_meddrahltname" value="<?= $field_value_set['395']['field_value'] ?>">
             </div>
+            <div class="form-group col-md-3">
+                <label>Meddra Version</label>
+                <?php if($field_value_set['395']['id']!=null)
+                echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[395][id]\" value=\"".$field_value_set['395']['id']."\">";?>
+                <input type="text" class="form-control" name="field_value[395][value]" id="eventField_meddrahltname" value="<?= $field_value_set['395']['field_value'] ?>">
+            </div>
+
         </div>
 
         <!-- Attachment -->
@@ -389,7 +396,7 @@
             <?php echo "<input type=\"hidden\" id=\"submissionDate_value\" name=\"field_value[415][value]\" disabled value=\"".$field_value_set['415']['field_value']."\">";?>
             <div id="prioritizeType"></div>
             <button type="button" id="prioritizeBack" class="btn btn-outline-warning my-2 mx-2 w-25">Back</button>
-            <button class="btn btn-outline-danger mx-1" title="Sign Off" type="button" data-toggle="modal" data-target=".signOff" onclick="endTriage()">End Triage</button>
+            <div class="btn btn-outline-danger mx-1" title="Sign Off"data-toggle="modal" data-target=".signOff" onclick="endTriage()">End Triage</div>
         </div>
     </div>
     <div class="modal fade signOff" tabindex="-1" role="dialog" aria-labelledby="signOff" aria-hidden="true">
