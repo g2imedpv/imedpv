@@ -323,7 +323,7 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
                             if((typeof result[formatV]['primary']!='undefined')&&(v[1]==result[formatV]['primary'][0][0])) text +=" class=\"bg-warning\"";
                             text +=" onclick=\"clickOption('"+formatV+"',"+k+")\" id=\"meddradiv-"+formatV+"-"+k+"\"";
                             text +=">";
-                            text +="<label id=\"meddralabel-"+formatV+"-"+k+"\" for=\"meddraoption-"+formatV+"-"+k+"\">";
+                            text +="<label class=\"meddralabel\" id=\"meddralabel-"+formatV+"-"+k+"\" for=\"meddraoption-"+formatV+"-"+k+"\">";
                             text +=v[0];
                             text +="</label>";
                             // if((typeof result[formatV]['primary']!='undefined')&&(v[1]==result[formatV]['primary'][0][0]))

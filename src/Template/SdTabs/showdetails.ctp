@@ -295,7 +295,7 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
 function displaySummary($SectionInfo, $section_level){
     $fields = $SectionInfo->sd_section_summary->sdFields;
     $sectionId = $SectionInfo->id;
-    $text = "<a class='btn btn-outline-primary float-right' href='#' role='button' title='add'><i class='fas fa-plus'></i> Add</a>";
+    $text = "<a class='btn btn-outline-primary float-right' href='#' role='button' title='add'><i class='fas fa-plus'></i> Add</a><br><br>";
     $text = $text."<div class='card mt-1 mb-2'>";
     $text = $text."<div class='card-header '>";
     $text = $text."<div class='summary layer ".$section_level."' style=\"overflow:auto;\">";
@@ -350,7 +350,7 @@ function displaySummary($SectionInfo, $section_level){
             if(!$noMatchFlag) $rowtext = $rowtext."<td id=\"section-".$sectionId."-row-".$row."-".$field_detail->id."\"></td>";
             
         }
-        if($noValue != sizeof($fields)) $text = $text."<tr name=\" section-".$sectionId."-row-".$row."-[click_row]\" onclick=\"setPageChange(".$sectionId.",".$row.")\" >".$rowtext."
+        if($noValue != sizeof($fields)) $text = $text."<tr class=\"table".$sectionId."\" name=\"section-".$sectionId."-row-".$row."-[click_row]\" onclick=\"setPageChange(".$sectionId.",".$row.")\" >".$rowtext."
                                                 <td><button class='btn btn-outline-danger' onclick='#' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
         //TODO ADD JS FUNCTION TO DISPLAY SET
         $row++;
@@ -383,7 +383,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
     //         $text =$text. "<div class=\"showpagination\" id=\"showpagination-".$section->id."\"></div>";
     //     }
     // }elseif($section->section_level ==1 ){
-        $text =$text. "<div class=\"fieldInput \" name=\"Input-".$section->id."-sectionKey-".$sectionKey."\">";
+        $text =$text. "<div class=\"fieldInput layer-".$section->section_level ." \" name=\"Input-".$section->id."-sectionKey-".$sectionKey."\">";
         $text =$text. "<hr class=\"my-2\">";
         $length_taken = 0;
         $cur_row_no = 0;

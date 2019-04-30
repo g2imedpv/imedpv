@@ -675,7 +675,6 @@ function setPageChange(section_id, pageNo) {
                             if ((set_number[0]==rowSet )&&((set_number[1]==pageNo)||(set_number[1]=='*'))&&(set_number[2]==ParentSection)){
                                 if((fieldType != 1 )&& (fieldType != 3) && (fieldType != 4)){
                                     thisElement.html(value.field_value).trigger('change');
-                                    console.log(value.field_value);
                                     valueFlag = true;   
                                 }else{
                                     $.each(section[sectionKey].sd_section_summary.sdFields[fieldKey].sd_field_value_look_ups ,function(index,lookups){

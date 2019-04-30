@@ -57,7 +57,6 @@ $(document).ready(function(){
                     $('#section-22-date-205').prop('disabled',false);
                 }
             });
-
     // Causality Tab:
         // If Rechallenge (B.4.k.17.1) answer "Yes", B.4.k.17.2* Meddra should be answer as well
             // var target = $('#section-44-field-210').parent();
@@ -72,15 +71,7 @@ $(document).ready(function(){
             //     }
             // });
     
-  // product page:
-  $("#section_label-21").parent().parent().css({
-      "padding":"0px",
-      "margin-top":"0px"
-  })
-
-  $("#section-45-field-212").parent().parent().css({
-    "margin-bottom":"0px"
-})
+  
 });
     
     
