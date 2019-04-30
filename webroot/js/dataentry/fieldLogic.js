@@ -31,6 +31,14 @@ $(document).ready(function(){
             }
         });
     }
+    // highlighted selected table row
+    $(".table tr").click(function() {
+        var selected = $(this).hasClass("highlight");
+        $(".table tr").removeClass("highlight");
+        if(!selected)
+                $(this).addClass("highlight");
+    });
+  
 
     // General Tab:
         // Admin section

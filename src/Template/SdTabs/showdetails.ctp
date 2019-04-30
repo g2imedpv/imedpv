@@ -299,9 +299,9 @@ function displaySummary($SectionInfo, $section_level){
     $text = $text."<div class='card mt-1 mb-2'>";
     $text = $text."<div class='card-header '>";
     $text = $text."<div class='summary layer ".$section_level."' style=\"overflow:auto;\">";
-    $text = $text."<table class=\"table table-bordered table-hover layer".$section_level."\" id=\"sectionSummary-".$sectionId."\">";
+    $text = $text."<table class=\"table table-bordered layer".$section_level."\" id=\"sectionSummary-".$sectionId."\">";
     $text = $text."<thead>";
-    $text = $text."<tr class='table-secondary'>";
+    $text = $text."<tr >";
     foreach($fields as $field_detail){
         $text = $text."<th scope=\"col\" id=\"col-".$sectionId."-".$field_detail->id."\">".$field_detail->field_label."</th>";
 

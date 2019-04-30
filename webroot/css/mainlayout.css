@@ -562,6 +562,16 @@ ul.queryBoxLeft > a {
     display:block;
 }
 /* table row selected */
-.selected{
-    background-color: #ffc107;
+.table tbody tr{
+    background-color: #b5d0f7;
+}
+.table thead tr{
+    background-color: #7ea4e2;
+}
+.table tbody tr:hover {
+    color: #212529;
+    background-color: #ffc107 !important;
+}
+.highlight{
+    background-color: #ffc107!important;
 }
