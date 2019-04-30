@@ -40,7 +40,7 @@
     <div id="basicInfo" class="form-group mx-3">
         <h4 class="text-left">Product</h4>
         <div class="form-row">
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-12">
                 <label>Product Name (B.4.k.2.1)<i class="fas fa-asterisk reqField"></i></label>
                 <p><b><?= $field_value_set['176']['field_value'] ?></b><p>
             </div>
@@ -160,13 +160,13 @@
                 <label>Latest Received Date(A.1.7.b)</label>
                 <?php if($field_value_set['26']['id']!=null)
                 echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[12][id]\" value=\"".$field_value_set['12']['id']."\">";?>
-                <input type="text" class="form-control" name="field_value[12][value]" id="reporterField_latestreceiveddate" value="<?= $field_value_set['12']['field_value']?>">
+                <input type="date" class="form-control" name="field_value[12][value]" id="reporterField_latestreceiveddate" value="<?= $field_value_set['12']['field_value']?>">
             </div>
-            <div class="form-group col-md-3" style="display:none;">
+            <div class="form-group col-md-3" >
                 <label>Initial Received Date(A.1.7.b)</label>
                 <?php if($field_value_set['10']['id']!=null)
                 echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[10][id]\" value=\"".$field_value_set['10']['id']."\">";?>
-                <input type="text" class="form-control" name="field_value[10][value]" id="reporterField_initialreceiveddate" value="<?= $field_value_set['10']['field_value']?>">
+                <input type="date" class="form-control" name="field_value[10][value]" id="reporterField_initialreceiveddate" value="<?= $field_value_set['10']['field_value']?>">
             </div>
             <input type="hidden" class="form-control" name="field_value[225][value]" id="reporterField_regulatoryclockstartddate">
 
@@ -202,11 +202,18 @@
                 <input type="text" class="form-control" name="field_value[392][value]" id="eventField_meddraptname" value="<?= $field_value_set['392']['field_value'] ?>">
             </div>
             <div class="form-group col-md-3">
-                <label>HLT Name</label>
+                <label>PT Code</label>
                 <?php if($field_value_set['395']['id']!=null)
                 echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[395][id]\" value=\"".$field_value_set['395']['id']."\">";?>
                 <input type="text" class="form-control" name="field_value[395][value]" id="eventField_meddrahltname" value="<?= $field_value_set['395']['field_value'] ?>">
             </div>
+            <div class="form-group col-md-3">
+                <label>Meddra Version</label>
+                <?php if($field_value_set['395']['id']!=null)
+                echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[395][id]\" value=\"".$field_value_set['395']['id']."\">";?>
+                <input type="text" class="form-control" name="field_value[395][value]" id="eventField_meddrahltname" value="<?= $field_value_set['395']['field_value'] ?>">
+            </div>
+
         </div>
 
         <!-- Attachment -->

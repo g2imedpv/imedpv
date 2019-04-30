@@ -296,7 +296,7 @@ function displaySummary($SectionInfo, $setArray, $section_level){
     
     $fields = $SectionInfo->sd_section_summary->sdFields;
     $sectionId = $SectionInfo->id;
-    $text = "<a class='btn btn-outline-primary float-right' href='#' role='button' title='add'><i class='fas fa-plus'></i> Add</a>";
+    $text = "<a class='btn btn-outline-primary float-right' href='#' role='button' title='add'><i class='fas fa-plus'></i> Add</a><br><br>";
     $text = $text."<div class='card mt-1 mb-2'>";
     $text = $text."<div class='card-header '>";
     $text = $text."<div id='summary-".$sectionId."' class='layer".$section_level."' style=\"overflow:auto;\">";
@@ -307,7 +307,7 @@ function displaySummary($SectionInfo, $setArray, $section_level){
     $text = $text."'>";
     $text = $text."<table class=\"table table-bordered table-hover layer".$section_level."\" id=\"sectionSummary-".$sectionId."\">";
     $text = $text."<thead>";
-    $text = $text."<tr class='table-secondary'>";
+    $text = $text."<tr >";
     foreach($fields as $field_detail){
         $text = $text."<th scope=\"col\" id=\"col-".$sectionId."-".$field_detail->id."\">".$field_detail->field_label."</th>";
 
@@ -368,8 +368,8 @@ function displaySummary($SectionInfo, $setArray, $section_level){
     $text = $text."</tbody>";
     $text = $text."</table>";
     $text = $text."</div>";
-    $text = $text."</div>";
-    $text = $text."</div>";
+    $text = $text."</div>"; $text =$text. "</div>";
+    
     return $text;
 }
 function displaySingleSection($section, $setArray, $sectionKey, $html, $permission){
