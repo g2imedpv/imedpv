@@ -292,14 +292,20 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
         $text =$text."</div>";
     return $text;
 }
-function displaySummary($SectionInfo, $section_level){
+function displaySummary($SectionInfo, $setArray, $section_level){
+    
     $fields = $SectionInfo->sd_section_summary->sdFields;
     $sectionId = $SectionInfo->id;
     $text = "<a class='btn btn-outline-primary float-right' href='#' role='button' title='add'><i class='fas fa-plus'></i> Add</a><br><br>";
     $text = $text."<div class='card mt-1 mb-2'>";
     $text = $text."<div class='card-header '>";
-    $text = $text."<div class='summary layer ".$section_level."' style=\"overflow:scroll; max-height:380px;\">";
-    $text = $text."<table class=\"table table-bordered layer".$section_level."\" id=\"sectionSummary-".$sectionId."\">";
+    $text = $text."<div id='summary-".$sectionId."' class='layer".$section_level."' style=\"overflow:scroll; max-height:380px;\">";
+    $text = $text."<input type=\"hidden\" id='setArray-".$sectionId."' value='";
+    foreach($setArray as $setSectionId){
+        $text = $text.$setSectionId.",";
+    } 
+    $text = $text."'>";
+    $text = $text."<table class=\"table table-bordered table-hover layer".$section_level."\" id=\"sectionSummary-".$sectionId."\">";
     $text = $text."<thead>";
     $text = $text."<tr >";
     foreach($fields as $field_detail){
@@ -329,7 +335,7 @@ function displaySummary($SectionInfo, $section_level){
                     }
                 }
                 if($levelMatch && !empty($field_value->sd_section_sets) && $field_value->sd_section_sets[0]->set_array == $row){
-                    $rowtext = $rowtext."<td id=\"section-".$sectionId."-row-".$row."-".$field_detail->id."\">";
+                    $rowtext = $rowtext."<td id=\"section-".$sectionId."-row-".$row."-td-".$field_detail->id."\">";
                     if($field_detail->sd_element_type_id != 1 && $field_detail->sd_element_type_id != 3 && $field_detail->sd_element_type_id != 4)
                         $rowtext = $rowtext.$field_value->field_value;
                     else {
@@ -350,9 +356,12 @@ function displaySummary($SectionInfo, $section_level){
             if(!$noMatchFlag) $rowtext = $rowtext."<td id=\"section-".$sectionId."-row-".$row."-".$field_detail->id."\"></td>";
             
         }
-        if($noValue != sizeof($fields)) $text = $text."<tr class=\"table".$sectionId."\" name=\"section-".$sectionId."-row-".$row."-[click_row]\" onclick=\"setPageChange(".$sectionId.",".$row.")\" >".$rowtext."
+        if($noValue != sizeof($fields)) {
+            $text = $text."<tr ";
+            if($row==1) $text = $text."class=\"selected-row\" ";
+            $text = $text."id=\"section-".$sectionId."-row-".$row."\" onclick=\"setPageChange(".$sectionId.",".$row.")\" >".$rowtext."
                                                 <td><button class='btn btn-outline-danger' onclick='#' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
-        //TODO ADD JS FUNCTION TO DISPLAY SET
+        }//TODO ADD JS FUNCTION TO DISPLAY SET
         $row++;
     }while($noValue != sizeof($fields));
     $text = $text."</tr>"; 
@@ -383,7 +392,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
     //         $text =$text. "<div class=\"showpagination\" id=\"showpagination-".$section->id."\"></div>";
     //     }
     // }elseif($section->section_level ==1 ){
-        $text =$text. "<div class=\"fieldInput layer-".$section->section_level ." \" name=\"Input-".$section->id."-sectionKey-".$sectionKey."\">";
+        $text =$text. "<div class=\"fieldInput \" id=\"input-".$section->id."-sectionKey-".$sectionKey."\">";
         $text =$text. "<hr class=\"my-2\">";
         $length_taken = 0;
         $cur_row_no = 0;
@@ -398,7 +407,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                 $cur_row_no = $sd_section_structure_detail->row_no;
                 $text =$text."</div><div class=\"form-row \">";
             }
-            $j = -1;
+            $j = sizeof($sd_section_structure_detail->sd_field->sd_field_values)+1;
             if(empty($setArray)) $j = sizeof($sd_section_structure_detail->sd_field->sd_field_values);
             foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
                 $levelMatch = 1;
@@ -601,7 +610,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
     return $text;
 }
 
-function displaySelectBar($sdSections,$section_key){   
+function displaySelectBar($sdSections, $setArray, $section_key){   
     $max_set_No = 0;
     foreach($sdSections->sd_section_structures as $sd_section_structureK =>$sd_section_structure_detail){
         foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
@@ -613,6 +622,11 @@ function displaySelectBar($sdSections,$section_key){
     }
     $text = "";
     $text = $text. "<div id=\"pagination-section-".$sdSections->id."\" class=\"DEpagination float-right\">";
+    $text = $text."<input type=\"hidden\" id='setArray-".$sdSections->id."' value='";
+        foreach($setArray as $setSectionId){
+            $text = $text.$setSectionId.",";
+        } 
+    $text = $text."'>";
     $text =$text. "<ul class=\"pagination mb-0 mx-2\">";
     $text =$text.    "<li class=\"page-item\" id=\"left_set-".$sdSections->id."-sectionKey-".$section_key."-setNo-1\" onclick=\"setPageChange(".$sdSections->id.",0)\" >";
     $text =$text.    "<a class=\"page-link\" aria-label=\"Previous\">";
@@ -622,10 +636,12 @@ function displaySelectBar($sdSections,$section_key){
     $text =$text.    "</li>";
     if($max_set_No != 0){
         for($pageNo = 1; $pageNo<=$max_set_No; $pageNo++ ){
-            $text =$text.    "<li class=\"page-item\" id=\"section-".$sdSections->id."-page_number-".$pageNo."\" onclick=\"setPageChange(".$sdSections->id.",".$pageNo.")\"><a class=\"page-link\">".$pageNo."</a></li>";
+            $text =$text.    "<li class=\"page-item";
+            if($pageNo == 1) $text =$text." selected-page";
+            $text =$text."\" id=\"section-".$sdSections->id."-page_number-".$pageNo."\" onclick=\"setPageChange(".$sdSections->id.",".$pageNo.")\"><a class=\"page-link\">".$pageNo."</a></li>";
         }
     }else{
-        $text =$text.    "<li class=\"page-item\" style=\"font-weight:bold\" id=\"section-".$sdSections->id."-page_number-1\" onclick=\"setPageChange(".$sdSections->id.",1)\"><a class=\"page-link\">1</a></li>";
+        $text =$text.    "<li class=\"page-item selected-page\" style=\"font-weight:bold\" id=\"section-".$sdSections->id."-page_number-1\" onclick=\"setPageChange(".$sdSections->id.",1)\"><a class=\"page-link\">1</a></li>";
 
     }
     $text =$text.    "<li class=\"page-item\" id=\"right_set-".$sdSections->id."-sectionKey-".$section_key."-setNo-1\" onclick=\"setPageChange(".$sdSections->id.",2)\">";
@@ -650,10 +666,10 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
     if($sdSections->is_addable){
         array_push($setArray, $sdSections->id);
         if(!empty($sdSections->sd_section_summary))
-        $field_Text = $field_Text.displaySummary($sdSections, $sdSections->section_level);
+        $field_Text = $field_Text.displaySummary($sdSections, $setArray, $sdSections->section_level, $setArray);
         else {
             $section_key=array_search($sdSections->id,$exsitSectionNo);
-            $field_Text = $field_Text.displaySelectBar($sdSections,$section_key);
+            $field_Text = $field_Text.displaySelectBar($sdSections, $setArray, $section_key);
         }
     }
     // debug($field_Text);
