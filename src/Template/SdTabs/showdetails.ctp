@@ -292,7 +292,7 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
         $text =$text."</div>";
     return $text;
 }
-function displaySummary($SectionInfo, $setArray, $section_level){
+function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
     
     $fields = $SectionInfo->sd_section_summary->sdFields;
     $sectionId = $SectionInfo->id;
@@ -305,7 +305,14 @@ function displaySummary($SectionInfo, $setArray, $section_level){
         $text = $text.$setSectionId.",";
     } 
     $text = $text."'>";
-    $text = $text."<table class=\"table table-bordered table-hover layer".$section_level."\" id=\"sectionSummary-".$sectionId."\">";
+    $text = $text."<input type=\"hidden\" id='setArrayValue-".$sectionId."' value='";
+    $setV = "";
+    for($i = 0; $i < sizeof($setArray) ;$i ++){
+        if($i) $setV = $setV."1,";
+    } 
+    $text = $text.substr($setV,0,-1);
+    $text = $text."'>";
+    $text = $text."<table class=\"table table-bordered table-hover layer".$section_level."\" id=\"sectionSummary-".$sectionId."-sectionKey-".$section_key."\">";
     $text = $text."<thead>";
     $text = $text."<tr >";
     foreach($fields as $field_detail){
@@ -315,10 +322,8 @@ function displaySummary($SectionInfo, $setArray, $section_level){
     $text = $text."<th scope=\"col\">Action</th>";
     $row = 1;
     $text = $text."</thead>";
-    $text = $text."</div>"; 
     $text = $text."<tbody>";
     do{
-        
         $rowtext = "";
         $noValue = sizeof($fields);
         foreach($fields as $field_detail){
@@ -353,7 +358,7 @@ function displaySummary($SectionInfo, $setArray, $section_level){
                     continue;
                 }
             }
-            if(!$noMatchFlag) $rowtext = $rowtext."<td id=\"section-".$sectionId."-row-".$row."-".$field_detail->id."\"></td>";
+            if(!$noMatchFlag) $rowtext = $rowtext."<td id=\"section-".$sectionId."-row-".$row."-td-".$field_detail->id."\"></td>";
             
         }
         if($noValue != sizeof($fields)) {
@@ -362,13 +367,14 @@ function displaySummary($SectionInfo, $setArray, $section_level){
             $text = $text."id=\"section-".$sectionId."-row-".$row."\" onclick=\"setPageChange(".$sectionId.",".$row.")\" >".$rowtext."
                                                 <td><button class='btn btn-outline-danger' onclick='#' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
         }//TODO ADD JS FUNCTION TO DISPLAY SET
-        $row++;
+        $row++;        
     }while($noValue != sizeof($fields));
     $text = $text."</tr>"; 
     $text = $text."</tbody>";
     $text = $text."</table>";
     $text = $text."</div>";
-    $text = $text."</div>"; $text =$text. "</div>";
+    $text = $text."</div>"; 
+    $text =$text. "</div>";
     
     return $text;
 }
@@ -617,7 +623,7 @@ function displaySelectBar($sdSections, $setArray, $section_key){
             if(empty($set_array=$value_detail_field_values->sd_section_sets)) continue;
             $set_array=$value_detail_field_values->sd_section_sets->set_array;
             if(explode(",",$set_array)[0]>=$max_set_No)
-            $max_set_No = explode(",",$set_array)[0];      
+            $max_set_No = explode(",",$set_array)[0];
         }
     }
     $text = "";
@@ -665,10 +671,10 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
         $field_Text = $field_Text.displayTitle($sdSections->id, $sdSections->section_name,$sectionKey, $permission);
     if($sdSections->is_addable){
         array_push($setArray, $sdSections->id);
+        $section_key=array_search($sdSections->id,$exsitSectionNo);
         if(!empty($sdSections->sd_section_summary))
-        $field_Text = $field_Text.displaySummary($sdSections, $setArray, $sdSections->section_level, $setArray);
+        $field_Text = $field_Text.displaySummary($sdSections, $setArray, $sdSections->section_level, $section_key);
         else {
-            $section_key=array_search($sdSections->id,$exsitSectionNo);
             $field_Text = $field_Text.displaySelectBar($sdSections, $setArray, $section_key);
         }
     }

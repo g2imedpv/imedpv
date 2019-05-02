@@ -35,7 +35,9 @@
              * @return \Cake\Http\Response|void
              */
             public function showdetails($caseNo, $version = 1,$tabid = 1, $distribution_id = null)
-            {                   
+            { 
+                if($distribution_id == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
+                else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";                  
                 $writePermission= 0;
                 $userinfo = $this->request->getSession()->read('Auth.User');
                 $sdCasesTable = TableRegistry::get('SdCases');
@@ -53,6 +55,7 @@
                     $SdSectionStructuresTable = TableRegistry::get('SdSectionStructures');
                     $sdFieldValueTable = TableRegistry::get('SdFieldValues');
                     foreach($requstData['sd_field_values'] as $sectionValueK => $sectionValue) {
+                        $section_id = $sectionValueK;
                         foreach($sectionValue as $sectionFieldK =>$sectionFieldValue){
                             if($sectionFieldValue['id']!=''){
                                 $sdFieldValueEntity = $sdFieldValueTable->get($sectionFieldValue['id']);/**add last-updated time */
@@ -65,7 +68,6 @@
                                 $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                                 if(key_exists('set_array',$sectionFieldValue))
                                     $set_array = $sectionFieldValue['set_array'];
-                                $section_id = $sectionFieldValue['sd_section_id'];
                                 unset($sectionFieldValue['set_array']);
                                 unset($sectionFieldValue['sd_section_id']);
                                 $dataSet = [
@@ -76,6 +78,7 @@
                                     'field_value' =>$sectionFieldValue['field_value'],
                                     'status' =>'1',
                                 ];
+                                if($distribution_id!=null) $dataSet['sd_case_distribution_id'] = $distribution_id;
                                 $sdFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
                                 $savedFieldValue = $sdFieldValueTable->save($sdFieldValueEntity);
                                 if(!$savedFieldValue){
@@ -94,6 +97,7 @@
                                     'set_array' =>$sdSectionSetsEntity['set_array'],
                                     'sd_field_value_id'=>$savedFieldValue['id'],
                                 ];
+                                debug($sdSectionSetsEntity);
                                 $sdSectionSetsEntity['sd_field_value_id'] = $savedFieldValue['id'];   
                                 if(!$sdSectionSetsTable->save($sdSectionSetsEntity)){
                                     echo "error in adding sets!" ; 
@@ -180,8 +184,6 @@
                 //TODO according to model
                 $sdFieldTable = TableRegistry::get('SdFields');
                 $sdTab = TableRegistry::get('SdSections');
-                if($distribution_id == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
-                else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";
                 $sdSections = $sdTab ->find()->where(['sd_tab_id'=>$tabid,'status'=>true])
                                     ->order(['SdSections.section_level'=>'ASC','SdSections.display_order'=>'ASC'])
                                     ->contain(['SdSectionSummaries','SdSectionStructures'=>function($q)use($caseId,$distribution_condition){
@@ -222,22 +224,22 @@
                     $fields = explode(',',$sdSection->sd_section_summary->fields);
                     $sdFields = [];
                     foreach($fields as $sdField){
-                        $foudField = $sdFieldTable->find()->where(['SdFields.id'=>$sdField])->contain(['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$sdSection,$distribution_condition) {
+                        $foundField = $sdFieldTable->find()->where(['SdFields.id'=>$sdField])->contain(['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
                             return $q->contain(['SdSectionSets'])->where(['SdFieldValues.sd_case_id'=>$caseId, $distribution_condition,
                                              'SdFieldValues.status'=>true]);
                         }, 'SdElementTypes'=> function($q){
                         return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
                             }])->first(); 
-                        foreach($foudField->sd_field_values as $fvalue){
+                        foreach($foundField->sd_field_values as $fvalue){
                             foreach($fvalue->sd_section_sets as $setDetail){
                                 
                                 if($setDetail->sd_section_id == $sdSection->id||in_array($setDetail->sd_section_id, explode(',',$child_list[$sdSection->id])))
                                 {
-                                    $fvalue->SdSectionSets = [0=>$setDetail];
+                                    $fvalue->sd_section_sets = [0=>$setDetail];
                                 }
                             }
                         }
-                        array_push($sdFields,$foudField);
+                        array_push($sdFields,$foundField);
                     }       
                     $sdSection->sd_section_summary['sdFields'] = $sdFields;
                 }
