@@ -200,13 +200,11 @@ function renderSummaries(section_id, pageNo){
         let row = 1;
         let related = false;
         $.each(setSections, function(k, setSectionId){
-            console.log(setSectionId);
             if(setSectionId in setArray)
                 targetSetArray = setArray[setSectionId]+","+targetSetArray;
             else targetSetArray = "1,"+targetSetArray;
         });
         targetSetArray = targetSetArray.substr(0,targetSetArray.length-1);
-        console.log(targetSetArray);
         let setString = $('#setArrayValue-'+sectionId).val();
         let sectionKey = $(this).attr('id').split('-')[3];
         let noValue = section[sectionKey].sd_section_summary.sdFields.length;
@@ -218,7 +216,13 @@ function renderSummaries(section_id, pageNo){
                 $.each(field_detail.sd_field_values,function(k, field_value_detail){
                     if(field_value_detail.sd_section_sets.length == 0) return true;
                     let fieldSetArray = field_value_detail.sd_section_sets[0].set_array;
+                    for(let i = 0; i < fieldSetArray.length; i ++){
+                        if(fieldSetArray.charAt(i) == '*') {
+                            fieldSetArray = fieldSetArray.substring(0,i)+targetSetArray.charAt(i)+fieldSetArray.substring(i+1);
+                        }
+                    }
                     if(fieldSetArray.substring(2) == targetSetArray.substring(2)&&fieldSetArray.split(',')[0] == row){
+
                         rowtext = rowtext+"<td id=\"section-"+sectionId+"-row-"+row+"-td-"+field_detail.id+"\">";     
                         if(field_detail.sd_element_type_id != 1 && field_detail.sd_element_type_id != 3 && field_detail.sd_element_type_id != 4)
                             rowtext = rowtext + field_value_detail.field_value;
@@ -244,15 +248,43 @@ function renderSummaries(section_id, pageNo){
                 tbodyText = tbodyText+"id=\"section-"+sectionId+"-row-"+row+"\" onclick=\"setPageChange("+sectionId+","+row+")\" >"+rowtext+"<td><button class='btn btn-outline-danger' onclick='#' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
             }
             row  = row +1;
-            console.log(noValue);
         }while(noValue !=section[sectionKey].sd_section_summary.sdFields.length);
-        console.log(tbodyText);
         $(this).find('tbody').html(tbodyText);
         $(this).find('#section-'+section_id+'-row-'+setArray[section_id]).addClass('selected-row');
     });
-    $("#[id^=pagination-section-]").each(function(){
+    // $("#[id^=pagination-section-]").each(function(){
+        //TODO
+        // let text ="";
+        //     text = $text+"<input type=\"hidden\" id='setArray-".$sdSections->id."' value='";
+        //         foreach($setArray as $setSectionId){
+        //             $text = $text.$setSectionId.",";
+        //         } 
+        //     text = text+"'>";
+        //     text = text+ "<ul class=\"pagination mb-0 mx-2\">";
+        //     text = text+    "<li class=\"page-item\" id=\"left_set-".$sdSections->id."-sectionKey-".$section_key."-setNo-1\" onclick=\"setPageChange(".$sdSections->id.",0)\" >";
+        //     text = text+    "<a class=\"page-link\" aria-label=\"Previous\">";
+        //     text = text+        "<span aria-hidden=\"true\">&laquo;</span>";
+        //     text = text+        "<span class=\"sr-only\">Previous</span>";
+        //     text = text+    "</a>";
+        //     text = text+    "</li>";
+        //     if($max_set_No != 0){
+        //         for($pageNo = 1; $pageNo<=$max_set_No; $pageNo++ ){
+        //             text = text+    "<li class=\"page-item";
+        //             if($pageNo == 1) text = text+" selected-page";
+        //             text = text+"\" id=\"section-".$sdSections->id."-page_number-".$pageNo."\" onclick=\"setPageChange(".$sdSections->id.",".$pageNo.")\"><a class=\"page-link\">".$pageNo."</a></li>";
+        //         }
+        //     }else{
+        //         text = text+    "<li class=\"page-item selected-page\" style=\"font-weight:bold\" id=\"section-".$sdSections->id."-page_number-1\" onclick=\"setPageChange(".$sdSections->id.",1)\"><a class=\"page-link\">1</a></li>";
 
-    });
+        //     }
+        //     text = text+    "<li class=\"page-item\" id=\"right_set-".$sdSections->id."-sectionKey-".$section_key."-setNo-1\" onclick=\"setPageChange(".$sdSections->id.",2)\">";
+        //     text = text+    "<a class=\"page-link\" aria-label=\"Next\">";
+        //     text = text+        "<span aria-hidden=\"true\">&raquo;</span>";
+        //     text = text+        "<span class=\"sr-only\">Next</span>";
+        //     text = text+    "</a>";
+        //     text = text+    "</li>";
+        //     text = text+ "</ul>";
+    // });
 }
 function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
     $("[id^=save-btn"+section_id+"]").hide();
