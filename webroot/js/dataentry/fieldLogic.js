@@ -36,11 +36,13 @@ $(document).ready(function(){
         var selected = $(this).hasClass("highlight");
         $(".table tr").removeClass("highlight");
         if(!selected)
-                $(this).addClass("highlight");
+        $(this).addClass("highlight");
     });
-    //sort table content
+
+    //sort table content in every column
     $('.table').DataTable();
-  
+
+
 
     // General Tab:
         // Admin section
@@ -67,6 +69,33 @@ $(document).ready(function(){
                     $('#section-22-date-205').prop('disabled',false);
                 }
             });
+        //dosing regiment: calculate duration
+        // function duration(,startMonth,startYear,endYear,endMonth,endDay,dur,durUnit) {
+        //    var endTime=(endYear*365+endMonth*30+endDay)*24*60;
+        //    var startTime=(startYear*365+startMonth*30+startDay)*24*60;
+        //    var diffTime=endTime-startTime;
+        //    if(diffTime<60){
+        //        dur.val(diffTime);
+        //        document.getElementById(durUnit).value="806";
+        //    }else if((diffTime>=60)&&(diffTime<1440)){
+        //         dur.val(diffTime/60);
+        //         document.getElementById(durUnit).value="805";
+        //    }else if((diffTime>=1440)&&(diffTime<43200)){
+        //         dur.val(diffTime/60/24);
+        //         document.getElementById(durUnit).value="804";
+        //    }else if((diffTime>=43200)&&(diffTime<518400)){
+        //         dur.val(diffTime/60/24/30);
+        //         document.getElementById(durUnit).value="802";
+        //    }else{
+        //         dur.val(diffTime/60/24/30);
+        //         document.getElementById(durUnit).value="801";
+        //    }
+        // }
+
+        // duration("#select2-unspecified-day_section-22-unspecifieddate-199-container", "#select2-unspecified-month_section-22-unspecifieddate-199-container","#select2-unspecified-year_section-22-unspecifieddate-199-container",
+        //         "","","","","");
+    
+
     // Causality Tab:
         // If Rechallenge (B.4.k.17.1) answer "Yes", B.4.k.17.2* Meddra should be answer as well
             // var target = $('#section-44-field-210').parent();
@@ -80,6 +109,7 @@ $(document).ready(function(){
             //         (target,target1).hide();
             //     }
             // });
+    
     
   
 });

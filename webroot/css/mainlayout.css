@@ -190,7 +190,7 @@ tr:nth-child(even) {
 }
 
 .fieldInput {
-    background-color: aliceblue;
+    background-color: #ddebff;
     padding:0 20px;
     margin-bottom: 40px;
 }
@@ -477,7 +477,6 @@ ul.queryBoxLeft > a {
     color:rgba(0,0,0);
 }
 
-
 .queryBackBtn {
     font-size: 30px !important;
     margin-top: -50px;
@@ -496,11 +495,29 @@ ul.queryBoxLeft > a {
     top:0;
     left: 190px;
 }
+
 .meddralabel{
     line-height:25px;
 }
+
 .meddralabel:hover{
     background-color: #007bff;
+}
+
+[id^="meddraQuickSearch_"]{
+    position:absolute;
+    z-index: 99;
+    background-color:white;
+    max-height: 225px;
+    line-height: 25px;
+    overflow-y: scroll;
+    font-family:Arial,sans-serif;
+    font-size:15px;
+    width: 310px;
+}
+
+[id^="quickSearchResult"]:hover{
+    background-color: #ffc107;
 }
 
 .lltQuickSearchForCaseReg {
@@ -511,7 +528,7 @@ ul.queryBoxLeft > a {
     position: relative;
     top: -60px;
     right: -12px;
-  }
+}
 
 #nav-tab > a.active {
     color: #007bff !important;
@@ -520,6 +537,7 @@ ul.queryBoxLeft > a {
     border-top-color:#007bff;
     border-top-width: 3.5px;
 }
+
 #nav-tab > a.nav-item {
     color: #000000;
     background-color: #eee;
@@ -548,7 +566,7 @@ ul.queryBoxLeft > a {
 #folder-39{
     padding:0 20px;
     margin-top:-40px;
-    background-color:aliceblue;
+    background-color:#ddebff;
 }
 .nested-section.layer-2{
     padding: 30px;
@@ -562,7 +580,7 @@ ul.queryBoxLeft > a {
     display:block;
 }
 /* table row selected */
-.table tbody tr{
+.table tbody tr:nth-child(odd){
     background-color: #b5d0f7;
 }
 .table thead tr{
@@ -574,4 +592,7 @@ ul.queryBoxLeft > a {
 }
 .highlight{
     background-color: #ffc107!important;
+}
+#caseTable tbody tr:nth-child(even){
+    background-color: #ddebff;
 }
