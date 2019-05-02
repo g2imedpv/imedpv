@@ -299,7 +299,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
     $text = "<a class='btn btn-outline-primary float-right' href='#' role='button' title='add'><i class='fas fa-plus'></i> Add</a><br><br>";
     $text = $text."<div class='card mt-1 mb-2'>";
     $text = $text."<div class='card-header '>";
-    $text = $text."<div id='summary-".$sectionId."' class='layer".$section_level."' style=\"overflow:auto;\">";
+    $text = $text."<div id='summary-".$sectionId."' class='layer".$section_level."' style=\"overflow:scroll; max-height:380px;\">";
     $text = $text."<input type=\"hidden\" id='setArray-".$sectionId."' value='";
     foreach($setArray as $setSectionId){
         $text = $text.$setSectionId.",";

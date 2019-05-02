@@ -83,6 +83,12 @@
           <a class="dropdown-item" href="/sd-products/addproduct">Add Product</a>
         </ul>
       </li>
+      <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#">Contact</a>
+        <ul class="dropdown-menu">
+          <a class="dropdown-item" href="#">Search Contact</a>
+          <a class="dropdown-item" href="#">Add Contact</a>
+        </ul>
+      </li>
       <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#">ICSR</a>
         <ul class="dropdown-menu">
           <a class="dropdown-item" href="/sd-cases/caseregistration">Register SAE/AE</a>
