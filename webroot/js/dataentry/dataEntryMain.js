@@ -1,9 +1,4 @@
-jQuery(function($) {
-    $(document).ready(paginationReady());
-});
-
 $(document).ready(function(){
-
     $('[name$=\\[field_value\\]').change(function(){
         let id = $(this).attr('id').split('-');
         $('[id=section-'+id[1]+'-error_message-'+id[3]+']').text();
@@ -197,7 +192,6 @@ function renderSummaries(section_id, pageNo){
     }
     if(section_id in setArray)
         setArray[section_id] = parseInt(pageNo);
-    console.log(setArray);
     $("table[id^=sectionSummary-]").each(function(){
         let tbodyText ="";
         let sectionId = $(this).attr('id').split('-')[1];
@@ -223,13 +217,15 @@ function renderSummaries(section_id, pageNo){
                 $.each(field_detail.sd_field_values,function(k, field_value_detail){
                     if(field_value_detail.sd_section_sets.length == 0) return true;
                     let fieldSetArray = field_value_detail.sd_section_sets[0].set_array;
-                    for(let i = 0; i < fieldSetArray.length; i ++){
-                        if(fieldSetArray.charAt(i) == '*') {
-                            fieldSetArray = fieldSetArray.substring(0,i)+targetSetArray.charAt(i)+fieldSetArray.substring(i+1);
+                    let match =true;
+                    $.each(fieldSetArray.split(','), function(k, setNo){
+                        if(setNo != targetSetArray.split(',')[k] && setNo!='*' && k > 0)
+                        {
+                            match = false;
+                            return false;
                         }
-                    }
-                    if(fieldSetArray.substring(2) == targetSetArray.substring(2)&&fieldSetArray.split(',')[0] == row){
-
+                    });
+                    if(match&&fieldSetArray.split(',')[0] == row){
                         rowtext = rowtext+"<td id=\"section-"+sectionId+"-row-"+row+"-td-"+field_detail.id+"\">";     
                         if(field_detail.sd_element_type_id != 1 && field_detail.sd_element_type_id != 3 && field_detail.sd_element_type_id != 4)
                             rowtext = rowtext + field_value_detail.field_value;
@@ -252,7 +248,7 @@ function renderSummaries(section_id, pageNo){
             if(noValue != section[sectionKey].sd_section_summary.sdFields.length) {
                 tbodyText = tbodyText+"<tr ";
                 if(row==1) tbodyText = tbodyText+"class=\"selected-row\" ";
-                tbodyText = tbodyText+"id=\"section-"+sectionId+"-row-"+row+"\" onclick=\"setPageChange("+sectionId+","+row+")\" >"+rowtext+"<td><button class='btn btn-outline-danger' onclick='#' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
+                tbodyText = tbodyText+"id=\"section-"+sectionId+"-row-"+row+"\" onclick=\"setPageChange("+sectionId+","+row+")\" ><td>"+row+"</td>"+rowtext+"<td><button class='btn btn-outline-danger' onclick='#' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
             }
             row  = row +1;
         }while(noValue !=section[sectionKey].sd_section_summary.sdFields.length);
@@ -296,46 +292,80 @@ function renderSummaries(section_id, pageNo){
 }
 function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
     $("[id^=save-btn"+section_id+"]").hide();
-    //TODO HIGHLIGHT SELECTED PAGE
+    $("[id^=save-btn"+section_id+"]").attr("onclick","saveSection("+section_id+","+pageNo+")")
+    let setFlag = true;
     let max_set = 0;
-    if($("[id=summary-"+section_id+"]").length){
-        $("[id=summary-"+section_id+"]").find("tr").each(function(){
-            max_set ++;
-        });
-        $("[id=summary-"+section_id+"]").find(".selected-row").removeClass("selected-row");
-        $("[id=summary-"+section_id+"]").find("#section-"+section_id+"-row-"+pageNo).addClass("selected-row");
-    }else{
-        $("#pagination-section-"+section_id).find("tr").each(function(){
-            max_set ++;
-        });
-        $("#pagination-section-"+section_id).find(".selected-page").removeClass("selected-page");
-        $("#pagination-section-"+section_id).find("#section-"+section_id+"-page_number-"+pageNo).addClass("selected-page");
-    }
-
     let setArray = {};
-    //get this section's set array
-    $.each($("#setArray-"+section_id).val().split(','),function(k,sectionId){
-        if(sectionId=="") return true;
-        setArray[sectionId] = null;
-    });
-    //get parent setNo
-    $.each(setArray,function(detailSectionId, setNo){
-        if($("#summary-"+detailSectionId).length){
-            if($("#summary-"+detailSectionId).find(".selected-row").length){
-                setArray[detailSectionId] = parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3]);
+    let fieldTargetArray = [];
+    //TODO HIGHLIGHT SELECTED PAGE
+    if(!$("[id=summary-"+section_id+"]").length&&!$("#pagination-section-"+section_id).length){
+        if($("[name=section\\["+section_id+"\\]]").length)
+            section_id = $("[name=section\\["+section_id+"\\]]").val().split(',')[$("[name=section\\["+section_id+"\\]]").val().split(',').length - 1].split(':')[0];
+        else setFlag = false;
+    }
+    if(setFlag)
+    {
+        if($("[id=summary-"+section_id+"]").length){
+            $("[id=summary-"+section_id+"]").find("tr").each(function(){
+                max_set ++;
+            });
+            if(addFlag==null){
+                $("[id=summary-"+section_id+"]").find(".selected-row").removeClass("selected-row");
+                $("[id=summary-"+section_id+"]").find("#section-"+section_id+"-row-"+pageNo).addClass("selected-row");
             }
         }else{
-            setArray[detailSectionId] = parseInt($("[id=pagination-section-"+detailSectionId+"]").find(".selected-page").attr('id').split("-")[3]);
+            $("#pagination-section-"+section_id).find("[id*=page_number]").each(function(){
+                max_set ++;
+            });
+            if(addFlag==null){
+                $("#pagination-section-"+section_id).find(".selected-page").removeClass("selected-page");
+                $("#pagination-section-"+section_id).find("#section-"+section_id+"-page_number-"+pageNo).addClass("selected-page");
+            }
         }
-    });
-    setArray[section_id] = pageNo;
-    if(addFlag)
-        setArray[section_id] = max_set;
+        //Judge whether this has fields
+        if($("[name=section\\["+section_id+"\\]]").length){
+            //get this section setNo
+            $.each($("[name=section\\["+section_id+"\\]]").val().split(','),function(k, setSectionArray){
+                if(section_id == setSectionArray.split(':')[0]){
+                    setArray[section_id] = parseInt(pageNo);
+                }else{
+                    setArray[setSectionArray.split(':')[0]] = parseInt(setSectionArray.split(':')[1]);
+                }
+            });
+        }else{
+            //get this section's set array
+            $.each($("#setArray-"+section_id).val().split(','),function(k,sectionId){
+                if(sectionId=="") return true;
+                setArray[sectionId] = null;
+            });
+            //get parent setNo
+            $.each(setArray,function(detailSectionId, setNo){
+                if(detailSectionId == section_id) return true;
+                if($("#summary-"+detailSectionId).length){
+                    setArray[detailSectionId] = parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3]);
+                }else{
+                    setArray[detailSectionId] = parseInt($("[id=pagination-section-"+detailSectionId+"]").find(".selected-page").attr('id').split("-")[3]);
+                }
+            });
+        }
+        if(addFlag)
+            setArray[section_id] = max_set+1;
+        else setArray[section_id] = pageNo;
+    }
+    console.log(section_id+" "+pageNo);
+    console.log(setArray);
     //for each field
-    
     $("[id^=input-").each(function(){
+        let orignalId = $(this).attr('id').split('-')[1];
         let sectionId = $(this).attr('id').split('-')[1];
         let sectionKey = $(this).attr('id').split('-')[3];
+        let inputSetflag  = true;
+        if(!$("[id=summary-"+sectionId+"]").length&&!$("#pagination-section-"+sectionId).length){
+            if($("[name=section\\["+sectionId+"\\]]").length)
+                sectionId = $("[name=section\\["+sectionId+"\\]]").val().split(',')[$("[name=section\\["+sectionId+"\\]]").val().split(',').length - 1].split(':')[0];
+            else inputSetflag = false;
+        }
+        if(sectionId!=section_id&&!inputSetflag) return true;
         $(this).find("[id*=-field-]").each(function(){
             //get this field setArray
             let targetSetArray = {};
@@ -343,47 +373,87 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             let fieldDiv = $(this);
             let newSetSectionString ="";
             targetSetArray = {};
-            $.each($("[name=section\\["+sectionId+"\\]]").val().split(','),function(k, setSectionArray){
-                console.log($("[name=section\\["+sectionId+"\\]]").val());
-                fieldsectionSetArray.unshift(setSectionArray.split(':')[0]);
-                if(section_id == setSectionArray.split(':')[0]){
+            if(setFlag&&inputSetflag)
+            {
+                if($("[name=section\\["+sectionId+"\\]]").length){
+                    newSetSectionString ="";
+                    //get this section setNo
+                    let setK = 999;
+                    $.each($("[name=section\\["+sectionId+"\\]]").val().split(','),function(k, setSectionArray){
+                        fieldsectionSetArray.unshift(setSectionArray.split(':')[0]);
+                        if(section_id == setSectionArray.split(':')[0]){
+                            setK = k;
+                            targetSetArray[section_id] = parseInt(pageNo);
+                            if(addFlag)
+                                newSetSectionString = newSetSectionString+setSectionArray.split(':')[0]+":"+parseInt(max_set+1)+",";
+                            else newSetSectionString = newSetSectionString+setSectionArray.split(':')[0]+":"+pageNo+",";
+                        }
+                        else{
+                            if(k<setK){
+                                targetSetArray[setSectionArray.split(':')[0]] = parseInt(setSectionArray.split(':')[1]);
+                                newSetSectionString = newSetSectionString+setSectionArray+",";
+                            }else{
+                                targetSetArray[setSectionArray.split(':')[0]] = 1;
+                                newSetSectionString = newSetSectionString+setSectionArray.split(':')[0]+":"+"1,";
+                            }
+                        }
+                    });
+                }else{
+                    newSetSectionString ="";
+                    //get this section's set array
+                    $.each($("#setArray-"+sectionId).val().split(','),function(k,setsectionId){
+                        if(setsectionId=="") return true;
+                        targetSetArray[setsectionId] = null;
+                        fieldsectionSetArray.unshift(setsectionId);
+                    });
+                    //get parent setNo
+                    $.each(targetSetArray,function(detailSectionId, setNo){
+                        if(detailSectionId == section_id){
+                            if(addFlag)
+                                newSetSectionString = newSetSectionString+detailSectionId+":"+parseInt(max_set+1)+",";
+                            else newSetSectionString = newSetSectionString+detailSectionId+":"+pageNo+",";
+                            console.log(newSetSectionString);
+                            return true;
+                        }
+                        if($("#summary-"+detailSectionId).length){
+                            newSetSectionString = newSetSectionString+detailSectionId+":"+parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3])+",";
+                            targetSetArray[detailSectionId] = parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3]);
+                        }else{
+                            newSetSectionString = newSetSectionString+detailSectionId+":"+parseInt($("[id=pagination-section-"+detailSectionId+"]").find(".selected-page").attr('id').split("-")[3])+",";
+                            targetSetArray[detailSectionId] = parseInt($("[id=pagination-section-"+detailSectionId+"]").find(".selected-page").attr('id').split("-")[3]);
+                        }
+                    });
                     targetSetArray[section_id] = parseInt(pageNo);
-                    if(addFlag)
-                        newSetSectionString = newSetSectionString+setSectionArray.split(':')[0]+":"+max_set+",";
-                    else newSetSectionString = newSetSectionString+setSectionArray.split(':')[0]+":"+pageNo+",";
                 }
-                else{
-                    targetSetArray[setSectionArray.split(':')[0]] = parseInt(setSectionArray.split(':')[1]);
-                    newSetSectionString = newSetSectionString+setSectionArray+",";
+                $("[id^=save-btn"+orignalId+"]").attr("onclick","saveSection("+orignalId+","+pageNo+")");
+                let relateFlag = false;
+                //classify sections: 1. parent section 2.same section 3.child section 4.unrelated section
+                $.each(targetSetArray,function(setSectionId,detailSetNo){
+                    if(setSectionId in setArray){
+                        targetSetArray[setSectionId] = setArray[setSectionId];
+                        relateFlag = true;
+                    }else{
+                        targetSetArray[setSectionId] = 1;
+                    };
+                });
+                if(sectionId!=section_id){
+                
+                    if($("[id=summary-"+sectionId+"]").length){
+                        $("[id=summary-"+sectionId+"]").find(".selected-row").removeClass("selected-row");
+                        $("[id=summary-"+sectionId+"]").find("#section-"+sectionId+"-row-"+targetSetArray[sectionId]).addClass("selected-row");
+                    }else{
+                        $("#pagination-section-"+sectionId).find(".selected-page").removeClass(".selected-page");
+                        $("#pagination-section-"+sectionId).find("#section-"+sectionId+"-page_number-"+targetSetArray[sectionId]).addClass(".selected-page");
+                    }
                 }
-            });
-            let relateFlag = false;
-            //classify sections: 1. parent section 2.same section 3.child section 4.unrelated section
-            $.each(targetSetArray,function(setSectionId,detailSetNo){
-                if(setSectionId in setArray){
-                    targetSetArray[setSectionId] = setArray[setSectionId];
-                    relateFlag = true;
-                }else{
-                    targetSetArray[setSectionId] = 1;
-                };
-            });
-            if(sectionId!=section_id){
-               
-                if($("[id=summary-"+sectionId+"]").length){
-                    $("[id=summary-"+sectionId+"]").find(".selected-row").removeClass("selected-row");
-                    $("[id=summary-"+sectionId+"]").find("#section-"+sectionId+"-row-"+targetSetArray[sectionId]).addClass("selected-row");
-                }else{
-                    $("#pagination-section-"+sectionId).find(".selected-page").removeClass(".selected-page");
-                    $("#pagination-section-"+sectionId).find("#section-"+sectionId+"-page_number-"+targetSetArray[sectionId]).addClass(".selected-page");
-                }
+                $("[name=section\\["+orignalId+"\\]]").val(newSetSectionString.substr(0,newSetSectionString.length-1));
+                fieldTargetArray = [];
+                $.each(fieldsectionSetArray,function(k,v){
+                    fieldTargetArray.push(targetSetArray[v]);
+                });
+                //type of 4
+                if(!relateFlag) return true;
             }
-            $("[name=section\\["+sectionId+"\\]]").val(newSetSectionString.substr(0,newSetSectionString.length-1));
-            let fieldTargetArray = [];
-            $.each(fieldsectionSetArray,function(k,v){
-                fieldTargetArray.push(targetSetArray[v]);
-            });
-            //type of 4
-            if(!relateFlag) return true;
             $(this).find("[name$=\\[id\\]]").each(function(){
                 let sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
                 let valueFlag = false;
@@ -392,15 +462,17 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                 let maxindex=0;
                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-                        if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
+                        if(((typeof value.sd_section_sets !="undefined")&&(typeof value.sd_section_sets.set_array !="undefined"))||(value.sd_section_sets==""&&!setFlag)){
                             let setMatch = true;
-                            $.each(fieldTargetArray,function(k,v){
-                                if(v == parseInt(value.sd_section_sets.set_array.split(',')[k])||(value.sd_section_sets.set_array.split(',')[k]=='*'&&k!=0))
-                                    return true;
-                                setMatch = false;
-                                return false;
-                            });
-                            if ((typeof value != 'undefined')&&(setMatch)){
+                            if(setFlag&&inputSetflag){
+                                $.each(fieldTargetArray,function(k,v){
+                                    if(v == parseInt(value.sd_section_sets.set_array.split(',')[k])||(value.sd_section_sets.set_array.split(',')[k]=='*'&&k!=0))
+                                        return true;
+                                    setMatch = false;
+                                    return false;
+                                });
+                            }
+                            if ((typeof value != "undefined")&&(setMatch)){
                                 thisElement.val(value.id);
                                 thisElement.attr('id',idholder[0]+'-'+idholder[1]+'-'+idholder[2]+'-'+idholder[3]+'-'+idholder[4]+'-'+index+'-'+idholder[6]);
                                 valueFlag = true;
@@ -425,15 +497,17 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                 let thisElement = $(this);
                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-                        if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
+                        if(((typeof value.sd_section_sets !="undefined")&&(typeof value.sd_section_sets.set_array !="undefined"))||(value.sd_section_sets==""&&!setFlag)){
                             let setMatch = true;
-                            $.each(fieldTargetArray,function(k,v){
-                                if(v == parseInt(value.sd_section_sets.set_array.split(',')[k])||(value.sd_section_sets.set_array.split(',')[k]=='*'&&k!=0))
-                                    return true;
-                                setMatch = false;
-                                return false;
-                            });
-                            if ((typeof value != 'undefined')&&(setMatch)){
+                            if(setFlag&&inputSetflag){
+                                $.each(fieldTargetArray,function(k,v){
+                                        if(v == parseInt(value.sd_section_sets.set_array.split(',')[k])||(value.sd_section_sets.set_array.split(',')[k]=='*'&&k!=0))
+                                            return true;
+                                        setMatch = false;
+                                        return false;
+                                });
+                            }
+                            if ((typeof value != "undefined")&&(setMatch)){
                                 if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
                                     thisElement.val(value.field_value).trigger('change');
                                     valueFlag = true;
@@ -448,7 +522,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                                         if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
                                             thisElement.prop('checked',true);
                                         }else thisElement.prop('checked',false);
-                                        if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
+                                        if((typeof thisId[5] != "undefined")&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
                                     }
                                 }
                             }
@@ -461,7 +535,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                         thisElement.val(null).trigger('change');;
                     }else{
                         thisElement.prop('checked',false);
-                        if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {
+                        if((typeof thisId[5] != "undefined")&&(thisId[5]=="final")) {
                             val = "";
                             for (i = 0; i < thisId[4]; i++){
                                 val = val+"0";
@@ -474,7 +548,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
     
         });
     });
-    renderSummaries(section_id, pageNo);
+    renderSummaries(section_id, pageNo, addFlag);
     return false;
 }
 function searchWhoDra(){
@@ -507,60 +581,61 @@ function searchWhoDra(){
         }
     });
 }
-function paginationReady(){
-    return false;
-    $("[id^=pagination-l2").each(function(){
-        let hsectionid = $(this).attr('id').split('-')[3];
-        let child_section_element = $("[id^=child_section][id$=section-"+hsectionid+"]").attr('id');
-        let child_section_id = child_section_element.split('-')[1];
-        child_section_id = child_section_id.split(/[\[\]]/);
-        child_section_id = jQuery.grep(child_section_id, function(n, i){
-            return (n !== "" && n != null);
-        });
-        let max_set_no  = 0 ;
-        $(child_section_id).each(function(k, v){
-            let sectionKey = $("[id^=add_set-"+v+"]").attr('id').split('-')[3];
-            $(section[sectionKey].sd_section_structures).each(function(k,v){
-                $.each(v.sd_field.sd_field_values,function(key, value){
-                    // console.log("v:");console.log(v);console.log(value);console.log(value.set_number);
-                    max_set_no = Math.max(value.set_number, max_set_no);
-                })
-            })
-            // section[section_Id[2]].sd_section_structures[sectionStructureK].sd_field.sd_field_value_details
-            $("[id^=pagination-section-"+v+"]").hide();
-        });
-        if (max_set_no==0) {
-            $("[id^=child_section][id$=section-"+hsectionid+"]").hide();
-            max_set_no = 1;
-        }else {
-            $("[id^=child_section][id$=section-"+hsectionid+"]").show();
-            $("[id=delete_section-"+hsectionid+"]").show();
-        }
-        let text= "";
-        text += "<nav class=\"d-inline-block float-right\" title=\"Pagination\" aria-label=\"Data Entry Set Pagination\">";
-        text += "<ul class=\"pagination mb-0\">";
-        text +=    "<li class=\"page-item\" id=\"left_set-"+hsectionid+"-setNo-1\" onclick=\"level2setPageChange("+hsectionid+",0)\" >";
-        text +=    "<a  class=\"page-link\" aria-label=\"Previous\">";
-        text +=        "<span aria-hidden=\"true\">&laquo;</span>";
-        text +=        "<span class=\"sr-only\">Previous</span>";
-        text +=    "</a>";
-        text +=    "</li>";
-        for(pageNo=1; pageNo<=max_set_no; pageNo++){
-                    text +=    "<li class=\"page-item\" id=\"l2section-"+hsectionid+"-page_number-"+pageNo+"\" ><a id=\"section-"+hsectionid+"-page_number-"+pageNo+"\" onclick=\"level2setPageChange("+hsectionid+","+pageNo+")\" class=\"page-link\">"+pageNo+"</a></li>";
-        }
-        text +=    "<li class=\"page-item\" id=\"right_set-"+hsectionid+"-setNo-1\" onclick=\"level2setPageChange("+hsectionid+",2)\">";
-        text +=    "<a class=\"page-link\" aria-label=\"Next\">";
-        text +=        "<span aria-hidden=\"true\">&raquo;</span>";
-        text +=        "<span class=\"sr-only\">Next</span>";
-        text +=    "</a>";
-        text +=    "</li>";
-        text += "</ul>";
-        text += "</nav>";
-        $("#showpagination-"+hsectionid).html(text);
-    })
-}
+// function paginationReady(){
+//     return false;
+//     $("[id^=pagination-l2").each(function(){
+//         let hsectionid = $(this).attr('id').split('-')[3];
+//         let child_section_element = $("[id^=child_section][id$=section-"+hsectionid+"]").attr('id');
+//         let child_section_id = child_section_element.split('-')[1];
+//         child_section_id = child_section_id.split(/[\[\]]/);
+//         child_section_id = jQuery.grep(child_section_id, function(n, i){
+//             return (n !== "" && n != null);
+//         });
+//         let max_set_no  = 0 ;
+//         $(child_section_id).each(function(k, v){
+//             let sectionKey = $("[id^=add_set-"+v+"]").attr('id').split('-')[3];
+//             $(section[sectionKey].sd_section_structures).each(function(k,v){
+//                 $.each(v.sd_field.sd_field_values,function(key, value){
+//                     // console.log("v:");console.log(v);console.log(value);console.log(value.set_number);
+//                     max_set_no = Math.max(value.set_number, max_set_no);
+//                 })
+//             })
+//             // section[section_Id[2]].sd_section_structures[sectionStructureK].sd_field.sd_field_value_details
+//             $("[id^=pagination-section-"+v+"]").hide();
+//         });
+//         if (max_set_no==0) {
+//             $("[id^=child_section][id$=section-"+hsectionid+"]").hide();
+//             max_set_no = 1;
+//         }else {
+//             $("[id^=child_section][id$=section-"+hsectionid+"]").show();
+//             $("[id=delete_section-"+hsectionid+"]").show();
+//         }
+//         let text= "";
+//         text += "<nav class=\"d-inline-block float-right\" title=\"Pagination\" aria-label=\"Data Entry Set Pagination\">";
+//         text += "<ul class=\"pagination mb-0\">";
+//         text +=    "<li class=\"page-item\" id=\"left_set-"+hsectionid+"-setNo-1\" onclick=\"level2setPageChange("+hsectionid+",0)\" >";
+//         text +=    "<a  class=\"page-link\" aria-label=\"Previous\">";
+//         text +=        "<span aria-hidden=\"true\">&laquo;</span>";
+//         text +=        "<span class=\"sr-only\">Previous</span>";
+//         text +=    "</a>";
+//         text +=    "</li>";
+//         for(pageNo=1; pageNo<=max_set_no; pageNo++){
+//                     text +=    "<li class=\"page-item\" id=\"l2section-"+hsectionid+"-page_number-"+pageNo+"\" ><a id=\"section-"+hsectionid+"-page_number-"+pageNo+"\" onclick=\"level2setPageChange("+hsectionid+","+pageNo+")\" class=\"page-link\">"+pageNo+"</a></li>";
+//         }
+//         text +=    "<li class=\"page-item\" id=\"right_set-"+hsectionid+"-setNo-1\" onclick=\"level2setPageChange("+hsectionid+",2)\">";
+//         text +=    "<a class=\"page-link\" aria-label=\"Next\">";
+//         text +=        "<span aria-hidden=\"true\">&raquo;</span>";
+//         text +=        "<span class=\"sr-only\">Next</span>";
+//         text +=    "</a>";
+//         text +=    "</li>";
+//         text += "</ul>";
+//         text += "</nav>";
+//         $("#showpagination-"+hsectionid).html(text);
+//     })
+// }
 function deleteSection(sectionId, setArray=null, pcontrol=false){
 
+    let sectionRequest = {};
     let request = {};
     let savedArray = [];
     let setNo = 0;
@@ -572,15 +647,13 @@ function deleteSection(sectionId, setArray=null, pcontrol=false){
                 'id': $(this).children("[name$=\\[id\\]]").val(),
                 'sd_field_id':$(this).children("[name$=\\[sd_field_id\\]]").val(),
             };
-            let setArray = {};
-            $(this).children("[name*=set_array]").each(function(){
-                setArray[$(this).attr('id').split('-')[5]] = $(this).val();
-                setNo = $(this).val();
-            });
-            field_request['set_array'] = setArray;
-            request[field_id] = field_request;
+            sectionRequest[field_id] = field_request;
         }
     });
+    sectionRequest['sd_field_values'] = sectionRequest;
+    let sectionArray={};
+    sectionArray[sectionId] = $("[name=section\\["+sectionId+"\\]]").val();
+    request['sectionArray'] =sectionArray;
     console.log(request);
     $.ajax({
         headers: {
@@ -682,8 +755,7 @@ function deleteSection(sectionId, setArray=null, pcontrol=false){
     });
 
 }
-function saveSection(sectionId){
-    let setNo = 0;
+function saveSection(sectionId,setNo){
     // if(!validation(sectionId)) return;
     let request = {};
     let error = 0;
@@ -737,7 +809,7 @@ function saveSection(sectionId){
                 title: "This section has been saved",
               });
             section = $.parseJSON(response);
-            renderSummaries(sectionId,setNo);
+            setPageChange(sectionId,setNo);
             $("[id=addbtnalert-"+sectionId+"]").hide();
             return false;
         },
