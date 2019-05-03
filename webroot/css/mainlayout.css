@@ -595,3 +595,8 @@ ul.queryBoxLeft > a {
 #caseTable tbody tr:nth-child(even){
     background-color: #ddebff;
 }
+/* radio button css */
+.custom-radio{
+    margin-top:10px;
+    margin-left:10px;
+}
