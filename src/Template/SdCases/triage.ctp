@@ -190,28 +190,28 @@
         </div>
         <div class="form-row bg-light">
             <div class="form-group col-md-3">
-                <label>LLT Name</label>
-                <?php if($field_value_set['394']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_eventField_meddralltname_id\" name=\"field_value[394][id]\" value=\"".$field_value_set['394']['id']."\">";?>
-                <input type="text" class="form-control" name="field_value[394][value]" id="eventField_meddralltname" value="<?= $field_value_set['394']['field_value'] ?>">
+                <label>LLT Code</label>
+                <?php if($field_value_set['392']['id']!=null)
+                echo "<input type=\"hidden\" id=\"id_eventField_meddralltname_id\" name=\"field_value[392][id]\" value=\"".$field_value_set['392']['id']."\">";?>
+                <input type="text" class="form-control" name="field_value[392][value]" id="eventField_meddralltname" value="<?= $field_value_set['392']['field_value'] ?>">
             </div>
             <div class="form-group col-md-3">
-                <label>PT Name</label>
-                <?php if($field_value_set['392']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_eventField_meddraptname_id\" name=\"field_value[392][id]\" value=\"".$field_value_set['393']['id']."\">";?>
-                <input type="text" class="form-control" name="field_value[392][value]" id="eventField_meddraptname" value="<?= $field_value_set['392']['field_value'] ?>">
+                <label>LLT Name</label>
+                <?php if($field_value_set['391']['id']!=null)
+                echo "<input type=\"hidden\" id=\"id_eventField_meddraptname_id\" name=\"field_value[391][id]\" value=\"".$field_value_set['391']['id']."\">";?>
+                <input type="text" class="form-control" name="field_value[391][value]" id="eventField_meddraptname" value="<?= $field_value_set['391']['field_value'] ?>">
             </div>
             <div class="form-group col-md-3">
                 <label>PT Code</label>
-                <?php if($field_value_set['395']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[395][id]\" value=\"".$field_value_set['395']['id']."\">";?>
-                <input type="text" class="form-control" name="field_value[395][value]" id="eventField_meddrahltname" value="<?= $field_value_set['395']['field_value'] ?>">
+                <?php if($field_value_set['394']['id']!=null)
+                echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[394][id]\" value=\"".$field_value_set['394']['id']."\">";?>
+                <input type="text" class="form-control" name="field_value[394][value]" id="eventField_meddrahltname" value="<?= $field_value_set['394']['field_value'] ?>">
             </div>
             <div class="form-group col-md-3">
-                <label>Meddra Version</label>
-                <?php if($field_value_set['395']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[395][id]\" value=\"".$field_value_set['395']['id']."\">";?>
-                <input type="text" class="form-control" name="field_value[395][value]" id="eventField_meddrahltname" value="<?= $field_value_set['395']['field_value'] ?>">
+                <label>PT Name</label>
+                <?php if($field_value_set['393']['id']!=null)
+                echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[393][id]\" value=\"".$field_value_set['393']['id']."\">";?>
+                <input type="text" class="form-control" name="field_value[393][value]" id="eventField_meddrahltname" value="<?= $field_value_set['393']['field_value'] ?>">
             </div>
 
         </div>

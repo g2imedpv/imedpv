@@ -175,16 +175,20 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-3">
-                                        <label>PT Term:</label>
-                                        <input type="text" class="form-control" name="field_value[394]" id="meddraptname">
+                                        <label>LLT Code</label>
+                                        <input type="text" class="form-control" name="field_value[392]" id="meddraptname">
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>LLT Term:</label>
-                                        <input type="text" class="form-control" name="field_value[392]" id="meddralltname">
+                                        <label>LLT Name</label>
+                                        <input type="text" class="form-control" name="field_value[391]" id="meddralltname">
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>HLT Term:</label>
-                                        <input type="text" class="form-control" name="field_value[395]" id="meddrahltname">
+                                        <label>PT Code</label>
+                                        <input type="text" class="form-control" name="field_value[394]" id="meddrahltname">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>PT Name</label>
+                                        <input type="text" class="form-control" name="field_value[393]" id="meddrahltname">
                                     </div>
                                 </div>
                             </div>

@@ -70,7 +70,7 @@ $(document).ready(function(){
                 }
             });
         //dosing regiment: calculate duration
-        // function duration(,startMonth,startYear,endYear,endMonth,endDay,dur,durUnit) {
+        // function duration(startDay,startMonth,startYear,endDay,endMonth,endYear,dur,durUnit) {
         //    var endTime=(endYear*365+endMonth*30+endDay)*24*60;
         //    var startTime=(startYear*365+startMonth*30+startDay)*24*60;
         //    var diffTime=endTime-startTime;
@@ -91,9 +91,10 @@ $(document).ready(function(){
         //         document.getElementById(durUnit).value="801";
         //    }
         // }
-
+        // duration("1","2","1990","1","4","1990","#section-22-text-206","#section-22-select-207");
         // duration("#select2-unspecified-day_section-22-unspecifieddate-199-container", "#select2-unspecified-month_section-22-unspecifieddate-199-container","#select2-unspecified-year_section-22-unspecifieddate-199-container",
-        //         "","","","","");
+        //         "#select2-unspecified-day_section-22-unspecifieddate-205-container","#select2-unspecified-month_section-22-unspecifieddate-205-container","#select2-unspecified-year_section-22-unspecifieddate-205-container",
+        //         "#section-22-text-206","#section-22-select-207");
     
 
     // Causality Tab:
