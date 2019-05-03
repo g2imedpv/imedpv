@@ -124,7 +124,9 @@ class SdSectionsController extends AppController
             $sdSectionSetsTable = TableRegistry::get('SdSectionSets');
             $SdSectionStructuresTable = TableRegistry::get('SdSectionStructures');
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
-            $sectionArray = $this->request->getData()['sectionArray'];
+            if(array_key_exists('sectionArray',$this->request->getData()))
+                $requestSectionArray = $this->request->getData()['sectionArray'];
+            else $requestSectionArray =[];
             foreach($requstData as $sectionValueK => $sectionValue) {
                 $section_id = $sectionValueK;
                 foreach($sectionValue as $sectionFieldK =>$sectionFieldValue){
@@ -154,15 +156,13 @@ class SdSectionsController extends AppController
                             debug($savedFieldValue);
                         } 
                         $sdSectionSetsEntity = $sdSectionSetsTable->newEntity(); 
-                        if(!empty($sectionArray)) continue;
-                        $sectionArray = explode(',',$sectionArray[$section_id]);
+                        if(empty($requestSectionArray)) continue;
+                        $sectionArray = explode(',',$requestSectionArray[$section_id]);
                         for($i = sizeof($sectionArray)-1;$i>=0;$i--){
                             $sdSectionSetsEntity['set_array'] = $sdSectionSetsEntity['set_array'].explode(':',$sectionArray[$i])[1].","; 
                         }
                         $sdSectionSetsEntity['set_array'] = substr($sdSectionSetsEntity['set_array'], 0, -1);
                         $sdSectionSetsEntity['sd_section_id'] = $section_id;
-                        if(strlen($sdSectionSetsEntity['set_array']) > 1)
-
                         $setDataSet = [
                             'set_array' =>$sdSectionSetsEntity['set_array'],
                             'sd_field_value_id'=>$savedFieldValue['id'],
@@ -183,9 +183,8 @@ class SdSectionsController extends AppController
                             $sdSectionSetsEntityNew = $sdSectionSetsTable->newEntity();
                             $sdSectionSetsEntityNew = $sdSectionSetsTable->patchEntity($sdSectionSetsEntityNew, $setDataSet);
                             $sdSectionSetsEntityNew['sd_section_id'] = $sectionDetail['sd_section_id'];
-                            if($sectionFieldValue['sd_field_id'] == '200'){
-                                $sdSectionSetsEntityNew['set_array'] = substr($sdSectionSetsEntityNew['set_array'], 0, -1);
-                                $sdSectionSetsEntityNew['set_array'] = $sdSectionSetsEntityNew['set_array'].'*';
+                            if($sectionFieldValue['sd_field_id'] == '149'){
+                                $sdSectionSetsEntityNew['set_array'] = $sdSectionSetsEntityNew['set_array'].',*';
                             }
                             $sdSectionSetsEntityNew['sd_field_value_id'] = $savedFieldValue['id'];                           
                             if(!$sdSectionSetsTable->save($sdSectionSetsEntityNew)){

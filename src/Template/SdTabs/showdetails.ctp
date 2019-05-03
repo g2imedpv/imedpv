@@ -159,7 +159,7 @@ echo $this->element('generatepdf');
         // echo "</div>";
 
     ?>
-    <?php if(($writePermission)&&($this->request->getQuery('readonly')!=1)):?>
+    <?php debug($caseId);if(($writePermission)&&($this->request->getQuery('readonly')!=1)):?>
     <div class="text-center">
     <button type="submit" class="completeBtn w-25 btn btn-success mb-5">Complete</button>
     </div>
@@ -250,7 +250,7 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
     // }
     $text =$text. "<div class=\"header-section \">";//Todo
     $text =$text. "<h3 id=\"section_label-".$sectionId."\"class=\"secspace\">".$section_name."</h3>";
-    $text =$text. "<input id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.")\" class=\"ml-3 px-5 btn btn-outline-primary\" type=\"button\" style=\"display:none\" value=\"Save\">";
+    $text =$text. "<input id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.",1)\" class=\"ml-3 px-5 btn btn-outline-primary\" type=\"button\" style=\"display:none\" value=\"Save\">";
     //echo"<a role=\"button\" id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
     $text =$text. "</h3>";
         // if(($section->is_addable == 1)&&($permission==1))
@@ -314,7 +314,8 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
     $text = $text."'>";
     $text = $text."<table class=\"table table-bordered table-hover layer".$section_level."\" id=\"sectionSummary-".$sectionId."-sectionKey-".$section_key."\">";
     $text = $text."<thead>";
-    $text = $text."<tr >";
+    $text = $text."<tr>";
+    $text = $text."<th>SetNo</th>";
     foreach($fields as $field_detail){
         $text = $text."<th scope=\"col\" id=\"col-".$sectionId."-".$field_detail->id."\">".$field_detail->field_label."</th>";
 
@@ -364,7 +365,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
         if($noValue != sizeof($fields)) {
             $text = $text."<tr ";
             if($row==1) $text = $text."class=\"selected-row\" ";
-            $text = $text."id=\"section-".$sectionId."-row-".$row."\" onclick=\"setPageChange(".$sectionId.",".$row.")\" >".$rowtext."
+            $text = $text."id=\"section-".$sectionId."-row-".$row."\" onclick=\"setPageChange(".$sectionId.",".$row.")\" ><td>".$row."</td>".$rowtext."
                                                 <td><button class='btn btn-outline-danger' onclick='#' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
         }//TODO ADD JS FUNCTION TO DISPLAY SET
         $row++;        
@@ -399,15 +400,15 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
     //     }
     // }elseif($section->section_level ==1 ){
         $text =$text. "<div class=\"fieldInput \" id=\"input-".$section->id."-sectionKey-".$sectionKey."\">";
-        $text =$text. "<input type =\"hidden\" name=\"section[".$section->id."]\" value=\"";
         if(!empty($setArray)){
+            $text =$text. "<input type =\"hidden\" name=\"section[".$section->id."]\" value=\"";
             $sectionsText = "";
             foreach($setArray as $sectionsId){
                 $sectionsText =$sectionsText.$sectionsId.":1,";
             }
             $text = $text.substr($sectionsText,0,-1);
+            $text =$text. "\">";
         }
-        $text =$text. "\">";
         $text =$text. "<hr class=\"my-2\">";
         $length_taken = 0;
         $cur_row_no = 0;
@@ -422,8 +423,11 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                 $cur_row_no = $sd_section_structure_detail->row_no;
                 $text =$text."</div><div class=\"form-row \">";
             }
-            $j = sizeof($sd_section_structure_detail->sd_field->sd_field_values)+1;
-            if(empty($setArray)) $j = sizeof($sd_section_structure_detail->sd_field->sd_field_values);
+            $j = sizeof($sd_section_structure_detail->sd_field->sd_field_values);
+            if(empty($setArray)){
+                $j = sizeof($sd_section_structure_detail->sd_field->sd_field_values)-1;
+                if(sizeof($sd_section_structure_detail->sd_field->sd_field_values)==0) $j++;
+            }
             foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
                 $levelMatch = 1;
                 if(empty($value_detail_field_values->sd_section_sets)) continue;
