@@ -5,16 +5,16 @@ jQuery(function($) {
 $(document).ready(function(){
 
     $('[name$=\\[field_value\\]').change(function(){
-        var id = $(this).attr('id').split('-');
+        let id = $(this).attr('id').split('-');
         $('[id=section-'+id[1]+'-error_message-'+id[3]+']').text();
         $('[id=section-'+id[1]+'-error_message-'+id[3]+']').hide();
 
         $("div[id=section-"+id[1]+"-field-"+id[3]+']').each(function(){
-            var field_value = null;
+            let field_value = null;
             if($(this).find("[name$=\\[field_value\\]]").length){
                 field_type = $(this).find("[name$=\\[field_value\\]]").attr('id').split('-')[2];
                 if((field_type!="radio")&&(field_type!="checkbox")){
-                     field_value = $(this).find("[name$=\\[field_value\\]]").val();
+                    field_value = $(this).find("[name$=\\[field_value\\]]").val();
                 }else{
                     if(field_type=="radio"){
                         $(this).find("[name$=\\[field_value\\]]").each(function(){
@@ -27,7 +27,7 @@ $(document).ready(function(){
                 }
             }
             if(($(this).find("[name$=\\[field_rule\\]]").length)&&(field_value!="")){
-                var rule = $(this).find("[name$=\\[field_rule\\]]").val().split("-");
+                let rule = $(this).find("[name$=\\[field_rule\\]]").val().split("-");
                 if((rule[1]=="N")&&(!/^[0-9]+$/.test(field_value)))
                 {
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").show();
@@ -59,7 +59,7 @@ $(document).ready(function(){
 };
 
     $("#searchFieldKey").keyup(function(){
-        var request={
+        let request={
             'key':$('#searchFieldKey').val(),
             'caseId':caseId,
             'userId':userId,
@@ -78,7 +78,7 @@ $(document).ready(function(){
                 $('#searchFieldResult').html("");
                 console.log(response);
                 searchResult = $.parseJSON(response);
-                var text ="<table class=\"table table-hover w-100\">";
+                let text ="<table class=\"table table-hover w-100\">";
                 text +="<tr><th scope=\"col\">Field Lable</th>";
                 text +="<th scope=\"col\">Tab Name</th>";
                 text +="<th scope=\"col\">Section Name</th>";
@@ -118,29 +118,29 @@ $(document).ready(function(){
     $('input:checkbox[id^=section]').change(
         function(){
             if ($(this).is(':checked')) {
-                var id = $(this).attr('id').split('-');
-                var inputElement = $('[id^='+id[0]+'-'+id[1]+'-'+id[2]+'-'+id[3]+'][id$=final]');
-                var Value = inputElement.val();
+                let id = $(this).attr('id').split('-');
+                let inputElement = $('[id^='+id[0]+'-'+id[1]+'-'+id[2]+'-'+id[3]+'][id$=final]');
+                let Value = inputElement.val();
                 Value = Value.substring(0, $(this).val()-1) + "1" + Value.substring($(this).val());
                 inputElement.val(Value);
             }else{
-                var id = $(this).attr('id').split('-');
-                var inputElement = $('[id^='+id[0]+'-'+id[1]+'-'+id[2]+'-'+id[3]+'][id$=final]');
-                var Value = inputElement.val();
+                let id = $(this).attr('id').split('-');
+                let inputElement = $('[id^='+id[0]+'-'+id[1]+'-'+id[2]+'-'+id[3]+'][id$=final]');
+                let Value = inputElement.val();
                 Value = Value.substring(0, $(this).val()-1) + "0" + Value.substring($(this).val());
                 inputElement.val(Value);
             }
         });
 });
 function level2setPageChange(section_id, pageNo, addFlag=null){
-    var child_section =  $("[id^=child_section][id$=section-"+section_id+"]").attr('id').split('-');
+    let child_section =  $("[id^=child_section][id$=section-"+section_id+"]").attr('id').split('-');
     child_section_id = child_section[1].split(/[\[\]]/);
     child_section_id = jQuery.grep(child_section_id, function(n, i){
         return (n !== "" && n != null);
     });
-    var max_set_no  = 0 ;
+    let max_set_no  = 0 ;
     $(child_section_id).each(function(k, v){
-        var sectionKey = $("[id^=add_set-"+v+"]").attr('id').split('-')[3];
+        let sectionKey = $("[id^=add_set-"+v+"]").attr('id').split('-')[3];
         $(section[sectionKey].sd_section_structures).each(function(k,v){
             $.each(v.sd_field.sd_field_values,function(key, value){
                 max_set_no = Math.max(value.set_number, max_set_no);
@@ -165,7 +165,135 @@ function level2setPageChange(section_id, pageNo, addFlag=null){
     $("[id=section-"+section_id+"-page_number-"+pageNo+"]").css('font-weight', 'bold');
     $("[id^=child_section][id$=section-"+section_id+"]").attr('id',child_section[0]+'-'+child_section[1]+'-'+child_section[2]+'-'+child_section[3]+'-'+child_section[4]+'-'+pageNo+'-'+child_section[6]+'-'+child_section[7]);
 }
+function renderSummaries(section_id, pageNo){
+    let setArray = {};
+    setArray = {};
+    if($("[name=section\\["+section_id+"\\]]").length){
+        $.each($("[name=section\\["+section_id+"\\]]").val().split(','),function(k, setSectionArray){
+            setArray[setSectionArray.split(':')[0]] = parseInt(setSectionArray.split(':')[1]);
+        });
+    }else{
+        //get this section's set array
+        if($("#setArray-"+section_id).length){
+            $.each($("#setArray-"+section_id).val().split(','),function(k,sectionId){
+                if(sectionId=="") return true;
+                setArray[sectionId] = null;
+            });
+        }else{
+            $("[id^=section-"+section_id+"][id*=addableSectionNo]").each(function(){
+                setArray[$(this).attr('name').split(/[\[\]]/)[7]] = null;
+                section_id = $(this).attr('name').split(/[\[\]]/)[7];
+            });
+        }
+        //get parent setNo
+        $.each(setArray,function(detailSectionId, setNo){
+            if($("#summary-"+detailSectionId).length){
+                if($("#summary-"+detailSectionId).find(".selected-row").length)
+                    setArray[detailSectionId] = parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3]);
+            }else{
+                setArray[detailSectionId] = parseInt($("[id=pagination-section-"+detailSectionId+"]").find(".selected-page").attr('id').split("-")[3]);
+            }
+        });
+    }
+    if(section_id in setArray)
+        setArray[section_id] = parseInt(pageNo);
+    console.log(setArray);
+    $("table[id^=sectionSummary-]").each(function(){
+        let tbodyText ="";
+        let sectionId = $(this).attr('id').split('-')[1];
+        if(sectionId in setArray && sectionId != section_id) return true;
+        let setSections = $('#setArray-'+sectionId).val().substr(0,$('#setArray-'+sectionId).val().length-1).split(',');
+        let targetSetArray = "";
+        let row = 1;
+        let related = false;
+        $.each(setSections, function(k, setSectionId){
+            if(setSectionId in setArray)
+                targetSetArray = setArray[setSectionId]+","+targetSetArray;
+            else targetSetArray = "1,"+targetSetArray;
+        });
+        targetSetArray = targetSetArray.substr(0,targetSetArray.length-1);
+        let setString = $('#setArrayValue-'+sectionId).val();
+        let sectionKey = $(this).attr('id').split('-')[3];
+        let noValue = section[sectionKey].sd_section_summary.sdFields.length;
+        do{
+            noValue = section[sectionKey].sd_section_summary.sdFields.length;
+            let rowtext = "";
+            $.each(section[sectionKey].sd_section_summary.sdFields,function(k, field_detail){
+                let noMatchFlag = 0;  
+                $.each(field_detail.sd_field_values,function(k, field_value_detail){
+                    if(field_value_detail.sd_section_sets.length == 0) return true;
+                    let fieldSetArray = field_value_detail.sd_section_sets[0].set_array;
+                    for(let i = 0; i < fieldSetArray.length; i ++){
+                        if(fieldSetArray.charAt(i) == '*') {
+                            fieldSetArray = fieldSetArray.substring(0,i)+targetSetArray.charAt(i)+fieldSetArray.substring(i+1);
+                        }
+                    }
+                    if(fieldSetArray.substring(2) == targetSetArray.substring(2)&&fieldSetArray.split(',')[0] == row){
 
+                        rowtext = rowtext+"<td id=\"section-"+sectionId+"-row-"+row+"-td-"+field_detail.id+"\">";     
+                        if(field_detail.sd_element_type_id != 1 && field_detail.sd_element_type_id != 3 && field_detail.sd_element_type_id != 4)
+                            rowtext = rowtext + field_value_detail.field_value;
+                        else{
+                        $.each(field_detail.sd_field_value_look_ups,function(k, look_ups){
+                            if(look_ups.value == field_value_detail.field_value){
+                                rowtext = rowtext+look_ups.caption;
+                                return false;
+                            }
+                        });
+                        }
+                        rowtext = rowtext+"</td>"; 
+                        noValue --;
+                        noMatchFlag = 1;
+                        return true;     
+                    }
+                });
+                if(!noMatchFlag) rowtext = rowtext+"<td id=\"section-"+sectionId+"-row-"+row+"-"+field_detail.id+"\"></td>";
+            });
+            if(noValue != section[sectionKey].sd_section_summary.sdFields.length) {
+                tbodyText = tbodyText+"<tr ";
+                if(row==1) tbodyText = tbodyText+"class=\"selected-row\" ";
+                tbodyText = tbodyText+"id=\"section-"+sectionId+"-row-"+row+"\" onclick=\"setPageChange("+sectionId+","+row+")\" >"+rowtext+"<td><button class='btn btn-outline-danger' onclick='#' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
+            }
+            row  = row +1;
+        }while(noValue !=section[sectionKey].sd_section_summary.sdFields.length);
+        $(this).find('tbody').html(tbodyText);
+        $(this).find('#section-'+section_id+'-row-1').removeClass('selected-row');
+        $(this).find('#section-'+section_id+'-row-'+setArray[section_id]).addClass('selected-row');
+    });
+    // $("#[id^=pagination-section-]").each(function(){
+        //TODO
+        // let text ="";
+        //     text = $text+"<input type=\"hidden\" id='setArray-".$sdSections->id."' value='";
+        //         foreach($setArray as $setSectionId){
+        //             $text = $text.$setSectionId.",";
+        //         } 
+        //     text = text+"'>";
+        //     text = text+ "<ul class=\"pagination mb-0 mx-2\">";
+        //     text = text+    "<li class=\"page-item\" id=\"left_set-".$sdSections->id."-sectionKey-".$section_key."-setNo-1\" onclick=\"setPageChange(".$sdSections->id.",0)\" >";
+        //     text = text+    "<a class=\"page-link\" aria-label=\"Previous\">";
+        //     text = text+        "<span aria-hidden=\"true\">&laquo;</span>";
+        //     text = text+        "<span class=\"sr-only\">Previous</span>";
+        //     text = text+    "</a>";
+        //     text = text+    "</li>";
+        //     if($max_set_No != 0){
+        //         for($pageNo = 1; $pageNo<=$max_set_No; $pageNo++ ){
+        //             text = text+    "<li class=\"page-item";
+        //             if($pageNo == 1) text = text+" selected-page";
+        //             text = text+"\" id=\"section-".$sdSections->id."-page_number-".$pageNo."\" onclick=\"setPageChange(".$sdSections->id.",".$pageNo.")\"><a class=\"page-link\">".$pageNo."</a></li>";
+        //         }
+        //     }else{
+        //         text = text+    "<li class=\"page-item selected-page\" style=\"font-weight:bold\" id=\"section-".$sdSections->id."-page_number-1\" onclick=\"setPageChange(".$sdSections->id.",1)\"><a class=\"page-link\">1</a></li>";
+
+        //     }
+        //     text = text+    "<li class=\"page-item\" id=\"right_set-".$sdSections->id."-sectionKey-".$section_key."-setNo-1\" onclick=\"setPageChange(".$sdSections->id.",2)\">";
+        //     text = text+    "<a class=\"page-link\" aria-label=\"Next\">";
+        //     text = text+        "<span aria-hidden=\"true\">&raquo;</span>";
+        //     text = text+        "<span class=\"sr-only\">Next</span>";
+        //     text = text+    "</a>";
+        //     text = text+    "</li>";
+        //     text = text+ "</ul>";
+    // });
+}
 function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
     $("[id^=save-btn"+section_id+"]").hide();
     //TODO HIGHLIGHT SELECTED PAGE
@@ -180,8 +308,8 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
         $("#pagination-section-"+section_id).find("tr").each(function(){
             max_set ++;
         });
-        $("#pagination-section-"+section_id).find(".selected-page").removeClass(".selected-page");
-        $("#pagination-section-"+section_id).find("#section-"+section_id+"-page_number-"+pageNo).addClass(".selected-page");
+        $("#pagination-section-"+section_id).find(".selected-page").removeClass("selected-page");
+        $("#pagination-section-"+section_id).find("#section-"+section_id+"-page_number-"+pageNo).addClass("selected-page");
     }
 
     let setArray = {};
@@ -193,27 +321,41 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
     //get parent setNo
     $.each(setArray,function(detailSectionId, setNo){
         if($("#summary-"+detailSectionId).length){
-            setArray[detailSectionId] = parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3]);
+            if($("#summary-"+detailSectionId).find(".selected-row").length){
+                setArray[detailSectionId] = parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3]);
+            }
         }else{
             setArray[detailSectionId] = parseInt($("[id=pagination-section-"+detailSectionId+"]").find(".selected-page").attr('id').split("-")[3]);
         }
     });
+    setArray[section_id] = pageNo;
     if(addFlag)
         setArray[section_id] = max_set;
-    console.log(setArray);
     //for each field
+    
     $("[id^=input-").each(function(){
-        var sectionId = $(this).attr('id').split('-')[1];
-        var sectionKey = $(this).attr('id').split('-')[3];
+        let sectionId = $(this).attr('id').split('-')[1];
+        let sectionKey = $(this).attr('id').split('-')[3];
         $(this).find("[id*=-field-]").each(function(){
             //get this field setArray
             let targetSetArray = {};
             let fieldsectionSetArray = [];
             let fieldDiv = $(this);
-            if($(this).find("[id*=addableSectionNo]").length==0) return true;
-            $(this).find("[id*=addableSectionNo]").each(function(){
-                fieldsectionSetArray.unshift($(this).attr('id').split('-')[5]);
-                targetSetArray[$(this).attr('id').split('-')[5]] = $(this).val();
+            let newSetSectionString ="";
+            targetSetArray = {};
+            $.each($("[name=section\\["+sectionId+"\\]]").val().split(','),function(k, setSectionArray){
+                console.log($("[name=section\\["+sectionId+"\\]]").val());
+                fieldsectionSetArray.unshift(setSectionArray.split(':')[0]);
+                if(section_id == setSectionArray.split(':')[0]){
+                    targetSetArray[section_id] = parseInt(pageNo);
+                    if(addFlag)
+                        newSetSectionString = newSetSectionString+setSectionArray.split(':')[0]+":"+max_set+",";
+                    else newSetSectionString = newSetSectionString+setSectionArray.split(':')[0]+":"+pageNo+",";
+                }
+                else{
+                    targetSetArray[setSectionArray.split(':')[0]] = parseInt(setSectionArray.split(':')[1]);
+                    newSetSectionString = newSetSectionString+setSectionArray+",";
+                }
             });
             let relateFlag = false;
             //classify sections: 1. parent section 2.same section 3.child section 4.unrelated section
@@ -225,26 +367,29 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                     targetSetArray[setSectionId] = 1;
                 };
             });
-            if($("[id=summary-"+sectionId+"]").length){
-                $("[id=summary-"+sectionId+"]").find(".selected-row").removeClass("selected-row");
-                $("[id=summary-"+sectionId+"]").find("#section-"+sectionId+"-row-"+targetSetArray[sectionId]).addClass("selected-row");
-            }else{
-                $("#pagination-section-"+sectionId).find(".selected-page").removeClass(".selected-page");
-                $("#pagination-section-"+sectionId).find("#section-"+sectionId+"-page_number-"+targetSetArray[sectionId]).addClass(".selected-page");
+            if(sectionId!=section_id){
+               
+                if($("[id=summary-"+sectionId+"]").length){
+                    $("[id=summary-"+sectionId+"]").find(".selected-row").removeClass("selected-row");
+                    $("[id=summary-"+sectionId+"]").find("#section-"+sectionId+"-row-"+targetSetArray[sectionId]).addClass("selected-row");
+                }else{
+                    $("#pagination-section-"+sectionId).find(".selected-page").removeClass(".selected-page");
+                    $("#pagination-section-"+sectionId).find("#section-"+sectionId+"-page_number-"+targetSetArray[sectionId]).addClass(".selected-page");
+                }
             }
+            $("[name=section\\["+sectionId+"\\]]").val(newSetSectionString.substr(0,newSetSectionString.length-1));
             let fieldTargetArray = [];
             $.each(fieldsectionSetArray,function(k,v){
-                fieldDiv.find("[id$=addableSectionNo-"+v+"]").val(targetSetArray[v]);
                 fieldTargetArray.push(targetSetArray[v]);
-            })
+            });
             //type of 4
             if(!relateFlag) return true;
             $(this).find("[name$=\\[id\\]]").each(function(){
-                var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-                var valueFlag = false;
-                var thisElement = $(this);
-                var idholder = thisElement.attr('id').split('-');//section-65-sd_section_structures-0-sd_field_values-0-id
-                var maxindex=0;
+                let sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
+                let valueFlag = false;
+                let thisElement = $(this);
+                let idholder = thisElement.attr('id').split('-');//section-65-sd_section_structures-0-sd_field_value_details-0-id
+                let maxindex=0;
                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
                         if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
@@ -267,17 +412,17 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                 }
                 if(valueFlag == false) {
                     $(this).val(null);
-                    var idholder = thisElement.attr('id').split('-');
+                    let idholder = thisElement.attr('id').split('-');
                    
                     thisElement.attr('id',idholder[0]+'-'+idholder[1]+'-'+idholder[2]+'-'+idholder[3]+'-'+idholder[4]+'-'+maxindex+'-'+idholder[6]);
                 };    
             });
 
             $(this).find("[name$=\\[field_value\\]]").each(function(){
-                var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-                var thisId = $(this).attr('id').split('-');
-                var valueFlag = false;
-                var thisElement = $(this);
+                let sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
+                let thisId = $(this).attr('id').split('-');
+                let valueFlag = false;
+                let thisElement = $(this);
                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
                         if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
@@ -329,689 +474,11 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
     
         });
     });
+    renderSummaries(section_id, pageNo);
     return false;
-    $("[id*=-field-]").each(function(){
-
-        //get this field setArray
-        let targetSetArray = {};
-        if($(this).find("[id*=addableSectionNo]").length==0) return true;
-        $(this).find("[id*=addableSectionNo]").each(function(){
-            targetSetArray[$(this).attr('id').split('-')[5]] = $(this).val();
-        });
-        let relateFlag = false;
-        //classify sections: 1. parent section 2.same section 3.child section 4.unrelated section
-        $.each(targetSetArray,function(setSectionId,detailSetNo){
-            if(setSectionId in setArray){
-                targetSetArray[setSectionId] = setArray[setSectionId];
-                relateFlag = true;
-            }else{
-                targetSetArray[setSectionId] = 1;
-            };
-        });
-        //type of 4
-        
-        // console.log(targetSetArray);
-        if(!relateFlag) return true;
-        $(this).find("[name$=\\[id\\]]").each(function(){
-            var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-            var valueFlag = false;
-            var thisElement = $(this);
-            var idholder = thisElement.attr('id').split('-');//section-65-sd_section_structures-0-sd_field_values-0-id
-            var maxindex=0;
-            if (section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
-                $.each(section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-                    console.log(value.sd_section_sets.set_array)
-                    if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
-                        var set_number=value.sd_section_sets.set_array.split(",");
-                        if ((typeof value != 'undefined')&&(set_number[0]== pageNo)){
-                            thisElement.val(value.id);
-                            thisElement.attr('id',idholder[0]+'-'+idholder[1]+'-'+idholder[2]+'-'+idholder[3]+'-'+idholder[4]+'-'+index+'-'+idholder[6]);
-                            valueFlag = true;
-                            return false;
-                        }
-                        maxindex = maxindex+1;
-                    }
-                });
-            }
-            if(valueFlag == false) {
-                $(this).val(null);
-                var idholder = thisElement.attr('id').split('-');
-               
-                thisElement.attr('id',idholder[0]+'-'+idholder[1]+'-'+idholder[2]+'-'+idholder[3]+'-'+idholder[4]+'-'+maxindex+'-'+idholder[6]);
-            };    
-        });
-
-    });
-    return false;
-    if($("[id^=input-"+section_id+"]").length){
-        var sectionId = $("[id^=input-"+section_id+"]").attr('name').split('-');// ["Input", "65", "sectionKey", "1"]
-        var parentSection=section[sectionId[3]].parent_section;
-        //var parentSectionKey=$("[name^=Input-"+parentSection+"]").attr('name').split('-')[3];
-        var childSection=section[sectionId[3]].child_section;
-        //var childSectionKey=$("[name^=Input-"+childSection+"]").attr('name').split('-')[3];
-        //var max_set_no = 0;
-        // $("[id^=section-"+sectionId[1]+"-page_number").each(function(){
-        //     max_set_no = Math.max(Number($(this).attr('id').split('-')[3]), max_set_no);  
-        // });
-        //if ((Number(setNo)+Number(steps) <= 0)||(Number(setNo)+Number(steps)>max_set_no)) {console.log("set_no not avaiable"); return;};
-        // if ((((pageNo <= 0)&&(addFlag!=1))||pageNo>max_set_no)&&pFlag!=1) {console.log("set_no not avaiable"); return;};
-        // if(addFlag == 1){
-        //     $("[id=addbtnalert-"+sectionId[1]+"]").show();
-        // }else{
-        //     $("[id=addbtnalert-"+sectionId[1]+"]").hide()
-        // }
-        // if((addFlag == 1)&&(pFlag!=1)) {
-        //     pageNo = max_set_no+1;
-        //     $("[id^=add_set-"+sectionId[1]+"]").hide();
-        //     }else {$("[id^=add_set-"+sectionId[1]+"]").show();}
-
-        //change [id]
-        $("[id^=section-"+sectionId[1]+"][name$=\\[id\\]]").each(function(){
-            var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-            var valueFlag = false;
-            var thisElement = $(this);
-            var idholder = thisElement.attr('id').split('-');//section-65-sd_section_structures-0-sd_field_values-0-id
-            var maxindex=0;
-            if (section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
-                $.each(section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-                    if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
-                        var set_number=value.sd_section_sets.set_array.split(",");
-                        if ((typeof value != 'undefined')&&(set_number[0]== pageNo)){
-                            thisElement.val(value.id);
-                            thisElement.attr('id',idholder[0]+'-'+idholder[1]+'-'+idholder[2]+'-'+idholder[3]+'-'+idholder[4]+'-'+index+'-'+idholder[6]);
-                            valueFlag = true;
-                            return false;
-                        }
-                        maxindex = maxindex+1;
-                    }
-                });
-            }
-            if(valueFlag == false) {
-                $(this).val(null);
-                var idholder = thisElement.attr('id').split('-');
-               
-                thisElement.attr('id',idholder[0]+'-'+idholder[1]+'-'+idholder[2]+'-'+idholder[3]+'-'+idholder[4]+'-'+maxindex+'-'+idholder[6]);
-            };    
-        });
-        $("[id^=section-"+sectionId[1]+"][name$=\\[set_number\\]]").each(function(){
-            var newSetNumber = pageNo;
-            $(this).val(newSetNumber);
-        });
-        //change product value
-        $("[id^=section-"+sectionId[1]+"][name$=\\[field_value\\]]").each(function(){
-            var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-            var thisId = $(this).attr('id').split('-');
-            var valueFlag = false;
-            var thisElement = $(this);
-            if (section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
-                $.each(section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-                    if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
-                        var set_number=value.sd_section_sets.set_array.split(",");
-                        if ((typeof value != 'undefined')&&(set_number[0]== pageNo)){
-                            if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-                                thisElement.val(value.field_value).trigger('change');
-                                valueFlag = true;
-                            
-                            }else{
-                                if(thisElement.attr('id').split('-')[2]=='radio'){
-                                    if(thisElement.val()==value.field_value) {
-                                        thisElement.prop('checked',true);
-                                        valueFlag = true;
-                                    }else thisElement.prop('checked',false);
-                                }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
-                                    valueFlag = true;
-                                    if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
-                                        thisElement.prop('checked',true);
-                                    }else thisElement.prop('checked',false);
-                                    if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
-                                }
-                            }
-                        }
-                        
-                    }
-                });
-            }
-            if(valueFlag == false) {
-                if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-                    thisElement.val(null).trigger('change');;
-                }else{
-                    thisElement.prop('checked',false);
-                    if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {
-                        val = "";
-                        for (i = 0; i < thisId[4]; i++){
-                            val = val+"0";
-                        }
-                        thisElement.val(val);
-                    }
-                }
-            };
-        });
-        //change child filed value
-        $("[id^=section-"+childSection+"][name$=\\[field_value\\]]").each(function(){
-            var childSectionKey = $("[name^=Input-"+childSection+"]").attr('name').split("-")[3];
-            var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-            var thisId = $(this).attr('id').split('-');
-            var valueFlag = false;
-            var thisElement = $(this);
-            thisElement.val(" ").trigger('change');
-            if (section[childSectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
-                $.each(section[childSectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-                    if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
-                        var set_number=value.sd_section_sets.set_array.split(",");
-                        if ((typeof value != 'undefined')&&(set_number[0]== 1)&&(set_number[1]==pageNo)){
-                            if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-                                thisElement.val(value.field_value).trigger('change');
-                                valueFlag = true;
-                            }else{
-                                if(thisElement.attr('id').split('-')[2]=='radio'){
-                                    if(thisElement.val()==value.field_value) {
-                                        thisElement.prop('checked',true);
-                                        valueFlag = true;
-                                    }else thisElement.prop('checked',false);
-                                }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
-                                    valueFlag = true;
-                                    if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
-                                        thisElement.prop('checked',true);
-                                    }else thisElement.prop('checked',false);
-                                    if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
-                                }
-                            }
-                        }
-                        
-                    }
-                });
-            }
-        });
-        //change table value
-        $("[id^=section-"+childSection+"-row]").each(function changeTableValue(){
-            var childSectionKey =  $("[name^=Input-"+childSection+"]").attr('name').split("-")[3];
-            var childSectionSet = $(this).attr('id').split("-")[3];
-            var fieldArray = section[childSectionKey].sd_section_summary.fields.split(",");
-            var fieldId = $(this).attr('id').split("-")[4];
-            var fieldKey = fieldArray.indexOf(fieldId);
-            var thisElement = $(this);
-            thisElement.html(" ").trigger('change');
-            if (section[childSectionKey].sd_section_summary.sdFields[fieldKey].sd_field_values.length>=1){
-                var count = 0;
-                $.each(section[childSectionKey].sd_section_summary.sdFields[fieldKey].sd_field_values, function(index,value){ 
-                    if((typeof value.sd_section_sets[0] !='undefined')&&(typeof value.sd_section_sets[0].set_array !='undefined')){
-                        var set_number=value.sd_section_sets[0].set_array.split(",");
-                        var fieldType=section[childSectionKey].sd_section_summary.sdFields[fieldKey].sd_element_type_id;
-                        if ((set_number[0]== childSectionSet)&&(set_number[1]==pageNo)){
-                            if((fieldType != 1 )&& (fieldType != 3) && (fieldType != 4)){
-                                thisElement.html(value.field_value).trigger('change');
-                                valueFlag = true;   
-                            }else{
-                                $.each(section[childSectionKey].sd_section_summary.sdFields[fieldKey].sd_field_value_look_ups ,function(index,lookups){
-                                    if(lookups.value ==value.field_value ){
-                                        thisElement.html(lookups.caption).trigger('change');
-                                    }
-                                });
-                            }
-                        }
-                    }
-                });
-            }
-        
-        });
-        //change child fields value
-        // $("[id^=section-"+childSection+"][name$=\\[field_value\\]]").each(function(){ 
-        //     var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-        //     var thisId = $(this).attr('id').split('-');
-        //     var valueFlag = false;
-        //     var thisElement = $(this);
-        //     if (section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
-        //         $.each(section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-        //             if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
-        //                 var set_number=value.sd_section_sets.set_array.split(",");
-        //                 if ((typeof value != 'undefined')&&(set_number[0]== pageNo)&&(set_number[1]==parentSet)){
-        //                     if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-        //                         thisElement.val(value.field_value).trigger('change');
-        //                         valueFlag = true;
-        //                     }else{
-        //                         if(thisElement.attr('id').split('-')[2]=='radio'){
-        //                             if(thisElement.val()==value.field_value) {
-        //                                 thisElement.prop('checked',true);
-        //                                 valueFlag = true;
-        //                             }else thisElement.prop('checked',false);
-        //                         }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
-        //                             valueFlag = true;
-        //                             if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
-        //                                 thisElement.prop('checked',true);
-        //                             }else thisElement.prop('checked',false);
-        //                             if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
-        //                         }
-        //                     }
-        //                 }
-                        
-        //             }
-        //         });
-        //     }
-        //     if(valueFlag == false) {
-        //         if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-        //             thisElement.val(null).trigger('change');;
-        //         }else{
-        //             thisElement.prop('checked',false);
-        //             if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {
-        //                 val = "";
-        //                 for (i = 0; i < thisId[4]; i++){
-        //                     val = val+"0";
-        //                 }
-        //                 thisElement.val(val);
-        //             }
-        //         }
-        //     };
-        // });
-        //change level 2,3 field value
-        $("[id$=addableSectionNo-"+parentSection+"]").each(function(){
-            var parentSet=$(this).attr('value');
-            $("[id^=section-"+sectionId[1]+"][name$=\\[field_value\\]]").each(function(){
-                var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-                var thisId = $(this).attr('id').split('-');
-                var valueFlag = false;
-                var thisElement = $(this);
-                if (section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
-                    $.each(section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-                        if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
-                            var set_number=value.sd_section_sets.set_array.split(",");
-                            if ((typeof value != 'undefined')&&(set_number[0]== pageNo)&&(set_number[1]==parentSet)){
-                                if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-                                    thisElement.val(value.field_value).trigger('change');
-                                    valueFlag = true;
-                                }else{
-                                    if(thisElement.attr('id').split('-')[2]=='radio'){
-                                        if(thisElement.val()==value.field_value) {
-                                            thisElement.prop('checked',true);
-                                            valueFlag = true;
-                                        }else thisElement.prop('checked',false);
-                                    }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
-                                        valueFlag = true;
-                                        if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
-                                            thisElement.prop('checked',true);
-                                        }else thisElement.prop('checked',false);
-                                        if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
-                                    }
-                                }
-                            }
-                            
-                        }
-                    });
-                }
-                if(valueFlag == false) {
-                    if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-                        thisElement.val(null).trigger('change');;
-                    }else{
-                        thisElement.prop('checked',false);
-                        if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {
-                            val = "";
-                            for (i = 0; i < thisId[4]; i++){
-                                val = val+"0";
-                            }
-                            thisElement.val(val);
-                        }
-                    }
-                };
-            });
-        });
-        //<input id="section-65-set_array-176-addableSectionNo-65" name="sd_field_values[65][0][set_array][65]" value="change" type="hidden">
-        $("[id$=addableSectionNo-"+sectionId[1]+"]").each(function(){
-            var newSetNumber = pageNo;
-            $(this).val(newSetNumber);
-        });
-
-        $("[id^=left_set-"+sectionId[1]+"]").attr('id', 'left_set-'+sectionId[1]+'-'+sectionId[2]+'-'+sectionId[3]+'-setNo-'+pageNo);
-        $("[id^=left_set-"+sectionId[1]+"]").attr('onclick','setPageChange('+sectionId[1]+','+Number(Number(pageNo)-1)+')');
-        $("[id^=right_set-"+sectionId[1]+"]").attr('id', 'right_set-'+sectionId[1]+'-'+sectionId[2]+'-'+sectionId[3]+'-setNo-'+pageNo);
-        $("[id^=right_set-"+sectionId[1]+"]").attr('onclick','setPageChange('+sectionId[1]+','+Number(Number(pageNo)+1)+')');
-        $("[id^=section-"+sectionId[1]+"-page_number-]").css('font-weight', 'normal');
-        $("[id=section-"+sectionId[1]+"-page_number-"+pageNo+"]").css('font-weight', 'bolder');
- 
-    }
 }
-// function setPageChange(section_id, pageNo) {
-//     if($("[name^=Input-"+section_id+"]").length){
-//         var sectionId = $("[name^=Input-"+section_id+"]").attr('name').split('-');// ["Input", "65", "sectionKey", "1"]
-//         //get inherit relationship
-//         var children = new Array();////get child relationship
-//         var i=1;
-//         children[0]=section_id;
-//         var childSection =section[sectionId[3]].child_section;
-//         while(childSection.length!=0){
-//             children[i]=childSection;
-//             var childSectionKey = $("[name^=Input-"+childSection+"]").attr('name').split('-')[3];
-//             i=i+1;
-//             childSection =section[childSectionKey].child_section;  
-//         } 
-//         var parents = new Array();//get parent relationship
-//         var i=0;
-//         var parentSection =section[sectionId[3]].parent_section;
-//         while(typeof $("[name^=Input-"+parentSection+"]").attr('name')!='undefined'){
-//             parents[i]=parentSection;
-//             var parentSectionKey = $("[name^=Input-"+parentSection+"]").attr('name').split('-')[3];
-//             i=i+1;
-//             parentSection =section[parentSectionKey].parent_section;  
-//         }
-//         var inherit = new Array;
-//         inherit = parents.reverse().concat(children);
-//         level_number=inherit.length;
-//         //change [id]
-//         $("[id$=addableSectionNo-"+sectionId[1]+"]").each(function(){
-//             var newSetNumber = pageNo;
-//             $(this).val(newSetNumber);
-//         });
-//         $("[id^=section-"+sectionId[1]+"][name$=\\[id\\]]").each(function(){
-//             var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];//field key
-//             var thisElement = $(this);
-//             var idholder = thisElement.attr('id').split('-');//section-65-sd_section_structures-0-sd_field_values-0-id
-//             var maxindex=0;
-//             if (section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
-//                 $.each(section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-//                     if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
-//                         var set_number=value.sd_section_sets.set_array.split(",");
-//                         if ((typeof value != 'undefined')&&(set_number[0]== pageNo)){
-//                             thisElement.val(value.id);
-//                             thisElement.attr('id',idholder[0]+'-'+idholder[1]+'-'+idholder[2]+'-'+idholder[3]+'-'+idholder[4]+'-'+index+'-'+idholder[6]);
-//                             valueFlag = true;
-//                             return false;
-//                         }
-//                         maxindex = maxindex+1;
-//                     }
-//                 });
-//             }   
-//         });
-//         if($("[name^=sd_field_values\\["+section_id+"\\]\\[0\\]\\[set_array\\]]").length == 1){
-//             //change table value
-//             $("[id^=section-"+inherit[1]+"-row]").each(function changeTableValue(){
-//                 var sectionKey = $("[name^=Input-"+inherit[1]+"]").attr('name').split('-')[3];
-//                 var rowSet = $(this).attr('id').split("-")[3];
-//                 var fieldArray = section[sectionKey].sd_section_summary.fields.split(",");
-//                 var fieldId = $(this).attr('id').split("-")[4];
-//                 var fieldKey = fieldArray.indexOf(fieldId);
-//                 var thisElement = $(this);
-//                 thisElement.html(" ").trigger('change');
-//                 if (section[sectionKey].sd_section_summary.sdFields[fieldKey].sd_field_values.length>=1){
-//                     $.each(section[sectionKey].sd_section_summary.sdFields[fieldKey].sd_field_values, function(index,value){ 
-//                         if((typeof value.sd_section_sets[0] !='undefined')&&(typeof value.sd_section_sets[0].set_array !='undefined')){
-//                             var set_number=value.sd_section_sets[0].set_array.split(",");
-//                             var fieldType=section[sectionKey].sd_section_summary.sdFields[fieldKey].sd_element_type_id;
-//                             if ((set_number[0]==rowSet )&&((set_number[1]==pageNo)||(set_number[1]=='*'))){
-//                                 if((fieldType != 1 )&& (fieldType != 3) && (fieldType != 4)){
-//                                     thisElement.html(value.field_value).trigger('change');
-//                                     valueFlag = true;   
-//                                 }else{
-//                                     $.each(section[sectionKey].sd_section_summary.sdFields[fieldKey].sd_field_value_look_ups ,function(index,lookups){
-//                                         if(lookups.value ==value.field_value ){
-//                                             thisElement.html(lookups.caption).trigger('change');
-//                                         }
-//                                     });
-//                                 }
-//                             }
-//                         }
-//                     });
-//                 }
-//             });
-//             $("[id^=section-"+inherit[2]+"-row]").each(function changeTableValue(){
-//                 var sectionKey = $("[name^=Input-"+inherit[2]+"]").attr('name').split('-')[3];
-//                 var rowSet = $(this).attr('id').split("-")[3];
-//                 var fieldArray = section[sectionKey].sd_section_summary.fields.split(",");
-//                 var fieldId = $(this).attr('id').split("-")[4];
-//                 var fieldKey = fieldArray.indexOf(fieldId);
-//                 var thisElement = $(this);
-//                 thisElement.html(" ").trigger('change');
-//                 if (section[sectionKey].sd_section_summary.sdFields[fieldKey].sd_field_values.length>=1){
-//                     $.each(section[sectionKey].sd_section_summary.sdFields[fieldKey].sd_field_values, function(index,value){ 
-//                         if((typeof value.sd_section_sets[0] !='undefined')&&(typeof value.sd_section_sets[0].set_array !='undefined')){
-//                             var set_number=value.sd_section_sets[0].set_array.split(",");
-//                             var fieldType=section[sectionKey].sd_section_summary.sdFields[fieldKey].sd_element_type_id;
-//                             if ((set_number[0]==rowSet )&&((set_number[1]==1)||(set_number[1]=='*'))&&(set_number[2]==pageNo)){
-//                                 if((fieldType != 1 )&& (fieldType != 3) && (fieldType != 4)){
-//                                     thisElement.html(value.field_value).trigger('change');
-//                                     valueFlag = true;   
-//                                 }else{
-//                                     $.each(section[sectionKey].sd_section_summary.sdFields[fieldKey].sd_field_value_look_ups ,function(index,lookups){
-//                                         if(lookups.value ==value.field_value ){
-//                                             thisElement.html(lookups.caption).trigger('change');
-//                                         }
-//                                     });
-//                                 }
-//                             }
-//                         }
-//                     });
-//                 }
-//             });
-
-//             //change field value
-//             $("[id^=section-"+sectionId[1]+"][name$=\\[field_value\\]]").each(function(){
-//                 var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-//                 var thisId = $(this).attr('id').split('-');
-//                 var thisElement = $(this);
-//                 thisElement.val(" ").trigger('change');
-//                 if (section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
-//                     $.each(section[sectionId[3]].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-//                         if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
-//                             var set_number=value.sd_section_sets.set_array.split(",");
-//                             if ((typeof value != 'undefined')&&(set_number[0]== pageNo)){
-//                                 if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-//                                     thisElement.val(value.field_value).trigger('change');   
-//                                 }else{
-//                                     if(thisElement.attr('id').split('-')[2]=='radio'){
-//                                         if(thisElement.val()==value.field_value) {
-//                                             thisElement.prop('checked',true);   
-//                                         }else thisElement.prop('checked',false);
-//                                     }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
-//                                         if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
-//                                             thisElement.prop('checked',true);
-//                                         }else thisElement.prop('checked',false);
-//                                         if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
-//                                     }
-//                                 }
-//                             } 
-//                         }
-//                     });
-//                 } 
-//             });
-//             $("[id^=section-"+inherit[1]+"][name$=\\[field_value\\]]").each(function(){
-//                 var sectionKey = $("[name^=Input-"+inherit[1]+"]").attr('name').split('-')[3];
-//                 var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-//                 var thisId = $(this).attr('id').split('-');
-//                 var thisElement = $(this);
-//                 thisElement.val(" ").trigger('change');
-//                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
-//                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-//                         if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
-//                             var set_number=value.sd_section_sets.set_array.split(",");
-//                             if ((typeof value != 'undefined')&&(set_number[0]== 1)&&((set_number[1]==pageNo)||(set_number[1]=='*'))){
-//                                 if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-//                                     thisElement.val(value.field_value).trigger('change');
-//                                 }else{
-//                                     if(thisElement.attr('id').split('-')[2]=='radio'){
-//                                         if(thisElement.val()==value.field_value) {
-//                                             thisElement.prop('checked',true);   
-//                                         }else thisElement.prop('checked',false);
-//                                     }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
-//                                         if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
-//                                             thisElement.prop('checked',true);
-//                                         }else thisElement.prop('checked',false);
-//                                         if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
-//                                     }
-//                                 }
-//                             } 
-//                         }
-//                     });
-//                 } 
-//             });
-//             $("[id^=section-"+inherit[2]+"][name$=\\[field_value\\]]").each(function(){
-//                 var sectionKey = $("[name^=Input-"+inherit[2]+"]").attr('name').split('-')[3];
-//                 var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-//                 var thisId = $(this).attr('id').split('-');
-//                 var thisElement = $(this);
-//                 thisElement.val(" ").trigger('change');
-//                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
-//                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-//                         if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
-//                             var set_number=value.sd_section_sets.set_array.split(",");
-//                             if ((typeof value != 'undefined')&&(set_number[0]== 1)&&(set_number[1]==1)&&(set_number[2]==pageNo)){
-//                                 if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-//                                     thisElement.val(value.field_value).trigger('change');
-                                        
-//                                 }else{
-//                                     if(thisElement.attr('id').split('-')[2]=='radio'){
-//                                         if(thisElement.val()==value.field_value) {
-//                                             thisElement.prop('checked',true);   
-//                                         }else thisElement.prop('checked',false);
-//                                     }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
-//                                         if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
-//                                             thisElement.prop('checked',true);
-//                                         }else thisElement.prop('checked',false);
-//                                         if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
-//                                     }
-//                                 }
-//                             } 
-//                         }
-//                     });
-//                 } 
-//             });
-//         }else if ($("[name^=sd_field_values\\["+section_id+"\\]\\[0\\]\\[set_array\\]]").length == 2){
-//             var ParentSection = $("[name$=\\[set_array\\]\\["+inherit[0]+"\\]]").attr('value');
-//             $("[id^=section-"+inherit[2]+"-row]").each(function changeTableValue(){
-//                 var sectionKey = $("[name^=Input-"+inherit[2]+"]").attr('name').split('-')[3];
-//                 var rowSet = $(this).attr('id').split("-")[3];
-//                 var fieldArray = section[sectionKey].sd_section_summary.fields.split(",");
-//                 var fieldId = $(this).attr('id').split("-")[4];
-//                 var fieldKey = fieldArray.indexOf(fieldId);
-//                 var thisElement = $(this);
-//                 thisElement.html(" ").trigger('change');
-//                 if (section[sectionKey].sd_section_summary.sdFields[fieldKey].sd_field_values.length>=1){
-//                     $.each(section[sectionKey].sd_section_summary.sdFields[fieldKey].sd_field_values, function(index,value){ 
-//                         if((typeof value.sd_section_sets[0] !='undefined')&&(typeof value.sd_section_sets[0].set_array !='undefined')){
-//                             var set_number=value.sd_section_sets[0].set_array.split(",");
-//                             var fieldType=section[sectionKey].sd_section_summary.sdFields[fieldKey].sd_element_type_id;
-//                             if ((set_number[0]==rowSet )&&((set_number[1]==pageNo)||(set_number[1]=='*'))&&(set_number[2]==ParentSection)){
-//                                 if((fieldType != 1 )&& (fieldType != 3) && (fieldType != 4)){
-//                                     thisElement.html(value.field_value).trigger('change');
-//                                     console.log(value.field_value);
-//                                     valueFlag = true;   
-//                                 }else{
-//                                     $.each(section[sectionKey].sd_section_summary.sdFields[fieldKey].sd_field_value_look_ups ,function(index,lookups){
-//                                         if(lookups.value ==value.field_value ){
-//                                             thisElement.html(lookups.caption).trigger('change');
-//                                         }
-//                                     });
-//                                 }
-//                             }
-//                         }
-//                     });
-//                 }
-//             });
-//             $("[id^=section-"+inherit[1]+"][name$=\\[field_value\\]]").each(function(){
-//                 var sectionKey = $("[name^=Input-"+inherit[1]+"]").attr('name').split('-')[3];
-//                 var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-//                 var thisId = $(this).attr('id').split('-');
-//                 var thisElement = $(this);
-//                 thisElement.val(" ").trigger('change');
-//                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
-//                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-//                         if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
-//                             var set_number=value.sd_section_sets.set_array.split(",");
-//                             if ((typeof value != 'undefined')&&(set_number[0]== pageNo)&&(set_number[1]==ParentSection)){
-//                                 if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-//                                     thisElement.val(value.field_value).trigger('change');
-//                                 }else{
-//                                     if(thisElement.attr('id').split('-')[2]=='radio'){
-//                                         if(thisElement.val()==value.field_value) {
-//                                             thisElement.prop('checked',true);   
-//                                         }else thisElement.prop('checked',false);
-//                                     }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
-//                                         if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
-//                                             thisElement.prop('checked',true);
-//                                         }else thisElement.prop('checked',false);
-//                                         if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
-//                                     }
-//                                 }
-//                             } 
-//                         }
-//                     });
-//                 } 
-//             });
-//             $("[id^=section-"+inherit[2]+"][name$=\\[field_value\\]]").each(function(){
-//                 var sectionKey = $("[name^=Input-"+inherit[2]+"]").attr('name').split('-')[3];
-//                 var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-//                 var thisId = $(this).attr('id').split('-');
-//                 var thisElement = $(this);
-//                 thisElement.val(" ").trigger('change');
-//                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
-//                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-//                         if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
-//                             var set_number=value.sd_section_sets.set_array.split(",");
-//                             if ((typeof value != 'undefined')&&(set_number[0]== 1)&&(set_number[1]==pageNo)&&(set_number[2]==ParentSection)){
-//                                 if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-//                                     thisElement.val(value.field_value).trigger('change');
-                                        
-//                                 }else{
-//                                     if(thisElement.attr('id').split('-')[2]=='radio'){
-//                                         if(thisElement.val()==value.field_value) {
-//                                             thisElement.prop('checked',true);   
-//                                         }else thisElement.prop('checked',false);
-//                                     }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
-//                                         if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
-//                                             thisElement.prop('checked',true);
-//                                         }else thisElement.prop('checked',false);
-//                                         if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
-//                                     }
-//                                 }
-//                             } 
-//                         }
-//                     });
-//                 } 
-//             });
-//         }else if ($("[name^=sd_field_values\\["+section_id+"\\]\\[0\\]\\[set_array\\]]").length == 3){
-//             var ParentSectionOne = $("[name$=\\[set_array\\]\\["+inherit[0]+"\\]]").attr('value');
-//             var ParentSectionTwo = $("[name$=\\[set_array\\]\\["+inherit[1]+"\\]]").attr('value');
-//             $("[id^=section-"+inherit[2]+"][name$=\\[field_value\\]]").each(function(){
-//                 var sectionKey = $("[name^=Input-"+inherit[2]+"]").attr('name').split('-')[3];
-//                 var sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
-//                 var thisId = $(this).attr('id').split('-');
-//                 var thisElement = $(this);
-//                 thisElement.val(" ").trigger('change');
-//                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
-//                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-//                         if((typeof value.sd_section_sets !='undefined')&&(typeof value.sd_section_sets.set_array !='undefined')){
-//                             var set_number=value.sd_section_sets.set_array.split(",");
-//                             if ((typeof value != 'undefined')&&(set_number[0]== pageNo)&&(set_number[1]==ParentSectionTwo)&&(set_number[2]==ParentSectionOne)){
-//                                 if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-//                                     thisElement.val(value.field_value).trigger('change');
-                                        
-//                                 }else{
-//                                     if(thisElement.attr('id').split('-')[2]=='radio'){
-//                                         if(thisElement.val()==value.field_value) {
-//                                             thisElement.prop('checked',true);   
-//                                         }else thisElement.prop('checked',false);
-//                                     }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
-//                                         if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
-//                                             thisElement.prop('checked',true);
-//                                         }else thisElement.prop('checked',false);
-//                                         if((typeof thisId[5] != 'undefined')&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
-//                                     }
-//                                 }
-//                             } 
-//                         }
-//                     });
-//                 } 
-//             });
-//         }
-//         $("[id^=left_set-"+sectionId[1]+"]").attr('id', 'left_set-'+sectionId[1]+'-'+sectionId[2]+'-'+sectionId[3]+'-setNo-'+pageNo);
-//         $("[id^=left_set-"+sectionId[1]+"]").attr('onclick','setPageChange('+sectionId[1]+','+Number(Number(pageNo)-1)+')');
-//         $("[id^=right_set-"+sectionId[1]+"]").attr('id', 'right_set-'+sectionId[1]+'-'+sectionId[2]+'-'+sectionId[3]+'-setNo-'+pageNo);
-//         $("[id^=right_set-"+sectionId[1]+"]").attr('onclick','setPageChange('+sectionId[1]+','+Number(Number(pageNo)+1)+')');
-//         $("[id^=section-"+sectionId[1]+"-page_number-]").css('font-weight', 'normal');
-//         $("[id=section-"+sectionId[1]+"-page_number-"+pageNo+"]").css('font-weight', 'bolder');
-//     }
-        
-        
-// }
-
 function searchWhoDra(){
-    var request = {
+    let request = {
         'atc-code': $("#atc").val(),
         'drug-code':$("#drugcode").val(),
         'medicinal-prod-id':$('#medicalProd').val(),
@@ -1043,23 +510,23 @@ function searchWhoDra(){
 function paginationReady(){
     return false;
     $("[id^=pagination-l2").each(function(){
-        var hsectionid = $(this).attr('id').split('-')[3];
-        var child_section_element = $("[id^=child_section][id$=section-"+hsectionid+"]").attr('id');
-        var child_section_id = child_section_element.split('-')[1];
+        let hsectionid = $(this).attr('id').split('-')[3];
+        let child_section_element = $("[id^=child_section][id$=section-"+hsectionid+"]").attr('id');
+        let child_section_id = child_section_element.split('-')[1];
         child_section_id = child_section_id.split(/[\[\]]/);
         child_section_id = jQuery.grep(child_section_id, function(n, i){
             return (n !== "" && n != null);
         });
-        var max_set_no  = 0 ;
+        let max_set_no  = 0 ;
         $(child_section_id).each(function(k, v){
-            var sectionKey = $("[id^=add_set-"+v+"]").attr('id').split('-')[3];
+            let sectionKey = $("[id^=add_set-"+v+"]").attr('id').split('-')[3];
             $(section[sectionKey].sd_section_structures).each(function(k,v){
                 $.each(v.sd_field.sd_field_values,function(key, value){
                     // console.log("v:");console.log(v);console.log(value);console.log(value.set_number);
                     max_set_no = Math.max(value.set_number, max_set_no);
                 })
             })
-            // section[section_Id[2]].sd_section_structures[sectionStructureK].sd_field.sd_field_values
+            // section[section_Id[2]].sd_section_structures[sectionStructureK].sd_field.sd_field_value_details
             $("[id^=pagination-section-"+v+"]").hide();
         });
         if (max_set_no==0) {
@@ -1069,7 +536,7 @@ function paginationReady(){
             $("[id^=child_section][id$=section-"+hsectionid+"]").show();
             $("[id=delete_section-"+hsectionid+"]").show();
         }
-        var text= "";
+        let text= "";
         text += "<nav class=\"d-inline-block float-right\" title=\"Pagination\" aria-label=\"Data Entry Set Pagination\">";
         text += "<ul class=\"pagination mb-0\">";
         text +=    "<li class=\"page-item\" id=\"left_set-"+hsectionid+"-setNo-1\" onclick=\"level2setPageChange("+hsectionid+",0)\" >";
@@ -1092,80 +559,27 @@ function paginationReady(){
         $("#showpagination-"+hsectionid).html(text);
     })
 }
-function l2deleteSection(sectionId){
-    pageNo = $("#showpagination-"+sectionId).find("[id^=right_set]").attr('id').split('-setNo-')[1];
-    child_section = $("[id^=child][id$=section-"+sectionId+"]").attr('id').split('-');
-    child_section_id = child_section[1].split(/[\[\]]/);
-    child_section_id = jQuery.grep(child_section_id, function(n, i){
-        return (n !== "" && n != null);
-    });
-    $(child_section_id).each(function(k,v){
-        deleteSection(v);
-    });
-    $("[id=l2section-"+sectionId+"-page_number-"+pageNo+"]").remove();
-    $("[id^=l2section-"+sectionId+"-page_number]").each(function(){
-        if($(this).attr('id').split('-page_number-')[1]>pageNo){
+function deleteSection(sectionId, setArray=null, pcontrol=false){
 
-            $pageIdHolder=$(this).attr('id').split('-page_number-');
-            $(this).attr('id',$pageIdHolder[0]+'-page_number-'+Number($pageIdHolder[1]-1));
-            $pageaIdHolder = $(this).children().attr('id').split('-page_number-');
-            $(this).children().attr('id',$pageaIdHolder[0]+'-page_number-'+Number($pageaIdHolder[1]-1));
-            $(this).children().attr('onclick',"level2setPageChange("+sectionId+","+Number($pageIdHolder[1]-1)+")");
-            $pageNo = Number($(this).text()-1);
-            $(this).children("a").text($pageNo);
-        }
-    })
-    if(pageNo!=1){
-        pageNo --;
-    }
-    level2setPageChange(sectionId,pageNo);
-    $("[id=section-"+sectionId+"-page_number-"+pageNo+"]").css('font-weight', 'bold');
-}
-// function validation(sectionId){
-//     var validate = 1;
-//     $("div[id^=section-"+sectionId+"-field]").each(function(){
-//         var field_value = null;
-//         if($(this).find("[name$=\\[field_value\\]]").length){
-//             field_type = $(this).find("[name$=\\[field_value\\]]").attr('id').split('-')[2];
-//             if((field_type!="radio")&&(field_type!="checkbox")){
-//                  field_value = $(this).find("[name$=\\[field_value\\]]").val();
-//             }else{
-//                 if(field_type=="radio"){
-//                     $(this).find("[name$=\\[field_value\\]]").each(function(){
-//                         if($(this).prop('checked')){
-//                             field_value = $(this).val();}
-//                     });
-//                 }else{
-//                     field_value = $(this).find("[id$=final]").val();
-//                 }
-//             }
-//         }
-//         if((parseInt($(this).find("[name$=\\[is_required\\]]").val()))&&(field_value=="")){
-//             console.log('required  '+$(this).attr('id'));
-//             $(this).find("[id^=section-"+sectionId+"-error_message-]").show();
-//             $(this).find("[id^=section-"+sectionId+"-error_message-]").text('is required');
-//         }
-//         if($(this).find("[id^=section-"+sectionId+"-error_message-]").is(":visible")) validate = 0;
-//     });
-//     return validate;
-// }
-function deleteSection(sectionId, pcontrol=false){
-
-    var request = {};
-    var savedArray = [];
-
+    let request = {};
+    let savedArray = [];
+    let setNo = 0;
     $("div[id^=section-"+sectionId+"-field]").each(function(){
         if($(this).find("[name$=\\[field_value\\]]").length){
-            var field_id = $(this).attr('id').split('-')[3];
-            var field_request =
+            let field_id = $(this).attr('id').split('-')[3];
+            let field_request =
             {
                 'id': $(this).children("[name$=\\[id\\]]").val(),
                 'sd_field_id':$(this).children("[name$=\\[sd_field_id\\]]").val(),
-                'set_number':$(this).children("[name$=\\[set_number\\]]").val(),
             };
+            let setArray = {};
+            $(this).children("[name*=set_array]").each(function(){
+                setArray[$(this).attr('id').split('-')[5]] = $(this).val();
+                setNo = $(this).val();
+            });
+            field_request['set_array'] = setArray;
             request[field_id] = field_request;
         }
-
     });
     console.log(request);
     $.ajax({
@@ -1176,12 +590,15 @@ function deleteSection(sectionId, pcontrol=false){
         url:'/sd-sections/deleteSection/'+caseId,
         data:request,
         success:function(response){
-            //alert("This set has been deleted");
-
+            console.log(response);
             swal({
                 icon: "success",
                 title: "This set has been deleted",
               });
+            section = $.parseJSON(response);
+            renderSummaries(sectionId,setNo);
+            $("[id=addbtnalert-"+sectionId+"]").hide();
+            return false;
 
             // TODO
             // swal("Are you sure?","This action can not be undone", "warning",{
@@ -1199,14 +616,14 @@ function deleteSection(sectionId, pcontrol=false){
             // });
             savedArray = $.parseJSON(response);
             console.log(savedArray);
-            var sectionIdOriginal =  $("[id^=save-btn"+sectionId+"]").attr('id');
-            var section_Id = sectionIdOriginal.split('-');
+            let sectionIdOriginal =  $("[id^=save-btn"+sectionId+"]").attr('id');
+            let section_Id = sectionIdOriginal.split('-');
 
-            var max_set_no = 0
+            let max_set_no = 0
             for(var k in request){
-                var setNum = $("[id$=field-"+k+"]").children("[id^=section-"+sectionId+"-set_number]").val();
-                var fieldvalueK = $("[id$=field-"+k+"]").children("[id^=section-"+sectionId+"-sd_section_structures]").attr('id').split('-')[5];
-                var sectionStructureK = $("[id^=section-"+sectionId+"-set_number-"+k+"]").attr('name').split(/[\[\]]/)[3];
+                let setNum = $("[id$=field-"+k+"]").children("[id^=section-"+sectionId+"-set_number]").val();
+                let fieldvalueK = $("[id$=field-"+k+"]").children("[id^=section-"+sectionId+"-sd_section_structures]").attr('id').split('-')[5];
+                let sectionStructureK = $("[id^=section-"+sectionId+"-set_number-"+k+"]").attr('name').split(/[\[\]]/)[3];
                 section[section_Id[2]].sd_section_structures[sectionStructureK].sd_field.sd_field_values = savedArray[k];
                 $(section[section_Id[2]].sd_section_structures[sectionStructureK].sd_field.sd_field_values).each(function(k,v){
                     if(typeof v != 'undefined')
@@ -1215,7 +632,7 @@ function deleteSection(sectionId, pcontrol=false){
             }
             if (max_set_no!=0){
                 $("[id^=right_set-"+sectionId+"]").prev().remove();
-                var previousPageNo = $("[id^=right_set-"+sectionId+"]").prev().attr('id').split('-page_number-')[1];
+                let previousPageNo = $("[id^=right_set-"+sectionId+"]").prev().attr('id').split('-page_number-')[1];
                 if(setNum>max_set_no) setNum = max_set_no;
                 if(pcontrol==false) setPageChange(sectionId,setNum);
             }else{
@@ -1266,14 +683,15 @@ function deleteSection(sectionId, pcontrol=false){
 
 }
 function saveSection(sectionId){
+    let setNo = 0;
     // if(!validation(sectionId)) return;
-    var request = {};
-    var savedArray = [];
-    var error = 0;
-
+    let request = {};
+    let error = 0;
+    let fieldData ={};
+    let sectionRequest = {};
     $("div[id^=section-"+sectionId+"-field]").each(function(){
         if($(this).find("[id^=section-"+sectionId+"-error_message-]").is(":visible")) error = 1;
-        var field_value = null;
+        let field_value = null;
         if($(this).find("[name$=\\[field_value\\]]").length){
             field_type = $(this).find("[name$=\\[field_value\\]]").attr('id').split('-')[2];
             if((field_type!="radio")&&(field_type!="checkbox")){
@@ -1288,79 +706,43 @@ function saveSection(sectionId){
                     field_value = $(this).find("[id$=final]").val();
                 }
             }
-            var field_id = $(this).attr('id').split('-')[3];
-            var field_request =
+            let field_id = $(this).attr('id').split('-')[3];
+            let field_request =
             {
                 'sd_field_id' : $(this).children("[name$=\\[sd_field_id\\]]").val(),
                 'id': $(this).children("[name$=\\[id\\]]").val(),
                 'field_value': field_value
             };
-            var setArray = {};
-            $(this).children("[name*=set_array]").each(function(){
-                setArray[$(this).attr('id').split('-')[5]] = $(this).val()
-            });
-            field_request['set_array'] = setArray;
-            request[field_id] = field_request;
+            fieldData[field_id] = field_request;
         }
-
+        sectionRequest[sectionId] = fieldData;
     });
-    if(error) return;
+    request['sd_field_values'] = sectionRequest;
+    let sectionArray={};
+    sectionArray[sectionId] = $("[name=section\\["+sectionId+"\\]]").val();
+    request['sectionArray'] =sectionArray;
+    if(error) return false;
+    console.log(request);
     $.ajax({
         headers: {
             'X-CSRF-Token': csrfToken
         },
         type:'POST',
-        url:'/sd-sections/saveSection/'+caseId,
+        url:'/sd-sections/saveSection/'+tabId+'/'+caseId,
         data:request,
         success:function(response){
             console.log(response);
-            //alert("This section has been saved");
             swal({
                 icon: "success",
                 title: "This section has been saved",
               });
-            savedArray = $.parseJSON(response);
-            var sectionIdOriginal =  $("[id^=save-btn"+sectionId+"]").attr('id');
-            var section_Id = sectionIdOriginal.split('-');
-            var max_set_no  = 0;
-            //TODO 
-            for(var k in savedArray){
-                var sectionStructureK = $("[id^=section-"+sectionId+"-set_number-"+k+"]").attr('name').split(/[\[\]]/)[3];
-                var fieldvalueK = $("[id$=field-"+k+"]").children("[id^=section-"+sectionId+"-sd_section_structures]").attr('id').split('-')[5];
-                var setNum = $("[id$=field-"+k+"]").children("[id^=section-"+sectionId+"-set_number]").val();
-                if(savedArray[k]!=''){
-
-                    $(section[section_Id[2]].sd_section_structures[sectionStructureK].sd_field.sd_field_values).each(function(k,v){
-                        if(typeof v != 'undefined')
-                        max_set_no = Math.max(v.set_number, max_set_no);
-                    });
-                    section[section_Id[2]].sd_section_structures[sectionStructureK].sd_field.sd_field_values = savedArray[k];
-                }
-            }
-            setPageChange(sectionId,setNum);
-            if(max_set_no<setNum){
-                pageNew = 0;
-                if($("[id^=add_set-"+sectionId+"]").length){
-                    add_set_id = $("[id^=add_set-"+sectionId+"]").attr('id').split('-');
-                    pageNew=setNum;
-                    if(pageNew!=1)
-                    $("<li class=\"page-item\" id=\"section-"+sectionId+"-page_number-"+pageNew+"\" onclick=\"setPageChange("+sectionId+","+pageNew+")\"><a class=\"page-link\">"+pageNew+"</a></li>").insertBefore("[id^=right_set-"+sectionId+"]");
-                    $("[id^=add_set-"+sectionId+"]").show();
-                    $("[id^=add_set-"+sectionId+"]").attr('id', add_set_id[0]+'-'+add_set_id[1]+'-'+add_set_id[2]+'-'+add_set_id[3]+'-'+add_set_id[4]+'-'+pageNew);
-                }else{
-                    $("#pagination-section-"+sectionId).show();
-                }
-                paginationReady();
-                $("[id=section-"+sectionId+"-page_number-"+pageNew+"]").css('font-weight', 'bold');
-                $("[id^=l2section]").find("[id$=page_number-"+pageNew+"]").css('font-weight', 'bold');
-            };
+            section = $.parseJSON(response);
+            renderSummaries(sectionId,setNo);
             $("[id=addbtnalert-"+sectionId+"]").hide();
+            return false;
         },
         error:function(response){
             console.log(response.responseText);
-
-            // $("#textHint").html("Sorry, no case matches");
-
         }
     });
     $.ajax({
@@ -1435,7 +817,7 @@ function action(type){
                 text +="<th scope=\"col\">Set Number</th>";
                 text +="<tr>";
                 $.each(response['caseValidate'],function(tabK,tabDetail){
-                    var previousSectionK ="";
+                    let previousSectionK ="";
                     $.each(tabDetail,function(sectionK, sectionDetail){
                         $.each(sectionDetail,function(fieldId,fieldDetail){
                             text +="<tr>";
@@ -1527,8 +909,8 @@ function action(type){
                 $('#action-text-hint').html(text);
                 $('#next-activity-id').change(function(){
                     console.log($('#previous_activity-'+$(this).val()).html());
-                    var users =  $.parseJSON($('#previous_activity-'+$(this).val()).html());
-                    var text =""
+                    let users =  $.parseJSON($('#previous_activity-'+$(this).val()).html());
+                    let text =""
                     $('#receiverId').html(text);
                     $.each(users,function(k,v){
                         text += "<option value=\""+v['id']+"\">"+v['firstname']+" "+v['lastname']+"</option>"
@@ -1544,7 +926,7 @@ function action(type){
 
 }
 function forward(){
-    var request ={
+    let request ={
         'senderId':userId,
         'next-activity-id':$('#next-activity-id').val(),
         'receiverId':$('#receiverId').val(),
@@ -1568,7 +950,7 @@ function forward(){
         });
 }
 function backward(){
-    var request ={
+    let request ={
         'senderId':userId,
         'next-activity-id':$('#next-activity-id').val(),
         'receiverId':$('#receiverId').val(),
@@ -1595,7 +977,7 @@ function backward(){
 jQuery(function($) {
     // Alert if changes unsaved
     $(document).ready(function() {
-        var unsaved = false;
+        let unsaved = false;
 
         $("input:not(:button,:submit),textarea,select").change(function(){   //triggers change in all input fields including text type
             unsaved = true;
@@ -1614,7 +996,7 @@ jQuery(function($) {
 
         window.onbeforeunload = function (){
             if(unsaved){
-                var _msg = 'Your data is changed, are you sure you want to complete?';
+                let _msg = 'Your data is changed, are you sure you want to complete?';
                 return  _msg;
             }
         };
@@ -1633,12 +1015,12 @@ jQuery(function($) {
     //     $('#section-22-text-347,#section-22-text-286').attr('disabled',true);
 
     //     $('#section-22-select-191').change(function() {
-    //         var foa = $("option:selected", this).text();
+    //         let foa = $("option:selected", this).text();
     //         $('#section-22-text-347').val(foa);
     //     });
 
     //     $('#section-22-select-192').change(function() {
-    //         var roa = $("option:selected", this).text();
+    //         let roa = $("option:selected", this).text();
     //         $('#section-22-text-286').val(roa);
     //     });
 
