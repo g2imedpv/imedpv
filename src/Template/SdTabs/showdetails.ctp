@@ -19,11 +19,11 @@ echo $this->element('generatepdf');
     var section = <?php $sdSections;
     echo json_encode($sdSections)?>;
     var caseId = <?= $caseId ?>;
-    jQuery(function($) {
-        $(document).ready(function () {
-            $("[id$=page_number-1]").css('font-weight', 'bold');
-    });
-    })
+    // jQuery(function($) {
+    //     $(document).ready(function () {
+    //         $("[id$=page_number-1]").css('font-weight', 'bold');
+    // });
+    // })
 </script>
 <title>Data Entry</title>
 <head>

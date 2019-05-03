@@ -589,9 +589,19 @@ ul.queryBoxLeft > a {
     color: #212529;
     background-color: #ffc107 !important;
 }
-.highlight{
-    background-color: #ffc107!important;
-}
 #caseTable tbody tr:nth-child(even){
     background-color: #ddebff;
+}
+.selected-row{
+    background-color: #ffc107!important;
+}
+
+/* radio button css */
+.custom-radio{
+    margin-top:10px;
+    margin-left:10px;
+}
+/* select bar highlighted */
+.pagination li.selected-page{
+    font-weight: bold;
 }
