@@ -159,7 +159,7 @@ echo $this->element('generatepdf');
         // echo "</div>";
 
     ?>
-    <?php debug($caseId);if(($writePermission)&&($this->request->getQuery('readonly')!=1)):?>
+    <?php if(($writePermission)&&($this->request->getQuery('readonly')!=1)):?>
     <div class="text-center">
     <button type="submit" class="completeBtn w-25 btn btn-success mb-5">Complete</button>
     </div>
@@ -478,7 +478,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                                 $text =$text."</select>";
                             continue;
                         case 'unspecifiedDate':
-                            $text =$text. "<input id=\"section-".$section->id."-field_rule-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][field_rule]\" value=".$sd_section_structure_detail->sd_field->field_length."-".$sd_section_structure_detail->sd_field->field_type." type=\"hidden\">";
+                            $text =$text. "<input id=\"section-".$section->id."-field_rule-".$sd_section_structure_detail->sd_field->id."\" value=".$sd_section_structure_detail->sd_field->field_length."-".$sd_section_structure_detail->sd_field->field_type." type=\"hidden\">";
                             $text =$text. "<input class=\"form-control\" name=".$field_value_nameHolder." id=\"section-".$section->id."-unspecifieddate-".$sd_section_structure_detail->sd_field->id."\" ";
                             if($permission==2) $text =$text. " disabled ";
                             $text =$text. "value=\"";

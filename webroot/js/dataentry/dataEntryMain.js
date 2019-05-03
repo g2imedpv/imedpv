@@ -255,42 +255,60 @@ function renderSummaries(section_id, pageNo){
         $(this).find('tbody').html(tbodyText);
         $(this).find('#section-'+section_id+'-row-1').removeClass('selected-row');
         $(this).find('#section-'+section_id+'-row-'+setArray[section_id]).addClass('selected-row');
+        $(this).DataTable();
     });
-    // $("#[id^=pagination-section-]").each(function(){
-        //TODO
-        // let text ="";
-        //     text = $text+"<input type=\"hidden\" id='setArray-".$sdSections->id."' value='";
-        //         foreach($setArray as $setSectionId){
-        //             $text = $text.$setSectionId.",";
-        //         } 
-        //     text = text+"'>";
-        //     text = text+ "<ul class=\"pagination mb-0 mx-2\">";
-        //     text = text+    "<li class=\"page-item\" id=\"left_set-".$sdSections->id."-sectionKey-".$section_key."-setNo-1\" onclick=\"setPageChange(".$sdSections->id.",0)\" >";
-        //     text = text+    "<a class=\"page-link\" aria-label=\"Previous\">";
-        //     text = text+        "<span aria-hidden=\"true\">&laquo;</span>";
-        //     text = text+        "<span class=\"sr-only\">Previous</span>";
-        //     text = text+    "</a>";
-        //     text = text+    "</li>";
-        //     if($max_set_No != 0){
-        //         for($pageNo = 1; $pageNo<=$max_set_No; $pageNo++ ){
-        //             text = text+    "<li class=\"page-item";
-        //             if($pageNo == 1) text = text+" selected-page";
-        //             text = text+"\" id=\"section-".$sdSections->id."-page_number-".$pageNo."\" onclick=\"setPageChange(".$sdSections->id.",".$pageNo.")\"><a class=\"page-link\">".$pageNo."</a></li>";
-        //         }
-        //     }else{
-        //         text = text+    "<li class=\"page-item selected-page\" style=\"font-weight:bold\" id=\"section-".$sdSections->id."-page_number-1\" onclick=\"setPageChange(".$sdSections->id.",1)\"><a class=\"page-link\">1</a></li>";
+    $("[id^=pagination-section-]").each(function(){
+        let text ="";
+        let sdSectionId = $(this).find("[id^=left_set]").attr('id').split('-')[1];
+        let sectionKey = $(this).find("[id^=left_set]").attr('id').split('-')[3];
+        let set_array = "";
+        let max_set_No = 0 ;
+        $.each(section[sectionKey].sd_section_structures,function(sd_section_structureK, sd_section_structure_detail){
+            // console.log(sd_section_structure_detail);
+            $.each(sd_section_structure_detail.sd_field.sd_field_values,function(key_detail_field_values, value_detail_field_values){
+                // console.log(value_detail_field_values);
+                set_array = value_detail_field_values.sd_section_sets;
+                if(typeof value_detail_field_values.sd_section_sets =="undefined"||typeof value_detail_field_values.sd_section_sets.set_array =="undefined") return true;
+                set_array = value_detail_field_values.sd_section_sets.set_array;
+                if(set_array.split(',')[0]>=max_set_No)
+                max_set_No = set_array.split(',')[0];
+            });
+        });
+        text = text+"<input type=\"hidden\" id='setArray-"+sdSectionId+"' value='";
+        $.each(setArray,function(setSectionId){
+            text = text+setSectionId+",";
+        });
+        text = text+"'>";
+        text = text+ "<ul class=\"pagination mb-0 mx-2\">";
+        text = text+    "<li class=\"page-item\" id=\"left_set-"+sdSectionId+"-sectionKey-"+sectionKey+"-setNo-1\" onclick=\"setPageChange("+sdSectionId+",0)\" >";
+        text = text+    "<a class=\"page-link\" aria-label=\"Previous\">";
+        text = text+        "<span aria-hidden=\"true\">&laquo;</span>";
+        text = text+        "<span class=\"sr-only\">Previous</span>";
+        text = text+    "</a>";
+        text = text+    "</li>";
+        if(max_set_No != 0){
+            for(pageNo = 1; pageNo<=max_set_No; pageNo++ ){
+                text = text+"<li class=\"page-item";
+                if(pageNo == 1) text = text+" selected-page";
+                text = text+"\" id=\"section-"+sdSectionId+"-page_number-"+pageNo+"\" onclick=\"setPageChange("+sdSectionId+","+pageNo+")\"><a class=\"page-link\">"+pageNo+"</a></li>";
+            }
+        }else{
+            text = text+    "<li class=\"page-item selected-page\" style=\"font-weight:bold\" id=\"section-"+sdSectionId+"-page_number-1\" onclick=\"setPageChange("+sdSectionId+",1)\"><a class=\"page-link\">1</a></li>";
 
-        //     }
-        //     text = text+    "<li class=\"page-item\" id=\"right_set-".$sdSections->id."-sectionKey-".$section_key."-setNo-1\" onclick=\"setPageChange(".$sdSections->id.",2)\">";
-        //     text = text+    "<a class=\"page-link\" aria-label=\"Next\">";
-        //     text = text+        "<span aria-hidden=\"true\">&raquo;</span>";
-        //     text = text+        "<span class=\"sr-only\">Next</span>";
-        //     text = text+    "</a>";
-        //     text = text+    "</li>";
-        //     text = text+ "</ul>";
-    // });
+        }
+        text = text+    "<li class=\"page-item\" id=\"right_set-"+sdSectionId+"-sectionKey-"+sectionKey+"-setNo-1\" onclick=\"setPageChange("+sdSectionId+",2)\">";
+        text = text+    "<a class=\"page-link\" aria-label=\"Next\">";
+        text = text+        "<span aria-hidden=\"true\">&raquo;</span>";
+        text = text+        "<span class=\"sr-only\">Next</span>";
+        text = text+    "</a>";
+        text = text+    "</li>";
+        text = text+ "</ul>";
+        console.log(text);  
+        $(this).html(text);
+    });
 }
 function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
+    if(pageNo == 0) return false;
     $("[id^=save-btn"+section_id+"]").hide();
     $("[id^=save-btn"+section_id+"]").attr("onclick","saveSection("+section_id+","+pageNo+")")
     let setFlag = true;
@@ -437,7 +455,6 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                     };
                 });
                 if(sectionId!=section_id){
-                
                     if($("[id=summary-"+sectionId+"]").length){
                         $("[id=summary-"+sectionId+"]").find(".selected-row").removeClass("selected-row");
                         $("[id=summary-"+sectionId+"]").find("#section-"+sectionId+"-row-"+targetSetArray[sectionId]).addClass("selected-row");
@@ -512,7 +529,13 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                                     thisElement.val(value.field_value).trigger('change');
                                     valueFlag = true;
                                 }else{
-                                    if(thisElement.attr('id').split('-')[2]=='radio'){
+                                    if(thisElement.attr('id').split('-')[2]=='unspecifieddate'){
+                                        let fieldId = thisElement.attr('id').split('-')[3];
+                                        let sectionId = thisElement.attr('id').split('-')[1];
+                                        $("#unspecified-day_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(0,2)).trigger('change');
+                                        $("#unspecified-month_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(2,4)).trigger('change');
+                                        $("#unspecified-year_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(4,8)).trigger('change');
+                                    }else if(thisElement.attr('id').split('-')[2]=='radio'){
                                         if(thisElement.val()==value.field_value) {
                                             thisElement.prop('checked',true);
                                             valueFlag = true;
@@ -581,86 +604,13 @@ function searchWhoDra(){
         }
     });
 }
-// function paginationReady(){
-//     return false;
-//     $("[id^=pagination-l2").each(function(){
-//         let hsectionid = $(this).attr('id').split('-')[3];
-//         let child_section_element = $("[id^=child_section][id$=section-"+hsectionid+"]").attr('id');
-//         let child_section_id = child_section_element.split('-')[1];
-//         child_section_id = child_section_id.split(/[\[\]]/);
-//         child_section_id = jQuery.grep(child_section_id, function(n, i){
-//             return (n !== "" && n != null);
-//         });
-//         let max_set_no  = 0 ;
-//         $(child_section_id).each(function(k, v){
-//             let sectionKey = $("[id^=add_set-"+v+"]").attr('id').split('-')[3];
-//             $(section[sectionKey].sd_section_structures).each(function(k,v){
-//                 $.each(v.sd_field.sd_field_values,function(key, value){
-//                     // console.log("v:");console.log(v);console.log(value);console.log(value.set_number);
-//                     max_set_no = Math.max(value.set_number, max_set_no);
-//                 })
-//             })
-//             // section[section_Id[2]].sd_section_structures[sectionStructureK].sd_field.sd_field_value_details
-//             $("[id^=pagination-section-"+v+"]").hide();
-//         });
-//         if (max_set_no==0) {
-//             $("[id^=child_section][id$=section-"+hsectionid+"]").hide();
-//             max_set_no = 1;
-//         }else {
-//             $("[id^=child_section][id$=section-"+hsectionid+"]").show();
-//             $("[id=delete_section-"+hsectionid+"]").show();
-//         }
-//         let text= "";
-//         text += "<nav class=\"d-inline-block float-right\" title=\"Pagination\" aria-label=\"Data Entry Set Pagination\">";
-//         text += "<ul class=\"pagination mb-0\">";
-//         text +=    "<li class=\"page-item\" id=\"left_set-"+hsectionid+"-setNo-1\" onclick=\"level2setPageChange("+hsectionid+",0)\" >";
-//         text +=    "<a  class=\"page-link\" aria-label=\"Previous\">";
-//         text +=        "<span aria-hidden=\"true\">&laquo;</span>";
-//         text +=        "<span class=\"sr-only\">Previous</span>";
-//         text +=    "</a>";
-//         text +=    "</li>";
-//         for(pageNo=1; pageNo<=max_set_no; pageNo++){
-//                     text +=    "<li class=\"page-item\" id=\"l2section-"+hsectionid+"-page_number-"+pageNo+"\" ><a id=\"section-"+hsectionid+"-page_number-"+pageNo+"\" onclick=\"level2setPageChange("+hsectionid+","+pageNo+")\" class=\"page-link\">"+pageNo+"</a></li>";
-//         }
-//         text +=    "<li class=\"page-item\" id=\"right_set-"+hsectionid+"-setNo-1\" onclick=\"level2setPageChange("+hsectionid+",2)\">";
-//         text +=    "<a class=\"page-link\" aria-label=\"Next\">";
-//         text +=        "<span aria-hidden=\"true\">&raquo;</span>";
-//         text +=        "<span class=\"sr-only\">Next</span>";
-//         text +=    "</a>";
-//         text +=    "</li>";
-//         text += "</ul>";
-//         text += "</nav>";
-//         $("#showpagination-"+hsectionid).html(text);
-//     })
-// }
-function deleteSection(sectionId, setArray=null, pcontrol=false){
-
-    let sectionRequest = {};
-    let request = {};
-    let savedArray = [];
-    let setNo = 0;
-    $("div[id^=section-"+sectionId+"-field]").each(function(){
-        if($(this).find("[name$=\\[field_value\\]]").length){
-            let field_id = $(this).attr('id').split('-')[3];
-            let field_request =
-            {
-                'id': $(this).children("[name$=\\[id\\]]").val(),
-                'sd_field_id':$(this).children("[name$=\\[sd_field_id\\]]").val(),
-            };
-            sectionRequest[field_id] = field_request;
-        }
-    });
-    sectionRequest['sd_field_values'] = sectionRequest;
-    let sectionArray={};
-    sectionArray[sectionId] = $("[name=section\\["+sectionId+"\\]]").val();
-    request['sectionArray'] =sectionArray;
-    console.log(request);
+function deleteSection(sectionId, setNo=null, pcontrol=false){
     $.ajax({
         headers: {
             'X-CSRF-Token': csrfToken
         },
         type:'POST',
-        url:'/sd-sections/deleteSection/'+caseId,
+        url:'/sd-sections/deleteSection/'+caseId+'/'+sectionId+'/'+setNo,
         data:request,
         success:function(response){
             console.log(response);

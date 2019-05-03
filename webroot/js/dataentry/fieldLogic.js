@@ -42,7 +42,12 @@ $(document).ready(function(){
     //sort table content in every column
     $('.table').DataTable();
 
-
+    $("[id^=unspecified-]").change(function(){
+        let sectionId = $(this).attr('id').split('-')[2];
+        let fieldId = $(this).attr('id').split('-')[4];
+        $("#section-"+sectionId+"-unspecifieddate-"+fieldId).val($("#unspecified-day_section-"+sectionId+"-unspecifieddate-"+fieldId).val()+$("#unspecified-month_section-"+sectionId+"-unspecifieddate-"+fieldId).val()+$("#unspecified-year_section-"+sectionId+"-unspecifieddate-"+fieldId).val());
+    });
+    $("[id*=unspecifieddate][id^=section]").val()
 
     // General Tab:
         // Admin section
