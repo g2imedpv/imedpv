@@ -52,7 +52,8 @@ $(document).ready(function(){
             checkboxShowORhide ('#section-1-field-23',"#section-1-checkbox-22-option-1");
             // For Exist Other Case Identifiers? (A.1.11) checkbox
             checkboxShowORhide ('#section-1-field-19, #section-1-field-20', "#section-1-checkbox-18-option-1");
-
+            
+           
     // Patient Tab:
         // Congenital Anomaly section
             // Congenital Anomaly field
@@ -69,31 +70,38 @@ $(document).ready(function(){
                     $('#section-22-date-205').prop('disabled',false);
                 }
             });
-        //dosing regiment: calculate duration
-        // function duration(,startMonth,startYear,endYear,endMonth,endDay,dur,durUnit) {
-        //    var endTime=(endYear*365+endMonth*30+endDay)*24*60;
-        //    var startTime=(startYear*365+startMonth*30+startDay)*24*60;
-        //    var diffTime=endTime-startTime;
-        //    if(diffTime<60){
-        //        dur.val(diffTime);
-        //        document.getElementById(durUnit).value="806";
-        //    }else if((diffTime>=60)&&(diffTime<1440)){
-        //         dur.val(diffTime/60);
-        //         document.getElementById(durUnit).value="805";
-        //    }else if((diffTime>=1440)&&(diffTime<43200)){
-        //         dur.val(diffTime/60/24);
-        //         document.getElementById(durUnit).value="804";
-        //    }else if((diffTime>=43200)&&(diffTime<518400)){
-        //         dur.val(diffTime/60/24/30);
-        //         document.getElementById(durUnit).value="802";
-        //    }else{
-        //         dur.val(diffTime/60/24/30);
-        //         document.getElementById(durUnit).value="801";
-        //    }
+            checkboxShowORhide ('#section-22-field-206, #section-22-field-207,#section-22-field-205', "#section-22-checkbox-434-option-1");
+        //     $("#section-22-checkbox-434-option-1").change(function (){
+        //         duration("#unspecified-day_section-22-unspecifieddate-199", "#unspecified-month_section-22-unspecifieddate-199","#unspecified-year_section-22-unspecifieddate-199",
+        //         "#unspecified-day_section-22-unspecifieddate-205","#unspecified-month_section-22-unspecifieddate-205","#unspecified-year_section-22-unspecifieddate-205",
+        //         "#section-22-text-206","#section-22-select-207");
+        //     });
+        // function duration(startDay,startMonth,startYear,endDay,endMonth,endYear,dur,durUnit) {
+        //     var endTime=($(endYear)*365+$(endMonth)*30+$(endDay))*24*60;
+        //     var startTime=($(startYear)*365+$(startMonth)*30+$(startDay))*24*60;
+        //     var diffTime=endTime-startTime;
+        //     if(diffTime<60){
+        //         $(dur).val(diffTime);
+        //         $(durUnit).value(806).trigger('change');
+        //     }else if((diffTime>=60)&&(diffTime<1440)){
+        //          $(dur).val(diffTime/60);
+        //          $(durUnit).value(805).trigger('change');
+        //     }else if((diffTime>=1440)&&(diffTime<10080)){
+        //          $(dur).val(diffTime/60/24);
+        //          $(durUnit).value(804).trigger('change');
+        //     }else if((diffTime>=10080)&&(diffTime<45360)){
+        //          $(dur).val(diffTime/60/24/7);
+        //          $(durUnit).value(803).trigger('change');
+        //     }else if((diffTime>=45360)&&(diffTime<525600)){
+        //          $(dur).val(diffTime/24/60/31.5);
+        //          $(durUnit).value(802).trigger('change');
+        //     }else if(diffTime>525600){
+        //          $(dur).val(diffTime/365/24/60);
+        //          $(durUnit).value(801).trigger('change');
+        //     }  
+            
         // }
-
-        // duration("#select2-unspecified-day_section-22-unspecifieddate-199-container", "#select2-unspecified-month_section-22-unspecifieddate-199-container","#select2-unspecified-year_section-22-unspecifieddate-199-container",
-        //         "","","","","");
+        
     
 
     // Causality Tab:
