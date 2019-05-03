@@ -399,6 +399,15 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
     //     }
     // }elseif($section->section_level ==1 ){
         $text =$text. "<div class=\"fieldInput \" id=\"input-".$section->id."-sectionKey-".$sectionKey."\">";
+        $text =$text. "<input type =\"hidden\" name=\"section[".$section->id."]\" value=\"";
+        if(!empty($setArray)){
+            $sectionsText = "";
+            foreach($setArray as $sectionsId){
+                $sectionsText =$sectionsText.$sectionsId.":1,";
+            }
+            $text = $text.substr($sectionsText,0,-1);
+        }
+        $text =$text. "\">";
         $text =$text. "<hr class=\"my-2\">";
         $length_taken = 0;
         $cur_row_no = 0;
@@ -448,14 +457,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                     if($sd_section_structure_detail->is_required) $text =$text. "1" ;else $text =$text. "0";
                     $text =$text. " type=\"hidden\">";
                     $text =$text. "<div id= \"section-".$section->id."-error_message-".$sd_section_structure_detail->sd_field->id."\" style=\"display:none\"></div>";
-                    //  $text =$text. "<input id= \"section-".$section->id."-set_number-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][set_number]\" value=".$setNo." type=\"hidden\">";
-                    if(!empty($setArray)){
-                        foreach($setArray as $setKey => $setNo){
-                            $text =$text. "<input id= \"section-".$section->id."-set_array-".$sd_section_structure_detail->sd_field->id."-addableSectionNo-".$setNo."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][set_array][".$setNo."]\" value=\"1\" type=\"hidden\">"; 
-                                
-                        }
-                    }
-                    $text =$text. "<input id= \"section-".$section->id."-set_array-".$sd_section_structure_detail->sd_field->id."-sectionNo\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][sd_section_id]\" value=\"".$section['id']."\" type=\"hidden\">";      
+                    //  $text =$text. "<input id= \"section-".$section->id."-set_number-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][set_number]\" value=".$setNo." type=\"hidden\">";    
                     $text =$text. "<input id= \"section-".$section->id."-sd_field_id-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][sd_field_id]\" value=".$sd_section_structure_detail->sd_field->id." type=\"hidden\">";
                 }
                     switch($sd_section_structure_detail->sd_field->sd_element_type->type_name){

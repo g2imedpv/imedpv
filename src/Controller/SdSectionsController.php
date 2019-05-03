@@ -120,10 +120,11 @@ class SdSectionsController extends AppController
         $sdCasesTable = TableRegistry::get('SdCases');
         if ($this->request->is(['patch', 'post', 'put'])) {
             $error =[];
-            $requstData = $this->request->getData();
+            $requstData = $this->request->getData()['sd_field_values'];
             $sdSectionSetsTable = TableRegistry::get('SdSectionSets');
             $SdSectionStructuresTable = TableRegistry::get('SdSectionStructures');
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
+            $sectionArray = $this->request->getData()['sectionArray'];
             foreach($requstData as $sectionValueK => $sectionValue) {
                 $section_id = $sectionValueK;
                 foreach($sectionValue as $sectionFieldK =>$sectionFieldValue){
@@ -136,10 +137,7 @@ class SdSectionsController extends AppController
                         }
                     }elseif(!empty($sectionFieldValue['field_value'])){
                         $sdFieldValueEntity = $sdFieldValueTable->newEntity();
-                        if(key_exists('set_array',$sectionFieldValue))
-                            $set_array = $sectionFieldValue['set_array'];
                         unset($sectionFieldValue['set_array']);
-                        unset($sectionFieldValue['sd_section_id']);
                         $dataSet = [
                             'sd_case_id' => $caseId,
                             'sd_field_id' => $sectionFieldValue['sd_field_id'],
@@ -156,18 +154,20 @@ class SdSectionsController extends AppController
                             debug($savedFieldValue);
                         } 
                         $sdSectionSetsEntity = $sdSectionSetsTable->newEntity(); 
-                        if(empty($set_array)) continue;
-                        foreach($set_array as $setSectionId => $set_no){
-                            $sdSectionSetsEntity['set_array'] = $sdSectionSetsEntity['set_array'].$set_no.","; 
+                        if(!empty($sectionArray)) continue;
+                        $sectionArray = explode(',',$sectionArray[$section_id]);
+                        for($i = sizeof($sectionArray)-1;$i>=0;$i--){
+                            $sdSectionSetsEntity['set_array'] = $sdSectionSetsEntity['set_array'].explode(':',$sectionArray[$i])[1].","; 
                         }
+                        $sdSectionSetsEntity['set_array'] = substr($sdSectionSetsEntity['set_array'], 0, -1);
                         $sdSectionSetsEntity['sd_section_id'] = $section_id;
                         if(strlen($sdSectionSetsEntity['set_array']) > 1)
-                        $sdSectionSetsEntity['set_array'] = substr($sdSectionSetsEntity['set_array'], 0, -1);
+
                         $setDataSet = [
                             'set_array' =>$sdSectionSetsEntity['set_array'],
                             'sd_field_value_id'=>$savedFieldValue['id'],
                         ];
-                        $sdSectionSetsEntity['sd_field_value_id'] = $savedFieldValue['id'];   
+                        $sdSectionSetsEntity['sd_field_value_id'] = $savedFieldValue['id'];
                         if(!$sdSectionSetsTable->save($sdSectionSetsEntity)){
                             echo "error in adding sets!" ; 
                             debug($sdSectionSetsEntity);

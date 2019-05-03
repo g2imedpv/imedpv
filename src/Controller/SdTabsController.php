@@ -54,6 +54,8 @@
                     $sdSectionSetsTable = TableRegistry::get('SdSectionSets');
                     $SdSectionStructuresTable = TableRegistry::get('SdSectionStructures');
                     $sdFieldValueTable = TableRegistry::get('SdFieldValues');
+                    $uploadedSections = $requstData['sd_sections'];
+                    $sectionArray = $this->request->getData()['section'];
                     foreach($requstData['sd_field_values'] as $sectionValueK => $sectionValue) {
                         $section_id = $sectionValueK;
                         foreach($sectionValue as $sectionFieldK =>$sectionFieldValue){
@@ -69,7 +71,6 @@
                                 if(key_exists('set_array',$sectionFieldValue))
                                     $set_array = $sectionFieldValue['set_array'];
                                 unset($sectionFieldValue['set_array']);
-                                unset($sectionFieldValue['sd_section_id']);
                                 $dataSet = [
                                     'sd_case_id' => $caseId,
                                     'sd_field_id' => $sectionFieldValue['sd_field_id'],

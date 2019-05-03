@@ -167,29 +167,36 @@ function level2setPageChange(section_id, pageNo, addFlag=null){
 }
 function renderSummaries(section_id, pageNo){
     let setArray = {};
-    //get this section's set array
-    if($("#setArray-"+section_id).length){
-        $.each($("#setArray-"+section_id).val().split(','),function(k,sectionId){
-            if(sectionId=="") return true;
-            setArray[sectionId] = null;
+    setArray = {};
+    if($("[name=section\\["+section_id+"\\]]").length){
+        $.each($("[name=section\\["+section_id+"\\]]").val().split(','),function(k, setSectionArray){
+            setArray[setSectionArray.split(':')[0]] = parseInt(setSectionArray.split(':')[1]);
         });
     }else{
-        $("[id^=section-"+section_id+"][id*=addableSectionNo]").each(function(){
-            setArray[$(this).attr('name').split(/[\[\]]/)[7]] = null;
-            section_id = $(this).attr('name').split(/[\[\]]/)[7];
+        //get this section's set array
+        if($("#setArray-"+section_id).length){
+            $.each($("#setArray-"+section_id).val().split(','),function(k,sectionId){
+                if(sectionId=="") return true;
+                setArray[sectionId] = null;
+            });
+        }else{
+            $("[id^=section-"+section_id+"][id*=addableSectionNo]").each(function(){
+                setArray[$(this).attr('name').split(/[\[\]]/)[7]] = null;
+                section_id = $(this).attr('name').split(/[\[\]]/)[7];
+            });
+        }
+        //get parent setNo
+        $.each(setArray,function(detailSectionId, setNo){
+            if($("#summary-"+detailSectionId).length){
+                if($("#summary-"+detailSectionId).find(".selected-row").length)
+                    setArray[detailSectionId] = parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3]);
+            }else{
+                setArray[detailSectionId] = parseInt($("[id=pagination-section-"+detailSectionId+"]").find(".selected-page").attr('id').split("-")[3]);
+            }
         });
     }
-    //get parent setNo
-    $.each(setArray,function(detailSectionId, setNo){
-        if($("#summary-"+detailSectionId).length){
-            if($("#summary-"+detailSectionId).find(".selected-row").length)
-                setArray[detailSectionId] = parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3]);
-        }else{
-            setArray[detailSectionId] = parseInt($("[id=pagination-section-"+detailSectionId+"]").find(".selected-page").attr('id').split("-")[3]);
-        }
-    });
     if(section_id in setArray)
-        setArray[section_id] = pageNo;
+        setArray[section_id] = parseInt(pageNo);
     console.log(setArray);
     $("table[id^=sectionSummary-]").each(function(){
         let tbodyText ="";
@@ -250,6 +257,7 @@ function renderSummaries(section_id, pageNo){
             row  = row +1;
         }while(noValue !=section[sectionKey].sd_section_summary.sdFields.length);
         $(this).find('tbody').html(tbodyText);
+        $(this).find('#section-'+section_id+'-row-1').removeClass('selected-row');
         $(this).find('#section-'+section_id+'-row-'+setArray[section_id]).addClass('selected-row');
     });
     // $("#[id^=pagination-section-]").each(function(){
@@ -313,8 +321,9 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
     //get parent setNo
     $.each(setArray,function(detailSectionId, setNo){
         if($("#summary-"+detailSectionId).length){
-            if($("#summary-"+detailSectionId).find(".selected-row").length)
+            if($("#summary-"+detailSectionId).find(".selected-row").length){
                 setArray[detailSectionId] = parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3]);
+            }
         }else{
             setArray[detailSectionId] = parseInt($("[id=pagination-section-"+detailSectionId+"]").find(".selected-page").attr('id').split("-")[3]);
         }
@@ -322,8 +331,8 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
     setArray[section_id] = pageNo;
     if(addFlag)
         setArray[section_id] = max_set;
-    console.log(setArray);
     //for each field
+    
     $("[id^=input-").each(function(){
         let sectionId = $(this).attr('id').split('-')[1];
         let sectionKey = $(this).attr('id').split('-')[3];
@@ -332,10 +341,21 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             let targetSetArray = {};
             let fieldsectionSetArray = [];
             let fieldDiv = $(this);
-            if($(this).find("[id*=addableSectionNo]").length == 0) return true;
-            $(this).find("[id*=addableSectionNo]").each(function(){
-                fieldsectionSetArray.unshift($(this).attr('id').split('-')[5]);
-                targetSetArray[$(this).attr('id').split('-')[5]] = $(this).val();
+            let newSetSectionString ="";
+            targetSetArray = {};
+            $.each($("[name=section\\["+sectionId+"\\]]").val().split(','),function(k, setSectionArray){
+                console.log($("[name=section\\["+sectionId+"\\]]").val());
+                fieldsectionSetArray.unshift(setSectionArray.split(':')[0]);
+                if(section_id == setSectionArray.split(':')[0]){
+                    targetSetArray[section_id] = parseInt(pageNo);
+                    if(addFlag)
+                        newSetSectionString = newSetSectionString+setSectionArray.split(':')[0]+":"+max_set+",";
+                    else newSetSectionString = newSetSectionString+setSectionArray.split(':')[0]+":"+pageNo+",";
+                }
+                else{
+                    targetSetArray[setSectionArray.split(':')[0]] = parseInt(setSectionArray.split(':')[1]);
+                    newSetSectionString = newSetSectionString+setSectionArray+",";
+                }
             });
             let relateFlag = false;
             //classify sections: 1. parent section 2.same section 3.child section 4.unrelated section
@@ -347,18 +367,21 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                     targetSetArray[setSectionId] = 1;
                 };
             });
-            if($("[id=summary-"+sectionId+"]").length){
-                $("[id=summary-"+sectionId+"]").find(".selected-row").removeClass("selected-row");
-                $("[id=summary-"+sectionId+"]").find("#section-"+sectionId+"-row-"+targetSetArray[sectionId]).addClass("selected-row");
-            }else{
-                $("#pagination-section-"+sectionId).find(".selected-page").removeClass(".selected-page");
-                $("#pagination-section-"+sectionId).find("#section-"+sectionId+"-page_number-"+targetSetArray[sectionId]).addClass(".selected-page");
+            if(sectionId!=section_id){
+               
+                if($("[id=summary-"+sectionId+"]").length){
+                    $("[id=summary-"+sectionId+"]").find(".selected-row").removeClass("selected-row");
+                    $("[id=summary-"+sectionId+"]").find("#section-"+sectionId+"-row-"+targetSetArray[sectionId]).addClass("selected-row");
+                }else{
+                    $("#pagination-section-"+sectionId).find(".selected-page").removeClass(".selected-page");
+                    $("#pagination-section-"+sectionId).find("#section-"+sectionId+"-page_number-"+targetSetArray[sectionId]).addClass(".selected-page");
+                }
             }
+            $("[name=section\\["+sectionId+"\\]]").val(newSetSectionString.substr(0,newSetSectionString.length-1));
             let fieldTargetArray = [];
             $.each(fieldsectionSetArray,function(k,v){
-                fieldDiv.find("[id$=addableSectionNo-"+v+"]").val(targetSetArray[v]);
                 fieldTargetArray.push(targetSetArray[v]);
-            })
+            });
             //type of 4
             if(!relateFlag) return true;
             $(this).find("[name$=\\[id\\]]").each(function(){
@@ -664,6 +687,7 @@ function saveSection(sectionId){
     // if(!validation(sectionId)) return;
     let request = {};
     let error = 0;
+    let fieldData ={};
     let sectionRequest = {};
     $("div[id^=section-"+sectionId+"-field]").each(function(){
         if($(this).find("[id^=section-"+sectionId+"-error_message-]").is(":visible")) error = 1;
@@ -689,25 +713,23 @@ function saveSection(sectionId){
                 'id': $(this).children("[name$=\\[id\\]]").val(),
                 'field_value': field_value
             };
-            let setArray = {};
-            $(this).children("[name*=set_array]").each(function(){
-                setArray[$(this).attr('id').split('-')[5]] = $(this).val();
-                setNo = $(this).val();
-            });
-            field_request['set_array'] = setArray;
-            request[field_id] = field_request;
+            fieldData[field_id] = field_request;
         }
-        sectionRequest[sectionId] = request;
+        sectionRequest[sectionId] = fieldData;
     });
+    request['sd_field_values'] = sectionRequest;
+    let sectionArray={};
+    sectionArray[sectionId] = $("[name=section\\["+sectionId+"\\]]").val();
+    request['sectionArray'] =sectionArray;
     if(error) return false;
-    console.log(sectionRequest);
+    console.log(request);
     $.ajax({
         headers: {
             'X-CSRF-Token': csrfToken
         },
         type:'POST',
         url:'/sd-sections/saveSection/'+tabId+'/'+caseId,
-        data:sectionRequest,
+        data:request,
         success:function(response){
             console.log(response);
             swal({
