@@ -811,6 +811,7 @@ function saveSection(sectionId,setNo){
             section = $.parseJSON(response);
             setPageChange(sectionId,setNo);
             $("[id=addbtnalert-"+sectionId+"]").hide();
+            $("[id^=save-btn"+sectionId+"]").hide();
             return false;
         },
         error:function(response){
@@ -1076,9 +1077,10 @@ jQuery(function($) {
 
     // Show "Save" button when any input change
     $(document).ready(function() {
+        $("[id^=save-btn]").hide();
         $("input,textarea,select").change(function () {
             $(this).parents('.fieldInput').siblings().find("[id^=save-btn]").show();
-         });
+        });
     });
 
     // // Auto populate the selected value into next

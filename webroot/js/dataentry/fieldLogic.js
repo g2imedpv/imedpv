@@ -32,12 +32,12 @@ $(document).ready(function(){
         });
     }
     // highlighted selected table row
-    $(".table tbody tr").click(function() {
-        var selected = $(this).hasClass("highlight");
-        $(".table tr").removeClass("highlight");
-        if(!selected)
-        $(this).addClass("highlight");
-    });
+    // $(".table tbody tr").click(function() {
+    //     var selected = $(this).hasClass("highlight");
+    //     $(".table tr").removeClass("highlight");
+    //     if(!selected)
+    //     $(this).addClass("highlight");
+    // });
 
     //sort table content in every column
     $('.table').DataTable();
