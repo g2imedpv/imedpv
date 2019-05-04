@@ -155,7 +155,7 @@ class SdSectionsController extends AppController
                             echo "error in adding values!" ;
                             debug($savedFieldValue);
                         } 
-                        $sdSectionSetsEntity = $sdSectionSetsTable->newEntity(); 
+                        $sdSectionSetsEntity = $sdSectionSetsTable->newEntity();
                         if(empty($requestSectionArray)) continue;
                         $sectionArray = explode(',',$requestSectionArray[$section_id]);
                         for($i = sizeof($sectionArray)-1;$i>=0;$i--){
@@ -295,6 +295,50 @@ class SdSectionsController extends AppController
                 } 
                  
             }
+            $sdCasesTable = TableRegistry::get('SdCases');
+            $sdCases = $sdCasesTable->find()->where(['caseId'=>$caseId])->contain(['SdProductWorkflows.SdProducts'])->first();
+            $currentActivityId = $sdCases['sd_workflow_activity_id'];
+
+            //User not allow to this activity
+            if($userinfo['sd_role_id']>2){
+                $assignments = TableRegistry::get('SdUserAssignments')
+                        ->find()->select(['sd_workflow_activity_id'])
+                        ->where(['sd_user_id'=>$userinfo['id'],'sd_product_workflow_id'=>$sdCases['sd_product_workflow_id']])->toArray();
+                $activitySectionPermissions = TableRegistry::get('SdActivitySectionPermissions')
+                        ->find('list',[
+                            'keyField' => 'sd_section_id',
+                            'valueField' => 'action'
+                        ])
+                        ->join([
+                            'sections' =>[
+                                'table' =>'sd_sections',
+                                'type'=>'INNER',
+                                'conditions'=>['sections.id = SdActivitySectionPermissions.sd_section_id','sections.sd_tab_id = '.$tabid],
+                            ],
+                            'ua'=>[
+                                'table'=>'sd_user_assignments',
+                                'type'=>'INNER',
+                                'conditions'=>['ua.sd_product_workflow_id ='.$sdCases['sd_product_workflow_id'],
+                                            'ua.sd_user_id ='.$userinfo['id'],'ua.sd_workflow_activity_id = SdActivitySectionPermissions.sd_workflow_activity_id']
+                            ]
+                        ])->toArray();
+                if($sdCases['sd_user_id'] != $userinfo['id']){
+                    $writePermission = 0;
+                }else{
+                    $writePermission = 1;
+                }
+                if(!$writePermission){
+                    foreach($activitySectionPermissions as $key => $activitySectionPermission){
+                        $activitySectionPermissions[$key] = 2;
+                    }
+                }
+            }else {
+                $activitySectionPermissions = null;
+                $writePermission =1;
+            }
+
+            //Fetch tab structures
+            //TODO according to model
             $sdFieldTable = TableRegistry::get('SdFields');
             $sdTab = TableRegistry::get('SdSections');
             $sdSections = $sdTab ->find()->where(['sd_tab_id'=>$tabid,'status'=>true])
@@ -303,7 +347,7 @@ class SdSectionsController extends AppController
                                     return $q->order(['SdSectionStructures.row_no'=>'ASC','SdSectionStructures.field_start_at'=>'ASC'])
                                         ->contain(['SdFields'=>['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
                                             return $q->contain(['SdSectionSets'])->where(['SdFieldValues.sd_case_id'=>$caseId, $distribution_condition,
-                                                                'SdFieldValues.status'=>true]);
+                                                             'SdFieldValues.status'=>true]);
                                         }, 'SdElementTypes'=> function($q){
                                         return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
                                             }]]);
@@ -339,7 +383,7 @@ class SdSectionsController extends AppController
                 foreach($fields as $sdField){
                     $foundField = $sdFieldTable->find()->where(['SdFields.id'=>$sdField])->contain(['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
                         return $q->contain(['SdSectionSets'])->where(['SdFieldValues.sd_case_id'=>$caseId, $distribution_condition,
-                                            'SdFieldValues.status'=>true]);
+                                         'SdFieldValues.status'=>true]);
                     }, 'SdElementTypes'=> function($q){
                     return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
                         }])->first(); 
@@ -355,6 +399,11 @@ class SdSectionsController extends AppController
                     array_push($sdFields,$foundField);
                 }       
                 $sdSection->sd_section_summary['sdFields'] = $sdFields;
+            }
+            if($userinfo['sd_role_id']>2){
+                foreach($sdSections as $sectionKey => $sdSection){
+                    if(!array_key_exists($sdSection['id'],$activitySectionPermissions)) unset($sdSections[$sectionKey]);
+                }
             }
             //child section
         }else $this->autoRender = true;

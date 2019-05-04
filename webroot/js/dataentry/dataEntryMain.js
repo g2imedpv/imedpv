@@ -28,17 +28,14 @@ $(document).ready(function(){
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").show();
                     //$(this).find("[id^=section-"+id[1]+"-error_message-]").text('/numbers only');
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Numbers Only", "Please re-entry the valid data", "warning"));
-                    console.log('number only at '+$(this).attr('id'));
                     validate = 0;
                 }else if((rule[1]=="A")&&(!/^[a-zA-Z]+$/.test(field_value))){
-                    console.log('alphabet only at '+$(this).attr('id'));
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").show();
                     //$(this).find("[id^=section-"+id[1]+"-error_message-]").text('/alphabet only');
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Alphabet Only", "Please re-entry the valid data", "warning"));
                     validate = 0;
                 }
                 if(rule[0]<field_value.length) {
-                    console.log('exccess the length at'+$(this).attr('id'));
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").show();
                     //$(this).find("[id^=section-"+id[1]+"-error_message-]").text( $(this).find("[id^=section-"+id[1]+"-error_message-]").text()+'/exccess the length');
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Exccess the length", "Please re-entry the valid data", "warning"));
@@ -59,7 +56,7 @@ $(document).ready(function(){
             'caseId':caseId,
             'userId':userId,
         };
-        console.log(request);
+        // console.log(request);
         if(request['key']!="")
         {
             $.ajax({
@@ -71,7 +68,7 @@ $(document).ready(function(){
             data:request,
             success:function(response){
                 $('#searchFieldResult').html("");
-                console.log(response);
+                // console.log(response);
                 searchResult = $.parseJSON(response);
                 let text ="<table class=\"table table-hover w-100\">";
                 text +="<tr><th scope=\"col\">Field Lable</th>";
@@ -90,7 +87,7 @@ $(document).ready(function(){
 
             },
             error:function(response){
-                console.log(response.responseText);
+                // console.log(response.responseText);
             }
         });}
         else $('#searchFieldResult').html("");
@@ -303,7 +300,6 @@ function renderSummaries(section_id, pageNo){
         text = text+    "</a>";
         text = text+    "</li>";
         text = text+ "</ul>";
-        console.log(text);  
         $(this).html(text);
     });
 }
@@ -325,7 +321,8 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
     {
         if($("[id=summary-"+section_id+"]").length){
             $("[id=summary-"+section_id+"]").find("tr").each(function(){
-                max_set ++;
+                if(!$(this).find('th').length)
+                    max_set ++;
             });
             if(addFlag==null){
                 $("[id=summary-"+section_id+"]").find(".selected-row").removeClass("selected-row");
@@ -367,10 +364,9 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             });
         }
         if(addFlag)
-            setArray[section_id] = max_set+1;
+            setArray[section_id] = max_set+1;            
         else setArray[section_id] = pageNo;
     }
-    console.log(section_id+" "+pageNo);
     console.log(setArray);
     //for each field
     $("[id^=input-").each(function(){
@@ -384,7 +380,6 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             else inputSetflag = false;
         }
         if(sectionId!=section_id&&!inputSetflag) return true;
-        $(this).find("[id*=-field-]").each(function(){
             //get this field setArray
             let targetSetArray = {};
             let fieldsectionSetArray = [];
@@ -393,11 +388,11 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             targetSetArray = {};
             if(setFlag&&inputSetflag)
             {
-                if($("[name=section\\["+sectionId+"\\]]").length){
+                if($(this).find("[id^=section-"+orignalId+"][name=section\\["+sectionId+"\\]]").length){
                     newSetSectionString ="";
                     //get this section setNo
                     let setK = 999;
-                    $.each($("[name=section\\["+sectionId+"\\]]").val().split(','),function(k, setSectionArray){
+                    $.each($(this).find("[name=section\\["+sectionId+"\\]]").val().split(','),function(k, setSectionArray){
                         fieldsectionSetArray.unshift(setSectionArray.split(':')[0]);
                         if(section_id == setSectionArray.split(':')[0]){
                             setK = k;
@@ -406,6 +401,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                                 newSetSectionString = newSetSectionString+setSectionArray.split(':')[0]+":"+parseInt(max_set+1)+",";
                             else newSetSectionString = newSetSectionString+setSectionArray.split(':')[0]+":"+pageNo+",";
                         }
+                        
                         else{
                             if(k<setK){
                                 targetSetArray[setSectionArray.split(':')[0]] = parseInt(setSectionArray.split(':')[1]);
@@ -430,7 +426,6 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                             if(addFlag)
                                 newSetSectionString = newSetSectionString+detailSectionId+":"+parseInt(max_set+1)+",";
                             else newSetSectionString = newSetSectionString+detailSectionId+":"+pageNo+",";
-                            console.log(newSetSectionString);
                             return true;
                         }
                         if($("#summary-"+detailSectionId).length){
@@ -471,7 +466,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                 //type of 4
                 if(!relateFlag) return true;
             }
-            $(this).find("[name$=\\[id\\]]").each(function(){
+            $(this).find("[id^=section-"+orignalId+"][name$=\\[id\\]]").each(function(){
                 let sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
                 let valueFlag = false;
                 let thisElement = $(this);
@@ -507,7 +502,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                 };    
             });
 
-            $(this).find("[name$=\\[field_value\\]]").each(function(){
+            $(this).find("[id^=section-"+orignalId+"][name$=\\[field_value\\]]").each(function(){
                 let sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
                 let thisId = $(this).attr('id').split('-');
                 let valueFlag = false;
@@ -568,8 +563,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                     }
                 };
             });
-    
-        });
+
     });
     renderSummaries(section_id, pageNo, addFlag);
     return false;
@@ -638,7 +632,6 @@ function deleteSection(sectionId, setNo=null, pcontrol=false){
             //     }
             // });
             savedArray = $.parseJSON(response);
-            console.log(savedArray);
             let sectionIdOriginal =  $("[id^=save-btn"+sectionId+"]").attr('id');
             let section_Id = sectionIdOriginal.split('-');
 
@@ -761,13 +754,13 @@ function saveSection(sectionId,setNo){
             section = $.parseJSON(response);
             setPageChange(sectionId,setNo);
             $("[id=addbtnalert-"+sectionId+"]").hide();
-            $("[id^=save-btn"+sectionId+"]").hide();
             return false;
         },
         error:function(response){
             console.log(response.responseText);
         }
     });
+    return false;
     $.ajax({
         headers: {
             'X-CSRF-Token': csrfToken
@@ -931,7 +924,6 @@ function action(type){
                 text +="</div>";
                 $('#action-text-hint').html(text);
                 $('#next-activity-id').change(function(){
-                    console.log($('#previous_activity-'+$(this).val()).html());
                     let users =  $.parseJSON($('#previous_activity-'+$(this).val()).html());
                     let text =""
                     $('#receiverId').html(text);
@@ -1027,10 +1019,9 @@ jQuery(function($) {
 
     // Show "Save" button when any input change
     $(document).ready(function() {
-        $("[id^=save-btn]").hide();
         $("input,textarea,select").change(function () {
             $(this).parents('.fieldInput').siblings().find("[id^=save-btn]").show();
-        });
+         });
     });
 
     // // Auto populate the selected value into next
