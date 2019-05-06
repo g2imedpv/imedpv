@@ -1071,10 +1071,17 @@ jQuery(function($) {
             if(unsaved){
                 let _msg = 'Your data is changed, are you sure you want to complete?';
                 return  _msg;
+                // return swal({
+                //     title: "Are you sure?",
+                //     text: "Your data is changed, are you sure you want to complete?",
+                //     icon: "warning",
+                //     buttons: true,
+                //     dangerMode: true,
+                // })
             }
         };
     });
-
+    
     // Show "Save" button when any input change
     $(document).ready(function() {
         $("[id^=save-btn]").hide();

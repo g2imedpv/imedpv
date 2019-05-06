@@ -296,7 +296,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
     
     $fields = $SectionInfo->sd_section_summary->sdFields;
     $sectionId = $SectionInfo->id;
-    $text = "<a class='btn btn-outline-primary float-right' href='#' role='button' title='add'><i class='fas fa-plus'></i> Add</a><br><br>";
+    $text = "<div class='btn btn-outline-primary float-right' href='#' role='button' title='add'><i class='fas fa-plus'></i> Add</div><br><br>";
     $text = $text."<div class='card mt-1 mb-2'>";
     $text = $text."<div class='card-header '>";
     $text = $text."<div id='summary-".$sectionId."' class='layer".$section_level."' style=\"overflow:scroll; max-height:380px;\">";

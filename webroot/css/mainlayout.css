@@ -95,6 +95,7 @@ ul.topbar > li.nav-item {
 @media screen and (max-width: 1367px) {
     #sidenav {
         left: 20px;
+        width: 90px;
     }
     #sidenav > ul {
         width: 135px;
@@ -584,6 +585,7 @@ ul.queryBoxLeft > a {
 }
 .table thead tr{
     background-color: #7ea4e2;
+    text-align: center;
 }
 .table tbody tr:hover {
     color: #212529;
