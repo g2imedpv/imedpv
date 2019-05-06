@@ -36,16 +36,22 @@ $(document).ready(function(){
             }
         });
     }
-    // highlighted selected table row
-    // $(".table tbody tr").click(function() {
-    //     var selected = $(this).hasClass("highlight");
-    //     $(".table tr").removeClass("highlight");
-    //     if(!selected)
-    //     $(this).addClass("highlight");
-    // });
+
 
     //sort table content in every column
     $('.table').DataTable();
+
+    //change general tab date format
+    function dateConvert(target){
+        var date=$(target).val();
+        if(date){
+            var dateInformat=date.substring(4,8)+"/"+date.substring(2,4)+"/"+date.substring(0,2);
+            $(target).val(dateInformat);
+            $(target).prop("disabled", true);
+        }else{
+            $(target).val("");
+        }
+    }
 
     $("[id^=unspecified-]").change(function(){
         let sectionId = $(this).attr('id').split('-')[2];
@@ -62,13 +68,34 @@ $(document).ready(function(){
             checkboxShowORhide ('#section-1-field-23',"#section-1-checkbox-22-option-1");
             // For Exist Other Case Identifiers? (A.1.11) checkbox
             checkboxShowORhide ('#section-1-field-19, #section-1-field-20', "#section-1-checkbox-18-option-1");
+            dateConvert("#section-1-date-5");
+            dateConvert("#section-1-date-10");
+            dateConvert("#section-1-date-12");
+            dateConvert("#section-1-date-225");
+            dateConvert("#section-1-text-414");
+            dateConvert("#section-1-text-415");
+            dateConvert("#section-55-text-388");
+            
             
            
     // Patient Tab:
         // Congenital Anomaly section
             // Congenital Anomaly field
             selectShowORhide ("#section-16-field-277","#section-16-radio-273-option-1","#section-16-radio-273-option-2");
-
+        //Relevant medical history and concurrent conditions(B.1.7) section
+            //add title to distinct meddraw browser
+            $("#section-77-field-472").parent().prepend('<h5 class="col-md-12 mb-3">Drug Indication</h5>');
+            $("#section-77-field-473").parent().prepend('<h5 class="col-md-12 mb-3">Drug Reaction</h5>');
+            $("#section-5-field-401").parent().prepend('<h5 class="col-md-12 mb-3">Disease</h5>');
+            $("#section-8-field-477").parent().prepend('<h5 class="col-md-12 mb-3">Parent Disease</h5>');
+            $("#section-78-field-482").parent().prepend('<h5 class="col-md-12 mb-3">Drug Indication</h5>');
+            $("#section-78-field-486").parent().prepend('<h5 class="col-md-12 mb-3">Drug Reaction</h5>');
+            $("#section-19-field-490").parent().prepend('<h5 class="col-md-12 mb-3">Reported cause of death</h5>');
+            $("#section-19-field-494").parent().prepend('<h5 class="col-md-12 mb-3">Autopsy-determined cause of death</h5>');
+            $("#section-26-field-496").parent().prepend('<h5 class="col-md-12 mb-3">Reaction or event</h5>');
+            $("#section-69-field-499").parent().prepend('<h5 class="col-md-12 mb-3">Sender\'s diagnosis or syndrome</h5>');
+            $("#section-44-field-497").parent().prepend('<h5 class="col-md-12 mb-3">Recurred reaction</h5>');
+            $("#section-45-field-498").parent().prepend('<h5 class="col-md-12 mb-3">Reaction assessed</h5>');
     // Product Tab:
         // If "Ongoing field checked", then Therapy End date (B.4.k.14b) DISABLED
             $("#section-22-checkbox-434-option-1").change(function(){
@@ -80,40 +107,37 @@ $(document).ready(function(){
                     $('#section-22-date-205').prop('disabled',false);
                 }
             });
-            checkboxShowORhide ('#section-22-field-206, #section-22-field-207,#section-22-field-205', "#section-22-checkbox-434-option-1");
-        //     $("#section-22-checkbox-434-option-1").change(function (){
-        //         duration("#unspecified-day_section-22-unspecifieddate-199", "#unspecified-month_section-22-unspecifieddate-199","#unspecified-year_section-22-unspecifieddate-199",
-        //         "#unspecified-day_section-22-unspecifieddate-205","#unspecified-month_section-22-unspecifieddate-205","#unspecified-year_section-22-unspecifieddate-205",
-        //         "#section-22-text-206","#section-22-select-207");
-        //     });
-        // function duration(startDay,startMonth,startYear,endDay,endMonth,endYear,dur,durUnit) {
-        //     var endTime=($(endYear)*365+$(endMonth)*30+$(endDay))*24*60;
-        //     var startTime=($(startYear)*365+$(startMonth)*30+$(startDay))*24*60;
-        //     var diffTime=endTime-startTime;
-        //     if(diffTime<60){
-        //         $(dur).val(diffTime);
-        //         $(durUnit).value(806).trigger('change');
-        //     }else if((diffTime>=60)&&(diffTime<1440)){
-        //          $(dur).val(diffTime/60);
-        //          $(durUnit).value(805).trigger('change');
-        //     }else if((diffTime>=1440)&&(diffTime<10080)){
-        //          $(dur).val(diffTime/60/24);
-        //          $(durUnit).value(804).trigger('change');
-        //     }else if((diffTime>=10080)&&(diffTime<45360)){
-        //          $(dur).val(diffTime/60/24/7);
-        //          $(durUnit).value(803).trigger('change');
-        //     }else if((diffTime>=45360)&&(diffTime<525600)){
-        //          $(dur).val(diffTime/24/60/31.5);
-        //          $(durUnit).value(802).trigger('change');
-        //     }else if(diffTime>525600){
-        //          $(dur).val(diffTime/365/24/60);
-        //          $(durUnit).value(801).trigger('change');
-        //     }  
+            //checkboxShowORhide ('#section-22-field-206, #section-22-field-207,#section-22-field-205', "#section-22-checkbox-434-option-1");
+           
+           
             
-        // }
-        
-    
-
+        function duration(startDay,startMonth,startYear,endDay,endMonth,endYear,dur,durUnit) {
+            var endTime=($(endYear)*365+$(endMonth)*30+$(endDay))*24*60;
+            var startTime=($(startYear)*365+$(startMonth)*30+$(startDay))*24*60;
+            var diffTime=endTime-startTime;
+            if(diffTime<60){
+                $(dur).val(diffTime);
+                $(durUnit).value(806).trigger('change');
+            }else if((diffTime>=60)&&(diffTime<1440)){
+                 $(dur).val(diffTime/60);
+                 $(durUnit).value(805).trigger('change');
+            }else if((diffTime>=1440)&&(diffTime<10080)){
+                 $(dur).val(diffTime/60/24);
+                 $(durUnit).value(804).trigger('change');
+            }else if((diffTime>=10080)&&(diffTime<45360)){
+                 $(dur).val(diffTime/60/24/7);
+                 $(durUnit).value(803).trigger('change');
+            }else if((diffTime>=45360)&&(diffTime<525600)){
+                 $(dur).val(diffTime/24/60/31.5);
+                 $(durUnit).value(802).trigger('change');
+            }else if(diffTime>525600){
+                 $(dur).val(diffTime/365/24/60);
+                 $(durUnit).value(801).trigger('change');
+            }     
+        }
+        duration("#unspecified-day_section-22-unspecifieddate-199", "#unspecified-month_section-22-unspecifieddate-199","#unspecified-year_section-22-unspecifieddate-199",
+        "#unspecified-day_section-22-unspecifieddate-205","#unspecified-month_section-22-unspecifieddate-205","#unspecified-year_section-22-unspecifieddate-205",
+        "#section-22-text-206","#section-22-select-207");
     // Causality Tab:
         // If Rechallenge (B.4.k.17.1) answer "Yes", B.4.k.17.2* Meddra should be answer as well
             // var target = $('#section-44-field-210').parent();
@@ -127,8 +151,6 @@ $(document).ready(function(){
             //         (target,target1).hide();
             //     }
             // });
-    
-    
   
 });
     
