@@ -158,7 +158,7 @@ class SdSectionsController extends AppController
                         $sdSectionSetsEntity = $sdSectionSetsTable->newEntity();
                         if(empty($requestSectionArray)) continue;
                         $sectionArray = explode(',',$requestSectionArray[$section_id]);
-                        for($i = sizeof($sectionArray)-1;$i>=0;$i--){
+                        for($i = 0;$i<sizeof($sectionArray);$i++){
                             $sdSectionSetsEntity['set_array'] = $sdSectionSetsEntity['set_array'].explode(':',$sectionArray[$i])[1].","; 
                         }
                         $sdSectionSetsEntity['set_array'] = substr($sdSectionSetsEntity['set_array'], 0, -1);

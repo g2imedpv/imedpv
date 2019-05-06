@@ -1,5 +1,10 @@
 $(document).ready(function(){
-
+    $("#section-65-field-176").find("input").each(function(){
+        $(this).prop("disabled",true);
+    });
+    $("#section-44-field-149").find("input").each(function(){
+        $(this).prop("disabled",true);
+    });
     $(".js-example-responsive").select2({
         width: 'resolve'
     });

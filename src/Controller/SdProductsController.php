@@ -498,6 +498,7 @@ class SdProductsController extends AppController
                             return $q->select(['SdWorkflowActivities.id','SdWorkflowActivities.step_backward','SdWorkflowActivities.sd_workflow_id','SdWorkflowActivities.activity_name','SdWorkflowActivities.description'])->order(['SdWorkflowActivities.id'=>'ASC']);
                         })
                         ->order(['sd_workflows.id' => 'ASC']);
+                        
         foreach ($query as $workflow_info){
             $result[$workflow_info->country] = $workflow_info;
         }
@@ -535,6 +536,18 @@ class SdProductsController extends AppController
                         return $q->order(['SdSections.section_level'=>'DESC','SdSections.display_order'=>'ASC'])
                                 ->select(['SdSections.id','SdSections.sd_tab_id','SdSections.section_name','SdSections.section_level','SdSections.child_section']);
                     }])->order(['SdTabs.display_order'=>'ASC']);
+        $child_list = [];
+        foreach($sd_tabs as $sdTab){
+            foreach($sdTab->sd_sections as $sdSection){
+                if($sdSection->parent_section!=0){
+                    if(empty($child_list[$sdSection->parent_section])) $child_list[$sdSection->parent_section]="";
+                    $child_list[$sdSection->parent_section] = $child_list[$sdSection->parent_section].$sdSection->id.",";
+                }
+            }
+            foreach($sdTab->sd_sections as $sdSection){
+                if(!empty($child_list[$sdSection->id]))  $sdSection->child_section = substr($child_list[$sdSection->id], 0, -1);
+            }
+        }
         return $sd_tabs->toList();
     }
 }

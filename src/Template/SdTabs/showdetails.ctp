@@ -29,6 +29,7 @@ echo $this->element('generatepdf');
 <head>
     <?= $this->Html->script('dataentry/dataEntryMain.js') ?>
     <?= $this->Html->script('dataentry/fieldLogic.js') ?>
+    <?= $this->Html->script('meddra.js') ?>
 </head>
 <?php if($this->request->getQuery('readonly')!=1):?>
 <!-- Data Entry Top Bar -->
@@ -296,13 +297,13 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
     
     $fields = $SectionInfo->sd_section_summary->sdFields;
     $sectionId = $SectionInfo->id;
-    $text = "<a class='btn btn-outline-primary float-right' href='#' role='button' title='add'><i class='fas fa-plus'></i> Add</a><br><br>";
+    $text = "";
     $text = $text."<div class='card mt-1 mb-2'>";
     $text = $text."<div class='card-header '>";
     $text = $text."<div id='summary-".$sectionId."' class='layer".$section_level."' style=\"overflow:scroll; max-height:380px;\">";
     $text = $text."<input type=\"hidden\" id='setArray-".$sectionId."' value='";
-    foreach($setArray as $setSectionId){
-        $text = $text.$setSectionId.",";
+    for($i = sizeof($setArray);$i>0;$i--){
+        $text = $text.$setArray[$i-1].",";
     } 
     $text = $text."'>";
     $text = $text."<input type=\"hidden\" id='setArrayValue-".$sectionId."' value='";
@@ -366,17 +367,18 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
             $text = $text."<tr ";
             if($row==1) $text = $text."class=\"selected-row\" ";
             $text = $text."id=\"section-".$sectionId."-row-".$row."\" onclick=\"setPageChange(".$sectionId.",".$row.")\" ><td>".$row."</td>".$rowtext."
-                                                <td><button class='btn btn-outline-danger' onclick='#' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
+                                                <td><button class='btn btn-outline-danger' onclick='deleteSection(".$sectionId.",".$row.")' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
         }//TODO ADD JS FUNCTION TO DISPLAY SET
-        $row++;        
+        $row++;
     }while($noValue != sizeof($fields));
+    $addtext = "<button type=\"button\" id=\"addbtn-".$sectionId."\" onclick=\"setPageChange(".$sectionId.",".(int)($row-1).",1)\" class='btn btn-outline-primary float-right' role='button' title='add'><i class='fas fa-plus'></i> Add</button><br><br>";
     $text = $text."</tr>"; 
     $text = $text."</tbody>";
     $text = $text."</table>";
     $text = $text."</div>";
     $text = $text."</div>"; 
     $text =$text. "</div>";
-    
+    $text = $addtext.$text;
     return $text;
 }
 function displaySingleSection($section, $setArray, $sectionKey, $html, $permission){
@@ -403,8 +405,8 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
         if(!empty($setArray)){
             $text =$text. "<input type =\"hidden\" name=\"section[".$section->id."]\" value=\"";
             $sectionsText = "";
-            foreach($setArray as $sectionsId){
-                $sectionsText =$sectionsText.$sectionsId.":1,";
+            for($i = sizeof($setArray); $i > 0; $i--){
+                $sectionsText =$sectionsText.$setArray[$i-1].":1,";
             }
             $text = $text.substr($sectionsText,0,-1);
             $text =$text. "\">";
@@ -633,12 +635,14 @@ function displaySelectBar($sdSections, $setArray, $section_key){
         }
     }
     $text = "";
-    $text = $text. "<div id=\"pagination-section-".$sdSections->id."\" class=\"DEpagination float-right\">";
+    $text = $text."<button type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1)\" id=\"deletebtn-".$sdSections['id']."\">Delete</button>";
+    $text = $text."<button type=\"button\" onclick=\"setPageChange(".$sdSections['id'].",".(int)($max_set_No+1).",1)\" id=\"addbtn-".$sdSections['id']."\">Add</button>";
     $text = $text."<input type=\"hidden\" id='setArray-".$sdSections->id."' value='";
-        foreach($setArray as $setSectionId){
-            $text = $text.$setSectionId.",";
+        for($i = sizeof($setArray);$i>0;$i--){
+            $text = $text.$setArray[$i-1].",";
         } 
     $text = $text."'>";
+    $text = $text. "<div id=\"pagination-section-".$sdSections->id."\" class=\"DEpagination float-right\">";
     $text =$text. "<ul class=\"pagination mb-0 mx-2\">";
     $text =$text.    "<li class=\"page-item\" id=\"left_set-".$sdSections->id."-sectionKey-".$section_key."-setNo-1\" onclick=\"setPageChange(".$sdSections->id.",0)\" >";
     $text =$text.    "<a class=\"page-link\" aria-label=\"Previous\">";

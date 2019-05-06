@@ -1,5 +1,6 @@
 <title>Triage</title>
 <head>
+<?= $this->Html->script('meddra.js') ?>
 <?= $this->Html->script('cases/triage.js') ?>
 <head>
 <script>
@@ -183,8 +184,10 @@
                 <label> &nbsp; </label>
                 <div>
                     <?php
-                    $meddraCell = $this->cell('Meddra');
+                    // $meddraCell = $html->cell('Meddra',[$sd_section_structure_detail->sd_field->descriptor, $sd_section_structure_detail->sd_field->id]);
+                    $meddraCell = $this->cell('Meddra',['llt-c:392,llt-n:457,pt-c:394,pt-n:458,ver:150,ver:443','496']);
                     echo $meddraCell;?>
+                    <input id="eventField-meddraResult-496" class="form-control" name="field_value[496][value]" type="hidden">
                 </div>
             </div>
         </div>
@@ -193,25 +196,25 @@
                 <label>LLT Code</label>
                 <?php if($field_value_set['392']['id']!=null)
                 echo "<input type=\"hidden\" id=\"id_eventField_meddralltname_id\" name=\"field_value[392][id]\" value=\"".$field_value_set['392']['id']."\">";?>
-                <input type="text" class="form-control" name="field_value[392][value]" id="eventField_meddralltname" value="<?= $field_value_set['392']['field_value'] ?>">
+                <input type="text" class="form-control" name="field_value[392][value]" id="eventField_meddrashow-392" value="<?= $field_value_set['392']['field_value'] ?>">
             </div>
             <div class="form-group col-md-3">
                 <label>LLT Name</label>
-                <?php if($field_value_set['391']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_eventField_meddraptname_id\" name=\"field_value[391][id]\" value=\"".$field_value_set['391']['id']."\">";?>
-                <input type="text" class="form-control" name="field_value[391][value]" id="eventField_meddraptname" value="<?= $field_value_set['391']['field_value'] ?>">
+                <?php if($field_value_set['457']['id']!=null)
+                echo "<input type=\"hidden\" id=\"id_eventField_meddraptname_id\" name=\"field_value[457][id]\" value=\"".$field_value_set['457']['id']."\">";?>
+                <input type="text" class="form-control" name="field_value[457][value]" id="eventField_meddrashow-457" value="<?= $field_value_set['457']['field_value'] ?>">
             </div>
             <div class="form-group col-md-3">
                 <label>PT Code</label>
                 <?php if($field_value_set['394']['id']!=null)
                 echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[394][id]\" value=\"".$field_value_set['394']['id']."\">";?>
-                <input type="text" class="form-control" name="field_value[394][value]" id="eventField_meddrahltname" value="<?= $field_value_set['394']['field_value'] ?>">
+                <input type="text" class="form-control" name="field_value[394][value]" id="eventField_meddrashow-394" value="<?= $field_value_set['394']['field_value'] ?>">
             </div>
             <div class="form-group col-md-3">
                 <label>PT Name</label>
-                <?php if($field_value_set['393']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[393][id]\" value=\"".$field_value_set['393']['id']."\">";?>
-                <input type="text" class="form-control" name="field_value[393][value]" id="eventField_meddrahltname" value="<?= $field_value_set['393']['field_value'] ?>">
+                <?php if($field_value_set['458']['id']!=null)
+                echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[458][id]\" value=\"".$field_value_set['458']['id']."\">";?>
+                <input type="text" class="form-control" name="field_value[458][value]" id="eventField_meddrashow-458" value="<?= $field_value_set['458']['field_value'] ?>">
             </div>
 
         </div>
