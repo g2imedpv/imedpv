@@ -928,7 +928,7 @@ class SdCasesController extends AppController
                     'conditions'=>['pd.id = pwf.sd_product_id']
                 ]
             ])->first();
-        $field_ids = ['10','176','85','79','93','86','87','12','26','28','149','394','392','395','417','420','421','422','423','223','415'];
+        $field_ids = ['10','176','85','79','93','86','87','12','26','28','149','394','457','392','458','496','395','417','420','421','422','423','223','415'];
         $versionup_fields = [''];
         
         $fieldValue_Table = TableRegistry::get('SdFieldValues');

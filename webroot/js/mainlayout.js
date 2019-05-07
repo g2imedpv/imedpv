@@ -157,7 +157,8 @@ function onQueryClicked(preferrenceId = null){
             var product_type_id=["clinical trials", "individual patient use","other studies"];
             var previous_case = "";
             $.each(result, function(k,caseDetail){
-                var ad_time = new Date(caseDetail.activity_due_date);
+                if(caseDetail.activity_due_date!=null)
+                var ad_time = new Date(caseDetail.activity_due_date.substring(2,4)+" "+caseDetail.activity_due_date.substring(0,2)+" "+caseDetail.activity_due_date.substring(4,8));
                 text += "<tr>";
                 text += "<td class=\"align-middle\">";
                 if((caseDetail.activity_due_date!=null)&&(ad_time.getTime()+1000*60*60*24 - today.getTime() < 0)) text +=" <i class=\"fas fa-flag\" style=\"color:red;\"></i>\n";

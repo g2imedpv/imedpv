@@ -189,6 +189,7 @@ function renderSummaries(section_id, pageNo){
     }
     if(section_id in setArray)
         setArray[section_id] = parseInt(pageNo);
+    console.log(setArray);
     $("table[id^=sectionSummary-]").each(function(){
         let tbodyText ="";
         let sectionId = $(this).attr('id').split('-')[1];
@@ -199,9 +200,10 @@ function renderSummaries(section_id, pageNo){
         let related = false;
         $.each(setSections, function(k, setSectionId){
             if(setSectionId in setArray)
-                targetSetArray = setArray[setSectionId]+","+targetSetArray;
-            else targetSetArray = "1,"+targetSetArray;
+                targetSetArray = targetSetArray+setArray[setSectionId]+",";
+            else targetSetArray = targetSetArray+"1,";
         });
+        console.log(targetSetArray);
         targetSetArray = targetSetArray.substr(0,targetSetArray.length-1);
         let setString = $('#setArrayValue-'+sectionId).val();
         let sectionKey = $(this).attr('id').split('-')[3];
@@ -245,13 +247,14 @@ function renderSummaries(section_id, pageNo){
             if(noValue != section[sectionKey].sd_section_summary.sdFields.length) {
                 tbodyText = tbodyText+"<tr ";
                 if(row==1) tbodyText = tbodyText+"class=\"selected-row\" ";
-                tbodyText = tbodyText+"id=\"section-"+sectionId+"-row-"+row+"\" onclick=\"setPageChange("+sectionId+","+row+")\" ><td>"+row+"</td>"+rowtext+"<td><button class='btn btn-outline-danger' onclick='#' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
+                tbodyText = tbodyText+"id=\"section-"+sectionId+"-row-"+row+"\" onclick=\"setPageChange("+sectionId+","+row+")\" ><td>"+row+"</td>"+rowtext+"<td><button class='btn btn-outline-danger' onclick='deleteSection("+sectionId+","+row+")' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
             }
             row  = row +1;
         }while(noValue !=section[sectionKey].sd_section_summary.sdFields.length);
         $(this).find('tbody').html(tbodyText);
-        $(this).find('#section-'+section_id+'-row-1').removeClass('selected-row');
-        $(this).find('#section-'+section_id+'-row-'+setArray[section_id]).addClass('selected-row');
+        $(this).find('#section-'+sectionId+'-row-1').removeClass('selected-row');
+        $(this).find('#section-'+sectionId+'-row-'+setArray[sectionId]).addClass('selected-row');
+        $("#addbtn-"+sectionId).attr("onclick","setPageChange("+sectionId+","+parseInt(row-1)+",1)");
         $(this).DataTable();
     });
     $("[id^=pagination-section-]").each(function(){
@@ -271,11 +274,6 @@ function renderSummaries(section_id, pageNo){
                 max_set_No = set_array.split(',')[0];
             });
         });
-        text = text+"<input type=\"hidden\" id='setArray-"+sdSectionId+"' value='";
-        $.each(setArray,function(setSectionId){
-            text = text+setSectionId+",";
-        });
-        text = text+"'>";
         text = text+ "<ul class=\"pagination mb-0 mx-2\">";
         text = text+    "<li class=\"page-item\" id=\"left_set-"+sdSectionId+"-sectionKey-"+sectionKey+"-setNo-1\" onclick=\"setPageChange("+sdSectionId+",0)\" >";
         text = text+    "<a class=\"page-link\" aria-label=\"Previous\">";
@@ -286,11 +284,10 @@ function renderSummaries(section_id, pageNo){
         if(max_set_No != 0){
             for(pageNo = 1; pageNo<=max_set_No; pageNo++ ){
                 text = text+"<li class=\"page-item";
-                if(pageNo == 1) text = text+" selected-page";
                 text = text+"\" id=\"section-"+sdSectionId+"-page_number-"+pageNo+"\" onclick=\"setPageChange("+sdSectionId+","+pageNo+")\"><a class=\"page-link\">"+pageNo+"</a></li>";
             }
         }else{
-            text = text+    "<li class=\"page-item selected-page\" style=\"font-weight:bold\" id=\"section-"+sdSectionId+"-page_number-1\" onclick=\"setPageChange("+sdSectionId+",1)\"><a class=\"page-link\">1</a></li>";
+            text = text+    "<li class=\"page-item\" style=\"font-weight:bold\" id=\"section-"+sdSectionId+"-page_number-1\" onclick=\"setPageChange("+sdSectionId+",1)\"><a class=\"page-link\">1</a></li>";
 
         }
         text = text+    "<li class=\"page-item\" id=\"right_set-"+sdSectionId+"-sectionKey-"+sectionKey+"-setNo-1\" onclick=\"setPageChange("+sdSectionId+",2)\">";
@@ -301,6 +298,9 @@ function renderSummaries(section_id, pageNo){
         text = text+    "</li>";
         text = text+ "</ul>";
         $(this).html(text);
+        $("#section-"+sdSectionId+"-page_number-"+setArray[sdSectionId]).addClass('selected-page');
+        $("#addbtn-"+sdSectionId).attr("onclick","setPageChange("+sdSectionId+","+parseInt(parseInt(max_set_No)+1)+",1)");
+        $("#deletebtn-"+sdSectionId).attr("onclick","deleteSection("+sdSectionId+","+setArray[sdSectionId]+")");
     });
 }
 function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
@@ -333,8 +333,11 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                 max_set ++;
             });
             if(addFlag==null){
+                $("[id^=left_set-"+section_id+"]")
                 $("#pagination-section-"+section_id).find(".selected-page").removeClass("selected-page");
-                $("#pagination-section-"+section_id).find("#section-"+section_id+"-page_number-"+pageNo).addClass("selected-page");
+                console.log(section_id);
+                console.log($("#pagination-section-"+section_id).find("#section-"+section_id+"-page_number-"+pageNo));
+                $("#section-"+section_id+"-page_number-"+pageNo).addClass("selected-page");
             }
         }
         //Judge whether this has fields
@@ -367,7 +370,6 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             setArray[section_id] = max_set+1;            
         else setArray[section_id] = pageNo;
     }
-    console.log(setArray);
     //for each field
     $("[id^=input-").each(function(){
         let orignalId = $(this).attr('id').split('-')[1];
@@ -388,12 +390,13 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
             targetSetArray = {};
             if(setFlag&&inputSetflag)
             {
-                if($(this).find("[id^=section-"+orignalId+"][name=section\\["+sectionId+"\\]]").length){
+                if($(this).find("[name=section\\["+sectionId+"\\]]").length){
                     newSetSectionString ="";
                     //get this section setNo
                     let setK = 999;
+                    console.log($(this).find("[name=section\\["+sectionId+"\\]]"));
                     $.each($(this).find("[name=section\\["+sectionId+"\\]]").val().split(','),function(k, setSectionArray){
-                        fieldsectionSetArray.unshift(setSectionArray.split(':')[0]);
+                        fieldsectionSetArray.push(setSectionArray.split(':')[0]);
                         if(section_id == setSectionArray.split(':')[0]){
                             setK = k;
                             targetSetArray[section_id] = parseInt(pageNo);
@@ -416,27 +419,35 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                     newSetSectionString ="";
                     //get this section's set array
                     $.each($("#setArray-"+sectionId).val().split(','),function(k,setsectionId){
-                        if(setsectionId=="") return true;
-                        targetSetArray[setsectionId] = null;
-                        fieldsectionSetArray.unshift(setsectionId);
-                    });
-                    //get parent setNo
-                    $.each(targetSetArray,function(detailSectionId, setNo){
-                        if(detailSectionId == section_id){
+                        if(setsectionId == "") return true;
+                        fieldsectionSetArray.push(setsectionId);
+                        if(setsectionId == section_id){
                             if(addFlag)
-                                newSetSectionString = newSetSectionString+detailSectionId+":"+parseInt(max_set+1)+",";
-                            else newSetSectionString = newSetSectionString+detailSectionId+":"+pageNo+",";
-                            return true;
+                                newSetSectionString = newSetSectionString+setsectionId+":"+parseInt(max_set+1)+",";
+                            else newSetSectionString = newSetSectionString+setsectionId+":"+pageNo+",";
                         }
-                        if($("#summary-"+detailSectionId).length){
-                            newSetSectionString = newSetSectionString+detailSectionId+":"+parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3])+",";
-                            targetSetArray[detailSectionId] = parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3]);
+                        if($("#summary-"+setsectionId).length){
+                            if($("#summary-"+setsectionId).find(".selected-row").length&&setsectionId in setArray){
+                                targetSetArray[setsectionId] = parseInt($("#summary-"+setsectionId).find(".selected-row").attr('id').split("-")[3]);      
+                                if(setsectionId == section_id)                         
+                                    newSetSectionString = newSetSectionString+setsectionId+":"+parseInt($("#summary-"+setsectionId).find(".selected-row").attr('id').split("-")[3])+",";
+                            }else{
+                                targetSetArray[setsectionId] = 1;
+                                if(setsectionId == section_id)
+                                    newSetSectionString = newSetSectionString+setsectionId+":1,";
+                            }
                         }else{
-                            newSetSectionString = newSetSectionString+detailSectionId+":"+parseInt($("[id=pagination-section-"+detailSectionId+"]").find(".selected-page").attr('id').split("-")[3])+",";
-                            targetSetArray[detailSectionId] = parseInt($("[id=pagination-section-"+detailSectionId+"]").find(".selected-page").attr('id').split("-")[3]);
+                            if($("[id=pagination-section-"+setsectionId+"]").find(".selected-page").length&&setsectionId in setArray){
+                                targetSetArray[setsectionId] = parseInt($("[id=pagination-section-"+setsectionId+"]").find(".selected-page").attr('id').split("-")[3]);
+                                newSetSectionString = newSetSectionString+setsectionId+":"+parseInt($("[id=pagination-section-"+setsectionId+"]").find(".selected-page").attr('id').split("-")[3])+",";
+                            }else{
+                                targetSetArray[setsectionId] = 1;
+                                newSetSectionString = newSetSectionString+setsectionId+":1,";
+                            }
                         }
                     });
-                    targetSetArray[section_id] = parseInt(pageNo);
+                    if(section_id in targetSetArray)
+                        targetSetArray[section_id] = parseInt(pageNo);
                 }
                 $("[id^=save-btn"+orignalId+"]").attr("onclick","saveSection("+orignalId+","+pageNo+")");
                 let relateFlag = false;
@@ -460,12 +471,14 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                 }
                 $("[name=section\\["+orignalId+"\\]]").val(newSetSectionString.substr(0,newSetSectionString.length-1));
                 fieldTargetArray = [];
+                console.log(fieldsectionSetArray);
+                console.log(targetSetArray);
                 $.each(fieldsectionSetArray,function(k,v){
                     fieldTargetArray.push(targetSetArray[v]);
                 });
                 //type of 4
                 if(!relateFlag) return true;
-            }
+            };
             $(this).find("[id^=section-"+orignalId+"][name$=\\[id\\]]").each(function(){
                 let sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
                 let valueFlag = false;
