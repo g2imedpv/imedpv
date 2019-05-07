@@ -39,7 +39,7 @@ $(document).ready(function(){
     //change general tab date format
     function dateConvert(target){
         var date=$(target).val();
-        if(date){
+        if((date)&&(date!=null)){
             var dateInformat=date.substring(4,8)+"/"+date.substring(2,4)+"/"+date.substring(0,2);
             $(target).val(dateInformat);
             $(target).prop("disabled", true);
