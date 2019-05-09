@@ -612,12 +612,14 @@ function searchWhoDra(){
     });
 }
 function deleteSection(sectionId, setNo=null, pcontrol=false){
+    let sectionK = $("table[id^=sectionSummary-"+sectionId+"-sectionKey]").attr('id').split('-')[3];
+    let request = {'child_section':section[sectionK].child_section};
     $.ajax({
         headers: {
             'X-CSRF-Token': csrfToken
         },
         type:'POST',
-        url:'/sd-sections/deleteSection/'+caseId+'/'+sectionId+'/'+setNo,
+        url:'/sd-sections/deleteSection/'+caseId+'/'+sectionId+'/'+setNo+'/'+distribution_id,
         data:request,
         success:function(response){
             console.log(response);
@@ -694,21 +696,6 @@ function deleteSection(sectionId, setNo=null, pcontrol=false){
 
         }
     });
-    $.ajax({
-        headers: {
-            'X-CSRF-Token': csrfToken
-        },
-        type:'POST',
-        url:'/sd-tabs/validateForm/'+caseId+'/'+sectionId+'/'+tabId,
-        data:request,
-        success:function(response){
-            console.log(response);
-        },
-        error:function(response){
-            console.log(response.responseText);
-
-        }
-    });
 
 }
 function saveSection(sectionId,setNo){
@@ -756,7 +743,7 @@ function saveSection(sectionId,setNo){
             'X-CSRF-Token': csrfToken
         },
         type:'POST',
-        url:'/sd-sections/saveSection/'+tabId+'/'+caseId,
+        url:'/sd-sections/saveSection/'+tabId+'/'+caseId+'/'+distribution_id,
         data:request,
         success:function(response){
             console.log(response);

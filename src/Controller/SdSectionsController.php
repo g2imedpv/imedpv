@@ -265,38 +265,51 @@ class SdSectionsController extends AppController
     delete Single section
     */
     public function deleteSection($caseId, $sectionId, $setId, $distribution_id){
-        if($distribution_id == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
+        if($distribution_id == "null") $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
         else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";     
         if($this->request->is('POST')){
             $this->autoRender = false;
             $sdFieldValuesTable = TableRegistry::get('SdFieldValues');
             $sdSectionSetsTable = TableRegistry::get('SdSectionSets');
             $sdSectionTable = TableRegistry::get('SdSections');
-            $sectionSets = $sdSectionSetsTable->find()->where(['sd_section_id'=>$sectionId,'sd_case_id'=>$caseId]);
-            foreach($sectionSets as $sectionSetDetail){
-                if(explode(',',$sectionSetDetail['set_array'])[0] < $setId) break;
-                else if(explode(',',$sectionSetDetail['set_array'])[0] > $setId){
-                    $sectionSetDetail['set_array'] = (int)(explode(',',$sectionSetDetail['set_array'])[0]-1);
-                    for($i = 1; $i<sizeof(explode(',',$sectionSetDetail['set_array']));$i++){
-                        $sectionSetDetail['set_array'] = $sectionSetDetail['set_array'] + explode(',',$sectionSetDetail['set_array'])[$i];
-                    }
-                    if(!$sdSectionSetsTable->save($sectionSetDetail)){
-                        echo "error saving following set!" ; 
+            $requstData = $this->request->getData();
+            debug($requstData);
+            if(sizeof($requstData)==0) $requstData = [$sectionId];
+            foreach($requstData as $child_sections){
+                $sectionSets = $sdSectionSetsTable->find()->join([
+                    'SdFieldValues' =>[
+                        'table' =>'sd_field_values',
+                        'type'=>'INNER',
+                        'conditions'=>['SdFieldValues.id = SdSectionSets.sd_field_value_id']
+                    ]
+                ])->where(['sd_section_id'=>$child_sections,'SdFieldValues.sd_case_id'=>$caseId, $distribution_condition]);
+                debug($sectionSets->toArray());
+                foreach($sectionSets as $sectionSetDetail){
+                    debug($sectionSetDetail);
+                    if(explode(',',$sectionSetDetail['set_array'])[0] < $setId) break;
+                    else if(explode(',',$sectionSetDetail['set_array'])[0] > $setId){
+                        $sectionSetDetail['set_array'] = (int)(explode(',',$sectionSetDetail['set_array'])[0]-1);
+                        for($i = 1; $i<sizeof(explode(',',$sectionSetDetail['set_array']));$i++){
+                            $sectionSetDetail['set_array'] = $sectionSetDetail['set_array'] + explode(',',$sectionSetDetail['set_array'])[$i];
+                        }
                         debug($sectionSetDetail);
+                        if(!$sdSectionSetsTable->save($sectionSetDetail)){
+                            echo "error saving following set!" ; 
+                            debug($setEntity);
+                        } 
+                    }else{
+                        $fieldValues = $sdFieldValuesTable->get($sectionSetDetail['sd_field_value_id']);
+                        $fieldValues['status'] = 0;
+                        if(!$sdFieldValuesTable->save($fieldValues)){
+                            echo "error deleting field Values!" ; 
+                            debug($fieldValues);
+                        }      
                     } 
-                    break;
-                }else{
-                    $fieldValues = $sdFieldValuesTable->get($sectionSetDetail['sd_field_value_id']);
-                    $fieldValues['status'] = 0;
-                    if(!$sdFieldValuesTable->save($fieldValues)){
-                        echo "error deleting field Values!" ; 
-                        debug($fieldValues);
-                    }      
-                } 
-                 
+                }
             }
+            die();
             $sdCasesTable = TableRegistry::get('SdCases');
-            $sdCases = $sdCasesTable->find()->where(['caseId'=>$caseId])->contain(['SdProductWorkflows.SdProducts'])->first();
+            $sdCases = $sdCasesTable->find()->where(['sd_case_id'=>$caseId])->contain(['SdProductWorkflows.SdProducts'])->first();
             $currentActivityId = $sdCases['sd_workflow_activity_id'];
 
             //User not allow to this activity
