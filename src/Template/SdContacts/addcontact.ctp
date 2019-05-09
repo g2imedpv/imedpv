@@ -120,9 +120,13 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label>Address</label>
-                        <input type="text" class="form-control" id="contact_address">
+                    <div class="form-group col-md-6">
+                        <label>Address 1</label>
+                        <input type="text" class="form-control" id="contact_address1">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Address 2</label>
+                        <input type="text" class="form-control" id="contact_address2">
                     </div>
                 </div>
                 <div class="form-row">
@@ -131,7 +135,7 @@
                         <input type="text" class="form-control" id="contact_address_city">
                     </div>
                     <div class="form-group col-md-3">
-                        <label>State</label>
+                        <label>State or Province</label>
                         <input type="text" class="form-control" id="contact_address_state">
                     </div>
                     <div class="form-group col-md-3">
@@ -145,25 +149,35 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-3">
-                        <label>Phone</label>
-                        <input type="text" class="form-control" id="contact_phone">
+                        <label>Phone 1</label>
+                        <input type="text" class="form-control" id="contact_phone1">
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Fax</label>
-                        <input type="text" class="form-control" id="contact_fax">
+                        <label>Phone 2</label>
+                        <input type="text" class="form-control" id="contact_phone2">
                     </div>
                     <div class="form-group col-md-3">
+                        <label>Fax 1</label>
+                        <input type="text" class="form-control" id="contact_fax1">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Fax 2</label>
+                        <input type="text" class="form-control" id="contact_fax2">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
                         <label>Email</label>
                         <input type="text" class="form-control" id="contact_email">
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-6">
                         <label>website</label>
                         <input type="text" class="form-control" id="contact_website">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12 text-center">
-                        <button type="button" class="btn btn-outline-success">Complete</button>
+                        <button type="button" class="btn btn-success">Complete</button>
                     </div>
                 </div>
             </div>
