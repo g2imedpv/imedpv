@@ -7,14 +7,19 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
+        <li><?= $this->Form->postLink(
+                __('Delete'),
+                ['action' => 'delete', $sdContact->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $sdContact->id)]
+            )
+        ?></li>
         <li><?= $this->Html->link(__('List Sd Contacts'), ['action' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="sdContacts form large-9 medium-8 columns content">
     <?= $this->Form->create($sdContact) ?>
     <fieldset>
-        <legend><?= __('Add Sd Contact') ?></legend>
-        <div class="form-group col-md-6">
+        <legend><?= __('Edit Sd Contact') ?></legend>
         <?php
             echo $this->Form->control('contact_type');
             echo $this->Form->control('authority');

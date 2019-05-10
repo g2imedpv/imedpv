@@ -1,14 +1,12 @@
 <?php
 //debug($sdContacts);
+use Cake\ORM\TableRegistry;
 ?>
 <title>Search Contact</title>
 <head>
 <?= $this->Html->script('') ?>
 <head>
-<script type="text/javascript">
-    var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
-    var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
-</script>
+
 <body>
     <div class="container ">
         <div class="col">
@@ -38,7 +36,7 @@
                                 <input type="text" class="form-control" id="Contact_Type" name="Contact_Type" placeholder="Search Contact Type">
                             </div>
                         </div>
-                        <button onclick="searchProd()" class="btn btn-primary w-25"><i class="fas fa-search"></i> Search</button>
+                        <button  class="btn btn-primary w-25"><i class="fas fa-search"></i> Search</button>
                         <!-- <button id="advsearch" class="btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</button> -->
                         <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> Clear Search</button>
                     </div>
@@ -46,6 +44,12 @@
             </div>
         </div>
     </div>
+  <?php  $sdContacts = TableRegistry::get('sdContacts');
+                $row1 =$sdContacts->find()
+                    ->select(['contactId'])
+                    ->where(['id=1']);
+                    ?> 
+                   
     <div class="mx-auto text-center w-75 mt-3 ">
         <h3>Contact List</h3>
         <table class="table table-bordered table-hover" id="contact_list">
@@ -54,15 +58,19 @@
                     <th scope="row">Contact ID</th>
                     <th scope="row">Contact Type</th>
                     <th scope="row">Contact Route</th>
+                    <th scope="row">Contact Format</th>
                     <th scope="row" >Phone</th>
                     <th scope="row">Email</th>
                     <th scope="row">Address</th>
+                    <th scope="row">City</th>
+                    <th scope="row">State/Province</th>
+                    <th scope="row">Country</th>
                     <th scope="row">website</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>G2 BioPharma Services Inc.</td>
+                    <td><?echo $direct?></td>
                     <td>CRO</td>
                     <td>Email</td>
                     <td>2018888888</td>
