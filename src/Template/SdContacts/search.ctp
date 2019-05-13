@@ -4,7 +4,7 @@ use Cake\ORM\TableRegistry;
 ?>
 <title>Search Contact</title>
 <head>
-<?= $this->Html->script('') ?>
+    <?= $this->Html->script('dataentry/fieldLogic.js') ?>
 <head>
 
 <body>
@@ -44,15 +44,10 @@ use Cake\ORM\TableRegistry;
             </div>
         </div>
     </div>
-  <?php  $sdContacts = TableRegistry::get('sdContacts');
-                $row1 =$sdContacts->find()
-                    ->select(['contactId'])
-                    ->where(['id=1']);
-                    ?> 
                    
     <div class="mx-auto text-center w-75 mt-3 ">
         <h3>Contact List</h3>
-        <table class="table table-bordered table-hover" id="contact_list">
+        <table class="table table-bordered table-hover " id="contact_list">
             <thead>
                 <tr>
                     <th scope="row">Contact ID</th>
@@ -69,42 +64,24 @@ use Cake\ORM\TableRegistry;
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><?echo $direct?></td>
-                    <td>CRO</td>
-                    <td>Email</td>
-                    <td>2018888888</td>
-                    <td>g2biopharmaservices@gmail.com</td>
-                    <td>3637 Brunswick Pike Princeton,New Jersey,USA</td>
-                    <td>www.g2-biopharma-services.com</td>
-                </tr>
-                <tr>
-                    <td>G2 Services Inc.</td>
-                    <td>Pharmaceutical Company</td>
-                    <td>ESTRI Gateway</td>
-                    <td>2015555555</td>
-                    <td>G2ServicesInc@gmail.com</td>
-                    <td>3637 Brunswick Pike Princeton,New Jersey,USA</td>
-                    <td>www.g2-biopharma-services.com</td>
-                </tr>
-                <tr>
-                    <td>Lucy</td>
-                    <td>Health professional</td>
-                    <td>Manual</td>
-                    <td>2017777777</td>
-                    <td>Lucy@gmail.com</td>
-                    <td>3637 Brunswick Pike Princeton,New Jersey,USA</td>
-                    <td>www.g2-biopharma-services.com</td>
-                </tr>
-                <tr>
-                    <td>Services Inc.</td>
-                    <td>WHO Collaborating Center for International Drug Monitoring</td>
-                    <td>ESTRI Gateway</td>
-                    <td>2016666666</td>
-                    <td>Services Inc.@gmail.com</td>
-                    <td>3637 Brunswick Pike Princeton,New Jersey,USA</td>
-                    <td>www.g2-biopharma-services.com</td>
-                </tr>
+                <?php $sdContacts = TableRegistry::get('sd_contacts');
+                    $query = $sdContacts->find('all');
+                    foreach($query as $contacters){
+                        echo "<tr id='contacter$contacters->id'>";
+                        echo"<td>".$contacters->contactId."</td>";
+                        echo"<td>".$contacters->contact_type."</td>";
+                        echo"<td>".$contacters->preferred_route."</td>";
+                        echo"<td>".$contacters->format_type."</td>";
+                        echo"<td>".$contacters->phone."</td>";
+                        echo"<td>".$contacters->email_address."</td>";
+                        echo"<td>".$contacters->address."</td>";
+                        echo"<td>".$contacters->city."</td>";
+                        echo"<td>".$contacters->state_province."</td>";
+                        echo"<td>".$contacters->country."</td>";
+                        echo"<td>".$contacters->website."</td>";
+                        echo"</tr>";
+                    }
+                ?> 
             </tbody>
         </table>
     </div>
