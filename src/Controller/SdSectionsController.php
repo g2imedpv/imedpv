@@ -112,8 +112,9 @@ class SdSectionsController extends AppController
     /*
     save Single section
     */
-    public function saveSection($tabid, $caseId, $distribution_id =null){  
-        if($distribution_id == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
+    public function saveSection($tabid, $caseId, $distribution_id = "null"){  
+        if($distribution_id == "null")
+         $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
         else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";                  
         $writePermission= 0;
         $userinfo = $this->request->getSession()->read('Auth.User');
@@ -211,6 +212,7 @@ class SdSectionsController extends AppController
                                         }]]);
                             }])->toArray();
         $child_list = [];
+        
         foreach($sdSections as $sdSection){
             if($sdSection->parent_section!=0){
                 if(empty($child_list[$sdSection->parent_section])) $child_list[$sdSection->parent_section]="";
@@ -239,8 +241,9 @@ class SdSectionsController extends AppController
             $fields = explode(',',$sdSection->sd_section_summary->fields);
             $sdFields = [];
             foreach($fields as $sdField){
-                $foundField = $sdFieldTable->find()->where(['SdFields.id'=>$sdField])->contain(['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
-                    return $q->contain(['SdSectionSets'])->where(['SdFieldValues.sd_case_id'=>$caseId, $distribution_condition,
+                $foundField = $sdFieldTable->find()->where(['SdFields.id'=>$sdField])
+                    ->contain(['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
+                                return $q->contain(['SdSectionSets'])->where(['SdFieldValues.sd_case_id'=>$caseId, $distribution_condition,
                                         'SdFieldValues.status'=>true]);
                 }, 'SdElementTypes'=> function($q){
                 return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
@@ -255,7 +258,7 @@ class SdSectionsController extends AppController
                     }
                 }
                 array_push($sdFields,$foundField);
-            }       
+            }
             $sdSection->sd_section_summary['sdFields'] = $sdFields;
         }
         echo json_encode($sdSections);
@@ -264,7 +267,8 @@ class SdSectionsController extends AppController
     /*
     delete Single section
     */
-    public function deleteSection($caseId, $sectionId, $setId, $distribution_id){
+    public function deleteSection($tabid, $caseId, $sectionId, $setId, $distribution_id = "null"){
+        $userinfo = $this->request->getSession()->read('Auth.User');
         if($distribution_id == "null") $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
         else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";     
         if($this->request->is('POST')){
@@ -273,7 +277,6 @@ class SdSectionsController extends AppController
             $sdSectionSetsTable = TableRegistry::get('SdSectionSets');
             $sdSectionTable = TableRegistry::get('SdSections');
             $requstData = $this->request->getData();
-            debug($requstData);
             if(sizeof($requstData)==0) $requstData = [$sectionId];
             foreach($requstData as $child_sections){
                 $sectionSets = $sdSectionSetsTable->find()->join([
@@ -283,16 +286,14 @@ class SdSectionsController extends AppController
                         'conditions'=>['SdFieldValues.id = SdSectionSets.sd_field_value_id']
                     ]
                 ])->where(['sd_section_id'=>$child_sections,'SdFieldValues.sd_case_id'=>$caseId, $distribution_condition]);
-                debug($sectionSets->toArray());
+                // debug($sectionSets->toArray());
                 foreach($sectionSets as $sectionSetDetail){
-                    debug($sectionSetDetail);
-                    if(explode(',',$sectionSetDetail['set_array'])[0] < $setId) break;
+                    if(explode(',',$sectionSetDetail['set_array'])[0] < $setId) continue;
                     else if(explode(',',$sectionSetDetail['set_array'])[0] > $setId){
                         $sectionSetDetail['set_array'] = (int)(explode(',',$sectionSetDetail['set_array'])[0]-1);
                         for($i = 1; $i<sizeof(explode(',',$sectionSetDetail['set_array']));$i++){
                             $sectionSetDetail['set_array'] = $sectionSetDetail['set_array'] + explode(',',$sectionSetDetail['set_array'])[$i];
                         }
-                        debug($sectionSetDetail);
                         if(!$sdSectionSetsTable->save($sectionSetDetail)){
                             echo "error saving following set!" ; 
                             debug($setEntity);
@@ -307,9 +308,8 @@ class SdSectionsController extends AppController
                     } 
                 }
             }
-            die();
             $sdCasesTable = TableRegistry::get('SdCases');
-            $sdCases = $sdCasesTable->find()->where(['sd_case_id'=>$caseId])->contain(['SdProductWorkflows.SdProducts'])->first();
+            $sdCases = $sdCasesTable->find()->where(['SdCases.id'=>$caseId])->contain(['SdProductWorkflows.SdProducts'])->first();
             $currentActivityId = $sdCases['sd_workflow_activity_id'];
 
             //User not allow to this activity
@@ -420,7 +420,8 @@ class SdSectionsController extends AppController
             }
             //child section
         }else $this->autoRender = true;
-        echo json_encode($savedField);
+        echo json_encode($sdSections);
+        die();
     }
     /**
      * 

@@ -56,6 +56,9 @@
                     $sdFieldValueTable = TableRegistry::get('SdFieldValues');
                     $uploadedSections = $requstData['sd_sections'];
                     $sectionArray = $this->request->getData()['section'];
+                    if(array_key_exists('sectionArray',$requstData))
+                        $requestSectionArray = $requstData['sectionArray'];
+                    else $requestSectionArray =[];
                     foreach($requstData['sd_field_values'] as $sectionValueK => $sectionValue) {
                         $section_id = $sectionValueK;
                         foreach($sectionValue as $sectionFieldK =>$sectionFieldValue){
@@ -87,19 +90,18 @@
                                     debug($savedFieldValue);
                                 } 
                                 $sdSectionSetsEntity = $sdSectionSetsTable->newEntity(); 
-                                if(empty($set_array)) continue;
-                                foreach($set_array as $setSectionId => $set_no){
-                                    $sdSectionSetsEntity['set_array'] = $set_no.",".$sdSectionSetsEntity['set_array']; 
+                                if(empty($requestSectionArray)) continue;
+                                $sectionArray = explode(',',$requestSectionArray[$section_id]);
+                                for($i = 0;$i<sizeof($sectionArray);$i++){
+                                    $sdSectionSetsEntity['set_array'] = $sdSectionSetsEntity['set_array'].explode(':',$sectionArray[$i])[1].","; 
                                 }
-                                $sdSectionSetsEntity['sd_section_id'] = $section_id;
-                                if(strlen($sdSectionSetsEntity['set_array']) > 1)
                                 $sdSectionSetsEntity['set_array'] = substr($sdSectionSetsEntity['set_array'], 0, -1);
+                                $sdSectionSetsEntity['sd_section_id'] = $section_id;
                                 $setDataSet = [
                                     'set_array' =>$sdSectionSetsEntity['set_array'],
                                     'sd_field_value_id'=>$savedFieldValue['id'],
                                 ];
-                                debug($sdSectionSetsEntity);
-                                $sdSectionSetsEntity['sd_field_value_id'] = $savedFieldValue['id'];   
+                                $sdSectionSetsEntity['sd_field_value_id'] = $savedFieldValue['id'];
                                 if(!$sdSectionSetsTable->save($sdSectionSetsEntity)){
                                     echo "error in adding sets!" ; 
                                     debug($sdSectionSetsEntity);
@@ -115,9 +117,8 @@
                                     $sdSectionSetsEntityNew = $sdSectionSetsTable->newEntity();
                                     $sdSectionSetsEntityNew = $sdSectionSetsTable->patchEntity($sdSectionSetsEntityNew, $setDataSet);
                                     $sdSectionSetsEntityNew['sd_section_id'] = $sectionDetail['sd_section_id'];
-                                    if($sectionFieldValue['sd_field_id'] == '200'){
-                                        $sdSectionSetsEntityNew['set_array'] = substr($sdSectionSetsEntityNew['set_array'], 0, -1);
-                                        $sdSectionSetsEntityNew['set_array'] = $sdSectionSetsEntityNew['set_array'].'*';
+                                    if($sectionFieldValue['sd_field_id'] == '149'){
+                                        $sdSectionSetsEntityNew['set_array'] = $sdSectionSetsEntityNew['set_array'].',*';
                                     }
                                     $sdSectionSetsEntityNew['sd_field_value_id'] = $savedFieldValue['id'];                           
                                     if(!$sdSectionSetsTable->save($sdSectionSetsEntityNew)){
@@ -155,6 +156,7 @@
                                                 'ua.sd_user_id ='.$userinfo['id'],'ua.sd_workflow_activity_id = SdActivitySectionPermissions.sd_workflow_activity_id']
                                 ]
                             ])->toArray();
+                    if($activitySectionPermissions=="") return $this->redirect(['controller'=>'Dashboards','action' => 'index']);
                     if($sdCases['sd_user_id'] != $userinfo['id']){
                         $writePermission = 0;
                     }else{

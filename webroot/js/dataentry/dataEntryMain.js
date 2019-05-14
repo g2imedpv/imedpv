@@ -124,39 +124,39 @@ $(document).ready(function(){
             }
         });
 });
-function level2setPageChange(section_id, pageNo, addFlag=null){
-    let child_section =  $("[id^=child_section][id$=section-"+section_id+"]").attr('id').split('-');
-    child_section_id = child_section[1].split(/[\[\]]/);
-    child_section_id = jQuery.grep(child_section_id, function(n, i){
-        return (n !== "" && n != null);
-    });
-    let max_set_no  = 0 ;
-    $(child_section_id).each(function(k, v){
-        let sectionKey = $("[id^=add_set-"+v+"]").attr('id').split('-')[3];
-        $(section[sectionKey].sd_section_structures).each(function(k,v){
-            $.each(v.sd_field.sd_field_values,function(key, value){
-                max_set_no = Math.max(value.set_number, max_set_no);
-            })
-        })
-    });
-    if ((pageNo <= 0)||(pageNo>max_set_no)) {console.log("set_no not avaiable");console.log(max_set_no); return;};
-     if(addFlag==1)
-    {
-        pageNo = max_set_no+1;
-        $("[id^=child_section][id$=section-"+section_id+"]").hide();
-    }else{$("[id^=child_section][id$=section-"+section_id+"]").show()}
-    $(child_section_id).each(function(k,v){
-        setPageChange(v, pageNo, addFlag, 1);
-    });
+// function level2setPageChange(section_id, pageNo, addFlag=null){
+//     let child_section =  $("[id^=child_section][id$=section-"+section_id+"]").attr('id').split('-');
+//     child_section_id = child_section[1].split(/[\[\]]/);
+//     child_section_id = jQuery.grep(child_section_id, function(n, i){
+//         return (n !== "" && n != null);
+//     });
+//     let max_set_no  = 0 ;
+//     $(child_section_id).each(function(k, v){
+//         let sectionKey = $("[id^=add_set-"+v+"]").attr('id').split('-')[3];
+//         $(section[sectionKey].sd_section_structures).each(function(k,v){
+//             $.each(v.sd_field.sd_field_values,function(key, value){
+//                 max_set_no = Math.max(value.set_number, max_set_no);
+//             })
+//         })
+//     });
+//     if ((pageNo <= 0)||(pageNo>max_set_no)) {console.log("set_no not avaiable");console.log(max_set_no); return;};
+//      if(addFlag==1)
+//     {
+//         pageNo = max_set_no+1;
+//         $("[id^=child_section][id$=section-"+section_id+"]").hide();
+//     }else{$("[id^=child_section][id$=section-"+section_id+"]").show()}
+//     $(child_section_id).each(function(k,v){
+//         setPageChange(v, pageNo, addFlag, 1);
+//     });
 
-    $("[id^=left_set-"+section_id+"]").attr('id', 'left_set-'+section_id+'-setNo-'+pageNo);
-    $("[id^=left_set-"+section_id+"]").attr('onclick','level2setPageChange('+section_id+','+Number(Number(pageNo)-1)+')');
-    $("[id^=right_set-"+section_id+"]").attr('id', 'right_set-'+section_id+'-setNo-'+pageNo);
-    $("[id^=right_set-"+section_id+"]").attr('onclick','level2setPageChange('+section_id+','+Number(Number(pageNo)+1)+')');
-    $("[id=section-"+section_id+"-page_number-"+child_section[5]+"]").css('font-weight', 'normal');
-    $("[id=section-"+section_id+"-page_number-"+pageNo+"]").css('font-weight', 'bold');
-    $("[id^=child_section][id$=section-"+section_id+"]").attr('id',child_section[0]+'-'+child_section[1]+'-'+child_section[2]+'-'+child_section[3]+'-'+child_section[4]+'-'+pageNo+'-'+child_section[6]+'-'+child_section[7]);
-}
+//     $("[id^=left_set-"+section_id+"]").attr('id', 'left_set-'+section_id+'-setNo-'+pageNo);
+//     $("[id^=left_set-"+section_id+"]").attr('onclick','level2setPageChange('+section_id+','+Number(Number(pageNo)-1)+')');
+//     $("[id^=right_set-"+section_id+"]").attr('id', 'right_set-'+section_id+'-setNo-'+pageNo);
+//     $("[id^=right_set-"+section_id+"]").attr('onclick','level2setPageChange('+section_id+','+Number(Number(pageNo)+1)+')');
+//     $("[id=section-"+section_id+"-page_number-"+child_section[5]+"]").css('font-weight', 'normal');
+//     $("[id=section-"+section_id+"-page_number-"+pageNo+"]").css('font-weight', 'bold');
+//     $("[id^=child_section][id$=section-"+section_id+"]").attr('id',child_section[0]+'-'+child_section[1]+'-'+child_section[2]+'-'+child_section[3]+'-'+child_section[4]+'-'+pageNo+'-'+child_section[6]+'-'+child_section[7]);
+// }
 function renderSummaries(section_id, pageNo){
     let setArray = {};
     setArray = {};
@@ -179,6 +179,7 @@ function renderSummaries(section_id, pageNo){
         }
         //get parent setNo
         $.each(setArray,function(detailSectionId, setNo){
+            console.log(detailSectionId);
             if($("#summary-"+detailSectionId).length){
                 if($("#summary-"+detailSectionId).find(".selected-row").length)
                     setArray[detailSectionId] = parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3]);
@@ -190,72 +191,84 @@ function renderSummaries(section_id, pageNo){
     if(section_id in setArray)
         setArray[section_id] = parseInt(pageNo);
     console.log(setArray);
-    $("table[id^=sectionSummary-]").each(function(){
+    $("[id^=sectionSummary-][id$=wrapper]").each(function(){
+        let text ="";
         let tbodyText ="";
         let sectionId = $(this).attr('id').split('-')[1];
         if(sectionId in setArray && sectionId != section_id) return true;
-        let setSections = $('#setArray-'+sectionId).val().substr(0,$('#setArray-'+sectionId).val().length-1).split(',');
-        let targetSetArray = "";
-        let row = 1;
-        let related = false;
-        $.each(setSections, function(k, setSectionId){
-            if(setSectionId in setArray)
-                targetSetArray = targetSetArray+setArray[setSectionId]+",";
-            else targetSetArray = targetSetArray+"1,";
-        });
-        console.log(targetSetArray);
-        targetSetArray = targetSetArray.substr(0,targetSetArray.length-1);
-        let setString = $('#setArrayValue-'+sectionId).val();
-        let sectionKey = $(this).attr('id').split('-')[3];
-        let noValue = section[sectionKey].sd_section_summary.sdFields.length;
-        do{
-            noValue = section[sectionKey].sd_section_summary.sdFields.length;
-            let rowtext = "";
-            $.each(section[sectionKey].sd_section_summary.sdFields,function(k, field_detail){
-                let noMatchFlag = 0;  
-                $.each(field_detail.sd_field_values,function(k, field_value_detail){
-                    if(field_value_detail.sd_section_sets.length == 0) return true;
-                    let fieldSetArray = field_value_detail.sd_section_sets[0].set_array;
-                    let match =true;
-                    $.each(fieldSetArray.split(','), function(k, setNo){
-                        if(setNo != targetSetArray.split(',')[k] && setNo!='*' && k > 0)
-                        {
-                            match = false;
-                            return false;
-                        }
-                    });
-                    if(match&&fieldSetArray.split(',')[0] == row){
-                        rowtext = rowtext+"<td id=\"section-"+sectionId+"-row-"+row+"-td-"+field_detail.id+"\">";     
-                        if(field_detail.sd_element_type_id != 1 && field_detail.sd_element_type_id != 3 && field_detail.sd_element_type_id != 4)
-                            rowtext = rowtext + field_value_detail.field_value;
-                        else{
-                        $.each(field_detail.sd_field_value_look_ups,function(k, look_ups){
-                            if(look_ups.value == field_value_detail.field_value){
-                                rowtext = rowtext+look_ups.caption;
+        $(this).find("table[id^=sectionSummary-]").each(function(){
+            let setSections = $('#setArray-'+sectionId).val().substr(0,$('#setArray-'+sectionId).val().length-1).split(',');
+            let targetSetArray = "";
+            let row = 1;
+            let related = false;
+            $.each(setSections, function(k, setSectionId){
+                if(setSectionId in setArray)
+                    targetSetArray = targetSetArray+setArray[setSectionId]+",";
+                else targetSetArray = targetSetArray+"1,";
+            });
+            console.log(targetSetArray);
+            targetSetArray = targetSetArray.substr(0,targetSetArray.length-1);
+            let setString = $('#setArrayValue-'+sectionId).val();
+            let sectionKey = $(this).attr('id').split('-')[3];
+            let noValue = section[sectionKey].sd_section_summary.sdFields.length;
+            text = "<table class=\"table table-bordered table-hover layer"+section[sectionKey].section_level+"\" id=\"sectionSummary-"+sectionId+"-sectionKey-"+sectionKey+"\">";
+            text = text+"<thead>";
+            text = text+"<tr>";
+            text = text+"<th>SetNo</th>";
+            $.each(section[sectionKey].sd_section_summary.sdFields, function(k,field_detail){
+                text = text+"<th scope=\"col\" id=\"col-"+sectionId+"-"+field_detail.id+"\">"+field_detail.field_label+"</th>";
+            });
+            text = text+"<th scope=\"col\">Action</th>";
+            text = text+"</thead>";
+            do{
+                noValue = section[sectionKey].sd_section_summary.sdFields.length;
+                let rowtext = "";
+                $.each(section[sectionKey].sd_section_summary.sdFields,function(k, field_detail){
+                    let noMatchFlag = 0;  
+                    $.each(field_detail.sd_field_values,function(k, field_value_detail){
+                        if(field_value_detail.sd_section_sets.length == 0) return true;
+                        let fieldSetArray = field_value_detail.sd_section_sets[0].set_array;
+                        let match =true;
+                        $.each(fieldSetArray.split(','), function(k, setNo){
+                            if(setNo != targetSetArray.split(',')[k] && setNo!='*' && k > 0)
+                            {
+                                match = false;
                                 return false;
                             }
                         });
+                        if(match&&fieldSetArray.split(',')[0] == row){
+                            rowtext = rowtext+"<td id=\"section-"+sectionId+"-row-"+row+"-td-"+field_detail.id+"\">";     
+                            if(field_detail.sd_element_type_id != 1 && field_detail.sd_element_type_id != 3 && field_detail.sd_element_type_id != 4)
+                                rowtext = rowtext + field_value_detail.field_value;
+                            else{
+                            $.each(field_detail.sd_field_value_look_ups,function(k, look_ups){
+                                if(look_ups.value == field_value_detail.field_value){
+                                    rowtext = rowtext+look_ups.caption;
+                                    return false;
+                                }
+                            });
+                            }
+                            rowtext = rowtext+"</td>"; 
+                            noValue --;
+                            noMatchFlag = 1;
+                            return true;     
                         }
-                        rowtext = rowtext+"</td>"; 
-                        noValue --;
-                        noMatchFlag = 1;
-                        return true;     
-                    }
+                    });
+                    if(!noMatchFlag) rowtext = rowtext+"<td id=\"section-"+sectionId+"-row-"+row+"-"+field_detail.id+"\"></td>";
                 });
-                if(!noMatchFlag) rowtext = rowtext+"<td id=\"section-"+sectionId+"-row-"+row+"-"+field_detail.id+"\"></td>";
-            });
-            if(noValue != section[sectionKey].sd_section_summary.sdFields.length) {
-                tbodyText = tbodyText+"<tr ";
-                if(row==1) tbodyText = tbodyText+"class=\"selected-row\" ";
-                tbodyText = tbodyText+"id=\"section-"+sectionId+"-row-"+row+"\" onclick=\"setPageChange("+sectionId+","+row+")\" ><td>"+row+"</td>"+rowtext+"<td><button class='btn btn-outline-danger' onclick='deleteSection("+sectionId+","+row+")' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
-            }
-            row  = row +1;
-        }while(noValue !=section[sectionKey].sd_section_summary.sdFields.length);
-        $(this).find('tbody').html(tbodyText);
+                if(noValue != section[sectionKey].sd_section_summary.sdFields.length) {
+                    tbodyText = tbodyText+"<tr ";
+                    if(row==1) tbodyText = tbodyText+"class=\"selected-row\" ";
+                    tbodyText = tbodyText+"id=\"section-"+sectionId+"-row-"+row+"\" onclick=\"setPageChange("+sectionId+","+row+")\" ><td>"+row+"</td>"+rowtext+"<td><button class='btn btn-outline-danger' onclick='deleteSection("+sectionId+","+row+")' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
+                }
+                row  = row +1;
+            }while(noValue !=section[sectionKey].sd_section_summary.sdFields.length);
+            $("#addbtn-"+sectionId).attr("onclick","setPageChange("+sectionId+","+parseInt(row-1)+",1)");
+        });
+        $(this).html(text+tbodyText);
         $(this).find('#section-'+sectionId+'-row-1').removeClass('selected-row');
         $(this).find('#section-'+sectionId+'-row-'+setArray[sectionId]).addClass('selected-row');
-        $("#addbtn-"+sectionId).attr("onclick","setPageChange("+sectionId+","+parseInt(row-1)+",1)");
-        $(this).DataTable();
+        $(this).find("table").DataTable();
     });
     $("[id^=pagination-section-]").each(function(){
         let text ="";
@@ -263,6 +276,7 @@ function renderSummaries(section_id, pageNo){
         let sectionKey = $(this).find("[id^=left_set]").attr('id').split('-')[3];
         let set_array = "";
         let max_set_No = 0 ;
+        if(sdSectionId in setArray && sdSectionId != section_id) return true;
         $.each(section[sectionKey].sd_section_structures,function(sd_section_structureK, sd_section_structure_detail){
             // console.log(sd_section_structure_detail);
             $.each(sd_section_structure_detail.sd_field.sd_field_values,function(key_detail_field_values, value_detail_field_values){
@@ -394,7 +408,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                     newSetSectionString ="";
                     //get this section setNo
                     let setK = 999;
-                    console.log($(this).find("[name=section\\["+sectionId+"\\]]"));
+                    console.log($(this).find("[name=section\\["+sectionId+"\\]]").val());
                     $.each($(this).find("[name=section\\["+sectionId+"\\]]").val().split(','),function(k, setSectionArray){
                         fieldsectionSetArray.push(setSectionArray.split(':')[0]);
                         if(section_id == setSectionArray.split(':')[0]){
@@ -403,10 +417,8 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                             if(addFlag)
                                 newSetSectionString = newSetSectionString+setSectionArray.split(':')[0]+":"+parseInt(max_set+1)+",";
                             else newSetSectionString = newSetSectionString+setSectionArray.split(':')[0]+":"+pageNo+",";
-                        }
-                        
-                        else{
-                            if(k<setK){
+                        }else{
+                            if(k>setK){
                                 targetSetArray[setSectionArray.split(':')[0]] = parseInt(setSectionArray.split(':')[1]);
                                 newSetSectionString = newSetSectionString+setSectionArray+",";
                             }else{
@@ -428,10 +440,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                         }
                         if($("#summary-"+setsectionId).length){
                             if($("#summary-"+setsectionId).find(".selected-row").length&&setsectionId in setArray){
-                                targetSetArray[setsectionId] = parseInt($("#summary-"+setsectionId).find(".selected-row").attr('id').split("-")[3]);      
-                                if(setsectionId == section_id)                         
-                                    newSetSectionString = newSetSectionString+setsectionId+":"+parseInt($("#summary-"+setsectionId).find(".selected-row").attr('id').split("-")[3])+",";
-                            }else{
+                                targetSetArray[setsectionId] = parseInt($("#summary-"+setsectionId).find(".selected-row").attr('id').split("-")[3]);                            }else{
                                 targetSetArray[setsectionId] = 1;
                                 if(setsectionId == section_id)
                                     newSetSectionString = newSetSectionString+setsectionId+":1,";
@@ -439,10 +448,8 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                         }else{
                             if($("[id=pagination-section-"+setsectionId+"]").find(".selected-page").length&&setsectionId in setArray){
                                 targetSetArray[setsectionId] = parseInt($("[id=pagination-section-"+setsectionId+"]").find(".selected-page").attr('id').split("-")[3]);
-                                newSetSectionString = newSetSectionString+setsectionId+":"+parseInt($("[id=pagination-section-"+setsectionId+"]").find(".selected-page").attr('id').split("-")[3])+",";
                             }else{
                                 targetSetArray[setsectionId] = 1;
-                                newSetSectionString = newSetSectionString+setsectionId+":1,";
                             }
                         }
                     });
@@ -468,7 +475,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                         $("#pagination-section-"+sectionId).find(".selected-page").removeClass(".selected-page");
                         $("#pagination-section-"+sectionId).find("#section-"+sectionId+"-page_number-"+targetSetArray[sectionId]).addClass(".selected-page");
                     }
-                }
+                };
                 $("[name=section\\["+orignalId+"\\]]").val(newSetSectionString.substr(0,newSetSectionString.length-1));
                 fieldTargetArray = [];
                 console.log(fieldsectionSetArray);
@@ -619,7 +626,7 @@ function deleteSection(sectionId, setNo=null, pcontrol=false){
             'X-CSRF-Token': csrfToken
         },
         type:'POST',
-        url:'/sd-sections/deleteSection/'+caseId+'/'+sectionId+'/'+setNo+'/'+distribution_id,
+        url:'/sd-sections/deleteSection/'+tabId+'/'+caseId+'/'+sectionId+'/'+setNo+'/'+distribution_id,
         data:request,
         success:function(response){
             console.log(response);
@@ -628,66 +635,9 @@ function deleteSection(sectionId, setNo=null, pcontrol=false){
                 title: "This set has been deleted",
               });
             section = $.parseJSON(response);
-            renderSummaries(sectionId,setNo);
+            renderSummaries(sectionId,1);
             $("[id=addbtnalert-"+sectionId+"]").hide();
             return false;
-
-            // TODO
-            // swal("Are you sure?","This action can not be undone", "warning",{
-            //     buttons: {
-            //         Yes: true,
-            //         cancel: "Cancel"
-            //     },
-            // }).then((value) => {
-            //     if (value) {
-            //         swal({
-            //             icon: "success",
-            //             title: "This set has been deleted",
-            //           });
-            //     }
-            // });
-            savedArray = $.parseJSON(response);
-            let sectionIdOriginal =  $("[id^=save-btn"+sectionId+"]").attr('id');
-            let section_Id = sectionIdOriginal.split('-');
-
-            let max_set_no = 0
-            for(var k in request){
-                let setNum = $("[id$=field-"+k+"]").children("[id^=section-"+sectionId+"-set_number]").val();
-                let fieldvalueK = $("[id$=field-"+k+"]").children("[id^=section-"+sectionId+"-sd_section_structures]").attr('id').split('-')[5];
-                let sectionStructureK = $("[id^=section-"+sectionId+"-set_number-"+k+"]").attr('name').split(/[\[\]]/)[3];
-                section[section_Id[2]].sd_section_structures[sectionStructureK].sd_field.sd_field_values = savedArray[k];
-                $(section[section_Id[2]].sd_section_structures[sectionStructureK].sd_field.sd_field_values).each(function(k,v){
-                    if(typeof v != 'undefined')
-                    max_set_no = Math.max(v.set_number, max_set_no);
-                });
-            }
-            if (max_set_no!=0){
-                $("[id^=right_set-"+sectionId+"]").prev().remove();
-                let previousPageNo = $("[id^=right_set-"+sectionId+"]").prev().attr('id').split('-page_number-')[1];
-                if(setNum>max_set_no) setNum = max_set_no;
-                if(pcontrol==false) setPageChange(sectionId,setNum);
-            }else{
-                if(pcontrol==false) setPageChange(sectionId, 1, 1);
-            }
-            $addId = $("[id^=add_set-"+sectionId+"]").attr('id').split('-setNo-');
-            if(typeof previousPageNo !='undefined'){
-            $("[id^=add_set-"+sectionId+"]").attr('id',$addId[0]+'-setNo-'+previousPageNo);}
-            else{$("[id^=add_set-"+sectionId+"]").attr('id',$addId[0]+'-setNo-0');}
-            // paginationReady();
-            //TODO
-            // $("[id^=child_section]").each(function(){
-
-            //     child_section = $(this).attr("id").split('-');
-            //     child_section_id = child_section[1].split(/[\[\]]/);
-            //     child_section_id = jQuery.grep(child_section_id, function(n, i){
-            //         return (n !== "" && n != null);
-            //     });
-            //     if($.inArray(sectionId,child_section_id)){
-            //         console.log(Number(max_set_no)-1);
-            //         console.log(child_section[7]);
-            //         level2setPageChange(child_section[7], setNum);
-            //     }
-            // });
         },
         error:function(response){
             console.log(response.responseText);
