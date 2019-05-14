@@ -226,14 +226,14 @@ jQuery(function($) {  // In case of jQuery conflict
         $('.step_backward').each(function(){
             $(this).prop("disabled", false);
         });
-
+        console.log('#customize_'+workflowType+'_workflow');
         if ($('#default_'+workflowType+'_workflow').is(':visible') && $('#customize_'+workflowType+'_workflow').is(':hidden'))
         {
             $('#customize_'+workflowType+'_workflow_div, #default_'+workflowType+'_btn').hide();
             $('#default_'+workflowType+'_T').show();
             $('#ifdef').addClass("mx-auto w-50");
 
-        }else
+        }else 
         if (($('#default_'+workflowType+'_workflow').is(':hidden') && $('#customize_'+workflowType+'_workflow').is(':visible')))
         {
             if(!$('#custom_'+workflowType+'_workflow_name').val()  ) {
@@ -243,7 +243,7 @@ jQuery(function($) {  // In case of jQuery conflict
             else if (
                 !$('#custom_'+workflowType+'_workflow_description').val()  ) {
                 $('html,body').animate({
-                    scrollTop: $("#customize_'+workflowType+'_workflow").offset().top
+                    scrollTop: $("#customize_"+workflowType+"_workflow").offset().top
                     });
                 $('#custom_'+workflowType+'_workflow_description-validate').show().delay(2000).fadeOut();
                 return false;
@@ -266,7 +266,7 @@ jQuery(function($) {  // In case of jQuery conflict
                     order ++;
                 });
                 $(this).hide();
-                $('#'+workflowType+'-sortable').find('.card-body').append( '<div class="input-group w-25 mx-auto"><i class="fas fa-arrow-up gobackstep"></i><input type="text" class="step_backward form-control form-control-sm backstep_input" aria-label="Back Steps" aria-describedby="backSteps"></div>');
+                $('#'+workflowType+'-sortable').find('.card-body').append( '<div class="input-group w-25 mx-auto"><i class="fas fa-arrow-up gobackstep"></i><input type="text" class="step_backward form-control form-control-sm backstep_input" aria-label="Back Steps" aria-describedby="backSteps">Workdays in 7 days case<input type="text" class="due_day-7 form-control form-control-sm backstep_input">Workdays in 15 days case<input type="text" class="due_day-15 form-control form-control-sm backstep_input"> Workdays in 90 days case<input type="text" class="due_day-90 form-control form-control-sm backstep_input"></div>');
                 $('#custworkflowname').next('#erraccessmentWorkflow').remove(); // *** this line have been added ***
                 $("#"+workflowType+"-sortable").sortable({ disabled: true });
             }
