@@ -249,8 +249,9 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
     //             $max_set_No = $value_detail_field_values->set_number;
     //     }
     // }
-    $text =$text. "<div class=\"header-section \">";//Todo
-    $text =$text. "<h3 id=\"section_label-".$sectionId."\"class=\"secspace\">".$section_name."</h3>";
+    $text =$text. "<div class=\"header-section panel-heading\">";//Todo
+    $text =$text. "<h3 id=\"section_label-".$sectionId."\"class=\"secspace panel-title\">";
+    $text =$text."<a data-toggle=\"collapse\" href=\"#input-".$sectionId."-sectionKey-".$sectionKey.",#card-summary-".$sectionId."\">".$section_name."</a></h3>";
     $text =$text. "<input id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.",1)\" class=\"ml-3 px-5 btn btn-outline-primary\" type=\"button\" style=\"display:none\" value=\"Save\">";
     //echo"<a role=\"button\" id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
     $text =$text. "</h3>";
@@ -298,7 +299,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
     $fields = $SectionInfo->sd_section_summary->sdFields;
     $sectionId = $SectionInfo->id;
     $text = "";
-    $text = $text."<div class='card mt-1 mb-2'>";
+    $text = $text."<div class='card mt-1 mb-2 panel-collapse collapse show' id='card-summary-".$sectionId."'>";
     $text = $text."<div class='card-header '>";
     $text = $text."<div id='summary-".$sectionId."' class='layer".$section_level."' style=\"overflow:scroll; max-height:380px;\">";
     $text = $text."<input type=\"hidden\" id='setArray-".$sectionId."' value='";
@@ -401,7 +402,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
     //         $text =$text. "<div class=\"showpagination\" id=\"showpagination-".$section->id."\"></div>";
     //     }
     // }elseif($section->section_level ==1 ){
-        $text =$text. "<div class=\"fieldInput \" id=\"input-".$section->id."-sectionKey-".$sectionKey."\">";
+        $text =$text. "<div class=\"fieldInput panel-collapse collapse show\" id=\"input-".$section->id."-sectionKey-".$sectionKey."\">";
         if(!empty($setArray)){
             $text =$text. "<input type =\"hidden\" name=\"section[".$section->id."]\" value=\"";
             $sectionsText = "";

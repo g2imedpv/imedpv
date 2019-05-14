@@ -53,12 +53,12 @@ $(document).ready(function(){
         }
     }
 
-    $("[id^=unspecified-]").change(function(){
-        let sectionId = $(this).attr('id').split('-')[2];
-        let fieldId = $(this).attr('id').split('-')[4];
-        $("#section-"+sectionId+"-unspecifieddate-"+fieldId).val($("#unspecified-day_section-"+sectionId+"-unspecifieddate-"+fieldId).val()+$("#unspecified-month_section-"+sectionId+"-unspecifieddate-"+fieldId).val()+$("#unspecified-year_section-"+sectionId+"-unspecifieddate-"+fieldId).val());
-    });
-    $("[id*=unspecifieddate][id^=section]").val()
+    // $("[id^=unspecified-]").change(function(){
+    //     let sectionId = $(this).attr('id').split('-')[2];
+    //     let fieldId = $(this).attr('id').split('-')[4];
+    //     $("#section-"+sectionId+"-unspecifieddate-"+fieldId).val($("#unspecified-day_section-"+sectionId+"-unspecifieddate-"+fieldId).val()+$("#unspecified-month_section-"+sectionId+"-unspecifieddate-"+fieldId).val()+$("#unspecified-year_section-"+sectionId+"-unspecifieddate-"+fieldId).val());
+    // });
+    // $("[id*=unspecifieddate][id^=section]").val()
 
     // General Tab:
         // Admin section
@@ -68,13 +68,13 @@ $(document).ready(function(){
             checkboxShowORhide ('#section-1-field-23',"#section-1-checkbox-22-option-1");
             // For Exist Other Case Identifiers? (A.1.11) checkbox
             checkboxShowORhide ('#section-1-field-19, #section-1-field-20', "#section-1-checkbox-18-option-1");
-            dateConvert("#section-1-date-5");
-            dateConvert("#section-1-date-10");
-            dateConvert("#section-1-date-12");
-            dateConvert("#section-1-date-225");
-            dateConvert("#section-1-text-414");
-            dateConvert("#section-1-text-415");
-            dateConvert("#section-55-text-388");
+            // dateConvert("#section-1-date-5");
+            // dateConvert("#section-1-date-10");
+            // dateConvert("#section-1-date-12");
+            // dateConvert("#section-1-date-225");
+            // dateConvert("#section-1-text-414");
+            // dateConvert("#section-1-text-415");
+            // dateConvert("#section-55-text-388");
             
             
            
@@ -117,22 +117,22 @@ $(document).ready(function(){
             var diffTime=endTime-startTime;
             if(diffTime<60){
                 $(dur).val(diffTime);
-                $(durUnit).value(806).trigger('change');
+                $(durUnit).val('806').trigger('change');
             }else if((diffTime>=60)&&(diffTime<1440)){
                  $(dur).val(diffTime/60);
-                 $(durUnit).value(805).trigger('change');
+                 $(durUnit).val('805').trigger('change');
             }else if((diffTime>=1440)&&(diffTime<10080)){
                  $(dur).val(diffTime/60/24);
-                 $(durUnit).value(804).trigger('change');
+                 $(durUnit).val('804').trigger('change');
             }else if((diffTime>=10080)&&(diffTime<45360)){
                  $(dur).val(diffTime/60/24/7);
-                 $(durUnit).value(803).trigger('change');
+                 $(durUnit).val('803').trigger('change');
             }else if((diffTime>=45360)&&(diffTime<525600)){
                  $(dur).val(diffTime/24/60/31.5);
-                 $(durUnit).value(802).trigger('change');
+                 $(durUnit).val('802').trigger('change');
             }else if(diffTime>525600){
                  $(dur).val(diffTime/365/24/60);
-                 $(durUnit).value(801).trigger('change');
+                 $(durUnit).val('801').trigger('change');
             }     
         }
         duration("#unspecified-day_section-22-unspecifieddate-199", "#unspecified-month_section-22-unspecifieddate-199","#unspecified-year_section-22-unspecifieddate-199",
