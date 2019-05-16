@@ -167,56 +167,64 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
         <div id="fullSearch" style="display:none;">
             <div class="form-row">
                 <div class="form-group col-lg-4">
+                    <label>Product Name</label>
                     <input type="text" class="form-control" id="searchProductName" name="searchProductName" placeholder="Search by Product Name">
                 </div>
                 <div class="form-group col-lg-4">
-                    <input type="text" class="form-control"  id="searchName" name="searchName" placeholder="Select Case No.">
+                    <label>Case No.</label>
+                    <input type="text" class="form-control"  id="searchName" name="searchName" placeholder="Search by Case No.">
                 </div>
                 <div class="form-group col-lg-4">
+                    <label>Case Status</label>
                     <select class="form-control" id="caseStatus" name="caseStatus">
-                        <option value="1">Activate</option>
-                        <option value="2">Inactivate</option>
+                        <option value="">Search by Case Status</option>
+                        <option value="1">Active</option>
+                        <option value="2">Inactive</option>
                         <option value="3">All</option>
                     </select>
                 </div>
             </div>
             <div class="form-row">
-                <p class="duedate form-group col-2">Activity Due Date:</p>
-                <div class="form-group col-1">
-                    <input type="text" class="form-control" id="datepicker1" placeholder="[mm/dd/yyyy]">
+                <div class="form-group col-lg-4">
+                    <label>Patient ID</label>
+                    <input type="text" class="form-control" id="patient_id" placeholder="Search by Patient ID">
                 </div>
-                <div class="arrow">
-                    <i class="far fa-window-minimize"></i>
+                <div class="form-group col-lg-4">
+                    <label>Date of Birth</label>
+                    <input type="date" class="form-control" id="datepicker5" placeholder="Search by Birthday">
                 </div>
-                <div class="form-group col-1">
-                    <input type="text" class="form-control" id="datepicker2" placeholder="[mm/dd/yyyy]">
-                </div>
-
-                <p class="duedate form-group col-2 float-right">Submission Due Date:</p>
-                <div class="form-group col-1">
-                    <input type="text" class="form-control" id="datepicker3" placeholder="[mm/dd/yyyy]">
-                </div>
-                <div class="arrow">
-                    <i class="far fa-window-minimize"></i>
-                </div>
-                <div class="form-group col-1">
-                    <input type="text" class="form-control" id="datepicker4" placeholder="[mm/dd/yyyy]">
+                <div class="form-group col-lg-4">
+                    <label>Gender</label>
+                    <select id="inputState" class="form-control">
+                        <option value="">Search by Gender</option>
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>
+                        <option value="3">Unknown</option>
+                    </select>
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-lg-2">
-                    <input type="text" class="form-control" id="patient_id" placeholder="Search by Patient ID">
+                <p class="duedate form-group col-2">Activity Due Date:</p>
+                <div class="form-group col-3">
+                    <input type="date" class="form-control" id="datepicker1" placeholder="[mm/dd/yyyy]">
                 </div>
-                <div class="form-group col-lg-2">
-                    <input type="text" class="form-control" id="datepicker5" placeholder="Choose Date of Birth">
+                <div class="arrow">
+                    <i class="far fa-window-minimize"></i>
                 </div>
-                <div class="form-group col-lg-2">
-                    <select id="inputState" class="form-control">
-                        <option selected>Select Gender</option>
-                        <option>Male</option>
-                        <option>Female</option>
-                        <option>Unknown</option>
-                    </select>
+                <div class="form-group col-3">
+                    <input type="date" class="form-control" id="datepicker2" placeholder="[mm/dd/yyyy]">
+                </div>
+            </div>
+            <div class="form-row">
+                <p class="duedate form-group col-2 float-right">Submission Due Date:</p>
+                <div class="form-group col-3">
+                    <input type="date" class="form-control" id="datepicker3" placeholder="[mm/dd/yyyy]">
+                </div>
+                <div class="arrow">
+                    <i class="far fa-window-minimize"></i>
+                </div>
+                <div class="form-group col-3">
+                    <input type="date" class="form-control" id="datepicker4" placeholder="[mm/dd/yyyy]">
                 </div>
             </div>
             <div class="form-row justify-content-center">
