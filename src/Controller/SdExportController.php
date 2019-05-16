@@ -676,7 +676,7 @@ class SdExportController extends AppController
                         ->first();
                         $text = $text." <style> p {position: absolute;}  </style>";
                         $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$MedValue.'</p>';
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$MedValue.'</p>';
                         break;
                     case '2': //checkbox position
                         $option=substr($MedValue,-1);
@@ -687,7 +687,7 @@ class SdExportController extends AppController
                         ->first();
                         $text = $text." <style> p {position: absolute;}  </style>";
                         $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'X'.'</p>';
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
                         }
                         break;
                     case '3': //date filled
@@ -697,7 +697,7 @@ class SdExportController extends AppController
                         ->first();
                         $text = $text." <style> p {position: absolute;}  </style>";
                         $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$MedValue.'</p>';
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$MedValue.'</p>';
                         break;
                     case '4': //day filled
                         $positions=$sdMedwatchPositions->find()
@@ -706,7 +706,7 @@ class SdExportController extends AppController
                         ->first();
                         $text = $text." <style> p {position: absolute;}  </style>";
                         $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$MedValue.'</p>';
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$MedValue.'</p>';
                         break;
                     case '5'://month filled
                         $positions=$sdMedwatchPositions->find()
@@ -715,7 +715,7 @@ class SdExportController extends AppController
                         ->first();
                         $text = $text." <style> p {position: absolute;}  </style>";
                         $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$MedValue.'</p>';
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$MedValue.'</p>';
                         break;
                     case '6'://year filled
                         $positions=$sdMedwatchPositions->find()
@@ -724,7 +724,7 @@ class SdExportController extends AppController
                         ->first();
                         $text = $text." <style> p {position: absolute;}  </style>";
                         $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$MedValue.'</p>';
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$MedValue.'</p>';
                         break;
                     case '7'://multiple checkbox
                         $checked=array();
@@ -739,7 +739,7 @@ class SdExportController extends AppController
                                 ->first();
                                 $text = $text." <style> p {position: absolute;}  </style>";
                                 $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                            .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.'X'.'</p>';
+                                            .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
                             }
                         }
                         break;
@@ -787,7 +787,7 @@ class SdExportController extends AppController
                 ->first();
                 $text = $text." <style> p {position: absolute;}  </style>";
                 $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:red;">'.$ready_value.'</p>';
+                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$ready_value.'</p>';
                 return $text;
             }
             //c2 concomitanat medical products and therapy dates in page one
@@ -842,7 +842,7 @@ class SdExportController extends AppController
             public function genFDApdf($caseId)
             { 
                 //a1 patientID field
-               $result=$this->getMedPosition($caseId,80,1,1);
+               $result=$this->getMedPosition($caseId,79,1,1);
                 //a2 age field  
                 $result=$result.$this->getMedPosition($caseId,86,1,1);
                 //a2 age unit 
@@ -929,9 +929,9 @@ class SdExportController extends AppController
                 //c6#2 is the product compounded?
                 $result=$result.$this->getMedPosition($caseId,439,1,2,$suspect[1]);
                  //c7#1 Is the product over-the-counter?
-                $result=$result.$this->getPositionByType($caseId,425,1,2,$suspect[0]);
+                $result=$result.$this->getMedPosition($caseId,425,1,2,$suspect[0]);
                 //c7#2 Is the product over-the-counter?
-                $result=$result.$this->getPositionByType($caseId,425,1,2,$suspect[1]);
+                $result=$result.$this->getMedPosition($caseId,425,1,2,$suspect[1]);
                 // c8#1 expiration date
                 $result=$result.$this->getMedPosition($caseId,298,4,4,$suspect[0]);//day
                 $result=$result.$this->getMedPosition($caseId,298,5,5,$suspect[0]);//month
@@ -941,13 +941,13 @@ class SdExportController extends AppController
                 $result=$result.$this->getMedPosition($caseId,298,5,5,$suspect[1]);//month
                 $result=$result.$this->getMedPosition($caseId,298,6,6,$suspect[1]);//year
                 //c9#1 dechallenge?
-                $result=$result.$this->getPositionByType($caseId,381,1,2,$suspect[0]);
+                $result=$result.$this->getMedPosition($caseId,381,1,2,$suspect[0]);
                 //c9#2 dechallenge?
-                $result=$result.$this->getPositionByType($caseId,381,1,2,$suspect[1]);
+                $result=$result.$this->getMedPosition($caseId,381,1,2,$suspect[1]);
                 //c10#1 rechallenge?
-                $result=$result.$this->getPositionByType($caseId,209,1,2,$suspect[0]);
+                $result=$result.$this->getMedPosition($caseId,209,1,2,$suspect[0]);
                 //c10#2 rechallenge?
-                $result=$result.$this->getPositionByType($caseId,209,1,2,$suspect[1]);
+                $result=$result.$this->getMedPosition($caseId,209,1,2,$suspect[1]);
                 // e1 last name
                 $result=$result.$this->getMedPosition($caseId,28,1,1);
                 //e1 first name
