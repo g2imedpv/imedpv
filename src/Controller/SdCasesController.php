@@ -753,7 +753,7 @@ class SdCasesController extends AppController
             else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";
             //save new activity into case
             $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$version])
-                                ->select(['id','SdCases.sd_product_workflow_id','pd.product_name','sd_workflow_activity_id','sd_user_id','case_type'])
+                                ->select(['id','SdCases.sd_product_workflow_id','pd.product_name','sd_workflow_activity_id','sd_user_id'])
                                 ->join([
                                     'pw'=>[
                                         'table'=>'sd_product_workflows',
@@ -793,8 +793,9 @@ class SdCasesController extends AppController
             $sdFieldValuesTable =TableRegistry::get('SdFieldValues');
             $sdWorkflowActivity = TableRegistry::get('SdWorkflowActivities')->get($requstData['next-activity-id']);
             $activityDueDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>12, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
+            $casetype = $sdFieldValuesTable->find()->where(['sd_field_id'=>500, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
             $date = date_create_from_format("dmY", $activityDueDateEntity['field_value']);
-            date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$case['case_type']].' days'));
+            date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']].' days'));
             $activityDueDateEntity['field_value'] = $date->format('dmY');
             if(!$sdFieldValuesTable->save($activityDueDateEntity)){
                 echo "error in saving history";
@@ -928,7 +929,7 @@ class SdCasesController extends AppController
                     'conditions'=>['pd.id = pwf.sd_product_id']
                 ]
             ])->first();
-        $field_ids = ['10','176','85','79','93','86','87','12','26','28','149','394','457','392','458','496','395','417','420','421','422','423','223','415'];
+        $field_ids = ['10','176','85','79','93','86','87','12','26','28','149','394','457','392','458','496','395','417','420','421','422','423','223','415','500'];
         $versionup_fields = [''];
         
         $fieldValue_Table = TableRegistry::get('SdFieldValues');
@@ -964,7 +965,6 @@ class SdCasesController extends AppController
         $sdDocList = $docList->toArray();
         $this->set(compact('sdDocList'));
         // end of document list
-
         $this->set(compact('case','caseNo','versionNo','field_value_set'));
     }
 

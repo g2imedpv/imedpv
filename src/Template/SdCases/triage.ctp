@@ -394,6 +394,8 @@
                     </div>
                 </div>
             </div>
+            <input type="hidden" disabled id="id_case_type_id" name="field_value[500][id]" <?php echo "value=\"".$field_value_set['500']['id']."\""?>>
+            <input type="hidden" disabled id="id_case_type_value" name="field_value[500][value]" <?php echo "value=\"".$field_value_set['500']['field_value']."\""?>>
             <?php if($field_value_set['415']['id']!=null)
                 echo "<input type=\"hidden\" id=\"submissionDate_id\" name=\"field_value[415][id]\" disabled value=\"".$field_value_set['415']['id']."\">";?>
             <?php echo "<input type=\"hidden\" id=\"submissionDate_value\" name=\"field_value[415][value]\" disabled value=\"".$field_value_set['415']['field_value']."\">";?>
