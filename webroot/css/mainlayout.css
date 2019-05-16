@@ -607,3 +607,10 @@ ul.queryBoxLeft > a {
 .pagination li.selected-page{
     font-weight: bold;
 }
+/* Dashboard "Show xxx entries" on top/bottom */
+#caseTable_length{
+    margin-left: -510px; 
+}
+#caseTable_info{
+margin-left: -340px;
+}
