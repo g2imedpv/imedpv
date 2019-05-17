@@ -320,9 +320,11 @@ function prioritizeDate(){
     if(dueType == 1){
         formatDayZero.setDate(formatDayZero.getDate()+8);
         text +="Priority: High, 7 Days";
+        $('#id_case_type_value').val('0');
     }else{
         formatDayZero.setDate(formatDayZero.getDate()+16);
         text +="Priority: Normal, 15 Days";
+        $('#id_case_type_value').val('1');
     }
     if(submitType == 1){
         text +=" Report ";
@@ -433,7 +435,8 @@ function confirmEndTriage(){
         'senderId':userId,
         'next-activity-id':$('#next-activity-id').val(),
         'receiverId':$('#receiverId').val(),
-        'content':$('#query-content').val()
+        'content':$('#query-content').val(),
+        'type':$('#case_type').val()
     }
     console.log(request);
     $.ajax({
@@ -445,7 +448,7 @@ function confirmEndTriage(){
         data:request,
         success:function(response){
             console.log(response);
-            window.location.href = "/sd-cases/caselist";
+            // window.location.href = "/sd-cases/caselist";
         },
         error:function(response){
             console.log(response.responseText);

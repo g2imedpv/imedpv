@@ -498,6 +498,7 @@ class SdCasesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $requestData = $this->request->getData();
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
+            $sdSectionSetTable = TableRegistry::get('SdSectionSets');
             // $requestDataField = $requestData['field_value'];
             /**
              * save case
@@ -566,10 +567,49 @@ class SdCasesController extends AppController
                         'status' =>'1',
                     ];
                     $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
-                    if(!$sdFieldValueTable->save($savedFieldValueEntity)){
+                    $savedFieldValue = $sdFieldValueTable->save($savedFieldValueEntity);
+                    if(!$savedFieldValue){
                         echo "problem in saving".$product_info."sdfields";
                         debug($savedFieldValueEntity);
                         return null;
+                    }
+                    $sdSectionSetEntity = $sdSectionSetTable->newEntity();
+                    $dataSet = [
+                        'sd_field_value_id' => $savedFieldValue['id'],
+                        'sd_section_id' => 21,
+                        'set_array'=>1
+                    ];
+                    $savedSectionSetEntity = $sdSectionSetTable->patchEntity($sdSectionSetEntity, $dataSet);
+                    if(!$sdSectionSetTable->save($savedSectionSetEntity)){
+                        echo "problem in saving".$product_info."sets";
+                        debug($savedSectionSetEntity);
+                        return null;
+                    }
+                    if($fieldId == 176){
+                        $sdSectionSetEntity = $sdSectionSetTable->newEntity();
+                        $dataSet = [
+                            'sd_field_value_id' => $savedFieldValue['id'],
+                            'sd_section_id' => 65,
+                            'set_array'=>1
+                        ];
+                        $savedSectionSetEntity = $sdSectionSetTable->patchEntity($sdSectionSetEntity, $dataSet);
+                        if(!$sdSectionSetTable->save($savedSectionSetEntity)){
+                            echo "problem in saving".$product_info." casulity";
+                            debug($savedSectionSetEntity);
+                            return null;
+                        }
+                        $sdSectionSetEntity = $sdSectionSetTable->newEntity();
+                        $dataSet = [
+                            'sd_field_value_id' => $savedFieldValue['id'],
+                            'sd_section_id' => 47,
+                            'set_array'=>1
+                        ];
+                        $savedSectionSetEntity = $sdSectionSetTable->patchEntity($sdSectionSetEntity, $dataSet);
+                        if(!$sdSectionSetTable->save($savedSectionSetEntity)){
+                            echo "problem in saving".$product_info." labeling";
+                            debug($savedSectionSetEntity);
+                            return null;
+                        }
                     }
                 }
 
@@ -753,7 +793,7 @@ class SdCasesController extends AppController
             else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";
             //save new activity into case
             $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$version])
-                                ->select(['id','SdCases.sd_product_workflow_id','pd.product_name','sd_workflow_activity_id','sd_user_id','case_type'])
+                                ->select(['id','SdCases.sd_product_workflow_id','pd.product_name','sd_workflow_activity_id','sd_user_id'])
                                 ->join([
                                     'pw'=>[
                                         'table'=>'sd_product_workflows',
@@ -793,8 +833,9 @@ class SdCasesController extends AppController
             $sdFieldValuesTable =TableRegistry::get('SdFieldValues');
             $sdWorkflowActivity = TableRegistry::get('SdWorkflowActivities')->get($requstData['next-activity-id']);
             $activityDueDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>12, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
+            $casetype = $sdFieldValuesTable->find()->where(['sd_field_id'=>500, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
             $date = date_create_from_format("dmY", $activityDueDateEntity['field_value']);
-            date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$case['case_type']].' days'));
+            date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']].' days'));
             $activityDueDateEntity['field_value'] = $date->format('dmY');
             if(!$sdFieldValuesTable->save($activityDueDateEntity)){
                 echo "error in saving history";
@@ -865,6 +906,7 @@ class SdCasesController extends AppController
             $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$versionNo])->first();
             $requestData = $this->request->getData();
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
+            $sdSectionSets = TableRegistry::get('SdSectionSets');
             //TODO if the case is to push to Data Entry
             // print_r($requestData);die();
             foreach($requestData['field_value'] as $field_id => $detail_data){
@@ -887,9 +929,36 @@ class SdCasesController extends AppController
                     ];
                     $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
                 }
-                if(!$sdFieldValueTable->save($savedFieldValueEntity)) {
+                $savedFieldValue = $sdFieldValueTable->save($savedFieldValueEntity);
+                if(!$savedFieldValue) {
                     echo "problem in saving".$field_id."sdfields";
                     return null;
+                }
+                if(array_key_exists('set_array',$detail_data)){
+                    $sdSectionSetEntity = $sdSectionSets->newEntity();
+                    $dataSet = [
+                        'sd_section_id' => $detail_data['section_id'],
+                        'sd_field_value_id'=>$savedFieldValue['id'],
+                        'set_array'=>$detail_data['set_array']
+                    ];
+                    $savedSectionSetEntity = $sdSectionSets->patchEntity($sdSectionSetEntity, $dataSet);
+                    if(!$sdSectionSets->save($savedSectionSetEntity)) {
+                        echo "problem in saving".$field_id." set";
+                        return null;
+                    }
+                }
+                if($field_id == 149){
+                    $sdSectionSetEntity = $sdSectionSets->newEntity();
+                    $dataSet = [
+                        'sd_section_id' => 44,
+                        'sd_field_value_id'=>$savedFieldValue['id'],
+                        'set_array'=>'1,*'
+                    ];
+                    $savedSectionSetEntity = $sdSectionSets->patchEntity($sdSectionSetEntity, $dataSet);
+                    if(!$sdSectionSets->save($savedSectionSetEntity)) {
+                        echo "problem in saving".$field_id." set";
+                        return null;
+                    }
                 }
             }
 
@@ -904,9 +973,6 @@ class SdCasesController extends AppController
                     $this->Flash->success(__('Documents have been uploaded successfully.'));
                 }
             }
-            
-            
-            // debug($requestData); die();
             if(array_key_exists('endTriage',$requestData))
             {
                 echo "succuess";
@@ -928,7 +994,7 @@ class SdCasesController extends AppController
                     'conditions'=>['pd.id = pwf.sd_product_id']
                 ]
             ])->first();
-        $field_ids = ['10','176','85','79','93','86','87','12','26','28','149','394','457','392','458','496','395','417','420','421','422','423','223','415'];
+        $field_ids = ['10','176','85','79','93','86','87','12','26','28','149','394','457','392','458','496','395','417','420','421','422','423','223','415','500'];
         $versionup_fields = [''];
         
         $fieldValue_Table = TableRegistry::get('SdFieldValues');
@@ -964,7 +1030,6 @@ class SdCasesController extends AppController
         $sdDocList = $docList->toArray();
         $this->set(compact('sdDocList'));
         // end of document list
-
         $this->set(compact('case','caseNo','versionNo','field_value_set'));
     }
 
