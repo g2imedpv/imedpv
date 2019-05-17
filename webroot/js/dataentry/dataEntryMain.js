@@ -387,6 +387,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
     //for each field
     $("[id^=input-").each(function(){
         let orignalId = $(this).attr('id').split('-')[1];
+        if(pflag && orignalId != section_id) return true;
         let sectionId = $(this).attr('id').split('-')[1];
         let sectionKey = $(this).attr('id').split('-')[3];
         let inputSetflag  = true;
