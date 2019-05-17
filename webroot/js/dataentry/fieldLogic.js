@@ -62,7 +62,13 @@ $(document).ready(function(){
         // For Additional documents (A.1.8.1) select and add document
         selectShowORhide ("#section-1-field-355, #section-1-field-14","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
         //add upload files button
-            var uploadDocBtn = "<button type=\"button\" class=\"btn btn-primary float-left mt-3 ml-4\" data-toggle=\"modal\" data-target=\".uploadDoc\"><i class=\"fas fa-cloud-upload-alt\"></i> Upload Documents</button>";
+            var uploadDocBtn ="<head><script>var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;";
+            uploadDocBtn +="var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>; </script></head>";
+            uploadDocBtn +="<body><form method=\"post\" action=\"/sd-documents/save/66\" enctype=\"multipart/form-data\">";
+            uploadDocBtn +="<div style=\"display:none;\">";
+            uploadDocBtn +="<input type=\"hidden\" name=\"_method\" value=\"POST\"/>";
+            uploadDocBtn +="<input type=\"hidden\" name=\"_csrfToken\" autocomplete=\"off\" value=<?= json_encode($this->request->getParam('_csrfToken')) ?>/></div>";
+            uploadDocBtn +="<button type=\"button\" class=\"btn btn-primary float-left mt-3 ml-4\" data-toggle=\"modal\" data-target=\".uploadDoc\"><i class=\"fas fa-cloud-upload-alt\"></i> Upload Documents</button>";
             uploadDocBtn += "<div class=\"modal fade uploadDoc\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\">";
             uploadDocBtn += "<div class=\"modal-dialog modal-xl\">";
             uploadDocBtn += "<div class=\"modal-content\">";
@@ -108,6 +114,7 @@ $(document).ready(function(){
             uploadDocBtn += " </div>";
             uploadDocBtn += " </div>";
             uploadDocBtn += " </div>";
+            uploadDocBtn += "</form></body>"
         $("#section-1-field_label-355").append(uploadDocBtn);
         //new add file rows
         $(function(){
@@ -197,6 +204,8 @@ $(document).ready(function(){
             $("#section-69-field-499").parent().prepend('<h5 class="col-md-12 mb-3">Sender\'s diagnosis or syndrome</h5>');
             $("#section-44-field-497").parent().prepend('<h5 class="col-md-12 mb-3">Recurred reaction</h5>');
             $("#section-45-field-498").parent().prepend('<h5 class="col-md-12 mb-3">Reaction assessed</h5>');
+            //diease therapy date,if choose continue,no end date and duration
+            checkboxShowORhide('#section-5-field-240,#section-5-field-241,#section-5-field-102',"#section-5-radio-100-option-2,#section-5-radio-100-option-3","#section-5-radio-100-option-1");
     // Product Tab:
         // If "Ongoing field checked", then Therapy End date (B.4.k.14b) DISABLED
             $("#section-22-checkbox-434-option-1").change(function(){

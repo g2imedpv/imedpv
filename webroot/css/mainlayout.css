@@ -614,3 +614,14 @@ ul.queryBoxLeft > a {
 #caseTable_info{
 margin-left: -340px;
 }
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
+.panel-title > a.collapsed:before {
+    float: left !important;
+    content:"+";
+}
+.panel-title > a:before {
+    float: left !important;
+    font-family: FontAwesome;
+    content:"-";
+    padding-right: 5px;
+}

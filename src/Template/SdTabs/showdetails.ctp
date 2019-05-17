@@ -250,9 +250,9 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
     //     }
     // }
     $text =$text. "<div class=\"header-section panel-heading\">";//Todo
-    $text =$text. "<h3 id=\"section_label-".$sectionId."\"class=\"secspace panel-title\">";
-    $text =$text."<a data-toggle=\"collapse\" href=\"#input-".$sectionId."-sectionKey-".$sectionKey.",#card-summary-".$sectionId."\">".$section_name."</a></h3>";
-    $text =$text. "<input id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.",1)\" class=\"ml-3 px-5 btn btn-outline-primary\" type=\"button\" style=\"display:none\" value=\"Save\">";
+    $text =$text. "<h3 id=\"section_label-".$sectionId."\"class=\"secspace panel-title-dataentry\">";
+    $text =$text."<a data-toggle=\"collapse\" href=\"#input-".$sectionId."-sectionKey-".$sectionKey.",#card-summary-".$sectionId.",#addbtn-".$sectionId.",#deletebtn-".$sectionId.",#pagination-section-".$sectionId.",#save-btn".$sectionId."-".$sectionKey."\">".$section_name."</a></h3>";
+    $text =$text. "<input id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.",1)\" class=\"ml-3 px-5 btn btn-outline-primary panel-collapse show\" type=\"button\" style=\"display:none\" value=\"Save\">";
     //echo"<a role=\"button\" id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
     $text =$text. "</h3>";
         // if(($section->is_addable == 1)&&($permission==1))
@@ -299,7 +299,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
     $fields = $SectionInfo->sd_section_summary->sdFields;
     $sectionId = $SectionInfo->id;
     $text = "";
-    $text = $text."<div class='card mt-1 mb-2 panel-collapse collapse show' id='card-summary-".$sectionId."'>";
+    $text = $text."<div class='card mt-1 mb-2 panel-collapse show' id='card-summary-".$sectionId."'>";
     $text = $text."<div class='card-header '>";
     $text = $text."<div id='summary-".$sectionId."' class='layer".$section_level."' style=\"overflow:scroll; max-height:380px;\">";
     $text = $text."<input type=\"hidden\" id='setArray-".$sectionId."' value='";
@@ -372,7 +372,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
         }//TODO ADD JS FUNCTION TO DISPLAY SET
         $row++;
     }while($noValue != sizeof($fields));
-    $addtext = "<button type=\"button\" id=\"addbtn-".$sectionId."\" onclick=\"setPageChange(".$sectionId.",".(int)($row-1).",1)\" class='btn btn-outline-primary float-right' role='button' title='add'><i class='fas fa-plus'></i> Add</button><br><br>";
+    $addtext = "<button type=\"button\" id=\"addbtn-".$sectionId."\" onclick=\"setPageChange(".$sectionId.",".(int)($row-1).",1)\" class='btn btn-outline-primary float-right panel-collapse show' role='button' title='add'><i class='fas fa-plus'></i> Add</button><br><br>";
     $text = $text."</tr>"; 
     $text = $text."</tbody>";
     $text = $text."</table>";
@@ -402,7 +402,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
     //         $text =$text. "<div class=\"showpagination\" id=\"showpagination-".$section->id."\"></div>";
     //     }
     // }elseif($section->section_level ==1 ){
-        $text =$text. "<div class=\"fieldInput panel-collapse collapse show\" id=\"input-".$section->id."-sectionKey-".$sectionKey."\">";
+        $text =$text. "<div class=\"fieldInput panel-collapse show\" id=\"input-".$section->id."-sectionKey-".$sectionKey."\">";
         if(!empty($setArray)){
             $text =$text. "<input type =\"hidden\" name=\"section[".$section->id."]\" value=\"";
             $sectionsText = "";
@@ -636,14 +636,14 @@ function displaySelectBar($sdSections, $setArray, $section_key){
         }
     }
     $text = "";
-    $text = $text."<button type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1)\" id=\"deletebtn-".$sdSections['id']."\">Delete</button>";
-    $text = $text."<button type=\"button\" onclick=\"setPageChange(".$sdSections['id'].",".(int)($max_set_No+1).",1)\" id=\"addbtn-".$sdSections['id']."\">Add</button>";
+    $text = $text."<button type=\"button\" onclick=\"setPageChange(".$sdSections['id'].",".(int)($max_set_No+1).",1)\" id=\"addbtn-".$sdSections['id']."\" class=\"btn btn-outline-primary float-right panel-collapse show\" role=\"button\" title=\"add\"><i class=\"fas fa-plus\"></i>Add</button>";
+    $text = $text."<button type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1)\" id=\"deletebtn-".$sdSections['id']."\" class=\"btn btn-outline-danger float-right panel-collapse show\" role=\"button\" title=\"delete\"><i class=\"fas fa-trash-alt\"></i>Delete</button>"; 
     $text = $text."<input type=\"hidden\" id='setArray-".$sdSections->id."' value='";
         for($i = sizeof($setArray);$i>0;$i--){
             $text = $text.$setArray[$i-1].",";
         } 
     $text = $text."'>";
-    $text = $text. "<div id=\"pagination-section-".$sdSections->id."\" class=\"DEpagination float-right\">";
+    $text = $text. "<div id=\"pagination-section-".$sdSections->id."\" class=\"DEpagination float-right panel-collapse show\">";
     $text =$text. "<ul class=\"pagination mb-0 mx-2\">";
     $text =$text.    "<li class=\"page-item\" id=\"left_set-".$sdSections->id."-sectionKey-".$section_key."-setNo-1\" onclick=\"setPageChange(".$sdSections->id.",0)\" >";
     $text =$text.    "<a class=\"page-link\" aria-label=\"Previous\">";

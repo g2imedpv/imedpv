@@ -768,10 +768,14 @@ var cro_companies = <?php echo json_encode($cro_companies);?>
     if(!array_key_exists($sections['id'], $exsitList)||$exsitList[$sections['id']]==="")
         return null;
     $sectionKey = array_search($sections['id'],$exsitList);
-    echo "<div class=\"row\" id=\"l2section-".$sections['id']."\"><div class=\"col-md-12\">".$sections['section_name'];
-    echo "<label class=\"mx-1\"><input type=\"checkbox\" id=\"write-".$tabkey."-".$sectionKey."\" class=\"checkItem\" value=\"\">Write</label>";
-    echo "<label class=\"mx-1\"><input type=\"checkbox\" id=\"read-".$tabkey."-".$sectionKey."\" class=\"checkItem\" value=\"\">Read</label>";
+    echo "<div class=\"row text-left panel-heading\" id=\"l2section-".$sections['id']."\"><div class=\"col-md-12 \">";
+    echo "<span class=\"panel-title\">";
+    echo "<a data-toggle=\"collapse\" class=\"collapsed\" href=\"#collapse-".$sections['id']."\">".$sections['section_name'];
+    echo "</a></span>";
+    echo "<label class=\"mx-1\" for=\"write-".$tabkey."-".$sectionKey."\"><input type=\"checkbox\" id=\"write-".$tabkey."-".$sectionKey."\" class=\"checkItem\" value=\"1\">Write</label>";
+    echo "<label class=\"mx-1\" for=\"read-".$tabkey."-".$sectionKey."\"><input type=\"checkbox\" id=\"read-".$tabkey."-".$sectionKey."\" class=\"checkItem\" value=\"2\">Read</label>";
     echo "</div>";
+    echo "<div class=\"panel-collapse collapse in \" style='margin-left:40px;' id=\"collapse-".$sections['id']."\";>";
     $exsitList[$sections['id']]='';
     if($sections['child_section']!=''){
         $child_sections = explode(',', $sections['child_section']);
@@ -780,6 +784,7 @@ var cro_companies = <?php echo json_encode($cro_companies);?>
                 renderTabs($sdsections[$exsitList[$child_section_id]], $exsitList, $sdsections, $tabkey);
         }
     }
+    echo "</div>";
     echo "</div>";
 }
 ?>

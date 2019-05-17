@@ -840,7 +840,7 @@ class SdExportController extends AppController
             }
 
             public function genFDApdf($caseId)
-            { 
+            {    
                 //a1 patientID field
                $result=$this->getMedPosition($caseId,79,1,1);
                 //a2 age field  
