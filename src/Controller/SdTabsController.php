@@ -59,7 +59,7 @@
                     foreach($requstData['sd_field_values'] as $sectionValueK => $sectionValue) {
                         $section_id = $sectionValueK;
                         $set_number = 1;
-                        if(!empty($requestSectionArray)){
+                        if(!empty($requestSectionArray)&&in_array($section_id,$requestSectionArray)){
                             $set_number = "";
                             $sectionArray = explode(',',$requestSectionArray[$section_id]);
                             for($i = 0;$i<sizeof($sectionArray);$i++){
@@ -94,7 +94,7 @@
                                 $savedFieldValue = $sdFieldValueTable->save($sdFieldValueEntity);
                                 if(!$savedFieldValue){
                                     echo "error in adding values!" ;
-                                    debug($savedFieldValue);
+                                    debug($sdFieldValueEntity);
                                 } 
                                 // $sdSectionSetsEntity = $sdSectionSetsTable->newEntity(); 
                                 // if(empty($requestSectionArray)) continue;

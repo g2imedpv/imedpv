@@ -12,7 +12,7 @@ echo $this->element('generatepdf');
     var readonly =  <?php if($this->request->getQuery('readonly')!=1){$readonly = 0;}
                         else{$readonly = 1;};echo $readonly;?>;
     var caseNo = "<?= $caseNo ?>";
-    var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
+    var userId = <?php echo $this->request->getSession()->read('Auth.User.id')?>;
     var version = <?= $version ?>;
     var distribution_id = <?php if(empty($distribution_id)) echo "null"; else echo $distribution_id;?>;
     var tabId = <?= $tabid?>;

@@ -115,7 +115,7 @@ $(document).ready(function(){
             uploadDocBtn += " </div>";
             uploadDocBtn += " </div>";
             uploadDocBtn += "</form></body>"
-        $("#section-1-field_label-355").append(uploadDocBtn);
+        // $("#section-1-field_label-355").append(uploadDocBtn);
         //new add file rows
         $(function(){
             function fileUrlSwitcher () {
