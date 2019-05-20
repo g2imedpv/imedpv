@@ -60,6 +60,7 @@
                         $section_id = $sectionValueK;
                         $set_number = 1;
                         if(!empty($requestSectionArray)){
+                            $set_number = "";
                             $sectionArray = explode(',',$requestSectionArray[$section_id]);
                             for($i = 0;$i<sizeof($sectionArray);$i++){
                                 $set_number = $set_number.explode(':',$sectionArray[$i])[1].","; 
@@ -89,6 +90,7 @@
                                 ];
                                 if($distribution_id!=null) $dataSet['sd_case_distribution_id'] = $distribution_id;
                                 $sdFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                                // debug($sdFieldValueEntity);
                                 $savedFieldValue = $sdFieldValueTable->save($sdFieldValueEntity);
                                 if(!$savedFieldValue){
                                     echo "error in adding values!" ;
