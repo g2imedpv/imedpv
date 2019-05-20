@@ -12,7 +12,7 @@ echo $this->element('generatepdf');
     var readonly =  <?php if($this->request->getQuery('readonly')!=1){$readonly = 0;}
                         else{$readonly = 1;};echo $readonly;?>;
     var caseNo = "<?= $caseNo ?>";
-    var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
+    var userId = <?php echo $this->request->getSession()->read('Auth.User.id')?>;
     var version = <?= $version ?>;
     var distribution_id = <?php if(empty($distribution_id)) echo "null"; else echo $distribution_id;?>;
     var tabId = <?= $tabid?>;
@@ -332,8 +332,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
         foreach($fields as $field_detail){
             $noMatchFlag = 0;
             foreach($field_detail->sd_field_values as $field_value){
-                if(empty($field_value->sd_section_sets)) continue;
-                $setArray = explode(',',$field_value->sd_section_sets[0]->set_array);
+                $setArray = explode(',',$field_value->set_number);
                 //Only display the first set
                 $levelMatch = 1;
                 for($i = sizeof($setArray) - 1 ; $i > 0 ; $i--){
@@ -342,7 +341,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
                         break;
                     }
                 }
-                if($levelMatch && !empty($field_value->sd_section_sets) && $field_value->sd_section_sets[0]->set_array == $row){
+                if($levelMatch  && $setArray[0] == $row){
                     $rowtext = $rowtext."<td id=\"section-".$sectionId."-row-".$row."-td-".$field_detail->id."\">";
                     if($field_detail->sd_element_type_id != 1 && $field_detail->sd_element_type_id != 3 && $field_detail->sd_element_type_id != 4)
                         $rowtext = $rowtext.$field_value->field_value;
@@ -368,7 +367,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
             $text = $text."<tr ";
             if($row==1) $text = $text."class=\"selected-row\" ";
             $text = $text."id=\"section-".$sectionId."-row-".$row."\" onclick=\"setPageChange(".$sectionId.",".$row.")\" ><td>".$row."</td>".$rowtext."
-                                                <td><button class='btn btn-outline-danger' onclick='deleteSection(".$sectionId.",".$row.")' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
+                                                <td><button class='btn btn-outline-danger' onclick='deleteSection(".$sectionId.",".$row.",". $section_key.")' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
         }//TODO ADD JS FUNCTION TO DISPLAY SET
         $row++;
     }while($noValue != sizeof($fields));
@@ -431,19 +430,25 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                 $j = sizeof($sd_section_structure_detail->sd_field->sd_field_values)-1;
                 if(sizeof($sd_section_structure_detail->sd_field->sd_field_values)==0) $j++;
             }
-            foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
-                $levelMatch = 1;
-                if(empty($value_detail_field_values->sd_section_sets)) continue;
-                // debug($value_detail_field_values->sd_section_sets);
-                $sectionSetArray = explode(',',$value_detail_field_values->sd_section_sets->set_array);
-                for($count = sizeof($sectionSetArray) - 1 ; $count >= 0 ; $count--){
-                    if($sectionSetArray[$count] != '*'&& $sectionSetArray[$count] != '1'){
-                        $levelMatch = 0;
-                        break;               
+            if(!empty($setArray)){
+                foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
+                    $levelMatch = 1;
+                    $sectionSetArray = explode(',',$value_detail_field_values->set_number);
+                    if($sd_section_structure_detail->sd_field->id == '149'&& $section->id=='44'){
+                        if($sectionSetArray[0]=='1'){
+                            $j = $key_detail_field_values;break;
+                        }
+                    }else {
+                        for($count = sizeof($sectionSetArray) - 1 ; $count >= 0 ; $count--){
+                            if($sectionSetArray[$count] != '1'){
+                                $levelMatch = 0;
+                                break;               
+                            }
+                        }
+                        if(!$levelMatch) continue;
+                        $j = $key_detail_field_values;
                     }
                 }
-                if(!$levelMatch) continue;
-                $j = $key_detail_field_values;
             }
             $text =$text. "<div id=\"section-".$section->id."-field-".$sd_section_structure_detail->sd_field->id."\" class=\"form-group col-md-".$sd_section_structure_detail->field_length." offset-md-".($sd_section_structure_detail->field_start_at-$length_taken)."\">";
             $text =$text. "<label id= \"section-".$section->id."-field_label-".$sd_section_structure_detail->sd_field->id."\" >".$sd_section_structure_detail->sd_field->field_label."</label>";
@@ -629,15 +634,14 @@ function displaySelectBar($sdSections, $setArray, $section_key){
     $max_set_No = 0;
     foreach($sdSections->sd_section_structures as $sd_section_structureK =>$sd_section_structure_detail){
         foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
-            if(empty($set_array=$value_detail_field_values->sd_section_sets)) continue;
-            $set_array=$value_detail_field_values->sd_section_sets->set_array;
+            $set_array=$value_detail_field_values->set_number;
             if(explode(",",$set_array)[0]>=$max_set_No)
             $max_set_No = explode(",",$set_array)[0];
         }
     }
     $text = "";
     $text = $text."<button type=\"button\" onclick=\"setPageChange(".$sdSections['id'].",".(int)($max_set_No+1).",1)\" id=\"addbtn-".$sdSections['id']."\" class=\"btn btn-outline-primary float-right panel-collapse show\" role=\"button\" title=\"add\"><i class=\"fas fa-plus\"></i>Add</button>";
-    $text = $text."<button type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1)\" id=\"deletebtn-".$sdSections['id']."\" class=\"btn btn-outline-danger float-right panel-collapse show\" role=\"button\" title=\"delete\"><i class=\"fas fa-trash-alt\"></i>Delete</button>"; 
+    $text = $text."<button type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1,".$section_key.")\" id=\"deletebtn-".$sdSections['id']."\" class=\"btn btn-outline-danger float-right panel-collapse show\" role=\"button\" title=\"delete\"><i class=\"fas fa-trash-alt\"></i>Delete</button>"; 
     $text = $text."<input type=\"hidden\" id='setArray-".$sdSections->id."' value='";
         for($i = sizeof($setArray);$i>0;$i--){
             $text = $text.$setArray[$i-1].",";

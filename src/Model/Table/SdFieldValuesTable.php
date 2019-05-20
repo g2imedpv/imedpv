@@ -11,8 +11,8 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\SdCasesTable|\Cake\ORM\Association\BelongsTo $SdCases
  * @property \App\Model\Table\SdFieldsTable|\Cake\ORM\Association\BelongsTo $SdFields
- * @property |\Cake\ORM\Association\BelongsTo $SdCaseDistributions
- * @property |\Cake\ORM\Association\HasMany $SdSectionSets
+ * @property \App\Model\Table\SdCaseDistributionsTable|\Cake\ORM\Association\BelongsTo $SdCaseDistributions
+ * @property \App\Model\Table\SdSectionSetsTable|\Cake\ORM\Association\HasMany $SdSectionSets
  *
  * @method \App\Model\Entity\SdFieldValue get($primaryKey, $options = [])
  * @method \App\Model\Entity\SdFieldValue newEntity($data = null, array $options = [])
@@ -69,12 +69,12 @@ class SdFieldValuesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('set_number')
+            ->scalar('set_number')
+            ->maxLength('set_number', 10)
             ->requirePresence('set_number', 'create')
             ->notEmpty('set_number');
 
         $validator
-            ->scalar('field_value')
             ->allowEmpty('field_value');
 
         $validator

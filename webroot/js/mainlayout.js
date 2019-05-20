@@ -195,7 +195,7 @@ function onQueryClicked(preferrenceId = null){
                 text+="</td>";
                 text += "<td class=\"align-middle\">";
                 if(caseDetail.sd_user_id == userId)
-                    if(caseDetail.sd_workflow_activity_id=='1')text += "<a href=\"/sd-cases/triage/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">Continue Triage</div></a>";
+                    if(caseDetail.wa.activity_name=="Triage")text += "<a href=\"/sd-cases/triage/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">Continue Triage</div></a>";
                     else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">Enter</div></a>";
                 else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-info m-1\">Check Detail</div></a>";
                 if((caseDetail.sd_workflow_activity_id=='9999')&&(previous_case!=caseDetail.caseNo))

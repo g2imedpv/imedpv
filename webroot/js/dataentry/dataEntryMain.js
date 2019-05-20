@@ -179,7 +179,6 @@ function renderSummaries(section_id, pageNo){
         }
         //get parent setNo
         $.each(setArray,function(detailSectionId, setNo){
-            console.log(detailSectionId);
             if($("#summary-"+detailSectionId).length){
                 if($("#summary-"+detailSectionId).find(".selected-row").length)
                     setArray[detailSectionId] = parseInt($("#summary-"+detailSectionId).find(".selected-row").attr('id').split("-")[3]);
@@ -190,7 +189,6 @@ function renderSummaries(section_id, pageNo){
     }
     if(section_id in setArray)
         setArray[section_id] = parseInt(pageNo);
-    console.log(setArray);
     $("[id^=sectionSummary-][id$=wrapper]").each(function(){
         let text ="";
         let tbodyText ="";
@@ -206,9 +204,7 @@ function renderSummaries(section_id, pageNo){
                     targetSetArray = targetSetArray+setArray[setSectionId]+",";
                 else targetSetArray = targetSetArray+"1,";
             });
-            console.log(targetSetArray);
             targetSetArray = targetSetArray.substr(0,targetSetArray.length-1);
-            let setString = $('#setArrayValue-'+sectionId).val();
             let sectionKey = $(this).attr('id').split('-')[3];
             let noValue = section[sectionKey].sd_section_summary.sdFields.length;
             text = "<table class=\"table table-bordered table-hover layer"+section[sectionKey].section_level+"\" id=\"sectionSummary-"+sectionId+"-sectionKey-"+sectionKey+"\">";
@@ -226,17 +222,16 @@ function renderSummaries(section_id, pageNo){
                 $.each(section[sectionKey].sd_section_summary.sdFields,function(k, field_detail){
                     let noMatchFlag = 0;  
                     $.each(field_detail.sd_field_values,function(k, field_value_detail){
-                        if(field_value_detail.sd_section_sets.length == 0) return true;
-                        let fieldSetArray = field_value_detail.sd_section_sets[0].set_array;
+                        let fieldSetArray = field_value_detail.set_number;
                         let match =true;
                         $.each(fieldSetArray.split(','), function(k, setNo){
-                            if(setNo != targetSetArray.split(',')[k] && setNo!='*' && k > 0)
+                            if(setNo != targetSetArray.split(',')[k] && field_detail.id!='149' && k > 0)
                             {
                                 match = false;
                                 return false;
                             }
                         });
-                        if(match&&fieldSetArray.split(',')[0] == row){
+                        if(match && fieldSetArray.split(',')[0] == row){
                             rowtext = rowtext+"<td id=\"section-"+sectionId+"-row-"+row+"-td-"+field_detail.id+"\">";     
                             if(field_detail.sd_element_type_id != 1 && field_detail.sd_element_type_id != 3 && field_detail.sd_element_type_id != 4)
                                 rowtext = rowtext + field_value_detail.field_value;
@@ -259,7 +254,7 @@ function renderSummaries(section_id, pageNo){
                 if(noValue != section[sectionKey].sd_section_summary.sdFields.length) {
                     tbodyText = tbodyText+"<tr ";
                     if(row==1) tbodyText = tbodyText+"class=\"selected-row\" ";
-                    tbodyText = tbodyText+"id=\"section-"+sectionId+"-row-"+row+"\" onclick=\"setPageChange("+sectionId+","+row+")\" ><td>"+row+"</td>"+rowtext+"<td><button class='btn btn-outline-danger' onclick='deleteSection("+sectionId+","+row+")' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
+                    tbodyText = tbodyText+"id=\"section-"+sectionId+"-row-"+row+"\" onclick=\"setPageChange("+sectionId+","+row+")\" ><td>"+row+"</td>"+rowtext+"<td><button class='btn btn-outline-danger' onclick='deleteSection("+sectionId+","+row+","+sectionKey+")' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
                 }
                 row  = row +1;
             }while(noValue !=section[sectionKey].sd_section_summary.sdFields.length);
@@ -281,9 +276,7 @@ function renderSummaries(section_id, pageNo){
             // console.log(sd_section_structure_detail);
             $.each(sd_section_structure_detail.sd_field.sd_field_values,function(key_detail_field_values, value_detail_field_values){
                 // console.log(value_detail_field_values);
-                set_array = value_detail_field_values.sd_section_sets;
-                if(typeof value_detail_field_values.sd_section_sets =="undefined"||typeof value_detail_field_values.sd_section_sets.set_array =="undefined") return true;
-                set_array = value_detail_field_values.sd_section_sets.set_array;
+                set_array = value_detail_field_values.set_number;
                 if(set_array.split(',')[0]>=max_set_No)
                 max_set_No = set_array.split(',')[0];
             });
@@ -314,10 +307,10 @@ function renderSummaries(section_id, pageNo){
         $(this).html(text);
         $("#section-"+sdSectionId+"-page_number-"+setArray[sdSectionId]).addClass('selected-page');
         $("#addbtn-"+sdSectionId).attr("onclick","setPageChange("+sdSectionId+","+parseInt(parseInt(max_set_No)+1)+",1)");
-        $("#deletebtn-"+sdSectionId).attr("onclick","deleteSection("+sdSectionId+","+setArray[sdSectionId]+")");
+        $("#deletebtn-"+sdSectionId).attr("onclick","deleteSection("+sdSectionId+","+setArray[sdSectionId]+","+sectionKey+")");
     });
 }
-function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
+function setPageChange(section_id, pageNo, addFlag=null) {
     if(pageNo == 0) return false;
     $("[id^=save-btn"+section_id+"]").hide();
     $("[id^=save-btn"+section_id+"]").attr("onclick","saveSection("+section_id+","+pageNo+")")
@@ -387,7 +380,7 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
     //for each field
     $("[id^=input-").each(function(){
         let orignalId = $(this).attr('id').split('-')[1];
-        if(pflag && orignalId != section_id) return true;
+        
         let sectionId = $(this).attr('id').split('-')[1];
         let sectionKey = $(this).attr('id').split('-')[3];
         let inputSetflag  = true;
@@ -493,13 +486,14 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                 let thisElement = $(this);
                 let idholder = thisElement.attr('id').split('-');//section-65-sd_section_structures-0-sd_field_value_details-0-id
                 let maxindex=0;
+                console.log(section[sectionKey].sd_section_structures[sectionStructureK]);
                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-                        if(((typeof value.sd_section_sets !="undefined")&&(typeof value.sd_section_sets.set_array !="undefined"))||(value.sd_section_sets==""&&!setFlag)){
+                        if(setFlag){
                             let setMatch = true;
                             if(setFlag&&inputSetflag){
                                 $.each(fieldTargetArray,function(k,v){
-                                    if(v == parseInt(value.sd_section_sets.set_array.split(',')[k])||(value.sd_section_sets.set_array.split(',')[k]=='*'&&k!=0))
+                                    if(v == parseInt(value.set_number.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
                                         return true;
                                     setMatch = false;
                                     return false;
@@ -530,11 +524,11 @@ function setPageChange(section_id, pageNo, addFlag=null, pFlag) {
                 let thisElement = $(this);
                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-                        if(((typeof value.sd_section_sets !="undefined")&&(typeof value.sd_section_sets.set_array !="undefined"))||(value.sd_section_sets==""&&!setFlag)){
+                        if(setFlag){
                             let setMatch = true;
                             if(setFlag&&inputSetflag){
                                 $.each(fieldTargetArray,function(k,v){
-                                        if(v == parseInt(value.sd_section_sets.set_array.split(',')[k])||(value.sd_section_sets.set_array.split(',')[k]=='*'&&k!=0))
+                                        if(v == parseInt(value.set_number.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
                                             return true;
                                         setMatch = false;
                                         return false;
@@ -619,16 +613,20 @@ function searchWhoDra(){
         }
     });
 }
-function deleteSection(sectionId, setNo=null, pcontrol=false){
-    let sectionK = $("table[id^=sectionSummary-"+sectionId+"-sectionKey]").attr('id').split('-')[3];
-    let request = {'child_section':section[sectionK].child_section};
+function deleteSection(sectionId, setNo,sectionKey){
+    let request = {};
+    console.log()
+    if('child_section' in section[sectionKey])
+        request['child_section'] =  section[sectionKey].child_section;
+    let i = 0;
+    console.log(request);
     $.ajax({
         headers: {
             'X-CSRF-Token': csrfToken
         },
+        data:request,
         type:'POST',
         url:'/sd-sections/deleteSection/'+tabId+'/'+caseId+'/'+sectionId+'/'+setNo+'/'+distribution_id,
-        data:request,
         success:function(response){
             console.log(response);
             swal({
@@ -636,7 +634,7 @@ function deleteSection(sectionId, setNo=null, pcontrol=false){
                 title: "This set has been deleted",
               });
             section = $.parseJSON(response);
-            renderSummaries(sectionId,1);
+            setPageChange(sectionId,1);
             $("[id=addbtnalert-"+sectionId+"]").hide();
             return false;
         },

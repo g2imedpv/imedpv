@@ -9,7 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $sd_case_id
  * @property int $sd_field_id
- * @property int $set_number
+ * @property string $set_number
  * @property string $field_value
  * @property \Cake\I18n\FrozenTime $created_time
  * @property bool $status
@@ -17,6 +17,8 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\SdCase $sd_case
  * @property \App\Model\Entity\SdField $sd_field
+ * @property \App\Model\Entity\SdCaseDistribution $sd_case_distribution
+ * @property \App\Model\Entity\SdSectionSet[] $sd_section_sets
  */
 class SdFieldValue extends Entity
 {
@@ -39,6 +41,8 @@ class SdFieldValue extends Entity
         'status' => true,
         'sd_case_distribution_id' => true,
         'sd_case' => true,
-        'sd_field' => true
+        'sd_field' => true,
+        'sd_case_distribution' => true,
+        'sd_section_sets' => true
     ];
 }

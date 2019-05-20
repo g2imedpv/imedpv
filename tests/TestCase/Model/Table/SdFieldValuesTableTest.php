@@ -26,7 +26,9 @@ class SdFieldValuesTableTest extends TestCase
     public $fixtures = [
         'app.sd_field_values',
         'app.sd_cases',
-        'app.sd_fields'
+        'app.sd_fields',
+        'app.sd_case_distributions',
+        'app.sd_section_sets'
     ];
 
     /**

@@ -934,32 +934,6 @@ class SdCasesController extends AppController
                     echo "problem in saving".$field_id."sdfields";
                     return null;
                 }
-                if(array_key_exists('set_array',$detail_data)){
-                    $sdSectionSetEntity = $sdSectionSets->newEntity();
-                    $dataSet = [
-                        'sd_section_id' => $detail_data['section_id'],
-                        'sd_field_value_id'=>$savedFieldValue['id'],
-                        'set_array'=>$detail_data['set_array']
-                    ];
-                    $savedSectionSetEntity = $sdSectionSets->patchEntity($sdSectionSetEntity, $dataSet);
-                    if(!$sdSectionSets->save($savedSectionSetEntity)) {
-                        echo "problem in saving".$field_id." set";
-                        return null;
-                    }
-                }
-                if($field_id == 149){
-                    $sdSectionSetEntity = $sdSectionSets->newEntity();
-                    $dataSet = [
-                        'sd_section_id' => 44,
-                        'sd_field_value_id'=>$savedFieldValue['id'],
-                        'set_array'=>'1,*'
-                    ];
-                    $savedSectionSetEntity = $sdSectionSets->patchEntity($sdSectionSetEntity, $dataSet);
-                    if(!$sdSectionSets->save($savedSectionSetEntity)) {
-                        echo "problem in saving".$field_id." set";
-                        return null;
-                    }
-                }
             }
 
             if (!$this->is_empty($requestData['document']))
