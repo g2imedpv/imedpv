@@ -222,7 +222,7 @@ function renderSummaries(section_id, pageNo){
                 $.each(section[sectionKey].sd_section_summary.sdFields,function(k, field_detail){
                     let noMatchFlag = 0;  
                     $.each(field_detail.sd_field_values,function(k, field_value_detail){
-                        let fieldSetArray = field_value_detail.set_number;
+                        let fieldSetArray = field_value_detail.set_number+'';
                         let match =true;
                         $.each(fieldSetArray.split(','), function(k, setNo){
                             if(setNo != targetSetArray.split(',')[k] && field_detail.id!='149' && k > 0)
@@ -492,7 +492,8 @@ function setPageChange(section_id, pageNo, addFlag=null) {
                         let setMatch = true;
                         if(setFlag&&inputSetflag){
                             $.each(fieldTargetArray,function(k,v){
-                                if(v == parseInt(value.set_number.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
+                                let set_NO = value.set_number
+                                if(v == parseInt(set_NO.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
                                     return true;
                                 setMatch = false;
                                 return false;
@@ -525,7 +526,8 @@ function setPageChange(section_id, pageNo, addFlag=null) {
                         let setMatch = true;
                         if(setFlag&&inputSetflag){
                             $.each(fieldTargetArray,function(k,v){
-                                    if(v == parseInt(value.set_number.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
+                                let set_NO = value.set_number
+                                    if(v == parseInt(set_NO.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
                                         return true;
                                     setMatch = false;
                                     return false;
