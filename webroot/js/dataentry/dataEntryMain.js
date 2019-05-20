@@ -486,13 +486,13 @@ function setPageChange(section_id, pageNo, addFlag=null) {
                 let thisElement = $(this);
                 let idholder = thisElement.attr('id').split('-');//section-65-sd_section_structures-0-sd_field_value_details-0-id
                 let maxindex=0;
-                console.log(section[sectionKey].sd_section_structures[sectionStructureK]);
+                
                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
                         if(setFlag){
                             let setMatch = true;
                             if(setFlag&&inputSetflag){
-                                $.each(fieldTargetArray,function(k,v){
+                                $.each(fieldTargetArray,function(k,v){console.log(value.set_number);
                                     if(v == parseInt(value.set_number.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
                                         return true;
                                     setMatch = false;
