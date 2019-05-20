@@ -51,12 +51,12 @@ $(document).ready(function(){
             $(target).val("");
         }
     }
-    // $("[id^=unspecified-]").change(function(){
-    //     let sectionId = $(this).attr('id').split('-')[2];
-    //     let fieldId = $(this).attr('id').split('-')[4];
-    //     $("#section-"+sectionId+"-unspecifieddate-"+fieldId).val($("#unspecified-day_section-"+sectionId+"-unspecifieddate-"+fieldId).val()+$("#unspecified-month_section-"+sectionId+"-unspecifieddate-"+fieldId).val()+$("#unspecified-year_section-"+sectionId+"-unspecifieddate-"+fieldId).val());
-    // });
-    // $("[id*=unspecifieddate][id^=section]").val()
+    $("[id^=unspecified-]").change(function(){
+        let sectionId = $(this).attr('id').split('-')[2];
+        let fieldId = $(this).attr('id').split('-')[4];
+        $("#section-"+sectionId+"-unspecifieddate-"+fieldId).val($("#unspecified-day_section-"+sectionId+"-unspecifieddate-"+fieldId).val()+$("#unspecified-month_section-"+sectionId+"-unspecifieddate-"+fieldId).val()+$("#unspecified-year_section-"+sectionId+"-unspecifieddate-"+fieldId).val());
+    });
+    $("[id*=unspecifieddate][id^=section]").val()
 
     // General Tab-> Admin section
         // For Additional documents (A.1.8.1) select and add document
