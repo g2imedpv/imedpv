@@ -254,7 +254,7 @@ function renderSummaries(section_id, pageNo){
                 if(noValue != section[sectionKey].sd_section_summary.sdFields.length) {
                     tbodyText = tbodyText+"<tr ";
                     if(row==1) tbodyText = tbodyText+"class=\"selected-row\" ";
-                    tbodyText = tbodyText+"id=\"section-"+sectionId+"-row-"+row+"\" onclick=\"setPageChange("+sectionId+","+row+")\" ><td>"+row+"</td>"+rowtext+"<td><button class='btn btn-outline-danger' onclick='deleteSection("+sectionId+","+row+","+sectionKey+")' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
+                    tbodyText = tbodyText+"id=\"section-"+sectionId+"-row-"+row+"\" onclick=\"setPageChange("+sectionId+","+row+")\" ><td>"+row+"</td>"+rowtext+"<td><button class='btn btn-outline-danger' type=\"button\" onclick='deleteSection("+sectionId+","+row+","+sectionKey+")' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
                 }
                 row  = row +1;
             }while(noValue !=section[sectionKey].sd_section_summary.sdFields.length);
@@ -396,6 +396,7 @@ function setPageChange(section_id, pageNo, addFlag=null) {
             let fieldDiv = $(this);
             let newSetSectionString ="";
             targetSetArray = {};
+            console.log(setFlag);
             if(setFlag&&inputSetflag)
             {
                 if($(this).find("[name=section\\["+sectionId+"\\]]").length){
@@ -486,28 +487,24 @@ function setPageChange(section_id, pageNo, addFlag=null) {
                 let thisElement = $(this);
                 let idholder = thisElement.attr('id').split('-');//section-65-sd_section_structures-0-sd_field_value_details-0-id
                 let maxindex=0;
-                
                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-                        if(setFlag){
-                            let setMatch = true;
-                            if(setFlag&&inputSetflag){
-                                $.each(fieldTargetArray,function(k,v){
-                                    let setNo = value.set_number+'';
-                                    if(v == parseInt(setNo.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
-                                        return true;
-                                    setMatch = false;
-                                    return false;
-                                });
-                            }
-                            if ((typeof value != "undefined")&&(setMatch)){
-                                thisElement.val(value.id);
-                                thisElement.attr('id',idholder[0]+'-'+idholder[1]+'-'+idholder[2]+'-'+idholder[3]+'-'+idholder[4]+'-'+index+'-'+idholder[6]);
-                                valueFlag = true;
+                        let setMatch = true;
+                        if(setFlag&&inputSetflag){
+                            $.each(fieldTargetArray,function(k,v){
+                                if(v == parseInt(value.set_number.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
+                                    return true;
+                                setMatch = false;
                                 return false;
-                            }
-                            maxindex = maxindex+1;
+                            });
                         }
+                        if ((typeof value != "undefined")&&(setMatch)){
+                            thisElement.val(value.id);
+                            thisElement.attr('id',idholder[0]+'-'+idholder[1]+'-'+idholder[2]+'-'+idholder[3]+'-'+idholder[4]+'-'+index+'-'+idholder[6]);
+                            valueFlag = true;
+                            return false;
+                        }
+                        maxindex = maxindex+1;
                     });
                 }
                 if(valueFlag == false) {
@@ -525,43 +522,39 @@ function setPageChange(section_id, pageNo, addFlag=null) {
                 let thisElement = $(this);
                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){//TODO
                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
-                        if(setFlag){
-                            let setMatch = true;
-                            if(setFlag&&inputSetflag){
-                                $.each(fieldTargetArray,function(k,v){
-                                        let setNo = value.set_number+'';
-                                        if(v == parseInt(setNo.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
-                                            return true;
-                                        setMatch = false;
-                                        return false;
-                                });
-                            }
-                            if ((typeof value != "undefined")&&(setMatch)){
-                                if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-                                    thisElement.val(value.field_value).trigger('change');
-                                    valueFlag = true;
-                                }else{
-                                    if(thisElement.attr('id').split('-')[2]=='unspecifieddate'){
-                                        let fieldId = thisElement.attr('id').split('-')[3];
-                                        let sectionId = thisElement.attr('id').split('-')[1];
-                                        $("#unspecified-day_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(0,2)).trigger('change');
-                                        $("#unspecified-month_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(2,4)).trigger('change');
-                                        $("#unspecified-year_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(4,8)).trigger('change');
-                                    }else if(thisElement.attr('id').split('-')[2]=='radio'){
-                                        if(thisElement.val()==value.field_value) {
-                                            thisElement.prop('checked',true);
-                                            valueFlag = true;
-                                        }else thisElement.prop('checked',false);
-                                    }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
+                        let setMatch = true;
+                        if(setFlag&&inputSetflag){
+                            $.each(fieldTargetArray,function(k,v){
+                                    if(v == parseInt(value.set_number.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
+                                        return true;
+                                    setMatch = false;
+                                    return false;
+                            });
+                        }
+                        if ((typeof value != "undefined")&&(setMatch)){
+                            if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
+                                thisElement.val(value.field_value).trigger('change');
+                                valueFlag = true;
+                            }else{
+                                if(thisElement.attr('id').split('-')[2]=='unspecifieddate'){
+                                    let fieldId = thisElement.attr('id').split('-')[3];
+                                    let sectionId = thisElement.attr('id').split('-')[1];
+                                    $("#unspecified-day_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(0,2)).trigger('change');
+                                    $("#unspecified-month_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(2,4)).trigger('change');
+                                    $("#unspecified-year_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(4,8)).trigger('change');
+                                }else if(thisElement.attr('id').split('-')[2]=='radio'){
+                                    if(thisElement.val()==value.field_value) {
+                                        thisElement.prop('checked',true);
                                         valueFlag = true;
-                                        if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
-                                            thisElement.prop('checked',true);
-                                        }else thisElement.prop('checked',false);
-                                        if((typeof thisId[5] != "undefined")&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
-                                    }
+                                    }else thisElement.prop('checked',false);
+                                }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
+                                    valueFlag = true;
+                                    if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
+                                        thisElement.prop('checked',true);
+                                    }else thisElement.prop('checked',false);
+                                    if((typeof thisId[5] != "undefined")&&(thisId[5]=="final")) {thisElement.val(value.field_value); }
                                 }
                             }
-                            
                         }
                     });
                 }
@@ -685,8 +678,10 @@ function saveSection(sectionId,setNo){
     });
     request['sd_field_values'] = sectionRequest;
     let sectionArray={};
-    sectionArray[sectionId] = $("[name=section\\["+sectionId+"\\]]").val();
-    request['sectionArray'] =sectionArray;
+    if($("[name=section\\["+sectionId+"\\]]").length){
+        sectionArray[sectionId] = $("[name=section\\["+sectionId+"\\]]").val();
+        request['sectionArray'] =sectionArray;
+    }
     if(error) return false;
     console.log(request);
     $.ajax({
