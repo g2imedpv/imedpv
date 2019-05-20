@@ -122,7 +122,6 @@ class SdSectionsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $error =[];
             $requstData = $this->request->getData()['sd_field_values'];
-            $sdSectionSetsTable = TableRegistry::get('SdSectionSets');
             $SdSectionStructuresTable = TableRegistry::get('SdSectionStructures');
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
             if(array_key_exists('sectionArray',$this->request->getData()))
@@ -130,6 +129,15 @@ class SdSectionsController extends AppController
             else $requestSectionArray =[];
             foreach($requstData as $sectionValueK => $sectionValue) {
                 $section_id = $sectionValueK;
+                $set_number = 1;
+                if(!empty($requestSectionArray)){
+                    $set_number = "";
+                    $sectionArray = explode(',',$requestSectionArray[$section_id]);
+                    for($i = 0;$i<sizeof($sectionArray);$i++){
+                        $set_number = $set_number.explode(':',$sectionArray[$i])[1].","; 
+                    }
+                    $set_number = substr($set_number, 0, -1);
+                }
                 foreach($sectionValue as $sectionFieldK =>$sectionFieldValue){
                     if($sectionFieldValue['id']!=''){
                         $sdFieldValueEntity = $sdFieldValueTable->get($sectionFieldValue['id']);/**add last-updated time */
@@ -140,11 +148,13 @@ class SdSectionsController extends AppController
                         }
                     }elseif(!empty($sectionFieldValue['field_value'])){
                         $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                        if(key_exists('set_array',$sectionFieldValue))
+                            $set_array = $sectionFieldValue['set_array'];
                         unset($sectionFieldValue['set_array']);
                         $dataSet = [
                             'sd_case_id' => $caseId,
                             'sd_field_id' => $sectionFieldValue['sd_field_id'],
-                            'set_number' => "1",//TODO SET NUMBER REMOVE
+                            'set_number' => $set_number,//TODO SET NUMBER REMOVE
                             'created_time' =>date("Y-m-d H:i:s"),
                             'field_value' =>$sectionFieldValue['field_value'],
                             'status' =>'1',
@@ -156,43 +166,7 @@ class SdSectionsController extends AppController
                             echo "error in adding values!" ;
                             debug($savedFieldValue);
                         } 
-                        $sdSectionSetsEntity = $sdSectionSetsTable->newEntity();
-                        if(empty($requestSectionArray)) continue;
-                        $sectionArray = explode(',',$requestSectionArray[$section_id]);
-                        for($i = 0;$i<sizeof($sectionArray);$i++){
-                            $sdSectionSetsEntity['set_array'] = $sdSectionSetsEntity['set_array'].explode(':',$sectionArray[$i])[1].","; 
-                        }
-                        $sdSectionSetsEntity['set_array'] = substr($sdSectionSetsEntity['set_array'], 0, -1);
-                        $sdSectionSetsEntity['sd_section_id'] = $section_id;
-                        $setDataSet = [
-                            'set_array' =>$sdSectionSetsEntity['set_array'],
-                            'sd_field_value_id'=>$savedFieldValue['id'],
-                        ];
-                        $sdSectionSetsEntity['sd_field_value_id'] = $savedFieldValue['id'];
-                        if(!$sdSectionSetsTable->save($sdSectionSetsEntity)){
-                            echo "error in adding sets!" ; 
-                            debug($sdSectionSetsEntity);
-                        }                
-                        $sections = $SdSectionStructuresTable->find()->select(['sd_section_id'])
-                            ->join(['sections' =>[
-                                'table' =>'sd_sections',
-                                'type'=>'INNER',
-                                'conditions'=>['sections.id = SdSectionStructures.sd_section_id'],
-                                ]])            
-                            ->where(['sd_field_id'=>$sectionFieldValue['sd_field_id'],'sd_section_id !='=>$section_id,'sections.status'=>true]);
-                        foreach($sections as $sectionDetail){
-                            $sdSectionSetsEntityNew = $sdSectionSetsTable->newEntity();
-                            $sdSectionSetsEntityNew = $sdSectionSetsTable->patchEntity($sdSectionSetsEntityNew, $setDataSet);
-                            $sdSectionSetsEntityNew['sd_section_id'] = $sectionDetail['sd_section_id'];
-                            if($sectionFieldValue['sd_field_id'] == '149'){
-                                $sdSectionSetsEntityNew['set_array'] = $sdSectionSetsEntityNew['set_array'].',*';
-                            }
-                            $sdSectionSetsEntityNew['sd_field_value_id'] = $savedFieldValue['id'];                           
-                            if(!$sdSectionSetsTable->save($sdSectionSetsEntityNew)){
-                                echo "error in adding NEW sets!" ;// ADD INTO ANOTHER SET
-                                debug($sdSectionSetsEntityNew);
-                            } 
-                        }
+                        // $sdSectionSetsEntity = $sdSectionSetsTable->newEntity(); 
 
                     }
                 }
@@ -205,7 +179,7 @@ class SdSectionsController extends AppController
                             ->contain(['SdSectionSummaries','SdSectionStructures'=>function($q)use($caseId,$distribution_condition){
                                 return $q->order(['SdSectionStructures.row_no'=>'ASC','SdSectionStructures.field_start_at'=>'ASC'])
                                     ->contain(['SdFields'=>['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
-                                        return $q->contain(['SdSectionSets'])->where(['SdFieldValues.sd_case_id'=>$caseId, $distribution_condition,
+                                        return $q->where(['SdFieldValues.sd_case_id'=>$caseId, $distribution_condition,
                                                             'SdFieldValues.status'=>true]);
                                     }, 'SdElementTypes'=> function($q){
                                     return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
@@ -218,20 +192,6 @@ class SdSectionsController extends AppController
                 if(empty($child_list[$sdSection->parent_section])) $child_list[$sdSection->parent_section]="";
                 $child_list[$sdSection->parent_section] = $child_list[$sdSection->parent_section].$sdSection->id.",";
             }
-            //select correct set
-            foreach($sdSection->sd_section_structures as $structures){
-                foreach($structures->sd_field->sd_field_values as $field_values){
-                    $setMatch = 0;
-                    if(empty($field_values->sd_section_sets)) continue;
-                    foreach($field_values->sd_section_sets as $section_set){
-                        if($section_set->sd_section_id == $sdSection->id) {
-                            $field_values->sd_section_sets = $section_set;
-                            $setMatch = 1;
-                            break;
-                        }
-                    }if(!$setMatch) $field_values->sd_section_sets = "";
-                }
-            }
         }
         foreach($sdSections as $sdSection){
             if(!empty($child_list[$sdSection->id]))  $sdSection->child_section = substr($child_list[$sdSection->id], 0, -1);
@@ -243,20 +203,11 @@ class SdSectionsController extends AppController
             foreach($fields as $sdField){
                 $foundField = $sdFieldTable->find()->where(['SdFields.id'=>$sdField])
                     ->contain(['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
-                                return $q->contain(['SdSectionSets'])->where(['SdFieldValues.sd_case_id'=>$caseId, $distribution_condition,
+                                return $q->where(['SdFieldValues.sd_case_id'=>$caseId, $distribution_condition,
                                         'SdFieldValues.status'=>true]);
                 }, 'SdElementTypes'=> function($q){
                 return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
                     }])->first(); 
-                foreach($foundField->sd_field_values as $fvalue){
-                    foreach($fvalue->sd_section_sets as $setDetail){
-                        
-                        if($setDetail->sd_section_id == $sdSection->id||in_array($setDetail->sd_section_id, explode(',',$child_list[$sdSection->id])))
-                        {
-                            $fvalue->sd_section_sets = [0=>$setDetail];
-                        }
-                    }
-                }
                 array_push($sdFields,$foundField);
             }
             $sdSection->sd_section_summary['sdFields'] = $sdFields;
@@ -267,45 +218,47 @@ class SdSectionsController extends AppController
     /*
     delete Single section
     */
-    public function deleteSection($tabid, $caseId, $sectionId, $setId, $distribution_id = "null"){
+    public function deleteSection($tabid, $caseId, $sectionId, $setNo, $distribution_id = "null"){
         $userinfo = $this->request->getSession()->read('Auth.User');
+        $sections = explode(',',$this->request->getData()['child_section']);
+        array_push($sections, $sectionId);
         if($distribution_id == "null") $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
         else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";     
         if($this->request->is('POST')){
             $this->autoRender = false;
             $sdFieldValuesTable = TableRegistry::get('SdFieldValues');
             $sdSectionSetsTable = TableRegistry::get('SdSectionSets');
-            $sdSectionTable = TableRegistry::get('SdSections');
-            $requstData = $this->request->getData();
-            if(sizeof($requstData)==0) $requstData = [$sectionId];
-            foreach($requstData as $child_sections){
-                $sectionSets = $sdSectionSetsTable->find()->join([
-                    'SdFieldValues' =>[
-                        'table' =>'sd_field_values',
+            foreach($sections as $changeSectionId){
+                $field_values = $sdFieldValuesTable->find()->join([
+                    'structure'=>[
+                        'table'=>'sd_section_structures',
                         'type'=>'INNER',
-                        'conditions'=>['SdFieldValues.id = SdSectionSets.sd_field_value_id']
-                    ]
-                ])->where(['sd_section_id'=>$child_sections,'SdFieldValues.sd_case_id'=>$caseId, $distribution_condition]);
-                // debug($sectionSets->toArray());
-                foreach($sectionSets as $sectionSetDetail){
-                    if(explode(',',$sectionSetDetail['set_array'])[0] < $setId) continue;
-                    else if(explode(',',$sectionSetDetail['set_array'])[0] > $setId){
-                        $sectionSetDetail['set_array'] = (int)(explode(',',$sectionSetDetail['set_array'])[0]-1);
-                        for($i = 1; $i<sizeof(explode(',',$sectionSetDetail['set_array']));$i++){
-                            $sectionSetDetail['set_array'] = $sectionSetDetail['set_array'] + explode(',',$sectionSetDetail['set_array'])[$i];
+                        'conditions'=>['structure.sd_field_id = SdFieldValues.sd_field_id']
+                    ],
+                ])->select(['created_time','field_value','sd_field_id','set_number','sd_case_id','id','status','structure.sd_section_id'])->where(['SdFieldValues.sd_case_id'=>$caseId,$distribution_condition,'structure.sd_section_id '=>$changeSectionId, 'status'=>1]);
+                // debug($field_values->toArray());
+                foreach($field_values as $field_value){
+                    if($sectionId =='44'&&$field_value['sd_field_id'] == '149') continue;
+                    if(explode(',',$field_value['set_number'])[0] < $setNo) continue;
+                    else
+                    { 
+                        $field_valueEntity = $sdFieldValuesTable->newEntity();
+                        if(explode(',',$field_value['set_number'])[0] == $setNo){
+                            $field_value['status'] = 0;
+                        }else{
+                            $newNum = (string)(intval(explode(',',$field_value['set_number'])[0]) - 1);
+                            foreach(explode(',',$field_value['set_number']) as $key => $set_no){
+                                if($key == 0) {$field_value['set_number'] = $newNum; continue;}
+                                $field_value['set_number'] = $field_value['set_number'].",".$set_no;
+                            }
                         }
-                        if(!$sdSectionSetsTable->save($sectionSetDetail)){
-                            echo "error saving following set!" ; 
-                            debug($setEntity);
-                        } 
-                    }else{
-                        $fieldValues = $sdFieldValuesTable->get($sectionSetDetail['sd_field_value_id']);
-                        $fieldValues['status'] = 0;
-                        if(!$sdFieldValuesTable->save($fieldValues)){
-                            echo "error deleting field Values!" ; 
-                            debug($fieldValues);
-                        }      
-                    } 
+                        $field_valueEntity = $sdFieldValuesTable->patchEntity($field_valueEntity,$field_value->toArray());
+                        debug($field_valueEntity);
+                        // if(!$sdFieldValuesTable->save($field_valueEntity)) {
+                        //     echo "error in updating!" ;
+                        //     debug($field_valueEntity);
+                        // }
+                    }
                 }
             }
             $sdCasesTable = TableRegistry::get('SdCases');
