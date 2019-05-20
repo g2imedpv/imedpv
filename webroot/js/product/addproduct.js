@@ -951,11 +951,11 @@ function sectionPermission(activity_id, readonly, workflowTypeFlag){
 
             },
         });
-        $("[id^=write]").each(function(){
-            $(this).prop('disabled',true);}
-        );
-        $("[id^=read]").each(function(){
-            $(this).prop('disabled',true);});
+        // $("[id^=write]").each(function(){
+        //     $(this).prop('disabled',true);}
+        // );
+        // $("[id^=read]").each(function(){
+        //     $(this).prop('disabled',true);});
     }else{
         if(readonly==2){
             if(!($('#permissionFooter').find('button').length > 0)){

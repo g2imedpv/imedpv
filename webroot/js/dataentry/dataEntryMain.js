@@ -634,7 +634,7 @@ function deleteSection(sectionId, setNo,sectionKey){
                 title: "This set has been deleted",
               });
             section = $.parseJSON(response);
-            renderSummaries(sectionId,1);
+            setPageChange(sectionId,1);
             $("[id=addbtnalert-"+sectionId+"]").hide();
             return false;
         },

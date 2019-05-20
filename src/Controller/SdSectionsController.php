@@ -242,22 +242,22 @@ class SdSectionsController extends AppController
                     if(explode(',',$field_value['set_number'])[0] < $setNo) continue;
                     else
                     { 
-                        $field_valueEntity = $sdFieldValuesTable->newEntity();
+                        $field_valueEntity = $sdFieldValuesTable->get($field_value->toArray()['id']);
                         if(explode(',',$field_value['set_number'])[0] == $setNo){
-                            $field_value['status'] = 0;
+                            $field_valueEntity['status'] = 0;
                         }else{
                             $newNum = (string)(intval(explode(',',$field_value['set_number'])[0]) - 1);
                             foreach(explode(',',$field_value['set_number']) as $key => $set_no){
                                 if($key == 0) {$field_value['set_number'] = $newNum; continue;}
                                 $field_value['set_number'] = $field_value['set_number'].",".$set_no;
                             }
+                            $field_valueEntity['set_number'] = $field_value['set_number'];
                         }
-                        $field_valueEntity = $sdFieldValuesTable->patchEntity($field_valueEntity,$field_value->toArray());
-                        debug($field_valueEntity);
-                        // if(!$sdFieldValuesTable->save($field_valueEntity)) {
-                        //     echo "error in updating!" ;
-                        //     debug($field_valueEntity);
-                        // }
+                        // debug($field_valueEntity);
+                        if(!$sdFieldValuesTable->save($field_valueEntity)) {
+                            echo "error in updating!" ;
+                            debug($field_valueEntity);
+                        }
                     }
                 }
             }
