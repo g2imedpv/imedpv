@@ -492,8 +492,9 @@ function setPageChange(section_id, pageNo, addFlag=null) {
                         if(setFlag){
                             let setMatch = true;
                             if(setFlag&&inputSetflag){
-                                $.each(fieldTargetArray,function(k,v){console.log(value.set_number);
-                                    if(v == parseInt(value.set_number.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
+                                $.each(fieldTargetArray,function(k,v){
+                                    let setNo = value.set_number+'';
+                                    if(v == parseInt(setNo.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
                                         return true;
                                     setMatch = false;
                                     return false;
@@ -528,7 +529,8 @@ function setPageChange(section_id, pageNo, addFlag=null) {
                             let setMatch = true;
                             if(setFlag&&inputSetflag){
                                 $.each(fieldTargetArray,function(k,v){
-                                        if(v == parseInt(value.set_number.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
+                                        let setNo = value.set_number+'';
+                                        if(v == parseInt(setNo.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
                                             return true;
                                         setMatch = false;
                                         return false;
