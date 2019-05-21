@@ -276,7 +276,7 @@ function renderSummaries(section_id, pageNo){
             // console.log(sd_section_structure_detail);
             $.each(sd_section_structure_detail.sd_field.sd_field_values,function(key_detail_field_values, value_detail_field_values){
                 // console.log(value_detail_field_values);
-                set_array = value_detail_field_values.set_number;
+                set_array = value_detail_field_values.set_number+'';
                 if(set_array.split(',')[0]>=max_set_No)
                 max_set_No = set_array.split(',')[0];
             });
@@ -492,7 +492,7 @@ function setPageChange(section_id, pageNo, addFlag=null) {
                         let setMatch = true;
                         if(setFlag&&inputSetflag){
                             $.each(fieldTargetArray,function(k,v){
-                                let set_NO = value.set_number
+                                let set_NO = value.set_number+'';
                                 if(v == parseInt(set_NO.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
                                     return true;
                                 setMatch = false;
@@ -526,7 +526,7 @@ function setPageChange(section_id, pageNo, addFlag=null) {
                         let setMatch = true;
                         if(setFlag&&inputSetflag){
                             $.each(fieldTargetArray,function(k,v){
-                                let set_NO = value.set_number
+                                let set_NO = value.set_number+'';
                                     if(v == parseInt(set_NO.split(',')[k])||(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.id=='149'&&k!=0))
                                         return true;
                                     setMatch = false;
