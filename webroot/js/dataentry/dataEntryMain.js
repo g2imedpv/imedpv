@@ -309,7 +309,7 @@ function renderSummaries(section_id, pageNo){
         $("#deletebtn-"+sdSectionId).attr("onclick","deleteSection("+sdSectionId+","+setArray[sdSectionId]+","+sectionKey+")");
     });
 }
-function setPageChange(section_id, pageNo, addFlag=null) {
+function setPageChange(section_id, pageNo, addFlag=null, resultfalg = false) {
     if(pageNo == 0) return false;
     $("[id^=save-btn"+section_id+"]").hide();
     $("[id^=save-btn"+section_id+"]").attr("onclick","saveSection("+section_id+","+pageNo+")")
@@ -388,6 +388,7 @@ function setPageChange(section_id, pageNo, addFlag=null) {
                 sectionId = $("[name=section\\["+sectionId+"\\]]").val().split(',')[$("[name=section\\["+sectionId+"\\]]").val().split(',').length - 1].split(':')[0];
             else inputSetflag = false;
         }
+        if(resultfalg&&sectionId!=section_id) return true;
         if(sectionId!=section_id&&!inputSetflag) return true;
             //get this field setArray
             let targetSetArray = {};
@@ -699,7 +700,7 @@ function saveSection(sectionId,setNo){
                 title: "This section has been saved",
               });
             section = $.parseJSON(response);
-            setPageChange(sectionId,setNo);
+            setPageChange(sectionId,setNo, null, true);
             $("[id=addbtnalert-"+sectionId+"]").hide();
             return false;
         },
