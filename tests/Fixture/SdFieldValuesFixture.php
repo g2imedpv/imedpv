@@ -55,7 +55,7 @@ class SdFieldValuesFixture extends TestFixture
                 'sd_field_id' => 1,
                 'set_number' => 'Lorem ip',
                 'field_value' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'created_time' => '2019-05-21 20:00:54',
+                'created_time' => '2019-05-21 21:06:32',
                 'status' => 1,
                 'sd_case_distribution_id' => 1
             ],
