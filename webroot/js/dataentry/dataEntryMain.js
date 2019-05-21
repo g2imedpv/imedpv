@@ -98,7 +98,6 @@ $(document).ready(function(){
     function hightlightField (fieldID) {
         $("div[id*='"+fieldID+"']").css("border", "3px dotted red").delay(2000);
     };
-
 $(document).ready(function(){
  if(readonly) {
     $('input').prop("disabled", true);
