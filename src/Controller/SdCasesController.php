@@ -824,11 +824,21 @@ class SdCasesController extends AppController
             //change Activity Due Date according case type and its due date
             $sdFieldValuesTable =TableRegistry::get('SdFieldValues');
             $sdWorkflowActivity = TableRegistry::get('SdWorkflowActivities')->get($requstData['next-activity-id']);
-            $activityDueDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>12, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
             $casetype = $sdFieldValuesTable->find()->where(['sd_field_id'=>500, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
-            $date = date_create_from_format("dmY", $activityDueDateEntity['field_value']);
-            date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']].' days'));
-            $activityDueDateEntity['field_value'] = $date->format('dmY');
+            if($sdWorkflowActivity['order_no'] == 2){
+                $activityDueDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>12, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
+                debug($activityDueDateEntity);
+                $date = date_create_from_format("dmY", $activityDueDateEntity['field_value']);
+                $activityDueDateEntity['field_value'] = $date->format('dmY');
+                $previsouActivity = TableRegistry::get('SdWorkflowActivities')->find()->where(['sd_workflow_id'=>$sdWorkflowActivity['sd_workflow_id'], 'order_no'=>1])->first();
+                date_add($date, date_interval_create_from_date_string(explode(',',(int)$sdWorkflowActivity['due_day'])[$casetype['field_value']]+(int)$previsouActivity['due_day'][$casetype['field_value']].' days'));
+            }else{
+                $activityDueDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>414, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
+                $date = date_create_from_format("dmY", $activityDueDateEntity['field_value']);
+                $activityDueDateEntity['field_value'] = $date->format('dmY');
+                date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']].' days'));
+            }
+
             if(!$sdFieldValuesTable->save($activityDueDateEntity)){
                 echo "error in saving date entity";
                 debug($activityDueDateEntity);
