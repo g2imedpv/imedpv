@@ -815,20 +815,12 @@ class SdCasesController extends AppController
                                             ->order(['enter_time'=>'DESC'])->first();
             $caseCurrentHistory['comment'] = $requstData['content'];
             $caseCurrentHistory['close_time'] = date("Y-m-d H:i:s");
-            if(!$caseCurrentHistoryTable->save($caseCurrentHistory)){
-                echo "error in saving history";
-                return;
-            };
             //save next user enter history
             $caseNextHistory = TableRegistry::get('SdCaseHistories')->newEntity();
             $caseNextHistory['sd_case_id'] = $case['id'];
             $caseNextHistory['sd_workflow_activity_id'] = $requstData['next-activity-id'];
             $caseNextHistory['sd_user_id'] = $requstData['receiverId'];
             $caseNextHistory['enter_time'] = date("Y-m-d H:i:s");
-            if(!TableRegistry::get('SdCaseHistories')->save($caseNextHistory)){
-                echo "error in saving next history";
-                return;
-            };
             //change Activity Due Date according case type and its due date
             $sdFieldValuesTable =TableRegistry::get('SdFieldValues');
             $sdWorkflowActivity = TableRegistry::get('SdWorkflowActivities')->get($requstData['next-activity-id']);
@@ -838,7 +830,7 @@ class SdCasesController extends AppController
             date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']].' days'));
             $activityDueDateEntity['field_value'] = $date->format('dmY');
             if(!$sdFieldValuesTable->save($activityDueDateEntity)){
-                echo "error in saving history";
+                echo "error in saving date entity";
                 debug($activityDueDateEntity);
                 return;
             };
@@ -852,6 +844,14 @@ class SdCasesController extends AppController
                 $title = "A new case has been pushed to you";
             else $title = "A case has been sent back to you";
             //Save Comment To next person
+            if(!$caseCurrentHistoryTable->save($caseCurrentHistory)){
+                echo "error in saving history";
+                return;
+            };
+            if(!TableRegistry::get('SdCaseHistories')->save($caseNextHistory)){
+                echo "error in saving next history";
+                return;
+            };
             $queryTable = TableRegistry::get('SdQueries');
             $content = $requstData['content']."  Case Number:".$caseNo."    Version:".$version;
             $sdQuery = $queryTable->newEntity();

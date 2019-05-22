@@ -366,7 +366,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
             $text = $text."<tr ";
             if($row==1) $text = $text."class=\"selected-row\" ";
             $text = $text."id=\"section-".$sectionId."-row-".$row."\" onclick=\"setPageChange(".$sectionId.",".$row.")\" ><td>".$row."</td>".$rowtext."
-                                                <td><button class='btn btn-outline-danger' onclick='deleteSection(".$sectionId.",".$row.",". $section_key.")' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
+                                                <td><button type=\"button\" class='btn btn-outline-danger' onclick='deleteSection(".$sectionId.",".$row.",". $section_key.")' role='button' title='show'><i class='fas fa-trash-alt'></i></button></td></tr>";
         }//TODO ADD JS FUNCTION TO DISPLAY SET
         $row++;
     }while($noValue != sizeof($fields));
