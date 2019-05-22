@@ -92,7 +92,38 @@ $(document).ready(function(){
         });}
         else $('#searchFieldResult').html("");
     });
-
+    if(tabId == 9){
+        //labeling field
+        var filterText = "Country:     <select id=\"country_filter\"><option id=\"default_country\" value=\"null\"></option>";
+        var countryField = document.getElementById('section-48-select-501');
+        var options = countryField.innerHTML;
+        filterText = filterText + options+"</select>";
+        $('#card-summary-48').prepend(filterText);
+        $('#country_filter').find('option:selected').removeAttr("selected");
+        $('#country_filter').val("null").trigger('change');
+        tableFields = $('table[id^=sectionSummary-48]').find("tbody").html();
+     }
+     if($('#country_filter').length == 1){
+        $("#country_filter").change(function(){
+            let country = $(this).find('option:selected').text();
+            $('[id^=sectionSummary-48]').find('tbody').html(tableFields);
+            if(country != ""){
+                let exitFlag = 0;
+                $("table[id^=sectionSummary-48]").find("tbody").find("tr").each(function(){
+                    if($(this).find('td[id*=td-382]').text() != country){
+                        $(this).remove();
+                    }else{
+                        if(exitFlag==0) exitFlag = $(this).attr('id').split('-')[3];
+                    }
+                });
+                console.log(exitFlag);
+                if(exitFlag != 0)
+                    setPageChange(48,exitFlag);
+            }
+            
+            $("table[id^=sectionSummary-48]").DataTable();
+        });
+     }
 });
 // Search Bar
     function hightlightField (fieldID) {
@@ -309,7 +340,9 @@ function renderSummaries(section_id, pageNo){
         $("#deletebtn-"+sdSectionId).attr("onclick","deleteSection("+sdSectionId+","+setArray[sdSectionId]+","+sectionKey+")");
     });
 }
-function setPageChange(section_id, pageNo, addFlag=null, resultfalg = false) {
+function setPageChange(section_id, pageNo, addFlag=null, resultflag = false) {
+    let filterFlag =false;
+    if(section_id==48) filterFlag = true;
     if(pageNo == 0) return false;
     $("[id^=save-btn"+section_id+"]").hide();
     $("[id^=save-btn"+section_id+"]").attr("onclick","saveSection("+section_id+","+pageNo+")")
@@ -372,6 +405,7 @@ function setPageChange(section_id, pageNo, addFlag=null, resultfalg = false) {
                 }
             });
         }
+        if(section_id==48&&addFlag) max_set = tableFields.split("</tr>").length-1;
         if(addFlag)
             setArray[section_id] = max_set+1;            
         else setArray[section_id] = pageNo;
@@ -388,7 +422,7 @@ function setPageChange(section_id, pageNo, addFlag=null, resultfalg = false) {
                 sectionId = $("[name=section\\["+sectionId+"\\]]").val().split(',')[$("[name=section\\["+sectionId+"\\]]").val().split(',').length - 1].split(':')[0];
             else inputSetflag = false;
         }
-        if(resultfalg&&sectionId!=section_id) return true;
+        if(resultflag&&sectionId!=section_id) return true;
         if(sectionId!=section_id&&!inputSetflag) return true;
             //get this field setArray
             let targetSetArray = {};
@@ -577,7 +611,8 @@ function setPageChange(section_id, pageNo, addFlag=null, resultfalg = false) {
             });
 
     });
-    renderSummaries(section_id, pageNo, addFlag);
+    if(!(filterFlag||(section_id==48&&addFlag))||resultflag)
+        renderSummaries(section_id, pageNo, addFlag);
     return false;
 }
 function searchWhoDra(){

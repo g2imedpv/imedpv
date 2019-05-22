@@ -16,6 +16,7 @@ echo $this->element('generatepdf');
     var version = <?= $version ?>;
     var distribution_id = <?php if(empty($distribution_id)) echo "null"; else echo $distribution_id;?>;
     var tabId = <?= $tabid?>;
+    var tableFields ="";
     var section = <?php $sdSections;
     echo json_encode($sdSections)?>;
     var caseId = <?= $caseId ?>;
@@ -148,7 +149,7 @@ echo $this->element('generatepdf');
         //     $exsitSectionNo[$i] = $sdSections->id;
         //     next($sdSections);
         // }
-        $result = displaySection($sdSections[0],$sdSections,[],$exsitSectionNo, $this, $activitySectionPermissions);
+        $result = displaySection($sdSections[0],$sdSections,[],$exsitSectionNo, $this, $activitySectionPermissions, $dynamic_options);
         print_r($result['field_Text']);
         print_r($result['child_Field_Text']);
         print_r($result['child_Div_Text']);
@@ -223,7 +224,7 @@ function displaySectionOld($section, $exsitSectionNo, $sdSections, $setNo, $html
             if($section->display_order ==10)echo" show active\"";else echo " fade\"";
             echo " aria-labelledby=\"nav-".$section->id."-tab\" role=\"tabpanel\" class=\"secdiff\" id=\"secdiff-".$section->id."\">";
         }
-        displaySingleSection($section, $setNo, $sectionKey, $html, $permission);
+        displaySingleSection($section, $setNo, $sectionKey, $html, $permission, $dynamic_options);
 
         $exsitSectionNo[$sectionKey]= null;
         if(!empty($section->child_section)){
@@ -380,7 +381,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
     $text = $addtext.$text;
     return $text;
 }
-function displaySingleSection($section, $setArray, $sectionKey, $html, $permission){
+function displaySingleSection($section, $setArray, $sectionKey, $html, $permission, $dynamic_options){
     
     $i = 0;
     $text ="";
@@ -623,11 +624,11 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                             $text =$text. "<select class=\"form-control\" id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."\" name=".$field_value_nameHolder.">";
                             $text =$text."<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-null\" value=\"\" ></option>";
                             foreach($dynamic_options[explode('-',$sd_section_structure_detail->sd_field->descriptor)[1]] as $option_no=>$option_detail){
-                                $text =$text. "<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-".$option_detail['value']."\" value=".$option_detail['value'];
+                                $text =$text. "<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-".$option_no."\" value=".$option_no;
                                 if($permission==2) $text =$text. " disabled";
-                                if(!empty($sd_section_structure_detail->sd_field->sd_field_values[$j])&&$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value==$option_detail['value'])
+                                if(!empty($sd_section_structure_detail->sd_field->sd_field_values[$j])&&$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value==$option_no)
                                 $text =$text. " selected=\"true\"";
-                                $text =$text. ">".$option_detail['caption']."</option>";
+                                $text =$text. ">".$option_detail."</option>";
                             };
                             $text =$text."</select>";
                             continue;
@@ -690,7 +691,7 @@ function displaySelectBar($sdSections, $setArray, $section_key){
     return $text;
     
 }
-function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,$html,$permission){
+function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,$html,$permission, $dynamic_options){
     
     if(empty($exsitSectionNo)) return null;
     if(!in_array($sdSections->id,$exsitSectionNo)) return ["exsitSectionNo"=>$exsitSectionNo];
@@ -718,7 +719,7 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
     $nav_Text = $nav_Text.$sdSections->section_name;
     $nav_Text = $nav_Text."</a>";
     if(!empty($sdSections['sd_section_structures'])) 
-        $field_Text = $field_Text.displaySingleSection($sdSections, $setArray, $sectionKey, $html, $permission);//display single section's fields, iterater sectioin's strucutures
+        $field_Text = $field_Text.displaySingleSection($sdSections, $setArray, $sectionKey, $html, $permission, $dynamic_options);//display single section's fields, iterater sectioin's strucutures
     if(empty($sdSections['child_section'])){
         $exsitSectionNo[$sectionKey]= null;
         $result = array("field_Text"=>$field_Text,
@@ -736,7 +737,7 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
         if(empty($exsitSectionNo)) break;
         $sectionKey = array_search($child_section,$exsitSectionNo);
         if($sectionKey === FALSE) continue;
-        $result = displaySection($allsdSections[$sectionKey], $allsdSections, $setArray, $exsitSectionNo, $html, $permission);
+        $result = displaySection($allsdSections[$sectionKey], $allsdSections, $setArray, $exsitSectionNo, $html, $permission, $dynamic_options);
         if($allsdSections[$sectionKey]['section_type']){
             $child_Nav_Text = $child_Nav_Text.$result['nav_Text'];
             $div_front ="";

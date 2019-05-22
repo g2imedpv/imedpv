@@ -41,6 +41,7 @@
                 $writePermission= 0;
                 $userinfo = $this->request->getSession()->read('Auth.User');
                 $sdCasesTable = TableRegistry::get('SdCases');
+                $sdFieldValueTable = TableRegistry::get('SdFieldValues');
                 $sdCases = $sdCasesTable->find()->where(['caseNo'=>$caseNo,'version_no'=>$version])->contain(['SdProductWorkflows.SdProducts'])->first();
                 $caseId = $sdCases['id'];
                 // if(empty($caseId)){
@@ -52,7 +53,6 @@
                     $error =[];
                     $requstData = $this->request->getData();
                     $SdSectionStructuresTable = TableRegistry::get('SdSectionStructures');
-                    $sdFieldValueTable = TableRegistry::get('SdFieldValues');
                     if(array_key_exists('section',$requstData))
                         $requestSectionArray = $this->request->getData()['section'];
                     else $requestSectionArray =[];
@@ -206,6 +206,18 @@
                                                 }]]);
                                     }])->toArray();
                 $child_list = [];
+                $dynamic_options = [];
+                $dynamicFields = $sdFieldTable->find()->select(['descriptor','id','sd_element_type_id'])->where(['sd_element_type_id'=>'13']);
+                foreach($dynamicFields as $dynamicField){
+                    $dynamic_field_id = explode('-',$dynamicField['descriptor'])[1];
+                    if(in_array($dynamic_field_id, $dynamic_options)) continue;
+                    $options = $sdFieldValueTable->find('list', [
+                        'keyField' => 'set_number',
+                        'valueField' => 'field_value'
+                    ])->where(['sd_field_id'=>$dynamic_field_id,'status'=>1, 'sd_case_id'=>$caseId, $distribution_condition]);
+                    $dynamic_options[$dynamic_field_id] = $options->toArray();
+                }
+                // debug($dynamic_options);
                 foreach($sdSections as $sdSection){
                     if($sdSection->parent_section!=0){
                         if(empty($child_list[$sdSection->parent_section])) $child_list[$sdSection->parent_section]="";
@@ -235,7 +247,7 @@
                         if(!array_key_exists($sdSection['id'],$activitySectionPermissions)) unset($sdSections[$sectionKey]);
                     }
                 }
-                $this->set(compact('validatedDatas','sdSections','caseNo','version','tabid','caseId','product_name','case_versions','writePermission'));
+                $this->set(compact('validatedDatas','sdSections','caseNo','version','tabid','caseId','product_name','case_versions','writePermission','dynamic_options'));
             }
             /**
              *

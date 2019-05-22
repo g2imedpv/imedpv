@@ -8,9 +8,9 @@ $(document).ready(function(){
     $(".js-example-responsive").select2({
         width: 'resolve'
     });
-    $("select").select2({
-        selectOnClose: true
-    });
+    // $("select").select2({
+    //     selectOnClose: true
+    // });
     $("span.select2").addClass("d-block w-100");
 
     //sort table content in every column
