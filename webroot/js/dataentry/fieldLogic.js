@@ -242,8 +242,16 @@ $(document).ready(function(){
                 }
             });
             //checkboxShowORhide ('#section-22-field-206, #section-22-field-207,#section-22-field-205', "#section-22-checkbox-434-option-1");
-           
-           
+    //Event Tab:
+        //->Assessment add subtitle
+        $("#section-29-field-7").parent().prepend('<h5 class="col-md-12 mb-3">Reporter Assessment</h5>');
+        $("#section-29-field-351").parent().prepend('<h5 class="col-md-12 mb-3">Company Assessment</h5>');
+        $("#section-29-field-353").parent().prepend('<h5 class="col-md-12 mb-3">HQ Assessment</h5>');
+            
+    //Seriousness Criteria Tab:
+        //->Assessment add subtitle
+        $("#section-80-field-540").parent().prepend('<h5 class="col-md-12 mb-3">Reporter Assessment</h5>');
+        $("#section-80-field-544").parent().prepend('<h5 class="col-md-12 mb-3">Company Assessment</h5>');
             
         function duration(startDay,startMonth,startYear,endDay,endMonth,endYear,dur,durUnit) {
             var endTime=($(endYear)*365+$(endMonth)*30+$(endDay))*24*60;
