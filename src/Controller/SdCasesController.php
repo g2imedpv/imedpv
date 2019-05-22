@@ -749,7 +749,6 @@ class SdCasesController extends AppController
             if ($savedCase) echo "success"; else echo "error";
             $sdFieldValuesTable = TableRegistry::get('SdFieldValues');
             $sdFieldValues = $sdFieldValuesTable ->find()->where(['status'=>true,'sd_case_id'=>$case['id']]);
-            print_r($case['id']);
             foreach( $sdFieldValues as $sdFieldValueDetail){
                 print_r($sdFieldValueDetail);
                 $newFieldValue = $sdFieldValuesTable->newEntity();

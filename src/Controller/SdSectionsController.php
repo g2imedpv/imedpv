@@ -161,8 +161,6 @@ class SdSectionsController extends AppController
                         ];
                         if($distribution_id!=null) $dataSet['sd_case_distribution_id'] = $distribution_id;
                         $sdFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
-                        debug($sdFieldValueEntity);
-                        die();
                         $savedFieldValue = $sdFieldValueTable->save($sdFieldValueEntity);
                         if(!$savedFieldValue){
                             echo "error in adding values!" ;

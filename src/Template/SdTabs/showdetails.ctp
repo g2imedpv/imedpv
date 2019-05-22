@@ -473,16 +473,16 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                 }
                     switch($sd_section_structure_detail->sd_field->sd_element_type->type_name){
                         case 'select':
-                        $text =$text. "<select class=\"form-control\" id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."\" name=".$field_value_nameHolder.">";
-                        $text =$text."<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-null\" value=\"\" ></option>";
-                                foreach($sd_section_structure_detail->sd_field->sd_field_value_look_ups as $option_no=>$option_detail){
-                                    $text =$text. "<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-".$option_detail['value']."\" value=".$option_detail['value'];
-                                    if($permission==2) $text =$text. " disabled";
-                                    if(!empty($sd_section_structure_detail->sd_field->sd_field_values[$j])&&$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value==$option_detail['value'])
-                                    $text =$text. " selected=\"true\"";
-                                    $text =$text. ">".$option_detail['caption']."</option>";
-                                };
-                                $text =$text."</select>";
+                            $text =$text. "<select class=\"form-control\" id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."\" name=".$field_value_nameHolder.">";
+                            $text =$text."<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-null\" value=\"\" ></option>";
+                            foreach($sd_section_structure_detail->sd_field->sd_field_value_look_ups as $option_no=>$option_detail){
+                                $text =$text. "<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-".$option_detail['value']."\" value=".$option_detail['value'];
+                                if($permission==2) $text =$text. " disabled";
+                                if(!empty($sd_section_structure_detail->sd_field->sd_field_values[$j])&&$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value==$option_detail['value'])
+                                $text =$text. " selected=\"true\"";
+                                $text =$text. ">".$option_detail['caption']."</option>";
+                            };
+                            $text =$text."</select>";
                             continue;
                         case 'unspecifiedDate':
                             $text =$text. "<input id=\"section-".$section->id."-field_rule-".$sd_section_structure_detail->sd_field->id."\" value=".$sd_section_structure_detail->sd_field->field_length."-".$sd_section_structure_detail->sd_field->field_type." type=\"hidden\">";
@@ -618,6 +618,18 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                             (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?$text =$text."value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":$text =$text.null;
                             if($permission==2) $text =$text. " disabled ";
                             $text =$text. "readonly=\"readonly\">";
+                            continue;
+                        case "dynamic select":
+                            $text =$text. "<select class=\"form-control\" id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."\" name=".$field_value_nameHolder.">";
+                            $text =$text."<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-null\" value=\"\" ></option>";
+                            foreach($dynamic_options[explode('-',$sd_section_structure_detail->sd_field->descriptor)[1]] as $option_no=>$option_detail){
+                                $text =$text. "<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-".$option_detail['value']."\" value=".$option_detail['value'];
+                                if($permission==2) $text =$text. " disabled";
+                                if(!empty($sd_section_structure_detail->sd_field->sd_field_values[$j])&&$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value==$option_detail['value'])
+                                $text =$text. " selected=\"true\"";
+                                $text =$text. ">".$option_detail['caption']."</option>";
+                            };
+                            $text =$text."</select>";
                             continue;
                     }
                     $text =$text."</div>";
