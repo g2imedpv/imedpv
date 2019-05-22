@@ -129,7 +129,7 @@ class SdSectionsController extends AppController
             else $requestSectionArray =[];
             foreach($requstData as $sectionValueK => $sectionValue) {
                 $section_id = $sectionValueK;
-                $set_number = 1;
+                $set_number = "1";
                 if(!empty($requestSectionArray)){
                     $set_number = "";
                     $sectionArray = explode(',',$requestSectionArray[$section_id]);
@@ -161,6 +161,8 @@ class SdSectionsController extends AppController
                         ];
                         if($distribution_id!=null) $dataSet['sd_case_distribution_id'] = $distribution_id;
                         $sdFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                        debug($sdFieldValueEntity);
+                        die();
                         $savedFieldValue = $sdFieldValueTable->save($sdFieldValueEntity);
                         if(!$savedFieldValue){
                             echo "error in adding values!" ;

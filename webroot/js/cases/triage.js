@@ -374,6 +374,7 @@ function endTriage(){
         },
         error:function(response){
             console.log(response);
+            window.location.href = "/sd-cases/caselist";
         },
     });
     var text ="";

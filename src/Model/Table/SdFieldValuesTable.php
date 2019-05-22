@@ -75,7 +75,7 @@ class SdFieldValuesTable extends Table
             ->notEmpty('set_number');
 
         $validator
-        ->allowEmpty('field_value');
+            ->allowEmpty('field_value');
 
         $validator
             ->dateTime('created_time')
