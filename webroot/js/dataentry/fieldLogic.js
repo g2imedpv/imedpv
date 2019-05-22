@@ -42,21 +42,43 @@ $(document).ready(function(){
 
     //change general tab date format
     function dateConvert(target){
-        var date=$(target).val();
-        if((date)&&(date!=null)){
-            var dateInformat=date.substring(4,8)+"/"+date.substring(2,4)+"/"+date.substring(0,2);
-            $(target).val(dateInformat);
-            $(target).prop("disabled", true);
+        var sectionId=$(target).attr('id');
+        if(typeof sectionId!='undefined'){
+            sectionId=sectionId.split('-')[1];
         }else{
-            $(target).val("");
+            return ;
+        }
+        var fieldId=$(target).attr('id').split('-')[3];
+        var date=$(target).val();
+        if((date!="undefined")&&(date!="")){
+            var dateInformat=date.substring(0,2)+"-"+date.substring(2,4)+"-"+date.substring(4,8);
+            $("#specified-date-section-"+sectionId+"-date-"+fieldId).val(dateInformat);
+        }else{
+            $("#specified-date-section-"+sectionId+"-date-"+fieldId).val("");
         }
     }
+        dateConvert("#section-1-date-5");
+        dateConvert("#section-1-date-10");
+        dateConvert("#section-1-date-12");
+        dateConvert("#section-1-date-225");
+        dateConvert("#section-1-date-414");
+        dateConvert("#section-1-date-415");
+        dateConvert("#section-55-date-388");
+    //change unspecified date format when saving
     $("[id^=unspecified-]").change(function(){
         let sectionId = $(this).attr('id').split('-')[2];
         let fieldId = $(this).attr('id').split('-')[4];
         $("#section-"+sectionId+"-unspecifieddate-"+fieldId).val($("#unspecified-day_section-"+sectionId+"-unspecifieddate-"+fieldId).val()+$("#unspecified-month_section-"+sectionId+"-unspecifieddate-"+fieldId).val()+$("#unspecified-year_section-"+sectionId+"-unspecifieddate-"+fieldId).val());
     });
     $("[id*=unspecifieddate][id^=section]").val()
+    //change specified date format when saving
+    $("[id^=specified-]").change(function(){
+        let sectionId = $(this).attr('id').split('-')[3];
+        let fieldId = $(this).attr('id').split('-')[5];
+        let date = $("#specified-date-section-"+sectionId+"-date-"+fieldId).val().split('-');
+        $("#section-"+sectionId+"-date-"+fieldId).val(date[0]+date[1]+date[2]);
+    });
+    //show user friendly date format
 
     //grey out fields
     function greyout(target){
@@ -65,7 +87,7 @@ $(document).ready(function(){
     // General Tab:
         //-> Admin section
         //greyout some date fields
-        greyout("#section-1-date-10,#section-1-date-12,#section-1-date-225");
+        greyout("#specified-date-section-1-date-10,#specified-date-section-1-date-12,#specified-date-section-1-date-225");
         // For Additional documents (A.1.8.1) select and add document
         selectShowORhide ("#section-1-field-355, #section-1-field-14","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
         //add upload files button
@@ -183,13 +205,7 @@ $(document).ready(function(){
         // For Exist Other Case Identifiers? (A.1.11) checkbox
         checkboxShowORhide ('#section-1-field-19, #section-1-field-20', "#section-1-checkbox-18-option-1");
         
-        // dateConvert("#section-1-date-5");
-        // dateConvert("#section-1-date-10");
-        // dateConvert("#section-1-date-12");
-        // dateConvert("#section-1-date-225");
-        // dateConvert("#section-1-text-414");
-        // dateConvert("#section-1-text-415");
-        // dateConvert("#section-55-text-388");
+      
            
             
             

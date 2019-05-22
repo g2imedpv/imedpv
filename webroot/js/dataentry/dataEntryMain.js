@@ -975,7 +975,7 @@ jQuery(function($) {
     // Show "Save" button when any input change
     $(document).ready(function() {
         $("input,textarea,select").change(function () {
-            $(this).parents('.fieldInput').siblings().find("[id^=save-btn]").show();
+            $(this).parents().siblings().find("[id^=save-btn]").show();
          });
     });
 

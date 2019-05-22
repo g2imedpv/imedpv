@@ -252,7 +252,6 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
     $text =$text. "<div class=\"header-section panel-heading\">";//Todo
     $text =$text. "<h3 id=\"section_label-".$sectionId."\"class=\"secspace panel-title-dataentry\">";
     $text =$text."<a data-toggle=\"collapse\" href=\"#input-".$sectionId."-sectionKey-".$sectionKey.",#card-summary-".$sectionId.",#addbtn-".$sectionId.",#deletebtn-".$sectionId.",#pagination-section-".$sectionId.",#save-btn".$sectionId."-".$sectionKey."\">".$section_name."</a></h3>";
-    $text =$text. "<input id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.",1)\" class=\"ml-3 px-5 btn btn-outline-primary panel-collapse show\" type=\"button\" style=\"display:none\" value=\"Save\">";
     //echo"<a role=\"button\" id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
     $text =$text. "</h3>";
         // if(($section->is_addable == 1)&&($permission==1))
@@ -371,7 +370,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
         }//TODO ADD JS FUNCTION TO DISPLAY SET
         $row++;
     }while($noValue != sizeof($fields));
-    $addtext = "<button type=\"button\" id=\"addbtn-".$sectionId."\" onclick=\"setPageChange(".$sectionId.",".(int)($row-1).",1)\" class='btn btn-outline-primary float-right panel-collapse show' role='button' title='add'><i class='fas fa-plus'></i> Add</button><br><br>";
+    $addtext = "<button type=\"button\" id=\"addbtn-".$sectionId."\" onclick=\"setPageChange(".$sectionId.",".(int)($row-1).",1)\" class='btn btn-outline-primary ml-3 mb-2 panel-collapse show' role='button' title='add'><i class='fas fa-plus'></i> Add</button><br><br>";
     $text = $text."</tr>"; 
     $text = $text."</tbody>";
     $text = $text."</table>";
@@ -584,11 +583,12 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                             continue;
                         case 'date':
                         $text =$text. "<input id=\"section-".$section->id."-field_rule-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][field_rule]\" value=".$sd_section_structure_detail->sd_field->field_length."-".$sd_section_structure_detail->sd_field->field_type." type=\"hidden\">";
-                        $text =$text. "<input type=\"text\" class=\"form-control\" name=".$field_value_nameHolder." id=\"section-".$section->id."-date-".$sd_section_structure_detail->sd_field->id."\" ";
+                        $text =$text. "<input  class=\"form-control\" name=".$field_value_nameHolder." id=\"section-".$section->id."-date-".$sd_section_structure_detail->sd_field->id."\" ";
                             if($permission==2) $text =$text. " disabled ";
                             $text =$text. "value=\"";
                             (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?$text =$text.$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value:$text =$text.null;
-                            $text =$text. "\">";
+                            $text =$text. "\" type=\"hidden\">";
+                            $text =$text. "<input type=\"text\" class=\"form-control\" placeholder=\"dd-mm-yyyy\" id=\"specified-date-section-".$section->id."-date-".$sd_section_structure_detail->sd_field->id."\" value=\"\" >";
                             continue;
                         case 'whodra browser':
                             if($permission==1){
@@ -625,7 +625,9 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
             $length_taken = $sd_section_structure_detail->field_length + $sd_section_structure_detail->field_start_at;
         }
         if($i!=0) $text =$text."</div>";
+        $text =$text. "<div class=\"text-center pb-3\"><input id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.",1)\" class=\"ml-3 px-5 btn btn-outline-primary panel-collapse show\" type=\"button\" style=\"display:none\" value=\"Save\"></div>";
         $text =$text. "</div>";
+        
     // }
     return $text;
 }

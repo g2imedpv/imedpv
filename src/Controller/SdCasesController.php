@@ -920,6 +920,13 @@ class SdCasesController extends AppController
             //TODO if the case is to push to Data Entry
             // print_r($requestData);die();
             foreach($requestData['field_value'] as $field_id => $detail_data){
+                //to convert date format of plugin 
+                if(($field_id==10)||($field_id==12)||($field_id==225)){
+                    $date=str_replace("-",",",$detail_data['value']);
+                    $dateArray=array_reverse(explode(",","$date"));
+                    $dateString=$dateArray[0].$dateArray[1].$dateArray[2];
+                    $detail_data['value']=$dateString;
+                }
                 if((array_key_exists('id',$detail_data))&&($detail_data['id']!=null)) {
                     $previous_field_value = $sdFieldValueTable->get($detail_data['id']);
                     if($detail_data['value']==$previous_field_value['field_value']) continue;
