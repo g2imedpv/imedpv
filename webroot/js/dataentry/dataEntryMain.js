@@ -107,6 +107,8 @@ $(document).ready(function(){
      }
      if($('#country_filter').length == 1){
         $("#country_filter").change(function(){
+            if(autoChangeflag) return false;
+            autoChangeflag = true;
             let country = $(this).find('option:selected').text();
             $('[id^=sectionSummary-48]').find('tbody').html(tableFields);
             if(country != ""){
@@ -123,24 +125,28 @@ $(document).ready(function(){
                     setPageChange(48, tableFields.split("</tr>").length, 1);
                 else setPageChange(48,exitFlag);
             }
-            $("table[id^=sectionSummary-48]").removeClass("dataTable");
-            $("table[id^=sectionSummary-48]").removeAttr("role");
-            $("table[id^=sectionSummary-48]").find('th').each(function(){
-                $(this).removeAttr("aria-describedby");
-                $(this).removeAttr("tabindex");
-                $(this).removeAttr("aria-controls");
-                $(this).removeAttr("rowspan");
-                $(this).removeAttr("colspan");
-                $(this).removeAttr("aria-label");
-                $(this).removeAttr("aria-sort");
-                $(this).removeAttr("style");
-            });
+            // $("table[id^=sectionSummary-48]").removeClass("dataTable");
+            // $("table[id^=sectionSummary-48]").removeAttr("role");
+            // $("table[id^=sectionSummary-48]").find('th').each(function(){
+            //     $(this).removeAttr("aria-describedby");
+            //     $(this).removeAttr("tabindex");
+            //     $(this).removeAttr("aria-controls");
+            //     $(this).removeAttr("rowspan");
+            //     $(this).removeAttr("colspan");
+            //     $(this).removeAttr("aria-label");
+            //     $(this).removeAttr("aria-sort");
+            //     $(this).removeAttr("style");
+            // });
             var htmltext = $("table[id^=sectionSummary-48]").html();
             htmltext = "<table class=\""+$("table[id^=sectionSummary-48]").attr('class')+"\" id=\""+$("table[id^=sectionSummary-48]").attr('id')+"\">"+htmltext+"</table>";
-            console.log(htmltext);
             $("#sectionSummary-48-sectionKey-1_wrapper").remove();
             $("#summary-48").prepend(htmltext);
+            
+            $("table[id^=sectionSummary-48]").find(".dataTables_empty").parent().remove();
+            console.log($("table[id^=sectionSummary-48]").html());
             $("table[id^=sectionSummary-48]").DataTable();
+            autoChangeflag = false;
+            
         });
      }
 });
@@ -319,6 +325,8 @@ function renderSummaries(section_id, pageNo){
         $(this).find('#section-'+sectionId+'-row-'+setArray[sectionId]).addClass('selected-row');
         console.log($(this).html());
         $(this).find("table").DataTable();
+        console.log($(this).html());
+
         if(sectionId==48) tableFields = $('table[id^=sectionSummary-48]').find("tbody").html();
         if(row>2){
             $("#addbtn-"+sectionId).show();
@@ -371,12 +379,12 @@ function renderSummaries(section_id, pageNo){
         $("#addbtn-"+sdSectionId).attr("onclick","setPageChange("+sdSectionId+","+parseInt(parseInt(max_set_No)+1)+",1)");
         $("#deletebtn-"+sdSectionId).attr("onclick","deleteSection("+sdSectionId+","+setArray[sdSectionId]+","+sectionKey+")");
         if(max_set_No>0){
-            $("#addbtn-"+sectionId).show();
-            $("#deletebtn-"+sectionId).show();
+            $("#addbtn-"+sdSectionId).show();
+            $("#deletebtn-"+sdSectionId).show();
         }
         else{
-            $("#addbtn-"+sectionId).hide();
-            $("#deletebtn-"+sectionId).hide();
+            $("#addbtn-"+sdSectionId).hide();
+            $("#deletebtn-"+sdSectionId).hide();
         }
     });
 }
@@ -789,9 +797,11 @@ function saveSection(sectionId,setNo){
               });
             section = $.parseJSON(response);
             var country = $("#section-48-select-501").val();
+            autoChangeflag = true;
             if(sectionId == 48) $('#country_filter').val("").trigger("change");
             setPageChange(sectionId,setNo, null, true);
             if(sectionId == 48) $('#country_filter').val(country).trigger("change");
+            autoChangeflag = false;
             $("[id=addbtnalert-"+sectionId+"]").hide();
             return false;
         },
@@ -1065,9 +1075,10 @@ jQuery(function($) {
     
     // Show "Save" button when any input change
     $(document).ready(function() {
-        $("input,textarea,select").change(function () {
+        $("input,textarea,select[name$=\\[field_value\\]]").change(function () {
+            console.log(this);
             if(!autoChangeflag)
-                $(this).parents().siblings().find("[id^=save-btn]").show();
+                $("[id^=save-btn"+$(this).attr('id').split('-')[1]+"]").show();
          });
     });
 
