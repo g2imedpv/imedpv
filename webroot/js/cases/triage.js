@@ -369,8 +369,14 @@ function endTriage(){
         contentType:false,
         processData:false,
         success:function(response){
-
             console.log(response);
+            response = JSON.parse(response);
+            $("[name^=field_value][name$=\\[id\\]]").each(function(){
+                let field_id = $(this).attr("name").split(/[\[\]]/)[1];
+                if(response[field_id][id] != null)
+                    $(this).val = response[field_id][id];
+            });
+            
         },
         error:function(response){
             console.log(response);

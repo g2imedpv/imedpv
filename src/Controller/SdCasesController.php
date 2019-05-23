@@ -824,20 +824,29 @@ class SdCasesController extends AppController
             $sdFieldValuesTable =TableRegistry::get('SdFieldValues');
             $sdWorkflowActivity = TableRegistry::get('SdWorkflowActivities')->get($requstData['next-activity-id']);
             $casetype = $sdFieldValuesTable->find()->where(['sd_field_id'=>500, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
-            if($sdWorkflowActivity['order_no'] == 2){
-                $activityDueDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>12, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
-                debug($activityDueDateEntity);
-                $date = date_create_from_format("dmY", $activityDueDateEntity['field_value']);
-                $activityDueDateEntity['field_value'] = $date->format('dmY');
-                $previsouActivity = TableRegistry::get('SdWorkflowActivities')->find()->where(['sd_workflow_id'=>$sdWorkflowActivity['sd_workflow_id'], 'order_no'=>1])->first();
-                date_add($date, date_interval_create_from_date_string(explode(',',(int)$sdWorkflowActivity['due_day'])[$casetype['field_value']]+(int)$previsouActivity['due_day'][$casetype['field_value']].' days'));
-            }else{
-                $activityDueDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>414, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
-                $date = date_create_from_format("dmY", $activityDueDateEntity['field_value']);
-                $activityDueDateEntity['field_value'] = $date->format('dmY');
-                date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']].' days'));
-            }
 
+            $latestReceiveDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>12, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
+            $date = date_create_from_format("dmY", $latestReceiveDateEntity['field_value']);
+            $latestReceiveDateEntity['field_value'] = $date->format('dmY');
+            if($sdWorkflowActivity['order_no'] == 2){
+                $previsouActivity = TableRegistry::get('SdWorkflowActivities')->find()->where(['sd_workflow_id'=>$sdWorkflowActivity['sd_workflow_id'], 'order_no'=>1])->first();
+                date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']]+(int)$previsouActivity['due_day'][$casetype['field_value']].' days'));
+                $activityDueDateEntity = $sdFieldValuesTable->newEntity();            
+                $dataSet = [
+                    'sd_case_id' => $case->id,
+                    'sd_field_id' => 414,
+                    'set_number' => 1,//TODO SET NUMBER REMOVE
+                    'created_time' =>date("Y-m-d H:i:s"),
+                    'field_value' =>$date->format('dmY'),
+                    'status' =>'1',
+                ];            
+                if($distribution_id!=null) $dataSet['sd_case_distribution_id'] = $distribution_id;
+                $activityDueDateEntity = $sdFieldValuesTable->patchEntity($activityDueDateEntity, $dataSet);
+            }else{
+                date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']].' days'));
+                $activityDueDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>414, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
+                $activityDueDateEntity['field_value'] = $date->format('dmY');
+            }
             if(!$sdFieldValuesTable->save($activityDueDateEntity)){
                 echo "error in saving date entity";
                 debug($activityDueDateEntity);
@@ -857,7 +866,7 @@ class SdCasesController extends AppController
                 echo "error in saving history";
                 return;
             };
-            if(!TableRegistry::get('SdCaseHistories')->save($caseNextHistory)){
+            if(!$caseCurrentHistoryTable->save($caseNextHistory)){
                 echo "error in saving next history";
                 return;
             };
@@ -920,13 +929,14 @@ class SdCasesController extends AppController
             // print_r($requestData);die();
             foreach($requestData['field_value'] as $field_id => $detail_data){
                 //to convert date format of plugin 
-                if(($field_id==10)||($field_id==12)||($field_id==225)){
-                    $date=str_replace("-",",",$detail_data['value']);
-                    $dateArray=array_reverse(explode(",","$date"));
-                    $dateString=$dateArray[0].$dateArray[1].$dateArray[2];
-                    $detail_data['value']=$dateString;
-                }
-                if((array_key_exists('id',$detail_data))&&($detail_data['id']!=null)) {
+                // if(($field_id==10)||($field_id==12)||($field_id==225)){
+                //     $date=str_replace("-",",",$detail_data['value']);
+                //     $dateArray=array_reverse(explode(",","$date"));
+                //     $dateString=$dateArray[0].$dateArray[1].$dateArray[2];
+                //     $detail_data['value']=$dateString;
+                // }
+                if($detail_data['id']!=null) {
+                    debug($detail_data);
                     $previous_field_value = $sdFieldValueTable->get($detail_data['id']);
                     if($detail_data['value']==$previous_field_value['field_value']) continue;
                     $savedFieldValueEntity = $previous_field_value;
@@ -934,6 +944,7 @@ class SdCasesController extends AppController
                 }
                 else {
                     if($detail_data['value']==null) continue;
+                    debug($detail_data);
                     $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                     $dataSet = [
                         'sd_case_id' => $case->id,
@@ -945,13 +956,13 @@ class SdCasesController extends AppController
                     ];
                     $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
                 }
-                $savedFieldValue = $sdFieldValueTable->save($savedFieldValueEntity);
-                if(!$savedFieldValue) {
-                    echo "problem in saving".$field_id."sdfields";
-                    return null;
-                }
+                
+                // $savedFieldValue = $sdFieldValueTable->save($savedFieldValueEntity);
+                // if(!$savedFieldValue) {
+                //     echo "problem in saving".$field_id."sdfields";
+                //     return null;
+                // }
             }
-
             if (!$this->is_empty($requestData['document']))
             {
                 if (!$this->saveDocuments($requestData['document'], $case->id))
@@ -984,7 +995,7 @@ class SdCasesController extends AppController
                     'conditions'=>['pd.id = pwf.sd_product_id']
                 ]
             ])->first();
-        $field_ids = ['10','176','85','79','93','86','87','12','26','28','149','394','457','392','458','496','395','417','420','421','422','423','223','415','500'];
+        $field_ids = ['10','176','85','79','93','86','87','12','26','28','149','394','457','392','458','496','395','417','420','421','422','423','223','415','500', '225'];
         $versionup_fields = [''];
         
         $fieldValue_Table = TableRegistry::get('SdFieldValues');
@@ -1012,7 +1023,11 @@ class SdCasesController extends AppController
             }
             $this->set('version_up_set',$version_up_set);
         }
-
+            if(array_key_exists('endTriage',$requestData))
+            {
+                echo $field_value_set;
+                die();
+            }else $this->Flash->success(__('This page has been saved.'));
         // Load document list if there is any. 
         // Chloe Wang @ Mar 31, 2019
         $this->loadModel("SdDocuments");

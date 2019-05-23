@@ -220,6 +220,7 @@ class SdUsersController extends AppController
                                         'ua.sd_workflow_activity_id = '.$previousActivity['id'],'ua.sd_user_id = SdUsers.id']
                     ]
                 ])->toArray();
+                
                 $parceObj[$previousActivity['id']]['users'] = $users;
             }
             echo json_encode($parceObj);
@@ -271,6 +272,7 @@ class SdUsersController extends AppController
             $parceObj = [];
             $parceObj['previousUserOnNextActivity'] = $previousUserOnNextActivity;
             $parceObj['actvity'] = $nextActivity;
+            // debug($nextActivity);
             $users = $this->SdUsers->find()
             ->select(['SdUsers.id','SdUsers.firstname','SdUsers.lastname'])
             ->contain(['SdCases'=>function($q){
