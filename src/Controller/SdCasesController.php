@@ -937,7 +937,6 @@ class SdCasesController extends AppController
                 //     $detail_data['value']=$dateString;
                 // }
                 if($detail_data['id']!=null) {
-                    debug($detail_data);
                     $previous_field_value = $sdFieldValueTable->get($detail_data['id']);
                     if($detail_data['value']==$previous_field_value['field_value']) continue;
                     $savedFieldValueEntity = $previous_field_value;
@@ -945,7 +944,6 @@ class SdCasesController extends AppController
                 }
                 else {
                     if($detail_data['value']==null) continue;
-                    debug($detail_data);
                     $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                     $dataSet = [
                         'sd_case_id' => $case->id,
@@ -958,11 +956,12 @@ class SdCasesController extends AppController
                     $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
                 }
                 
-                // $savedFieldValue = $sdFieldValueTable->save($savedFieldValueEntity);
-                // if(!$savedFieldValue) {
-                //     echo "problem in saving".$field_id."sdfields";
-                //     return null;
-                // }
+                $savedFieldValue = $sdFieldValueTable->save($savedFieldValueEntity);
+                if(!$savedFieldValue) {
+                    echo "problem in saving".$field_id."sdfields";
+                    debug($savedFieldValueEntity);
+                    return null;
+                }
             }
             if (!$this->is_empty($requestData['document']))
             {
@@ -975,7 +974,7 @@ class SdCasesController extends AppController
                     $this->Flash->success(__('Documents have been uploaded successfully.'));
                 }
             }
-            if(array_key_exists('endTriage',$requestData))
+            if($this->request->is(['patch', 'post', 'put'])&&array_key_exists('endTriage',$requestData))
             {
                 echo "succuess";
                 die();
@@ -1024,7 +1023,7 @@ class SdCasesController extends AppController
             }
             $this->set('version_up_set',$version_up_set);
         }
-            if(array_key_exists('endTriage',$requestData))
+            if($this->request->is(['patch', 'post', 'put'])&&array_key_exists('endTriage',$requestData))
             {
                 echo $field_value_set;
                 die();
