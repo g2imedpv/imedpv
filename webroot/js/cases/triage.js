@@ -230,13 +230,33 @@ $(document).ready(function(){
             $('#prioritize :input').prop('disabled',false);
         }
     });
-    $("#reporterField_latestreceiveddate").change(function(){
-        dayZero = $(this).val();
-        console.log(dayZero);
-        $("#reporterField_regulatoryclockstartddate").val(dayZero);
-        if(versionNo == 1){
-            $("#reporterField_initialreceiveddate").val(dayZero);
+    function dateConvert(target){
+        var date=$(target).val();
+        if(date!=''){
+            var fieldId=$(target).attr('id'); 
+            var dateInformat=date.substring(4,8)+'-'+date.substring(2,4)+'-'+date.substring(0,2);
+            $("#"+fieldId+"_plugin").val(dateInformat);
+        }else{
+            return ;
         }
+    }
+    dateConvert("#reporterField_latestreceiveddate");
+    dateConvert("#reporterField_initialreceiveddate");
+    $("#reporterField_latestreceiveddate_plugin").change(function(){
+        dayZero = $(this).val();
+        dayZeroformat= dayZero.split('-').reverse()[0]+dayZero.split('-').reverse()[1]+dayZero.split('-').reverse()[2];
+        console.log(dayZero);
+        $("#reporterField_regulatoryclockstartddate").val(dayZeroformat);
+        $("#reporterField_latestreceiveddate").val(dayZeroformat);
+        if(versionNo == 1){
+            $("#reporterField_initialreceiveddate").val(dayZeroformat);
+            $("#reporterField_initialreceiveddate_plugin").val(dayZero);
+        }
+    })
+    $("#reporterField_initialreceiveddate_plugin").change(function(){
+        date = $(this).val();
+        date = date.split('-').reverse()[0]+date.split('-').reverse()[1]+date.split('-').reverse()[2];
+        $("#reporterField_initialreceiveddate").val(date);
     })
     $("#reason-3").change(function(){
         if($(this).prop('checked')){

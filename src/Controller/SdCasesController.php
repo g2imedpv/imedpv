@@ -927,6 +927,7 @@ class SdCasesController extends AppController
             $sdSectionSets = TableRegistry::get('SdSectionSets');
             //TODO if the case is to push to Data Entry
             // print_r($requestData);die();
+            //debug($requestData);die();
             foreach($requestData['field_value'] as $field_id => $detail_data){
                 //to convert date format of plugin 
                 // if(($field_id==10)||($field_id==12)||($field_id==225)){
