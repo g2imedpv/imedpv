@@ -1077,7 +1077,7 @@ jQuery(function($) {
     // Show "Save" button when any input change
     $(document).ready(function() {
         $("input,textarea,select[name$=\\[field_value\\]]").change(function () {
-            console.log(this);
+            // console.log(this);
             if(!autoChangeflag)
                 $("[id^=save-btn"+$(this).attr('id').split('-')[1]+"]").show();
          });
