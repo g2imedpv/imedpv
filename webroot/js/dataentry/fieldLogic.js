@@ -48,6 +48,7 @@ $(document).ready(function(){
                 $(this).prop("disabled",true);
             }
         });
+        $("#instatable").remove();
     });
     $("#section-65-field-176").find("input").each(function(){
         $(this).prop("disabled",true);
