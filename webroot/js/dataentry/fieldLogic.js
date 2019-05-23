@@ -1,4 +1,54 @@
 $(document).ready(function(){
+    $("#section-44-field-149 :input").attr("disabled",true);
+    $("#section-47-field-176 :input").attr("disabled",true);
+    var field549 = "";
+    var field501 ="";
+    if(tabId == 9){
+        field501 = $('#section-48-select-501').html();
+        field549 = $('#section-48-select-549').html();
+    }
+    $("input[name*=\\[id\\]]").change(function(){
+        let field_id = $(this).parent().attr('id').split("-")[4];
+        let val = $(this).val();
+        $("[id*=field-"+field_id+"]").each(function(){
+            $(this).find("input[name*=\\[id\\]]").val(val);
+        });
+    });
+    $("[name*=\\[field_value\\]]").change(function(){
+        if(autoChangeflag) return false; 
+        autoChangeflag = true;
+        let field_id = $(this).parent().attr('id').split("-")[3];
+        let val = $(this).val();
+        $("[id*=field-"+field_id+"]").each(function(){
+            $(this).find("input[name*=\\[field_value\\]]").val(val).trigger("change");
+        });
+        autoChangeflag = false;
+    });
+    $('#section-48-select-501').change(function(){
+        if(autoChangeflag) return false;
+        var countrySelected = $(this).find('option:selected').text();
+        console.log(autoChangeflag);
+        var eventSeleted = $("#section-48-select-549").find('option:selected').val();
+        $("body").prepend("<table id=\"instatable\">"+tableFields+"</table>");
+        $('#section-48-select-549').html(field549);
+        $("#section-48-select-549").val(eventSeleted).trigger('change');
+        $('#section-48-select-549').find("option").each(function(){
+            var eventOptions = $(this).text();
+            var flag = false;
+            $("#instatable").find("tr").each(function(){
+                // console.log($("table[id^=sectionSummary-48]").find("#"+$(this).attr('id')).hasClass("selected-row"));
+                if($(this).find("[id$=td-549]").text() ==eventOptions&&$(this).find("[id$=td-501]").text() == countrySelected&&!$("table[id^=sectionSummary-48]").find("#"+$(this).attr('id')).hasClass("selected-row")){
+                    flag = true;
+                    return false;
+                }
+            });
+            if(flag) {
+                if($(this).is(':selected'))
+                    $("#section-48-select-549").val("").trigger('change');
+                $(this).prop("disabled",true);
+            }
+        });
+    });
     $("#section-65-field-176").find("input").each(function(){
         $(this).prop("disabled",true);
     });

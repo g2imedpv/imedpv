@@ -11,12 +11,14 @@ echo $this->element('generatepdf');
     var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
     var readonly =  <?php if($this->request->getQuery('readonly')!=1){$readonly = 0;}
                         else{$readonly = 1;};echo $readonly;?>;
+    var autoChangeflag = false;
     var caseNo = "<?= $caseNo ?>";
     var userId = <?php echo $this->request->getSession()->read('Auth.User.id')?>;
     var version = <?= $version ?>;
     var distribution_id = <?php if(empty($distribution_id)) echo "null"; else echo $distribution_id;?>;
     var tabId = <?= $tabid?>;
     var tableFields ="";
+    var dynamic_options = <?php if(empty($dynamic_options)) echo"null"; else echo json_encode($dynamic_options)?>;
     var section = <?php $sdSections;
     echo json_encode($sdSections)?>;
     var caseId = <?= $caseId ?>;
@@ -294,7 +296,7 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
         $text =$text."</div>";
     return $text;
 }
-function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
+function displaySummary($SectionInfo, $setArray, $section_level, $section_key, $dynamic_options){
     
     $fields = $SectionInfo->sd_section_summary->sdFields;
     $sectionId = $SectionInfo->id;
@@ -343,8 +345,11 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
                 }
                 if($levelMatch  && $setArray[0] == $row){
                     $rowtext = $rowtext."<td id=\"section-".$sectionId."-row-".$row."-td-".$field_detail->id."\">";
-                    if($field_detail->sd_element_type_id != 1 && $field_detail->sd_element_type_id != 3 && $field_detail->sd_element_type_id != 4)
+                    if($field_detail->sd_element_type_id != 1 && $field_detail->sd_element_type_id != 13 && $field_detail->sd_element_type_id != 3 && $field_detail->sd_element_type_id != 4)
                         $rowtext = $rowtext.$field_value->field_value;
+                    else if($field_detail->sd_element_type_id == 13){
+                        $rowtext = $rowtext.$dynamic_options[explode('-',$field_detail->descriptor)[1]][$field_value->field_value];
+                    }
                     else {
                         // debug($field_value->field_value);
                         foreach($field_detail->sd_field_value_look_ups as $look_ups){
@@ -378,7 +383,8 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key){
     $text = $text."</div>";
     $text = $text."</div>"; 
     $text =$text. "</div>";
-    $text = $addtext.$text;
+    if($sectionId!="44" && $sectionId!="65" && $row > 2)
+        $text = $addtext.$text;
     return $text;
 }
 function displaySingleSection($section, $setArray, $sectionKey, $html, $permission, $dynamic_options){
@@ -655,8 +661,10 @@ function displaySelectBar($sdSections, $setArray, $section_key){
         }
     }
     $text = "";
-    $text = $text."<button type=\"button\" onclick=\"setPageChange(".$sdSections['id'].",".(int)($max_set_No+1).",1)\" id=\"addbtn-".$sdSections['id']."\" class=\"btn btn-outline-primary float-right panel-collapse show\" role=\"button\" title=\"add\"><i class=\"fas fa-plus\"></i>Add</button>";
-    $text = $text."<button type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1,".$section_key.")\" id=\"deletebtn-".$sdSections['id']."\" class=\"btn btn-outline-danger float-right panel-collapse show\" role=\"button\" title=\"delete\"><i class=\"fas fa-trash-alt\"></i>Delete</button>"; 
+    if($sdSections->id!="44" && $sdSections->id!="65" && $max_set_No>0){
+        $text = $text."<button type=\"button\" onclick=\"setPageChange(".$sdSections['id'].",".(int)($max_set_No+1).",1)\" id=\"addbtn-".$sdSections['id']."\" class=\"btn btn-outline-primary float-right panel-collapse show\" role=\"button\" title=\"add\"><i class=\"fas fa-plus\"></i>Add</button>";
+        $text = $text."<button type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1,".$section_key.")\" id=\"deletebtn-".$sdSections['id']."\" class=\"btn btn-outline-danger float-right panel-collapse show\" role=\"button\" title=\"delete\"><i class=\"fas fa-trash-alt\"></i>Delete</button>"; 
+    }
     $text = $text."<input type=\"hidden\" id='setArray-".$sdSections->id."' value='";
         for($i = sizeof($setArray);$i>0;$i--){
             $text = $text.$setArray[$i-1].",";
@@ -703,7 +711,7 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
         array_push($setArray, $sdSections->id);
         $section_key=array_search($sdSections->id,$exsitSectionNo);
         if(!empty($sdSections->sd_section_summary))
-        $field_Text = $field_Text.displaySummary($sdSections, $setArray, $sdSections->section_level, $section_key);
+        $field_Text = $field_Text.displaySummary($sdSections, $setArray, $sdSections->section_level, $section_key,$dynamic_options);
         else {
             $field_Text = $field_Text.displaySelectBar($sdSections, $setArray, $section_key);
         }

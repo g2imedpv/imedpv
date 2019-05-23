@@ -94,13 +94,15 @@ $(document).ready(function(){
     });
     if(tabId == 9){
         //labeling field
-        var filterText = "Country:     <select id=\"country_filter\"><option id=\"default_country\" value=\"null\"></option>";
+        var filterText = "Country:     <select id=\"country_filter\">";
         var countryField = document.getElementById('section-48-select-501');
         var options = countryField.innerHTML;
         filterText = filterText + options+"</select>";
         $('#card-summary-48').prepend(filterText);
         $('#country_filter').find('option:selected').removeAttr("selected");
+        autoChangeflag = true;
         $('#country_filter').val("null").trigger('change');
+        autoChangeflag = false;
         tableFields = $('table[id^=sectionSummary-48]').find("tbody").html();
      }
      if($('#country_filter').length == 1){
@@ -110,17 +112,34 @@ $(document).ready(function(){
             if(country != ""){
                 let exitFlag = 0;
                 $("table[id^=sectionSummary-48]").find("tbody").find("tr").each(function(){
-                    if($(this).find('td[id*=td-382]').text() != country){
+                    if($(this).find('td[id*=td-501]').text() != country){
                         $(this).remove();
                     }else{
                         if(exitFlag==0) exitFlag = $(this).attr('id').split('-')[3];
                     }
                 });
                 console.log(exitFlag);
-                if(exitFlag != 0)
-                    setPageChange(48,exitFlag);
+                if(exitFlag == 0)
+                    setPageChange(48, tableFields.split("</tr>").length, 1);
+                else setPageChange(48,exitFlag);
             }
-            
+            $("table[id^=sectionSummary-48]").removeClass("dataTable");
+            $("table[id^=sectionSummary-48]").removeAttr("role");
+            $("table[id^=sectionSummary-48]").find('th').each(function(){
+                $(this).removeAttr("aria-describedby");
+                $(this).removeAttr("tabindex");
+                $(this).removeAttr("aria-controls");
+                $(this).removeAttr("rowspan");
+                $(this).removeAttr("colspan");
+                $(this).removeAttr("aria-label");
+                $(this).removeAttr("aria-sort");
+                $(this).removeAttr("style");
+            });
+            var htmltext = $("table[id^=sectionSummary-48]").html();
+            htmltext = "<table class=\""+$("table[id^=sectionSummary-48]").attr('class')+"\" id=\""+$("table[id^=sectionSummary-48]").attr('id')+"\">"+htmltext+"</table>";
+            console.log(htmltext);
+            $("#sectionSummary-48-sectionKey-1_wrapper").remove();
+            $("#summary-48").prepend(htmltext);
             $("table[id^=sectionSummary-48]").DataTable();
         });
      }
@@ -224,10 +243,10 @@ function renderSummaries(section_id, pageNo){
         let tbodyText ="";
         let sectionId = $(this).attr('id').split('-')[1];
         if(sectionId in setArray && sectionId != section_id) return true;
+        let row = 1;
         $(this).find("table[id^=sectionSummary-]").each(function(){
             let setSections = $('#setArray-'+sectionId).val().substr(0,$('#setArray-'+sectionId).val().length-1).split(',');
             let targetSetArray = "";
-            let row = 1;
             let related = false;
             $.each(setSections, function(k, setSectionId){
                 if(setSectionId in setArray)
@@ -263,8 +282,13 @@ function renderSummaries(section_id, pageNo){
                         });
                         if(match && fieldSetArray.split(',')[0] == row){
                             rowtext = rowtext+"<td id=\"section-"+sectionId+"-row-"+row+"-td-"+field_detail.id+"\">";     
-                            if(field_detail.sd_element_type_id != 1 && field_detail.sd_element_type_id != 3 && field_detail.sd_element_type_id != 4)
+                            if(field_detail.sd_element_type_id != 1 && field_detail.sd_element_type_id != 13 && field_detail.sd_element_type_id != 3 && field_detail.sd_element_type_id != 4)
                                 rowtext = rowtext + field_value_detail.field_value;
+                            else if(field_detail.sd_element_type_id == 13){
+                                console.log(field_value_detail);
+                                rowtext = rowtext + dynamic_options[field_detail.descriptor.split('-')[1]][field_value_detail.field_value]
+                                
+                            }
                             else{
                             $.each(field_detail.sd_field_value_look_ups,function(k, look_ups){
                                 if(look_ups.value == field_value_detail.field_value){
@@ -293,7 +317,15 @@ function renderSummaries(section_id, pageNo){
         $(this).html(text+tbodyText);
         $(this).find('#section-'+sectionId+'-row-1').removeClass('selected-row');
         $(this).find('#section-'+sectionId+'-row-'+setArray[sectionId]).addClass('selected-row');
+        console.log($(this).html());
         $(this).find("table").DataTable();
+        if(sectionId==48) tableFields = $('table[id^=sectionSummary-48]').find("tbody").html();
+        if(row>2){
+            $("#addbtn-"+sectionId).show();
+        }
+        else{
+            $("#addbtn-"+sectionId).hide();
+        }
     });
     $("[id^=pagination-section-]").each(function(){
         let text ="";
@@ -338,6 +370,14 @@ function renderSummaries(section_id, pageNo){
         $("#section-"+sdSectionId+"-page_number-"+setArray[sdSectionId]).addClass('selected-page');
         $("#addbtn-"+sdSectionId).attr("onclick","setPageChange("+sdSectionId+","+parseInt(parseInt(max_set_No)+1)+",1)");
         $("#deletebtn-"+sdSectionId).attr("onclick","deleteSection("+sdSectionId+","+setArray[sdSectionId]+","+sectionKey+")");
+        if(max_set_No>0){
+            $("#addbtn-"+sectionId).show();
+            $("#deletebtn-"+sectionId).show();
+        }
+        else{
+            $("#addbtn-"+sectionId).hide();
+            $("#deletebtn-"+sectionId).hide();
+        }
     });
 }
 function setPageChange(section_id, pageNo, addFlag=null, resultflag = false) {
@@ -569,15 +609,19 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = false) {
                         }
                         if ((typeof value != "undefined")&&(setMatch)){
                             if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
+                                autoChangeflag = true;
                                 thisElement.val(value.field_value).trigger('change');
+                                autoChangeflag = false;
                                 valueFlag = true;
                             }else{
                                 if(thisElement.attr('id').split('-')[2]=='unspecifieddate'){
                                     let fieldId = thisElement.attr('id').split('-')[3];
                                     let sectionId = thisElement.attr('id').split('-')[1];
+                                    autoChangeflag = true;
                                     $("#unspecified-day_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(0,2)).trigger('change');
                                     $("#unspecified-month_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(2,4)).trigger('change');
                                     $("#unspecified-year_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(4,8)).trigger('change');
+                                    autoChangeflag = false;
                                 }else if(thisElement.attr('id').split('-')[2]=='radio'){
                                     if(thisElement.val()==value.field_value) {
                                         thisElement.prop('checked',true);
@@ -596,7 +640,9 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = false) {
                 }
                 if(valueFlag == false) {
                     if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
-                        thisElement.val(null).trigger('change');;
+                        autoChangeflag = true;
+                        thisElement.val(null).trigger('change');
+                        autoChangeflag = false;
                     }else{
                         thisElement.prop('checked',false);
                         if((typeof thisId[5] != "undefined")&&(thisId[5]=="final")) {
@@ -613,6 +659,10 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = false) {
     });
     if(!(filterFlag||(section_id==48&&addFlag))||resultflag)
         renderSummaries(section_id, pageNo, addFlag);
+    else if(addFlag){
+        console.log($("table[id^=sectionSummary-48-sectionKey]").find('.selected-row'))
+        $("table[id^=sectionSummary-48-sectionKey]").find('.selected-row').removeClass("selected-row");
+    }
     return false;
 }
 function searchWhoDra(){
@@ -666,7 +716,10 @@ function deleteSection(sectionId, setNo,sectionKey){
                 title: "This set has been deleted",
               });
             section = $.parseJSON(response);
-            setPageChange(sectionId,1);
+            // var country = $('#country_filter').val("");
+            setPageChange(sectionId,1,null,true);
+            // if(sectionId == 48) $('#country_filter').val(country).trigger("change");
+            
             $("[id=addbtnalert-"+sectionId+"]").hide();
             return false;
         },
@@ -735,7 +788,10 @@ function saveSection(sectionId,setNo){
                 title: "This section has been saved",
               });
             section = $.parseJSON(response);
+            var country = $("#section-48-select-501").val();
+            if(sectionId == 48) $('#country_filter').val("").trigger("change");
             setPageChange(sectionId,setNo, null, true);
+            if(sectionId == 48) $('#country_filter').val(country).trigger("change");
             $("[id=addbtnalert-"+sectionId+"]").hide();
             return false;
         },
@@ -1010,7 +1066,8 @@ jQuery(function($) {
     // Show "Save" button when any input change
     $(document).ready(function() {
         $("input,textarea,select").change(function () {
-            $(this).parents().siblings().find("[id^=save-btn]").show();
+            if(!autoChangeflag)
+                $(this).parents().siblings().find("[id^=save-btn]").show();
          });
     });
 
