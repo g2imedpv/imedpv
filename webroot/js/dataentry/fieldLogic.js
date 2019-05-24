@@ -358,20 +358,24 @@ $(document).ready(function(){
     };
     function dateListner(target){
         var date = document.getElementById(target);
-        date.addEventListener('input', function(e) {
-        this.type = 'text';
-        var input = this.value;
-        if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
-        var values = input.split('/').map(function(v) {
-            return v.replace(/\D/g, '')
-        });
-        if (values[0]) values[0] = checkValue(values[0], 12);
-        if (values[1]) values[1] = checkValue(values[1], 31);
-        var output = values.map(function(v, i) {
-            return v.length == 2 && i < 2 ? v + ' / ' : v;
-        });
-        this.value = output.join('').substr(0, 14);
-        });
+        if(date==null){
+            return;
+        }else{
+            date.addEventListener('input', function(e) {
+            this.type = 'text';
+            var input = this.value;
+            if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
+            var values = input.split('/').map(function(v) {
+                return v.replace(/\D/g, '')
+            });
+            if (values[0]) values[0] = checkValue(values[0], 12);
+            if (values[1]) values[1] = checkValue(values[1], 31);
+            var output = values.map(function(v, i) {
+                return v.length == 2 && i < 2 ? v + ' / ' : v;
+            });
+            this.value = output.join('').substr(0, 14);
+            });
+        }
     }
     dateListner('specified-date-section-1-date-5');
     dateListner('specified-date-section-1-date-414');
