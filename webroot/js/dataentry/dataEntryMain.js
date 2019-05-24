@@ -328,7 +328,7 @@ function renderSummaries(section_id, pageNo){
         console.log($(this).html());
 
         if(sectionId==48) tableFields = $('table[id^=sectionSummary-48]').find("tbody").html();
-        if(row>2){
+        if($(this).find("table").find(".dataTables_empty").length==0){
             $("#addbtn-"+sectionId).show();
         }
         else{
@@ -1006,7 +1006,8 @@ function forward(){
         data:request,
         success:function(response){
             console.log(response);
-            window.location.href = "/sd-cases/caselist";
+            if(response == "succuess")
+                window.location.href = "/sd-cases/caselist";
         },
         error:function(response){
             console.log(response.responseText);

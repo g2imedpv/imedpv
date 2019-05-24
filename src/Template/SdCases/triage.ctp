@@ -50,14 +50,12 @@
         <div id="patientInfo" class="form-row bg-light">
             <div class="form-group col-md-3">
                 <label>Patient ID (B.1.1)</label>
-                <?php if($field_value_set['79']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_patientField_id_id\" name=\"field_value[79][id]\" value=\"".$field_value_set['79']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_patientField_id_id\" name=\"field_value[79][id]\" value=\"".$field_value_set['79']['id']."\">";?>
                 <input type="text" class="form-control" id="patientField_id" name="field_value[79][value]" value="<?= $field_value_set['79']['field_value']?>">
             </div>
             <div class="form-group col-md-3">
                 <label>Sex (B.1.5)</label>
-                <?php if($field_value_set['93']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_patientField_sex_id\" name=\"field_value[93][id]\" value=\"".$field_value_set['93']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_patientField_sex_id\" name=\"field_value[93][id]\" value=\"".$field_value_set['93']['id']."\">";?>
                 <select class="custom-select" id="patientField_sex" name="field_value[93][value]">
                     <option value="">Select Sex</option>
                     <option value="1" <?php echo ($field_value_set['93']['field_value']=='1')?"selected":null?>>Male</option>
@@ -70,8 +68,7 @@
         <div id="patientInfo" class="form-row bg-light">
             <div class="form-group col-md-3">
                 <label>Date of birth (B.1.2.1b)</label>
-                <?php if($field_value_set['85']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_patientField_dob_id\" name=\"field_value[85][id]\" value=\"".$field_value_set['85']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_patientField_dob_id\" name=\"field_value[85][id]\" value=\"".$field_value_set['85']['id']."\">";?>
                 <div class="form-row">
                     <div class="col-sm-4">
                         <select class="custom-select js-example-basic-single" placeholder="Day" id="patientField_dob_day" name="field_value[85][value]">
@@ -119,8 +116,7 @@
             </div>
             <div class="form-group col-md-3">
                 <label>Age at time of onset reaction (B.1.2.2a)</label>
-                <?php if($field_value_set['86']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_patientField_age_id\" name=\"field_value[86][id]\" value=\"".$field_value_set['86']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_patientField_age_id\" name=\"field_value[86][id]\" value=\"".$field_value_set['86']['id']."\">";?>
                 <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Field Helper" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
                 <input type="text" class="form-control" id="patientField_age" name="field_value[86][value]" value="<?= $field_value_set['86']['field_value']?>">
             </div>
@@ -130,8 +126,7 @@
             </div> -->
             <div class="form-group col-md-3">
                 <label>Age Unit (B.1.2.2b)</label>
-                <?php if($field_value_set['87']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_patientField_sex_id\" name=\"field_value[87][id]\" value=\"".$field_value_set['87']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_patientField_sex_id\" name=\"field_value[87][id]\" value=\"".$field_value_set['87']['id']."\">";?>
                 <select class="custom-select" name="field_value[87][value]" id="patientField_ageunit">
                     <option value="">Select Age Unit</option>
                     <option value="800" <?php echo ($field_value_set['87']['field_value']=='800')?"selected":null?> >Decade</option>
@@ -147,38 +142,34 @@
         <div id="reporterInfo" class="form-row">
             <div class="form-group col-md-3">
                 <label>First Name (A.2.1.1b)</label>
-                <?php if($field_value_set['26']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[26][id]\" value=\"".$field_value_set['26']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[26][id]\" value=\"".$field_value_set['26']['id']."\">";?>
                 <input type="text" class="form-control" name="field_value[26][value]" id="reporterField_firstname" value="<?= $field_value_set['26']['field_value']?>">
             </div>
             <div class="form-group col-md-3">
                 <label>Last Name (A.2.1.1d)</label>
-                <?php if($field_value_set['28']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_reporterField_lastname_id\" name=\"field_value[28][id]\" value=\"".$field_value_set['28']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_reporterField_lastname_id\" name=\"field_value[28][id]\" value=\"".$field_value_set['28']['id']."\">";?>
                 <input type="text" class="form-control" name="field_value[28][value]" id="reporterField_lastname" value="<?= $field_value_set['28']['field_value']?>">
             </div>
             <div class="form-group col-md-3">
                 <label>Latest Received Date(A.1.7.b)</label>
-                <?php if($field_value_set['26']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[12][id]\" value=\"".$field_value_set['12']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[12][id]\" value=\"".$field_value_set['12']['id']."\">";?>
                 <input type="hidden" class="form-control" name="field_value[12][value]" id="reporterField_latestreceiveddate" value="<?= $field_value_set['12']['field_value']?>">
                 <input type="date" class="form-control"  id="reporterField_latestreceiveddate_plugin">
             </div>
             <div class="form-group col-md-3" >
                 <label>Initial Received Date(A.1.7.b)</label>
-                <?php if($field_value_set['10']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[10][id]\" value=\"".$field_value_set['10']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[10][id]\" value=\"".$field_value_set['10']['id']."\">";?>
                 <input type="hidden" class="form-control" name="field_value[10][value]" id="reporterField_initialreceiveddate" value="<?= $field_value_set['10']['field_value']?>">
                 <input type="date" class="form-control"  id="reporterField_initialreceiveddate_plugin" >
             </div>
-            <input type="hidden" class="form-control" name="field_value[225][value]" id="reporterField_regulatoryclockstartddate">
+            <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[225][id]\" value=\"".$field_value_set['225']['id']."\">";?>
+            <input type="hidden" class="form-control" name="field_value[225][value]" id="reporterField_regulatoryclockstartddate" value="<?= $field_value_set['10']['field_value']?>">
 
         </div>
         <h4 class="text-left mt-3">Event</h4>
         <div class="form-row bg-light">
             <div class="form-group col-md-4">
-                <?php if($field_value_set['149']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_eventField_term_id\" name=\"field_value[149][id]\" value=\"".$field_value_set['149']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_eventField_term_id\" name=\"field_value[149][id]\" value=\"".$field_value_set['149']['id']."\">";?>
                 <label>Reported term (B.2.i.0) <i class="fas fa-asterisk reqField"></i></label>
                 <input type="text" class="form-control" name="field_value[149][value]" id="eventField_term" value="<?= $field_value_set['149']['field_value'] ?>">
             </div>
@@ -198,29 +189,25 @@
         <div class="form-row bg-light">
             <div class="form-group col-md-3">
                 <label>LLT Code</label>
-                <?php if($field_value_set['392']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_eventField_meddralltname_id\" name=\"field_value[392][id]\" value=\"".$field_value_set['392']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_eventField_meddralltname_id\" name=\"field_value[392][id]\" value=\"".$field_value_set['392']['id']."\">";?>
                 <input type="text" class="form-control" name="field_value[392][value]" id="eventField_meddrashow-392" value="<?= $field_value_set['392']['field_value'] ?>">
 
             </div>
             <div class="form-group col-md-3">
                 <label>LLT Name</label>
-                <?php if($field_value_set['457']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_eventField_meddraptname_id\" name=\"field_value[457][id]\" value=\"".$field_value_set['457']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_eventField_meddraptname_id\" name=\"field_value[457][id]\" value=\"".$field_value_set['457']['id']."\">";?>
                 <input type="text" class="form-control" name="field_value[457][value]" id="eventField_meddrashow-457" value="<?= $field_value_set['457']['field_value'] ?>">
 
             </div>
             <div class="form-group col-md-3">
                 <label>PT Code</label>
-                <?php if($field_value_set['394']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[394][id]\" value=\"".$field_value_set['394']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[394][id]\" value=\"".$field_value_set['394']['id']."\">";?>
                 <input type="text" class="form-control" name="field_value[394][value]" id="eventField_meddrashow-394" value="<?= $field_value_set['394']['field_value'] ?>">
 
             </div>
             <div class="form-group col-md-3">
                 <label>PT Name</label>
-                <?php if($field_value_set['458']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[458][id]\" value=\"".$field_value_set['458']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_eventField_meddrahltname_id\" name=\"field_value[458][id]\" value=\"".$field_value_set['458']['id']."\">";?>
                 <input type="text" class="form-control" name="field_value[458][value]" id="eventField_meddrashow-458" value="<?= $field_value_set['458']['field_value'] ?>">
 
             </div>
@@ -306,8 +293,7 @@
         <?php 
             }
         ?>
-        <?php if($field_value_set['223']['id']!=null)
-                echo "<input type=\"hidden\" id=\"id_validcase\" name=\"field_value[223][id]\" value=\"".$field_value_set['223']['id']."\">";?>
+        <?php echo "<input type=\"hidden\" id=\"id_validcase\" name=\"field_value[223][id]\" value=\"".$field_value_set['223']['id']."\">";?>
         <?php echo "<input type=\"hidden\" id=\"validcase\" name=\"field_value[223][value]\" value=\"".$field_value_set['223']['field_value']."\">";?>
         <button type="button" id="confirmElements" class="btn btn-primary m-auto w-25">Countinue</button>
         <button type="button" onclick="savenexit()" id="savenexitbtn" class="btn btn-outline-info m-auto w-25">Save And Exit</button>
@@ -319,8 +305,7 @@
     <div id="selRea" class="card w-50 mx-auto my-3" style="display:none;">
         <div class="card-header text-center"><h5>Please Select Reasons For Continuing</h5></div>
         <div class="card-body" id="selectReasonContent">
-        <?php if($field_value_set['417']['id']!=null)
-                echo "<input type=\"hidden\" id=\"reason_id\" name=\"field_value[417][id]\" disabled value=\"".$field_value_set['417']['id']."\">";?>
+        <?php echo "<input type=\"hidden\" id=\"reason_id\" name=\"field_value[417][id]\" disabled value=\"".$field_value_set['417']['id']."\">";?>
         <?php echo "<input type=\"hidden\" id=\"reason_value\" name=\"field_value[417][value]\" disabled value=\"".$field_value_set['417']['field_value']."\">";?>
             <div class="mx-auto w-50">
                 <div class="form-check my-2 text-left">
@@ -334,8 +319,7 @@
                 <div class="form-check my-2 text-left">
                     <input class="form-check-input" type="checkbox" value="1" id="reason-3" disabled="true" <?php if(substr($field_value_set['417']['field_value'],2,1)==1)  echo "checked"; ?> >
                     <label class="form-check-label" for="reason-3">Others </label>
-                    <?php if($field_value_set['420']['id']!=null)
-                    echo "<input type=\"hidden\" id=\"id_otherReason_id\" disabled name=\"field_value[420][id]\" value=\"".$field_value_set['420']['id']."\">";?>
+                    <?php echo "<input type=\"hidden\" id=\"id_otherReason_id\" disabled name=\"field_value[420][id]\" value=\"".$field_value_set['420']['id']."\">";?>
                     <textarea class="form-control" id="otherReason" rows="3" <?php if(substr($field_value_set['417']['field_value'],-1)!=1) echo "style=\"display:none;\" disabled"; ?> name="field_value[420][value]">
                     <?= $field_value_set['420']['field_value'] ?></textarea>
                 </div>
@@ -351,8 +335,7 @@
         <div class="card-body" id="prioritizeContent">
             <div class="row my-2">
                 <legend class="col-form-label col-sm-4 pt-0 text-right">Seriousness</legend>
-                <?php if($field_value_set['421']['id']!=null)
-                    echo "<input type=\"hidden\" id=\"id_seriousness_id\" disabled name=\"field_value[421][id]\" value=\"".$field_value_set['421']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_seriousness_id\" disabled name=\"field_value[421][id]\" value=\"".$field_value_set['421']['id']."\">";?>
                 <div class="col-sm-8 text-left">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="prioritize-seriousness-1" value="1" name="field_value[421][value]" <?php if($field_value_set['421']['field_value']==1) echo "checked"; ?> disabled>
@@ -374,8 +357,7 @@
             </div>
             <div class="row my-2">
                 <legend class="col-form-label col-sm-4 pt-0 text-right">Related</legend>
-                <?php if($field_value_set['422']['id']!=null)
-                    echo "<input type=\"hidden\" id=\"id_related_id\" disabled name=\"field_value[422][id]\" value=\"".$field_value_set['422']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" id=\"id_related_id\" disabled name=\"field_value[422][id]\" value=\"".$field_value_set['422']['id']."\">";?>
                 <div class="col-sm-8 text-left">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="prioritize-related-1" value="1" name="field_value[422][value]" <?php if($field_value_set['422']['field_value']==1) echo "checked"; ?> disabled>
@@ -389,8 +371,7 @@
             </div>
             <div class="row my-2">
                 <legend class="col-form-label col-sm-4 pt-0 text-right">Unlabelled</legend>
-                <?php if($field_value_set['423']['id']!=null)
-                    echo "<input type=\"hidden\" disabled id=\"id_unlabelled_id\" name=\"field_value[423][id]\" value=\"".$field_value_set['423']['id']."\">";?>
+                <?php echo "<input type=\"hidden\" disabled id=\"id_unlabelled_id\" name=\"field_value[423][id]\" value=\"".$field_value_set['423']['id']."\">";?>
                 <div class="col-sm-8 text-left">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="prioritize-unlabelled-1" value="1" name="field_value[423][value]" <?php if($field_value_set['423']['field_value']==1) echo "checked"; ?> disabled>
@@ -404,8 +385,7 @@
             </div>
             <input type="hidden" disabled id="id_case_type_id" name="field_value[500][id]" <?php echo "value=\"".$field_value_set['500']['id']."\""?>>
             <input type="hidden" disabled id="id_case_type_value" name="field_value[500][value]" <?php echo "value=\"".$field_value_set['500']['field_value']."\""?>>
-            <?php if($field_value_set['415']['id']!=null)
-                echo "<input type=\"hidden\" id=\"submissionDate_id\" name=\"field_value[415][id]\" disabled value=\"".$field_value_set['415']['id']."\">";?>
+            <?php echo "<input type=\"hidden\" id=\"submissionDate_id\" name=\"field_value[415][id]\" disabled value=\"".$field_value_set['415']['id']."\">";?>
             <?php echo "<input type=\"hidden\" id=\"submissionDate_value\" name=\"field_value[415][value]\" disabled value=\"".$field_value_set['415']['field_value']."\">";?>
             <div id="prioritizeType"></div>
             <button type="button" id="prioritizeBack" class="btn btn-outline-warning my-2 mx-2 w-25">Back</button>
