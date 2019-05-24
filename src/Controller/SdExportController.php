@@ -8,73 +8,39 @@ class SdExportController extends AppController
         //function for CIOMS and MEDWATCH: 
         //get direct value from sd_field_values table
         public function getDirectValue($caseId,$field_id,$set_num=null){
+            $more_conditions = "";
+            if (!is_null($set_num))
+            {
+                $more_conditions = "set_number=".$set_num;
+            }
             $sdFieldValues = TableRegistry::get('sdFieldValues');
             $direct =$sdFieldValues->find()
-                ->select(['id','field_value'])
-                ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'status=1']);
-            if($direct->count()==0){
-                return "";
-            }else if($direct->count()==1){
-                return $direct->first()['field_value'];
-            }else{
-                $valueWithSet=$sdFieldValues->find()
-                    ->select(['sdFieldValues.id','sdFieldValues.field_value','sets.set_array'])
-                    ->join([
-                        'sets' =>[
-                            'table'=>'sd_section_sets',
-                            'type'=>'INNER',
-                            'conditions'=>['sdFieldValues.id=sets.sd_field_value_id','sdFieldValues.sd_case_id='.$caseId,'sdFieldValues.sd_field_id='.$field_id,'sdFieldValues.status=1']
-                            ]
-                    ])->distinct('sets.set_array')->toList();
-                    //debug($valueWithSet);die;
-                foreach($valueWithSet as $value_details){
-                    if($value_details['sets']['set_array'][0]==$set_num){
-                        return $value_details['field_value'];
-                    }
-                }
-            }
-            
+                ->select(['field_value'])
+                ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'status=1',$more_conditions])->first();
+            $directValue=$direct['field_value'];
+            return $directValue;
         }
 
         //get caption value by join table sd_field_value_look_ups and sd_field_values together
         public function getLookupValue($caseId,$field_id,$set_num=null){
+            $more_conditions = "";
+            if (!is_null($set_num))
+            {
+                $more_conditions = "set_number=".$set_num;
+            }
             $sdFieldValues = TableRegistry::get('sdFieldValues');
-            $caption=$sdFieldValues->find()
-            ->select(['sdFieldValues.id','sdFieldValues.sd_field_id','sdFieldValues.field_value','look.caption'])
-            ->join([
-                'look' =>[
-                    'table' =>'sd_field_value_look_ups',
-                    'type'=>'INNER',
-                    'conditions'=>['sdFieldValues.sd_case_id='.$caseId,'sdFieldValues.sd_field_id=look.sd_field_id','sdFieldValues.sd_field_id='.$field_id,'sdFieldValues.field_value=look.value']
-                ]
-            ]);
-            if($caption->count()==0){
-                return "";
-            }else if($caption->count()==1){
-                return $caption->first()['look']['caption'];   
-            }else{
-                $caption=$sdFieldValues->find()
-                ->select(['sdFieldValues.id','sdFieldValues.sd_field_id','sdFieldValues.field_value','look.caption','sets.set_array'])
-                ->join([
-                    'look' =>[
-                        'table' =>'sd_field_value_look_ups',
-                        'type'=>'INNER',
-                        'conditions'=>['sdFieldValues.sd_case_id='.$caseId,'sdFieldValues.sd_field_id=look.sd_field_id','sdFieldValues.sd_field_id='.$field_id,'sdFieldValues.field_value=look.value','sdFieldValues.status=1']
-                    ]
-                ])
-                ->join([
-                    'sets' =>[
-                        'table'=>'sd_section_sets',
-                        'type'=>'INNER',
-                        'conditions'=>['sdFieldValues.id=sets.sd_field_value_id']
-                    ]
-                ])->distinct('sets.set_array')->toList();
-                foreach($caption as $caption_details){
-                    if($caption_details['sets']['set_array'][0]==$set_num){
-                        return $caption_details['look']['caption'];
-                    }
-                }
-            }   
+            $lookup= $sdFieldValues ->find()
+                ->select(['look.caption'])
+                 ->join([
+                        'look' =>[
+                            'table' =>'sd_field_value_look_ups',
+                            'type'=>'INNER',
+                            'conditions'=>['sd_case_id='.$caseId,'look.sd_field_id = sdFieldValues.sd_field_id','status=1',
+                                         'sdFieldValues.sd_field_id='.$field_id,'sdFieldValues.field_value=look.value',$more_conditions]
+                            ]
+                        ])->first();
+            $lookupValue=$lookup['look']['caption'];
+            return $lookupValue;
         }
 
         // convert month into MMM format
@@ -118,7 +84,8 @@ class SdExportController extends AppController
                     break;
                 case '12':
                     $monthFormat="DEC";
-                    default;
+                default: 
+                    $monthFormat="MMM";
                 }
             return $monthFormat;
         }
@@ -127,15 +94,16 @@ class SdExportController extends AppController
         public function getDateValue($caseId,$field_id,$set_num=null){
             $informalDate=$this->getDirectValue($caseId,$field_id,$set_num);
             $dayFormat=substr($informalDate,0,2);
-            if($dayFormat=='00'){
-                $dateFormat="unknown";
+            //debug($dayFormat);die();
+            if(($dayFormat=='00')&($dayFormat=='')){
+                $dateFormat="DD";
             }       
             else{
                 $dayFormat=$dayFormat."-";
             }
             $yearFormat=substr($informalDate,4,4);
             if($yearFormat=='00'){
-                $yearFormat=" ";
+                $yearFormat="YYYY";
             }       
             else{
                 $yearFormat="-".$yearFormat;
@@ -146,37 +114,25 @@ class SdExportController extends AppController
         //get suspect drugs' set number
         public function SuspectRole($caseId){
             $sdFieldValues = TableRegistry::get('sdFieldValues');
-            $suspect=$sdFieldValues->find()
-            ->select(['sdFieldValues.id','sets.set_array'])
-            ->join([
-                'sets' =>[
-                    'table'=>'sd_section_sets',
-                    'type'=>'INNER',
-                    'conditions'=>['sdFieldValues.id=sets.sd_field_value_id','sdFieldValues.field_value=1','sdFieldValues.sd_case_id='.$caseId,'sdFieldValues.sd_field_id=175','sdFieldValues.status=1']
-                    ]
-            ])->distinct('sets.set_array');
-            $suspectSet=array();
-            foreach($suspect as $suspect_details){
-                $suspectSet[]=$suspect_details['sets']['set_array'][0];
-            }
+                $suspect= $sdFieldValues->find()
+                    ->select(['set_number'])
+                    ->where(['sd_case_id='.$caseId,'sd_field_id=175','status=1','field_value=1']);
+                $suspectSet=array();
+                foreach($suspect as $suspect_details){
+                $suspectSet[]=$suspect_details['set_number'];
+                }
             return $suspectSet;
         }
         //get concomitant drugs' set number
         public function ConcomitantRole($caseId){
             $sdFieldValues = TableRegistry::get('sdFieldValues');
-            $concomitant=$sdFieldValues->find()
-            ->select(['sdFieldValues.id','sets.set_array'])
-            ->join([
-                'sets' =>[
-                    'table'=>'sd_section_sets',
-                    'type'=>'INNER',
-                    'conditions'=>['sdFieldValues.id=sets.sd_field_value_id','sdFieldValues.field_value=2','sdFieldValues.sd_case_id='.$caseId,'sdFieldValues.sd_field_id=175','sdFieldValues.status=1']
-                    ]
-            ])->distinct('sets.set_array');
-            $concomitantSet=array();
-            foreach($concomitant as $concomitant_details){
-                $concomitantSet[]=$concomitant_details['sets']['set_array'][0];
-            }
+                $concomitant= $sdFieldValues->find()
+                    ->select(['set_number'])
+                    ->where(['sd_case_id='.$caseId,'sd_field_id=175','status=1','field_value=2']);
+                $concomitantSet=array();
+                foreach($concomitant as $concomitant_details){
+                $concomitantSet[]=$concomitant_details['set_number'];
+                }
             return $concomitantSet;
         }
 
@@ -188,22 +144,12 @@ class SdExportController extends AppController
         //function of no.7+13
         public function getDescribeValue($caseId){
             $sdFieldValues = TableRegistry::get('sdFieldValues');
-            $events=$sdFieldValues->find()
-            ->select(['sdFieldValues.id','sdFieldValues.field_value','sets.sd_section_id','sets.set_array'])
-            ->join([
-                'sets' =>[
-                    'table'=>'sd_section_sets',
-                    'type'=>'INNER',
-                    'conditions'=>['sdFieldValues.id=sets.sd_field_value_id','sets.sd_section_id=26','sdFieldValues.sd_case_id='.$caseId,'sdFieldValues.sd_field_id=149','sdFieldValues.status=1']
-                    ]
-            ])->distinct('sets.set_array');
-            $reactionSet=array();
-            foreach($events as $events_details){
-                $reactionSet[]=$events_details['sets']['set_array'][0];
-            }
-            $length=count($reactionSet);
+            $eventQuantity= $sdFieldValues->find()
+            ->select(['set_number'])
+            ->where(['sd_case_id='.$caseId,'sd_field_id=149','status=1'])->toArray();
+            $length=count($eventQuantity);
             for($i=0;$i<$length;$i++){
-                $set_num=$reactionSet[$i];
+                $set_num=$eventQuantity[$i]['set_number'];
                 $primarySourceReaction= $this->getDirectValue($caseId,149,$set_num);
                     if($primarySourceReaction=="null"){
                         $primarySourceReaction=" ";
@@ -242,7 +188,6 @@ class SdExportController extends AppController
                 $j=$i+1;
                 $describe=$primarySourceReaction.$LLT.$PT."     ".$reactionOutcome."     ".$actionDrug;
                 $description.="#".$j.")  ".$describe."<br>";
-            }
                 $narrativeIncludeClinical= $this->getDirectValue($caseId,218,1);
                     if ($narrativeIncludeClinical=="null"){
                         $narrativeIncludeClinical=" ";
@@ -252,8 +197,9 @@ class SdExportController extends AppController
                         $resultsTestsProcedures=" ";
                     }
                 $result=$description."<br>".$narrativeIncludeClinical."<br>".$resultsTestsProcedures;
-                
+            }
             return $result;
+
         }
 
         //function of no.8-12 checkbox
@@ -308,7 +254,6 @@ class SdExportController extends AppController
                     $description=$query1.$substance.$countryObtained.$lotNumber; 
                     $j=$i+1;
                     $suspectProducts .= "#".$j.") ".$description."<br>";
-                    
                 }
             return $suspectProducts;
         }
@@ -488,20 +433,10 @@ class SdExportController extends AppController
         //function of no.23
         public function getCiomsRelevantValue($caseId){
             $sdFieldValues = TableRegistry::get('sdFieldValues');
-            $disease=$sdFieldValues->find()
-            ->select(['sdFieldValues.id','sets.set_array'])
-            ->join([
-                'sets' =>[
-                    'table'=>'sd_section_sets',
-                    'type'=>'INNER',
-                    'conditions'=>['sdFieldValues.id=sets.sd_field_value_id','sdFieldValues.sd_case_id='.$caseId,'sdFieldValues.sd_field_id=239','sdFieldValues.status=1']
-                    ]
-            ])->distinct('sets.set_array');
-            $diseaseSet=array();
-            foreach($disease as $disease_details){
-                $diseaseSet[]=$disease_details['sets']['set_array'][0];
-            }
-            $length=count($diseaseSet);
+            $disease= $sdFieldValues->find()
+                ->select(['set_number'])
+                ->where(['sd_case_id='.$caseId,'sd_field_id=239','status=1'])->toArray();
+            $length=count($disease,0);
                  for($i=1;$i<=$length;$i++){
                     $query1=$this->getDirectValue($caseId,239,$i);
                     $query2=$this->getDateValue($caseId,99,$i);
@@ -546,11 +481,9 @@ class SdExportController extends AppController
                 case '1':
                     $this->set('followup','checked');
                     break;
-                case '2':
+                default:
                     $this->set('initial','checked');
                     break;
-                
-                    default;
                 }
         }
     
@@ -654,6 +587,15 @@ class SdExportController extends AppController
                         $result=substr($date,4,4);
                         return $result;
                         break;
+                    case '7':
+                        $sdFieldValues = TableRegistry::get('sdFieldValues');
+                        $direct =$sdFieldValues->find()
+                            ->select(['field_value'])
+                            ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'status=1','set_number=1,'.$set_num])->first();
+                        $directValue=$direct['field_value'];
+                        return $directValue;
+                    default;
+
                 }
             }
             //call function getMedValue() and find position out
@@ -728,21 +670,49 @@ class SdExportController extends AppController
                         break;
                     case '7'://multiple checkbox
                         $checked=array();
-                        for($i=0;$i<6;$i++){
+                        for($i=0;$i<strlen($MedValue);$i++){
                             $checked[]=substr($MedValue,$i,1);
                         }
                         foreach($checked as $key=>$value){
-                            if($value==1){
+                            if($value=='1'){
                                 $positions=$sdMedwatchPositions->find()
                                 ->select(['position_top','position_left','position_width','position_height'])
-                                ->where(['sd_field_id='.$field_id,$more_conditions,'substr(sdMedwatchPositions.field_name,-1)='.$key])
+                                ->where(['sd_field_id='.$field_id,$more_conditions,'substr(sdMedwatchPositions.field_name,-1)='.$key+1])
                                 ->first();
                                 $text = $text." <style> p {position: absolute;}  </style>";
                                 $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                                             .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
+                            }else{
+                                continue;
                             }
                         }
                         break;
+                    case '8'://c6 compounded?
+                    $checked=array();
+                    for($i=0;$i<strlen($MedValue);$i++){
+                        $checked[]=substr($MedValue,$i,1);
+                    }
+                    $positions=$sdMedwatchPositions->find()
+                        ->select(['position_top','position_left','position_width','position_height'])
+                        ->where(['sd_field_id='.$field_id,$more_conditions,'substr(sdMedwatchPositions.field_name,-1)='.$checked[1],'value_type=6'])
+                        ->first();
+                        $text = $text." <style> p {position: absolute;}  </style>";
+                        $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
+                    break;
+                    case '9'://c7 OTC?
+                    $checked=array();
+                    for($i=0;$i<strlen($MedValue);$i++){
+                        $checked[]=substr($MedValue,$i,1);
+                    }
+                    $positions=$sdMedwatchPositions->find()
+                        ->select(['position_top','position_left','position_width','position_height'])
+                        ->where(['sd_field_id='.$field_id,$more_conditions,'substr(sdMedwatchPositions.field_name,-1)='.$checked[0],'value_type=7'])
+                        ->first();
+                        $text = $text." <style> p {position: absolute;}  </style>";
+                        $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
+                    break;
                     default;
                 }
                 return $text;
@@ -855,9 +825,11 @@ class SdExportController extends AppController
                 $result=$result.$this->getMedPosition($caseId,93,1,2);
                 //a4 weight
                 $result=$result.$this->getMedPosition($caseId,91,1,1);
-                $result=$result.'<p style="top: 202px; left: 366px; width: 18px;  height: 18px; color:black;">'.'X'.'</p>';
-                //a5 ethnicity
+                $result=$result.'<p style="top: 205px; left: 368px; width: 18px;  height: 18px; color:black;">'.'X'.'</p>';
+                //a5a ethnicity
                 $result=$result.$this->getMedPosition($caseId,235,1,2);
+                //a5b race
+                $result=$result.$this->getMedPosition($caseId,549,1,2);
                 //b1 adverse event
                 $result=$result.$this->getMedPosition($caseId,224,1,2);
                 // b2 serious
@@ -901,15 +873,19 @@ class SdExportController extends AppController
                 // //c2 concomitant medical products and therapy dates
                 $result=$result.$this->concomitantTherapyOne($caseId);
                 //c3#1 dose
-                $result=$result.$this->getMedPosition($caseId,183,1,1,$suspect[0]);
+                $dosageOne=$this->getMedValue($caseId,183,1,$suspect[0]).$this->getMedValue($caseId,184,2,$suspect[0]);
+                $result=$result.$this->getPosition($caseId,183,1,$dosageOne);
                 //c3#1 frequency
-                $result=$result.$this->getMedPosition($caseId,185,1,1,$suspect[0]);
+                $frequencyOne=$this->getMedValue($caseId,185,1,$suspect[0])."time(s)".$this->getMedValue($caseId,186,1,$suspect[0]).$this->getMedValue($caseId,187,2,$suspect[0]);
+                $result=$result.$this->getPosition($caseId,185,1,$frequencyOne);
                 //c3#1 route used
                 $result=$result.$this->getMedPosition($caseId,192,2,1,$suspect[0]);
                 //c3#2 dose
-                $result=$result.$this->getMedPosition($caseId,183,1,1,$suspect[1]);
+                $dosageTwo=$this->getMedValue($caseId,183,1,$suspect[1]).$this->getMedValue($caseId,184,2,$suspect[1]);
+                $result=$result.$this->getPosition($caseId,183,2,$dosageTwo);
                 //c3#2 frequency
-                $result=$result.$this->getMedPosition($caseId,185,1,1,$suspect[1]);
+                $frequencyTwo=$this->getMedValue($caseId,185,1,$suspect[1])."time(s)".$this->getMedValue($caseId,186,1,$suspect[1]).$this->getMedValue($caseId,187,2,$suspect[1]);
+                $result=$result.$this->getPosition($caseId,185,2,$frequencyTwo);
                 //c3#2 route used
                 $result=$result.$this->getMedPosition($caseId,192,2,1,$suspect[1]);
                 //c4#1 start day
@@ -925,13 +901,13 @@ class SdExportController extends AppController
                 //c5#2 diagnosis for use
                 $result=$result.$this->getMedPosition($caseId,197,1,1,$suspect[1]);
                 //c6#1 is the product compounded?
-                $result=$result.$this->getMedPosition($caseId,439,1,2,$suspect[0]);
+                $result=$result.$this->getMedPosition($caseId,425,1,8,$suspect[0]);
                 //c6#2 is the product compounded?
-                $result=$result.$this->getMedPosition($caseId,439,1,2,$suspect[1]);
+                $result=$result.$this->getMedPosition($caseId,425,1,8,$suspect[1]);
                  //c7#1 Is the product over-the-counter?
-                $result=$result.$this->getMedPosition($caseId,425,1,2,$suspect[0]);
+                $result=$result.$this->getMedPosition($caseId,425,1,9,$suspect[0]);
                 //c7#2 Is the product over-the-counter?
-                $result=$result.$this->getMedPosition($caseId,425,1,2,$suspect[1]);
+                $result=$result.$this->getMedPosition($caseId,425,1,9,$suspect[1]);
                 // c8#1 expiration date
                 $result=$result.$this->getMedPosition($caseId,298,4,4,$suspect[0]);//day
                 $result=$result.$this->getMedPosition($caseId,298,5,5,$suspect[0]);//month
@@ -941,13 +917,13 @@ class SdExportController extends AppController
                 $result=$result.$this->getMedPosition($caseId,298,5,5,$suspect[1]);//month
                 $result=$result.$this->getMedPosition($caseId,298,6,6,$suspect[1]);//year
                 //c9#1 dechallenge?
-                $result=$result.$this->getMedPosition($caseId,381,1,2,$suspect[0]);
+                //$result=$result.$this->getMedPosition($caseId,381,7,2,$suspect[0]);
                 //c9#2 dechallenge?
-                $result=$result.$this->getMedPosition($caseId,381,1,2,$suspect[1]);
+                //$result=$result.$this->getMedPosition($caseId,381,7,2,$suspect[1]);
                 //c10#1 rechallenge?
-                $result=$result.$this->getMedPosition($caseId,209,1,2,$suspect[0]);
+                //$result=$result.$this->getMedPosition($caseId,209,7,2,$suspect[0]);
                 //c10#2 rechallenge?
-                $result=$result.$this->getMedPosition($caseId,209,1,2,$suspect[1]);
+                //$result=$result.$this->getMedPosition($caseId,209,7,2,$suspect[1]);
                 // e1 last name
                 $result=$result.$this->getMedPosition($caseId,28,1,1);
                 //e1 first name
