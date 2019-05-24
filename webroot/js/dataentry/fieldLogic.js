@@ -91,7 +91,9 @@ $(document).ready(function(){
         });
     }
 
-    //change general tab date format
+    
+
+    //change general tab date format shown on screen
     function dateConvert(target){
         var sectionId=$(target).attr('id');
         if(typeof sectionId!='undefined'){
@@ -101,8 +103,8 @@ $(document).ready(function(){
         }
         var fieldId=$(target).attr('id').split('-')[3];
         var date=$(target).val();
-        if((date!="undefined")&&(date!="")){
-            var dateInformat=date.substring(0,2)+"-"+date.substring(2,4)+"-"+date.substring(4,8);
+        if((typeof date!="undefined")&&(date!="")){
+            var dateInformat=date.substring(2,4)+" / "+date.substring(0,2)+" / "+date.substring(4,8);
             $("#specified-date-section-"+sectionId+"-date-"+fieldId).val(dateInformat);
         }else{
             $("#specified-date-section-"+sectionId+"-date-"+fieldId).val("");
@@ -126,19 +128,19 @@ $(document).ready(function(){
     $("[id^=specified-]").change(function(){
         let sectionId = $(this).attr('id').split('-')[3];
         let fieldId = $(this).attr('id').split('-')[5];
-        let date = $("#specified-date-section-"+sectionId+"-date-"+fieldId).val().split('-');
-        $("#section-"+sectionId+"-date-"+fieldId).val(date[0]+date[1]+date[2]);
+        let date = $("#specified-date-section-"+sectionId+"-date-"+fieldId).val().split(' / ');
+        $("#section-"+sectionId+"-date-"+fieldId).val(date[1]+date[0]+date[2]);
     });
     //show user friendly date format
 
-    //grey out fields
-    function greyout(target){
+    //gray out fields
+    function grayout(target){
         $(target).prop("disabled", true);
     }
     // General Tab:
         //-> Admin section
-        //greyout some date fields
-        greyout("#specified-date-section-1-date-10,#specified-date-section-1-date-12,#specified-date-section-1-date-225");
+        //grayout some date fields
+        grayout("#specified-date-section-1-date-10,#specified-date-section-1-date-12,#specified-date-section-1-date-225");
         // For Additional documents (A.1.8.1) select and add document
         selectShowORhide ("#section-1-field-355, #section-1-field-14","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
         //add upload files button
@@ -283,16 +285,17 @@ $(document).ready(function(){
             checkboxShowORhide('#section-5-field-240,#section-5-field-241,#section-5-field-102',"#section-5-radio-100-option-2,#section-5-radio-100-option-3","#section-5-radio-100-option-1");
     // Product Tab:
         // If "Ongoing field checked", then Therapy End date (B.4.k.14b) DISABLED
-            $("#section-22-checkbox-434-option-1").change(function(){
-                if($(this).prop('checked')){
-                    $('#section-22-date-205').prop('disabled',true);
-                }
-
-                if(!$(this).prop('checked')){
-                    $('#section-22-date-205').prop('disabled',false);
-                }
-            });
-            //checkboxShowORhide ('#section-22-field-206, #section-22-field-207,#section-22-field-205', "#section-22-checkbox-434-option-1");
+            function optionalGrayout(target,option){
+                $("#section-22-checkbox-434-option-1").change(function(){
+                    var checked=$(option).val().substring(0,1);
+                    if (checked==1){
+                        $(target).prop("disabled", true);
+                    }else{
+                        $(target).prop("disabled", false);
+                    }
+                });
+            }
+            optionalGrayout("#unspecified-day_section-22-unspecifieddate-205,#unspecified-month_section-22-unspecifieddate-205,#unspecified-year_section-22-unspecifieddate-205,#section-22-text-206,#section-22-select-207","#section-22-checkbox-434-2-final");
     //Event Tab:
         //->Assessment add subtitle
         $("#section-29-field-7").parent().prepend('<h5 class="col-md-12 mb-3">Reporter Assessment</h5>');
@@ -344,7 +347,40 @@ $(document).ready(function(){
             //         (target,target1).hide();
             //     }
             // });
-
+    //General:date format validation
+    function checkValue(str, max) {
+      if (str.charAt(0) !== '0' || str == '00') {
+        var num = parseInt(str);
+        if (isNaN(num) || num <= 0 || num > max) num = 1;
+        str = num > parseInt(max.toString().charAt(0)) && num.toString().length == 1 ? '0' + num : num.toString();
+      };
+      return str;
+    };
+    function dateListner(target){
+        var date = document.getElementById(target);
+        if(date==null){
+            return;
+        }else{
+            date.addEventListener('input', function(e) {
+            this.type = 'text';
+            var input = this.value;
+            if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
+            var values = input.split('/').map(function(v) {
+                return v.replace(/\D/g, '')
+            });
+            if (values[0]) values[0] = checkValue(values[0], 12);
+            if (values[1]) values[1] = checkValue(values[1], 31);
+            var output = values.map(function(v, i) {
+                return v.length == 2 && i < 2 ? v + ' / ' : v;
+            });
+            this.value = output.join('').substr(0, 14);
+            });
+        }
+    }
+    dateListner('specified-date-section-1-date-5');
+    dateListner('specified-date-section-1-date-414');
+    dateListner('specified-date-section-1-date-415');
+    dateListner('specified-date-section-55-date-388');
 });
     
     

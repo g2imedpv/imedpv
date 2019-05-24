@@ -595,7 +595,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                             $text =$text. "value=\"";
                             (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?$text =$text.$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value:$text =$text.null;
                             $text =$text. "\" type=\"hidden\">";
-                            $text =$text. "<input type=\"text\" class=\"form-control\" placeholder=\"dd-mm-yyyy\" id=\"specified-date-section-".$section->id."-date-".$sd_section_structure_detail->sd_field->id."\" value=\"\" >";
+                            $text =$text. "<input type=\"text\" class=\"form-control\" placeholder=\"mm / dd / yyyy\" id=\"specified-date-section-".$section->id."-date-".$sd_section_structure_detail->sd_field->id."\" value=\"\" >";
                             continue;
                         case 'whodra browser':
                             if($permission==1){
