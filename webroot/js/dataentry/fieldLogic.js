@@ -14,16 +14,16 @@ $(document).ready(function(){
             $(this).find("input[name*=\\[id\\]]").val(val);
         });
     });
-    // $("[name*=\\[field_value\\]]").change(function(){
-    //     if(autoChangeflag) return false; 
-    //     autoChangeflag = true;
-    //     let field_id = $(this).parent().attr('id').split("-")[3];
-    //     let val = $(this).val();
-    //     $("[id*=field-"+field_id+"]").each(function(){
-    //         $(this).find("input[name*=\\[field_value\\]]").val(val).trigger("change");
-    //     });
-    //     autoChangeflag = false;
-    // });
+    $("[name*=\\[field_value\\]]").change(function(){
+        if(autoChangeflag) return false; 
+        autoChangeflag = true;
+        let field_id = $(this).attr('id').split("-")[3];
+        let val = $(this).val();
+        $("[id$=field-"+field_id+"]").each(function(){
+            $(this).find("input[name*=\\[field_value\\]]").val(val).trigger("change");
+        });
+        autoChangeflag = false;
+    });
     $('#section-48-select-501').change(function(){
         if(autoChangeflag) return false;
         var countrySelected = $(this).find('option:selected').text();

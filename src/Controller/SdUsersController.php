@@ -187,7 +187,6 @@ class SdUsersController extends AppController
                             ]
                         ])->toArray();
             $parceObj = [];
-
             foreach($previousActivities as $previousActivity){
                 $previousUserOnPreviousActivity = TableRegistry::get('SdCaseHistories')->find()
                             ->select(['sd_user_id','user.firstname','user.lastname','company.company_name','close_time'])
@@ -249,45 +248,68 @@ class SdUsersController extends AppController
                                 'conditions'=>['SdWorkflowActivities.sd_workflow_id = pw.sd_workflow_id','pw.id ='.$case['sd_product_workflow_id']]
                             ]
                         ])
-                        ->where(['SdWorkflowActivities.order_no'=>$newtOrder])->first();
-            if($nextActivity==""){
-//TODO
+                        ->where(['SdWorkflowActivities.order_no'=>$newtOrder])->toArray();
+            if(count($nextActivity)==0){
+                //TODO
+                $activity = [];
+                $productWorkflow = TableRegistry::get('SdProductWorkflows')->get(['id'=>$case['sd_product_workflow_id']]);
+                $workflow = TableRegistry::get('SdWorkflows')->get($productWorkflow['sd_workflow_id']);
+                if($workflow['classification'] == 1)
+                    $parceObj['actvity'] = "end";
+                else{
+                    $links_table = TableRegistry::get("SdWorkflowActivities")->find()
+                                    ->select(['SdWorkflowActivities.id','SdWorkflowActivities.order_no','SdWorkflowActivities.activity_name','links.distribution'])
+                                    ->join([
+                                        'links'=>[
+                                            'table'=>'sd_accessment_distribution_links',
+                                            'type'=>'INNER',
+                                            'conditions'=>['SdWorkflowActivities.sd_workflow_id = links.distribution',
+                                                        'links.sd_product_workflow_id'=>$case['sd_product_workflow_id']]
+                                        ]
+                                    ])
+                                    ->where(['SdWorkflowActivities.order_no'=>'1']);
+                    debug($links_table);
+
+                }
+            }else{
+                $activity = [];
+                $previousUserOnNextActivity = TableRegistry::get('SdCaseHistories')->find()
+                            ->select(['sd_user_id','user.firstname','user.lastname','company.company_name'])
+                            ->join([
+                                'user'=>[
+                                    'table'=>'sd_users',
+                                    'type'=>'INNER',
+                                    'conditions'=>['user.id = SdCaseHistories.sd_user_id']
+                                ],
+                                'company'=>[
+                                    'table'=>'sd_companies',
+                                    'type'=>'INNER',
+                                    'conditions'=>['company.id = user.sd_company_id']                                
+                                ]
+                            ])
+                            ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$nextActivity['0']['id']])
+                            ->order(['close_time'=>'DESC'])->toArray();            
+                $activity = [];
+                $activity['previousUserOnNextActivity'] = $previousUserOnNextActivity;
+                $activity['actvity'] = $nextActivity['0'];
+                // debug($nextActivity);
+                $users = $this->SdUsers->find()
+                ->select(['SdUsers.id','SdUsers.firstname','SdUsers.lastname'])
+                ->contain(['SdCases'=>function($q){
+                    return $q->select(['casesCount'=>$q->func()->count('SdCases.id'),'SdCases.sd_user_id']);
+                }])
+                ->join([
+                    'ua'=>[
+                        'table'=>'sd_user_assignments',
+                        'type'=>'INNER',
+                        'conditions'=>['ua.sd_product_workflow_id ='.$case['sd_product_workflow_id'],
+                                        'ua.sd_workflow_activity_id = '.$nextActivity['0']['id'],'ua.sd_user_id = SdUsers.id']
+                    ]
+                ])->toArray();
+                $activity['users'] = $users;
+                $activity['caseValidate'] = $this->request->getSession()->read('caseValidate.'.$case['id']);
+                $parceObj['0'] = $activity;
             }
-            $previousUserOnNextActivity = TableRegistry::get('SdCaseHistories')->find()
-                        ->select(['sd_user_id','user.firstname','user.lastname','company.company_name'])
-                        ->join([
-                            'user'=>[
-                                'table'=>'sd_users',
-                                'type'=>'INNER',
-                                'conditions'=>['user.id = SdCaseHistories.sd_user_id']
-                            ],
-                            'company'=>[
-                                'table'=>'sd_companies',
-                                'type'=>'INNER',
-                                'conditions'=>['company.id = user.sd_company_id']                                
-                            ]
-                        ])
-                        ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$nextActivity['id']])
-                        ->order(['close_time'=>'DESC'])->toArray();            
-            $parceObj = [];
-            $parceObj['previousUserOnNextActivity'] = $previousUserOnNextActivity;
-            $parceObj['actvity'] = $nextActivity;
-            // debug($nextActivity);
-            $users = $this->SdUsers->find()
-            ->select(['SdUsers.id','SdUsers.firstname','SdUsers.lastname'])
-            ->contain(['SdCases'=>function($q){
-                return $q->select(['casesCount'=>$q->func()->count('SdCases.id'),'SdCases.sd_user_id']);
-            }])
-            ->join([
-                'ua'=>[
-                    'table'=>'sd_user_assignments',
-                    'type'=>'INNER',
-                    'conditions'=>['ua.sd_product_workflow_id ='.$case['sd_product_workflow_id'],
-                                    'ua.sd_workflow_activity_id = '.$nextActivity['id'],'ua.sd_user_id = SdUsers.id']
-                ]
-            ])->toArray();
-            $parceObj['users'] = $users;
-            $parceObj['caseValidate'] = $this->request->getSession()->read('caseValidate.'.$case['id']);
             echo json_encode($parceObj);
             die();
         }
