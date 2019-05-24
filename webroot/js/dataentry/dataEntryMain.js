@@ -1,10 +1,10 @@
 $(document).ready(function(){
     $('[name$=\\[field_value\\]').change(function(){
+        console.log($(this));
         let id = $(this).attr('id').split('-');
-        $('[id=section-'+id[1]+'-error_message-'+id[3]+']').text();
-        $('[id=section-'+id[1]+'-error_message-'+id[3]+']').hide();
-
-        $("div[id=section-"+id[1]+"-field-"+id[3]+']').each(function(){
+        $('#section-'+id[1]+'-error_message-'+id[3]).text();
+        $('#section-'+id[1]+'-error_message-'+id[3]).hide();
+        $("#section-"+id[1]+"-field-"+id[3]).each(function(){
             let field_value = null;
             if($(this).find("[name$=\\[field_value\\]]").length){
                 field_type = $(this).find("[name$=\\[field_value\\]]").attr('id').split('-')[2];
@@ -22,6 +22,7 @@ $(document).ready(function(){
                 }
             }
             if(($(this).find("[name$=\\[field_rule\\]]").length)&&(field_value!="")){
+                
                 let rule = $(this).find("[name$=\\[field_rule\\]]").val().split("-");
                 if((rule[1]=="N")&&(!/^[0-9]+$/.test(field_value)))
                 {
@@ -294,7 +295,7 @@ function renderSummaries(section_id, pageNo){
                                 console.log(field_value_detail);
                                 rowtext = rowtext + dynamic_options[field_detail.descriptor.split('-')[1]][field_value_detail.field_value]
                                 
-                            }
+                            }//TODO ADD DATE RENDER LOGIC
                             else{
                             $.each(field_detail.sd_field_value_look_ups,function(k, look_ups){
                                 if(look_ups.value == field_value_detail.field_value){
@@ -460,6 +461,7 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = false) {
     }
     //for each field
     $("[id^=input-").each(function(){
+        $(this).find("[id^=llt-searchbar]").val("");
         let orignalId = $(this).attr('id').split('-')[1];
         
         let sectionId = $(this).attr('id').split('-')[1];
@@ -1078,6 +1080,15 @@ jQuery(function($) {
     $(document).ready(function() {
         $("input,textarea,select[name$=\\[field_value\\]]").change(function () {
             // console.log(this);
+            if(!autoChangeflag)
+                $("[id^=save-btn"+$(this).attr('id').split('-')[1]+"]").show();
+         });
+         
+         $("input[id^=specified-date]").change(function (){
+            if(!autoChangeflag)
+                $("[id^=save-btn"+$(this).attr('id').split('-')[1]+"]").show();
+         });
+         $("input[id^=unspecified-day]").change(function (){
             if(!autoChangeflag)
                 $("[id^=save-btn"+$(this).attr('id').split('-')[1]+"]").show();
          });
