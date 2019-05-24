@@ -245,7 +245,6 @@ $(document).ready(function(){
     $("#reporterField_latestreceiveddate_plugin").change(function(){
         dayZero = $(this).val();
         dayZeroformat= dayZero.split('-').reverse()[0]+dayZero.split('-').reverse()[1]+dayZero.split('-').reverse()[2];
-        console.log(dayZero);
         $("#reporterField_regulatoryclockstartddate").val(dayZeroformat);
         $("#reporterField_latestreceiveddate").val(dayZeroformat);
         if(versionNo == 1){

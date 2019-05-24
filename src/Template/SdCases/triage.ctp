@@ -85,21 +85,22 @@
                         ?>
                         </select>
                     </div>
-                        <div class="col-sm-4">
-                            <select class="custom-select js-example-basic-single"  name="field_value[85][value]" placeholder="Month" id="patientField_dob_month">
-                            <?php
-                            $month_str = ['Jan-1','Feb-2','Mar-3','Apr-4','May-5','Jun-6','Jul-7','Aug-8','Sep-9','Oct-10','Nov-11','Dec-12'];
-                            echo "<option value=\"00\">Month</option>";
-                            foreach($month_str as $i => $month){
-                                echo "<option value=\"".sprintf("%02d",$i+1)."\"";
-                                if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],2,2)==sprintf("%02d",$i+1))) echo "selected";
-                                echo ">".$month."</option>";
-                            }
-                            ?>
-                            </select>
-                        </div>
+                    <div class="col-sm-4">
+                        <select class="custom-select js-example-basic-single"  name="field_value[85][value]" placeholder="Month" id="patientField_dob_month">
+                        <?php
+                        $month_str = ['Jan-1','Feb-2','Mar-3','Apr-4','May-5','Jun-6','Jul-7','Aug-8','Sep-9','Oct-10','Nov-11','Dec-12'];
+                        echo "<option value=\"00\">Month</option>";
+                        foreach($month_str as $i => $month){
+                            echo "<option value=\"".sprintf("%02d",$i+1)."\"";
+                            if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],2,2)==sprintf("%02d",$i+1))) echo "selected";
+                            echo ">".$month."</option>";
+                        }
+                        ?>
+                        </select>
+                    </div>
                     <div class="col-sm-4">
                         <select class="custom-select js-example-basic-single yearSelect" placeholder="Year" id="patientField_dob_year" name="field_value[85][value]">
+                        <option value="0000">Year</option>
                         <?php
                         for($i=1900;$i<=2050;$i++){
                             echo "<option value=\"".sprintf("%04d",$i)."\"";
@@ -107,7 +108,6 @@
                             echo ">".$i."</option>";
                         }
                         ?>
-                            <option value="0000">Year</option>
                         </select>
                     </div>
                     <?php

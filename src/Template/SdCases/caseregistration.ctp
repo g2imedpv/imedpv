@@ -119,32 +119,45 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Patient Date of Birth:</label>
+                                    <?php if($field_value_set['85']['id']!=null)
+                                    echo "<input type=\"hidden\" id=\"id_patientField_dob_id\" name=\"field_value[85][id]\" value=\"".$field_value_set['85']['id']."\">";?>
                                     <div class="form-row">
                                         <div class="col-sm-4">
-                                            <select id="dobDay" class="custom-select js-example-basic-single daySelect" placeholder="Day">
-                                                <option value="00">Day</option>
+                                            <select class="custom-select js-example-basic-single" placeholder="Day" id="patientField_dob_day" name="field_value[85][value]">
+                                            <?php
+                                            echo "<option value=\"00\">Day</option>";
+                                            for($i=1;$i<32;$i++){
+                                                echo "<option value=\"".sprintf("%02d",$i)."\"";
+                                                if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],0,2)==sprintf("%02d",$i))) echo "selected";
+                                                echo ">".$i."</option>"; 
+                                            }
+                                            ?>
                                             </select>
                                         </div>
                                         <div class="col-sm-4">
-                                            <select id=dobMonth class="custom-select js-example-basic-single monthSelect" placeholder="Month">
-                                                <option value="00">Month</option>
-                                                <option value="01">Jan-1</option>
-                                                <option value="02">Feb-2</option>
-                                                <option value="03">Mar-3</option>
-                                                <option value="04">Apr-4</option>
-                                                <option value="05">May-5</option>
-                                                <option value="06">Jun-6</option>
-                                                <option value="07">Jul-7</option>
-                                                <option value="08">Aug-8</option>
-                                                <option value="09">Sep-9</option>
-                                                <option value="10">Oct-10</option>
-                                                <option value="11">Nov-11</option>
-                                                <option value="12">Dec-12</option>
+                                            <select class="custom-select js-example-basic-single"  name="field_value[85][value]" placeholder="Month" id="patientField_dob_month">
+                                            <?php
+                                            $month_str = ['Jan-1','Feb-2','Mar-3','Apr-4','May-5','Jun-6','Jul-7','Aug-8','Sep-9','Oct-10','Nov-11','Dec-12'];
+                                            echo "<option value=\"00\">Month</option>";
+                                            foreach($month_str as $i => $month){
+                                                echo "<option value=\"".sprintf("%02d",$i+1)."\"";
+                                                if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],2,2)==sprintf("%02d",$i+1))) echo "selected";
+                                                echo ">".$month."</option>";
+                                            }
+                                            ?>
                                             </select>
                                         </div>
                                         <div class="col-sm-4">
-                                            <select id="dobYear" class="custom-select js-example-basic-single yearSelect" placeholder="Year">
-                                                <option value="0000">Year</option>
+                                            <select class="custom-select js-example-basic-single yearSelect" placeholder="Year" id="patientField_dob_year" name="field_value[85][value]">
+                                            <option value="0000">Year</option>
+                                            <?php
+                                            for($i=1900;$i<=2050;$i++){
+                                                echo "<option value=\"".sprintf("%04d",$i)."\"";
+                                                if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],4,4)==sprintf("%02d",$i))) echo "selected";
+                                                echo ">".$i."</option>";
+                                            }
+                                            ?>
+                                                
                                             </select>
                                         </div>
                                     </div>
