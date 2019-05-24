@@ -841,6 +841,7 @@ function action(type){
             success:function(response){console.log(response);
                 response = JSON.parse(response);
                 console.log(response);
+                if('one' in response) response = response['one'];
                 text +="<div class=\"modal-header\">";
                 text +="<h3 class=\"modal-title text-center w-100\" id=\"exampleModalLabel\">Sign Off</h3>";
                 text +="<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
