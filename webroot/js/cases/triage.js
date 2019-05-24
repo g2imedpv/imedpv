@@ -243,14 +243,14 @@ $(document).ready(function(){
     dateConvert("#reporterField_latestreceiveddate");
     dateConvert("#reporterField_initialreceiveddate");
     $("#reporterField_latestreceiveddate_plugin").change(function(){
-        dayZero = $(this).val();
-        dayZeroformat= dayZero.split('-').reverse()[0]+dayZero.split('-').reverse()[1]+dayZero.split('-').reverse()[2];
-        console.log(dayZero);
-        $("#reporterField_regulatoryclockstartddate").val(dayZeroformat);
-        $("#reporterField_latestreceiveddate").val(dayZeroformat);
+        let dayVal = $(this).val();
+        dayZero= dayVal.split('-').reverse()[0]+dayVal.split('-').reverse()[1]+dayVal.split('-').reverse()[2];
+        console.log(dayVal);
+        $("#reporterField_regulatoryclockstartddate").val(dayZero);
+        $("#reporterField_latestreceiveddate").val(dayZero);
         if(versionNo == 1){
-            $("#reporterField_initialreceiveddate").val(dayZeroformat);
-            $("#reporterField_initialreceiveddate_plugin").val(dayZero);
+            $("#reporterField_initialreceiveddate").val(dayZero);
+            $("#reporterField_initialreceiveddate_plugin").val(dayVal);
         }
     })
     $("#reporterField_initialreceiveddate_plugin").change(function(){
@@ -475,7 +475,7 @@ function confirmEndTriage(){
         data:request,
         success:function(response){
             console.log(response);
-            // window.location.href = "/sd-cases/caselist";
+            window.location.href = "/sd-cases/caselist";
         },
         error:function(response){
             console.log(response.responseText);
