@@ -133,7 +133,7 @@ $(document).ready(function(){
         let date = $("#specified-date-section-"+sectionId+"-date-"+fieldId).val().split(' / ');
         $("#section-"+sectionId+"-date-"+fieldId).val(date[1]+date[0]+date[2]);
     });
-    //show user friendly date format
+    
 
     //gray out fields
     function grayout(target){

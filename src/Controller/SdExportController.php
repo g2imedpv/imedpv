@@ -85,7 +85,7 @@ class SdExportController extends AppController
                 case '12':
                     $monthFormat="DEC";
                 default: 
-                    $monthFormat="MMM";
+                    $monthFormat="";
                 }
             return $monthFormat;
         }
