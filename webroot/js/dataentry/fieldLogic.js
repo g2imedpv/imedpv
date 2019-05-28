@@ -71,7 +71,12 @@ $(document).ready(function(){
 
     // Logic for show or hide some field by SELECT options
     function selectShowORhide (target, optionA, optionB) {
-        $(target).hide();
+        if($(optionA).prop('checked')==true){
+            $(target).show();
+        }
+        if($(optionA).prop('checked')==false){
+            $(target).hide();
+        }
         $(optionA).click(function() {
             $(target).show();
         });
@@ -82,12 +87,17 @@ $(document).ready(function(){
 
     // Logic for show or hide some field by RADIO options
     function checkboxShowORhide (target, option) {
-        $(target).hide();
+        if($(option).prop('checked')==true){
+            $(target).show();
+        }
+        if($(option).prop('checked')==false){
+            $(target).hide();
+        }
         $(option).change(function(){
-            if($(this).prop('checked')){
+            if($(this).prop('checked')==true){
                 $(target).show();
             }
-            if(!$(this).prop('checked')){
+            if($(this).prop('checked')==false){
                 $(target).hide();
             }
         });
@@ -146,7 +156,7 @@ $(document).ready(function(){
         // For Additional documents (A.1.8.1) select and add document
         selectShowORhide ("#section-1-field-355, #section-1-field-14","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
         //add upload files button
-        var uploadDocButton="<button type=\"button\" class=\"btn btn-primary float-left\" data-toggle=\"modal\" data-target=\".uploadDoc\"><i class=\"fas fa-cloud-upload-alt\"></i> Upload Documents</button>";    
+        var uploadDocButton="<button type=\"button\" class=\"btn btn-primary float-left ml-3 mt-3\" data-toggle=\"modal\" data-target=\".uploadDoc\"><i class=\"fas fa-cloud-upload-alt\"></i> Upload Documents</button>";    
         $("#section-1-field_label-355").append(uploadDocButton);
         var uploadDocModal= "<form method=\"post\" action=\"/sd-documents/save/41\" enctype=\"multipart/form-data\">";
         uploadDocModal += "<div class=\"modal fade uploadDoc\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\">";
