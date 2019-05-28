@@ -995,10 +995,24 @@ class SdCasesController extends AppController
                     'conditions'=>['pd.id = pwf.sd_product_id']
                 ]
             ])->first();
-        $field_ids = ['10','176','85','79','93','86','87','12','26','28','149','394','457','392','458','496','395','417','420','421','422','423','223','415','500', '225'];
+        $event_ids = ['149','496','392','457','394','458'];
+        $fieldValue_Table = TableRegistry::get('SdFieldValues');
+        $event_set = [];
+        foreach($event_ids as $field_id){
+            try{
+            $event_field_values = $fieldValue_Table->find()->where(['sd_case_id'=>$case['id'],'sd_field_id'=>$field_id,'status'=>'1']);
+            foreach($event_field_values as $event_field){
+                $event_set[$event_field['set_number']][$field_id]['field_value'] = $event_field['field_value'];
+                $event_set[$event_field['set_number']][$field_id]['id'] = $event_field['id'];
+            }
+            }catch (\PDOException $e){
+                $event_set = null;
+            }
+        }
+        $field_ids = ['10','176','85','79','93','86','87','12','26','28','395','417','420','421','422','423','223','415','500', '225'];
         $versionup_fields = [''];
         
-        $fieldValue_Table = TableRegistry::get('SdFieldValues');
+        
         $field_value_set = [];
         foreach($field_ids as $field_id){
             try{
@@ -1035,7 +1049,7 @@ class SdCasesController extends AppController
         $sdDocList = $docList->toArray();
         $this->set(compact('sdDocList'));
         // end of document list
-        $this->set(compact('case','caseNo','versionNo','field_value_set'));
+        $this->set(compact('case','caseNo','versionNo','field_value_set','event_set'));
     }
 
     /**
