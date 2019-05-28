@@ -144,114 +144,56 @@ $(document).ready(function(){
         // For Additional documents (A.1.8.1) select and add document
         selectShowORhide ("#section-1-field-355, #section-1-field-14","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
         //add upload files button
-        //     uploadDocButton="<button type=\"button\" class=\"btn btn-primary float-left mt-3 ml-4\" data-toggle=\"modal\" data-target=\".uploadDoc\"><i class=\"fas fa-cloud-upload-alt\"></i> Upload Documents</button>";
-        //     var uploadDocBtn ="<head><script>var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;";
-        //     uploadDocBtn +="var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>; </script></head>";
-        //     uploadDocBtn +="<body><form method=\"post\" action=\"/sd-documents/save/66\" id=\"uploaddoc\" enctype=\"multipart/form-data\">";
-        //     uploadDocBtn +="<div style=\"display:none;\">";
-        //     uploadDocBtn +="<input type=\"hidden\" name=\"_method\" value=\"POST\"/>";
-        //     uploadDocBtn +="<input type=\"hidden\" name=\"_csrfToken\" autocomplete=\"off\" value=<?= json_encode($this->request->getParam('_csrfToken')) ?>/></div>";
-        //     uploadDocBtn += "<div class=\"modal fade uploadDoc\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\">";
-        //     uploadDocBtn += "<div class=\"modal-dialog modal-xl\">";
-        //     uploadDocBtn += "<div class=\"modal-content\">";
-        //     uploadDocBtn += "<div class=\"modal-header\">";
-        //     uploadDocBtn += "<h5 class=\"modal-title\" id=\"exampleModalCenterTitle\">Upload Documents</h5>";
-        //     uploadDocBtn += "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
-        //     uploadDocBtn += "<span aria-hidden=\"true\">&times;</span>";
-        //     uploadDocBtn += "</button>";
-        //     uploadDocBtn += "</div>";
-        //     uploadDocBtn += "<div class=\"modal-body\">";
-        //     uploadDocBtn += "<button id=\"addNewAttach\" type=\"button\" class=\"btn btn-outline-primary mb-3 float-left\"><i class=\"fas fa-folder-plus\"></i> Add New</button>";
-        //     uploadDocBtn += "<div class=\"form-row mb-3 d-block\">";
-        //     uploadDocBtn += "<table class=\"table table-hover\">";
-        //     uploadDocBtn += "<thead>";
-        //     uploadDocBtn += "<tr>";
-        //     uploadDocBtn += "<th scope=\"col\">Classification</th>";
-        //     uploadDocBtn += "<th scope=\"col\">Description</th>";
-        //     uploadDocBtn += "<th scope=\"col\">Type</th>";
-        //     uploadDocBtn += "<th scope=\"col\">File/Reference</th>";
-        //     uploadDocBtn += "<th scope=\"col\">Action</th>";
-        //     uploadDocBtn += "</tr>";
-        //     uploadDocBtn += "</thead>";
-        //     uploadDocBtn += "<tbody id=\"newAttachArea\">";
-        //     uploadDocBtn += "<tr>";
-        //     uploadDocBtn += "<th scope=\"row\"><input class=\"form-control\" name=\"doc_classification_0\" id=\"doc_classification_0\" type=\"text\"></th>";
-        //     uploadDocBtn += "<td><input class=\"form-control\" name=\"doc_description_0\" id=\"doc_description_0\" type=\"text\"></td>";
-        //     uploadDocBtn += "<td><select class=\"custom-select\" name=\"doc_source_0\" id=\"doc_source_0\">";
-        //     uploadDocBtn += "<option value=\"File Attachment\">File Attachment</option>";
-        //     uploadDocBtn += "<option value=\"URL Reference\">URL Reference</option>";
-        //     uploadDocBtn += "</select>";
-        //     uploadDocBtn += "</td>";
-        //     uploadDocBtn += "<td><input class=\"form-control\" style=\"display:none;\" name=\"doc_path_0\" id=\"doc_path_0\" type=\"text\">";
-        //     uploadDocBtn += "<input name=\"doc_attachment_0\" id=\"doc_attachment_0\" type=\"file\"></td> ";                                 
-        //     uploadDocBtn += "<td><button type=\"button\" class=\"btn btn-outline-danger btn-sm my-1 w-100 attachDel\">Delete</button></td>";
-        //     uploadDocBtn += "</tr>";
-        //     uploadDocBtn += "</tbody>";
-        //     uploadDocBtn += "</table>";
-        //     uploadDocBtn += "</div>";
-        //     uploadDocBtn += "</div>";
-        //     uploadDocBtn += "<div class=\"modal-footer\">";
-        //     uploadDocBtn += "<button type=\"submit\" class=\"btn btn-primary mx-2\" onclick=\"uploaddoc.submit()\">Upload Files</button>";
-        //     uploadDocBtn += "</div>";
-        //     uploadDocBtn += "</div>";
-        //     uploadDocBtn += "</div>";
-        //     uploadDocBtn += "</div>";
-        //     uploadDocBtn += "</form></body>"
-        // $("#section-1-field_label-355").append(uploadDocButton);
-        // $(".dataentry").append(uploadDocBtn);
-        //new add file rows
-        $(function(){
-            function fileUrlSwitcher () {
-                $('[id^=doc_source]').each(function(s,v){
-                    //console.log($(this));
-                    $(this)
-                    .change(function () {
-                        if ($( "#doc_source_"+s+" option:selected" ).val() == 'File Attachment')
-                        {
-                            $('#doc_attachment_'+s).show();
-                            $('#doc_path_'+s).hide();
-                        }
-                        else if ($( "#doc_source_"+s+" option:selected" ).val() == 'URL Reference')
-                        {
-                            $('#doc_attachment_'+s).hide();
-                            $('#doc_path_'+s).show();
-                        }
-                    })
-                });
-            };
-            var attachCount = 1;
-            $('#addNewAttach').click(function(){
-                var newattach = "";
-                newattach += "<tr>";
-                    newattach += "<th scope=\"row\">";
-                        newattach += "<input type=\"text\" class=\"form-control\" name=\"doc_classification_" + attachCount + "\" id=\"doc_classification_" + attachCount + "\">";
-                    newattach += "</th>";
-                    newattach += "<td>";
-                        newattach += "<input type=\"text\" class=\"form-control\" name=\"doc_description_" + attachCount + "\" id=\"doc_description_" + attachCount + "\">";
-                    newattach += "</td>";
-                    newattach += "<td>";
-                        newattach += "<select class=\"custom-select\" name=\"doc_source_" + attachCount + "\" id=\"doc_source_" + attachCount + "\">";
-                            newattach += "<option value=\"File Attachment\">File Attachment</option>";
-                            newattach += "<option value=\"URL Reference\">URL Reference</option>";
-                        newattach += "</select>";
-                    newattach += "</td>";
-                    newattach += "<td>";
-                        newattach += "<input type=\"text\" class=\"form-control\" style=\"display:none;\" name=\"doc_path_" + attachCount + "\" id=\"doc_path_" + attachCount + "\">";
-                        newattach += "<input type=\"file\" name=\"doc_attachment_" + attachCount + "\" id=\"doc_attachment_" + attachCount + "\">";
-                    newattach += "</td>";
-                    newattach += "<td>";
-                        newattach += "<button type=\"button\" class=\"btn btn-outline-danger btn-sm my-1 w-100 attachDel\">Delete</button>";
-                    newattach += "</td>";
-                newattach += "</tr>";
-                $('#newAttachArea').append(newattach);
-                attachCount++;
-                fileUrlSwitcher();
-                // Delete row button
-                $('.attachDel').click(function(){
-                    $(this).parent().parent().remove();
-                });
-            });
-        });
+        var uploadDocButton="<button type=\"button\" class=\"btn btn-primary float-left\" data-toggle=\"modal\" data-target=\".uploadDoc\"><i class=\"fas fa-cloud-upload-alt\"></i> Upload Documents</button>";    
+        $("#section-1-field_label-355").append(uploadDocButton);
+        var uploadDocModal= "<form method=\"post\" action=\"/sd-documents/save/41\" enctype=\"multipart/form-data\">";
+        uploadDocModal += "<div class=\"modal fade uploadDoc\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\">";
+        uploadDocModal += "      <div class=\"modal-dialog modal-xl\">";
+        uploadDocModal += " <div class=\"modal-content\">";
+        uploadDocModal += "         <div class=\"modal-header\">";
+        uploadDocModal += "        <h5 class=\"modal-title\" id=\"exampleModalCenterTitle\">Upload Documents</h5>";
+        uploadDocModal += "             <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
+        uploadDocModal += "             <span aria-hidden=\"true\">&times;</span>";
+        uploadDocModal += "             </button>";
+        uploadDocModal += "           </div>";
+        uploadDocModal += "          <div class=\"modal-body\">";
+        uploadDocModal += "               <button id=\"addNewAttach\" type=\"button\" class=\"btn btn-outline-primary mb-3 float-left\"><i class=\"fas fa-folder-plus\"></i> Add New</button>";
+        uploadDocModal += "               <div class=\"form-row mb-3 d-block\">";
+        uploadDocModal += "                <table class=\"table table-hover\">";
+        uploadDocModal += "                    <thead>";
+        uploadDocModal += "                      <tr>";
+        uploadDocModal += "                            <th scope=\"col\">Classification</th>";
+        uploadDocModal += "                            <th scope=\"col\">Description</th>";
+        uploadDocModal += "                            <th scope=\"col\">Type</th>";
+        uploadDocModal += "                            <th scope=\"col\">File/Reference</th>";
+        uploadDocModal += "                            <th scope=\"col\">Action</th>";
+        uploadDocModal += "                       </tr>";
+        uploadDocModal += "                     </thead>";
+        uploadDocModal += "                    <tbody id=\"newAttachArea\">";
+        uploadDocModal += "                      <tr>";
+        uploadDocModal += "                        <th scope=\"row\"><input class=\"form-control\" name=\"doc_classification_0\" id=\"doc_classification_0\" type=\"text\"></th>";
+        uploadDocModal += "                        <td><input class=\"form-control\" name=\"doc_description_0\" id=\"doc_description_0\" type=\"text\"></td>";
+        uploadDocModal += "                        <td><select class=\"custom-select\" name=\"doc_source_0\" id=\"doc_source_0\">";
+        uploadDocModal += "                      <option value=\"File Attachment\">File Attachment</option>";
+        uploadDocModal += "                           <option value=\"URL Reference\">URL Reference</option>";
+        uploadDocModal += "                             </select>";
+        uploadDocModal += "                             </td>";
+        uploadDocModal += "                       <td><input class=\"form-control\" style=\"display:none;\" name=\"doc_path_0\" id=\"doc_path_0\" type=\"text\">";
+        uploadDocModal += "                        <input name=\"doc_attachment_0\" id=\"doc_attachment_0\" type=\"file\"></td>";                                 
+        uploadDocModal += "                <td><button type=\"button\" class=\"btn btn-outline-danger btn-sm my-1 w-100 attachDel\">Delete</button></td>";
+        uploadDocModal += "                   </tr>";
+        uploadDocModal += "                     </tbody>";
+        uploadDocModal += "                  </table>";
+        uploadDocModal += "              </div>";
+        uploadDocModal += "             </div>";
+        uploadDocModal += "           <div class=\"modal-footer\">";
+        uploadDocModal += "                <button type=\"submit\" class=\"btn btn-primary mx-2\" onclick=\" addDocuments(41)\">Upload Files</button>";
+        uploadDocModal += "            </div>";
+        uploadDocModal += "        </div>";
+        uploadDocModal += "     </div>";
+        uploadDocModal += "  </div></form>";
+        $(".dataentry").append(uploadDocModal);
+       
 
         // For Report Nullification (A.1.13) checkbox
         checkboxShowORhide ('#section-1-field-23',"#section-1-checkbox-22-option-1");
