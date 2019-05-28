@@ -163,13 +163,13 @@
                 <input type="date" class="form-control"  id="reporterField_initialreceiveddate_plugin" >
             </div>
             <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[225][id]\" value=\"".$field_value_set['225']['id']."\">";?>
-            <input type="hidden" class="form-control" name="field_value[225][value]" id="reporterField_regulatoryclockstartddate" value="<?= $field_value_set['10']['field_value']?>">
+            <input type="hidden" class="form-control" name="field_value[225][value]" id="reporterField_regulatoryclockstartddate" value="<?= $field_value_set['225']['field_value']?>">
 
         </div>
         <h4 class="text-left mt-3">Event</h4>
         <button type="button" onclick="addEvent()"> Add Event</button>
         <?php 
-            foreach($event_set as $event_detail){
+            foreach($event_set as $setNo => $event_detail){
         ?>
         <div class="form-row bg-light">
             <div class="form-group col-md-4">
@@ -189,7 +189,10 @@
                     $meddraCell = $this->cell('Meddra',['llt-c:392,llt-n:457,pt-c:394,pt-n:458,ver:150,ver:443','496']);
                     echo $meddraCell;
                     echo "<input type=\"hidden\" id=\"id_eventField_meddraResult_id\" name=\"field_value[496][id]\" value=\"";
-                    echo $event_detail['496']['id']!="null"?$event_detail['149']['field_value']:"";
+                    echo $event_detail['496']['id']!="null"?$event_detail['496']['id']:"";
+                    echo "\">";
+                    echo "<input type=\"hidden\" id=\"eventField_meddraResult\" name=\"field_value[496][field_value]\" value=\"";
+                    echo $event_detail['496']['field_value']!="null"?$event_detail['496']['field_value']:"";
                     echo "\">";
                     ?>
                     <input id="eventField-meddraResult-496" class="form-control" name="field_value[496][value]" type="hidden">
@@ -199,8 +202,13 @@
         <div class="form-row bg-light">
             <div class="form-group col-md-3">
                 <label>LLT Code</label>
-                <?php echo "<input type=\"hidden\" id=\"id_eventField_meddralltname_id\" name=\"field_value[392][id]\" value=\"".$event_detail['392']['id']."\">";?>
-                <input type="text" class="form-control" name="field_value[392][value]" id="eventField_meddrashow-392" value="<?= $event_detail['392']['field_value'] ?>">
+                <?php echo "<input type=\"hidden\" id=\"id_eventField_meddralltname_id\" name=\"field_value[392][id]\" value=\"";
+                    echo $event_detail['392']['id']!="null"?$event_detail['392']['id']:"";
+                    "\">";?>
+                <input type="text" class="form-control" name="field_value[392][value]" id="eventField_meddrashow-392" value="
+                <?php
+                    echo $event_detail['392']['field_value']!="null"?$event_detail['392']['field_value']:"";
+                ?>">
 
             </div>
             <div class="form-group col-md-3">

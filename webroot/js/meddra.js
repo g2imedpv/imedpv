@@ -3,7 +3,6 @@ var meddraFieldId = 0;
 var formats = ['llt_name','pt_name','hlt_name','hlgt_name','soc_name'];
 $(document).ready(function(){
     $('[id^=meddraBtn_]').click(function(){
-        console.log("clicked");
         if(meddraFieldId!=$(this).attr('id').split('_')[1]){
             $(formats).each(function(formatK,formatV){
                 $('#field-'+formatV).html("");
@@ -11,10 +10,7 @@ $(document).ready(function(){
         }
         meddraFieldId = $(this).attr('id').split('_')[1];
         if($('[id$=meddraResult-'+meddraFieldId+']').val()!=""){
-            console.log($('[id$=meddraResult-'+meddraFieldId+']'));
             $.each($('[id$=meddraResult-'+meddraFieldId+']').val().split(','), function(k,fieldDetail){
-                console.log(k);
-                console.log(fieldDetail);
                 switch(k){
                     case 0:
                         $('#select-llt-n').val(fieldDetail);
