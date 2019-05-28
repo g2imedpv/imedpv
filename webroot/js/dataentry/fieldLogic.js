@@ -236,7 +236,9 @@ $(document).ready(function(){
             $("#section-44-field-497").parent().prepend('<h5 class="col-md-12 mb-3">Recurred reaction</h5>');
             $("#section-45-field-498").parent().prepend('<h5 class="col-md-12 mb-3">Reaction assessed</h5>');
             //diease therapy date,if choose continue,no end date and duration
-            checkboxShowORhide('#section-5-field-240,#section-5-field-241,#section-5-field-102',"#section-5-radio-100-option-2,#section-5-radio-100-option-3","#section-5-radio-100-option-1");
+            selectShowORhide('#section-5-field-240,#section-5-field-241,#section-5-field-102',"#section-5-radio-100-option-2,#section-5-radio-100-option-3","#section-5-radio-100-option-1");
+            //parent diease therapy date,if choose continue,no end date and duration
+            selectShowORhide('#section-8-field-343,#section-8-field-444,#section-8-field-137',"#section-8-radio-135-option-2,#section-8-radio-135-option-3","#section-8-radio-135-option-1");
     // Product Tab:
         // If "Ongoing field checked", then Therapy End date (B.4.k.14b) DISABLED
             function optionalGrayout(target,option){
