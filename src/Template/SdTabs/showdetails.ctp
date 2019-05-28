@@ -32,6 +32,7 @@ echo $this->element('generatepdf');
 <head>
     <?= $this->Html->script('dataentry/dataEntryMain.js') ?>
     <?= $this->Html->script('dataentry/fieldLogic.js') ?>
+    <?= $this->Html->script('addDocument/addDocument.js') ?>
     <?= $this->Html->script('meddra.js') ?>
 </head>
 <?php if($this->request->getQuery('readonly')!=1):?>

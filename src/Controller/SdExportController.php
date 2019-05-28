@@ -11,7 +11,7 @@ class SdExportController extends AppController
             $more_conditions = "";
             if (!is_null($set_num))
             {
-                $more_conditions = "set_number=".$set_num;
+                $more_conditions = "set_number=".substr($set_num,-1);
             }
             $sdFieldValues = TableRegistry::get('sdFieldValues');
             $direct =$sdFieldValues->find()
@@ -26,7 +26,7 @@ class SdExportController extends AppController
             $more_conditions = "";
             if (!is_null($set_num))
             {
-                $more_conditions = "set_number=".$set_num;
+                $more_conditions = "set_number=".substr($set_num,-1);
             }
             $sdFieldValues = TableRegistry::get('sdFieldValues');
             $lookup= $sdFieldValues ->find()
@@ -530,9 +530,9 @@ class SdExportController extends AppController
             //19
             $this->set('duration', $this->getCiomsDurationValue($caseId));//B.4.k.15a  drugtreatmentduration 
             //20.
-            $this->getCiomsDechallengeValue($caseId,381,1);//dechallenge
+            $this->getCiomsDechallengeValue($caseId,381,'1,1');//dechallenge
             //21.
-            $this->getCiomsRechallengeValue($caseId,209,1);//Rechallenge
+            $this->getCiomsRechallengeValue($caseId,209,'1,1');//Rechallenge
             //22. concomitant drugs and dates of administration
             $this->set('concomitanttitle','Drug    |    Therapy Start and Stop Date    |    Dose    |    Indication<br>');
             $this->set('concomitantProducts', $this->getCiomsConcomitantValue($caseId));//B.4.k.2+B.4.k.12+B.4.k.14+dose(unit)+indication
@@ -622,7 +622,7 @@ class SdExportController extends AppController
                         break;
                     case '2': //checkbox position
                         $option=substr($MedValue,-1);
-                        if(!empty($option)){
+                        if((!empty($MedValue))&&($MedValue!='null')){
                         $positions=$sdMedwatchPositions->find()
                         ->select(['position_top','position_left','position_width','position_height'])
                         ->where(['sd_field_id='.$field_id,$more_conditions,'substr(sdMedwatchPositions.field_name,-1)='.$option])
@@ -692,26 +692,30 @@ class SdExportController extends AppController
                     for($i=0;$i<strlen($MedValue);$i++){
                         $checked[]=substr($MedValue,$i,1);
                     }
-                    $positions=$sdMedwatchPositions->find()
-                        ->select(['position_top','position_left','position_width','position_height'])
-                        ->where(['sd_field_id='.$field_id,$more_conditions,'substr(sdMedwatchPositions.field_name,-1)='.$checked[1],'value_type=6'])
-                        ->first();
-                        $text = $text." <style> p {position: absolute;}  </style>";
-                        $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
+                    if((!empty($checked))&&($checked!='null')){
+                        $positions=$sdMedwatchPositions->find()
+                            ->select(['position_top','position_left','position_width','position_height'])
+                            ->where(['sd_field_id='.$field_id,$more_conditions,'substr(sdMedwatchPositions.field_name,-1)='.$checked[1],'value_type=6'])
+                            ->first();
+                            $text = $text." <style> p {position: absolute;}  </style>";
+                            $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
+                    }
                     break;
                     case '9'://c7 OTC?
                     $checked=array();
                     for($i=0;$i<strlen($MedValue);$i++){
                         $checked[]=substr($MedValue,$i,1);
                     }
-                    $positions=$sdMedwatchPositions->find()
-                        ->select(['position_top','position_left','position_width','position_height'])
-                        ->where(['sd_field_id='.$field_id,$more_conditions,'substr(sdMedwatchPositions.field_name,-1)='.$checked[0],'value_type=7'])
-                        ->first();
-                        $text = $text." <style> p {position: absolute;}  </style>";
-                        $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
-                                    .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
+                    if((!empty($checked))&&($checked!='null')){
+                        $positions=$sdMedwatchPositions->find()
+                            ->select(['position_top','position_left','position_width','position_height'])
+                            ->where(['sd_field_id='.$field_id,$more_conditions,'substr(sdMedwatchPositions.field_name,-1)='.$checked[0],'value_type=7'])
+                            ->first();
+                            $text = $text." <style> p {position: absolute;}  </style>";
+                            $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
+                                        .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
+                    }
                     break;
                     default;
                 }
