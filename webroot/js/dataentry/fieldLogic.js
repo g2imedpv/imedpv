@@ -8,7 +8,7 @@ $(document).ready(function(){
         field549 = $('#section-48-select-549').html();
     }
     $("input[name*=\\[id\\]]").change(function(){
-        if($(this).attr('id').attr('type') == "type" ||$(this).attr('id').attr('type') == "radio") return false;
+        if($(this).attr('type') == "type" ||$(this).attr('type') == "radio") return false;
         let field_id = $(this).parent().attr('id').split("-")[4];
         let val = $(this).val();
         $("[id*=field-"+field_id+"]").each(function(){
@@ -16,7 +16,7 @@ $(document).ready(function(){
         });
     });
     $("[name*=\\[field_value\\]]").change(function(){
-        if($(this).attr('id').attr('type') == "type" ||$(this).attr('id').attr('type') == "radio") return false;
+        if($(this).attr('type') == "type" ||$(this).attr('type') == "radio") return false;
         if(autoChangeflag) return false; 
         autoChangeflag = true;
         let field_id = $(this).attr('id').split("-")[3];
@@ -133,7 +133,7 @@ $(document).ready(function(){
         let date = $("#specified-date-section-"+sectionId+"-date-"+fieldId).val().split(' / ');
         $("#section-"+sectionId+"-date-"+fieldId).val(date[1]+date[0]+date[2]);
     });
-    //show user friendly date format
+    
 
     //gray out fields
     function grayout(target){

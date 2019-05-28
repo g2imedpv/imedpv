@@ -47,7 +47,8 @@
                              </div>
                              <div class="form-group col-md-3">
                                 <label>Reaction Onset Date (B.2.i.4b):</label>
-                                <input type="text" class="form-control" name="field_value[156]" id="event_onset_date">
+                                <input type="hidden" class="form-control" name="field_value[156]" id="event_onset_date">
+                                <input type="date" class="form-control"  id="event_onset_date_plugin">
                              </div>
                         </div>
                         <div class="form-row">
