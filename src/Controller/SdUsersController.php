@@ -257,7 +257,7 @@ class SdUsersController extends AppController
                 if($workflow['classification'] == 1)
                     $parceObj['actvity'] = "end";
                 else{
-                    $links_table = TableRegistry::get("SdWorkflowActivities")->find()
+                    $links_activities = TableRegistry::get("SdWorkflowActivities")->find()
                                     ->select(['SdWorkflowActivities.id','SdWorkflowActivities.order_no','SdWorkflowActivities.activity_name','links.distribution'])
                                     ->join([
                                         'links'=>[
@@ -268,8 +268,44 @@ class SdUsersController extends AppController
                                         ]
                                     ])
                                     ->where(['SdWorkflowActivities.order_no'=>'1']);
-                    debug($links_table);
-
+                    foreach($links_activities as $key => $activity_detail){
+                        $activity = [];
+                        $previousUserOnNextActivity = TableRegistry::get('SdCaseHistories')->find()
+                                    ->select(['sd_user_id','user.firstname','user.lastname','company.company_name'])
+                                    ->join([
+                                        'user'=>[
+                                            'table'=>'sd_users',
+                                            'type'=>'INNER',
+                                            'conditions'=>['user.id = SdCaseHistories.sd_user_id']
+                                        ],
+                                        'company'=>[
+                                            'table'=>'sd_companies',
+                                            'type'=>'INNER',
+                                            'conditions'=>['company.id = user.sd_company_id']                                
+                                        ]
+                                    ])
+                                    ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$activity_detail['id']])
+                                    ->order(['close_time'=>'DESC'])->toArray();       
+                        $activity['previousUserOnNextActivity'] = $previousUserOnNextActivity;
+                        $activity['actvity'] = $activity_detail;
+                        // debug($nextActivity);
+                        $users = $this->SdUsers->find()
+                        ->select(['SdUsers.id','SdUsers.firstname','SdUsers.lastname'])
+                        ->contain(['SdCases'=>function($q){
+                            return $q->select(['casesCount'=>$q->func()->count('SdCases.id'),'SdCases.sd_user_id']);
+                        }])
+                        ->join([
+                            'ua'=>[
+                                'table'=>'sd_user_assignments',
+                                'type'=>'INNER',
+                                'conditions'=>['ua.sd_product_workflow_id ='.$case['sd_product_workflow_id'],
+                                                'ua.sd_workflow_activity_id = '.$nextActivity['0']['id'],'ua.sd_user_id = SdUsers.id']
+                            ]
+                        ])->toArray();
+                        $activity['users'] = $users;
+                        $activity['caseValidate'] = $this->request->getSession()->read('caseValidate.'.$case['id']);
+                    }
+                    debug($links_activities->toArray());
                 }
             }else{
                 $activity = [];
@@ -289,7 +325,6 @@ class SdUsersController extends AppController
                             ])
                             ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$nextActivity['0']['id']])
                             ->order(['close_time'=>'DESC'])->toArray();            
-                $activity = [];
                 $activity['previousUserOnNextActivity'] = $previousUserOnNextActivity;
                 $activity['actvity'] = $nextActivity['0'];
                 // debug($nextActivity);
@@ -308,7 +343,7 @@ class SdUsersController extends AppController
                 ])->toArray();
                 $activity['users'] = $users;
                 $activity['caseValidate'] = $this->request->getSession()->read('caseValidate.'.$case['id']);
-                $parceObj['0'] = $activity;
+                $parceObj['one'] = $activity;
             }
             echo json_encode($parceObj);
             die();
