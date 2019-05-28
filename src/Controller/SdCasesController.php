@@ -708,9 +708,9 @@ class SdCasesController extends AppController
         do{
             $rand_str = rand(0, 99999);
             $date_str = "ICSR".date("ym").$rand_str;
-            $date_str = str_pad($date_str,5,"0", STR_PAD_LEFT);
+            $date_str = str_pad($date_str,13,"0", STR_PAD_LEFT);
         }while($this->SdCases->find()->where(['caseNo LIKE '=>'%'.$date_str.'%'])->first()!=null);
-        return $date_str;
+        return (String)$date_str;
     }
 
     public function caselist(){

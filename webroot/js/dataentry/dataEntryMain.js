@@ -1086,11 +1086,11 @@ jQuery(function($) {
          
          $("input[id^=specified-date]").change(function (){
             if(!autoChangeflag)
-                $("[id^=save-btn"+$(this).attr('id').split('-')[1]+"]").show();
+                $("[id^=save-btn"+$(this).attr('id').split('-')[5]+"]").show();
          });
-         $("input[id^=unspecified-day]").change(function (){
+         $("input[id^=unspecified]").change(function (){
             if(!autoChangeflag)
-                $("[id^=save-btn"+$(this).attr('id').split('-')[1]+"]").show();
+                $("[id^=save-btn"+$(this).attr('id').split('-')[4]+"]").show();
          });
     });
 
