@@ -248,6 +248,16 @@
                     }
                 }
                 $this->set(compact('validatedDatas','sdSections','caseNo','version','tabid','caseId','product_name','case_versions','writePermission','dynamic_options'));
+                //get document list
+                $sdDocumentTable = TableRegistry::get('SdDocuments');
+                $sdDocList = $sdDocumentTable ->find()
+                    ->select(['doc_name'])
+                    ->where(['sd_case_id='.$caseId])->toArray();
+                $sdDocLists="";
+                foreach($sdDocList as $sdDocList_details){
+                    $sdDocLists.=$sdDocList_details['doc_name']." ; ";
+                }
+                $this->set(compact('sdDocLists'));
             }
             /**
              *

@@ -2,7 +2,6 @@
 //echo "I am here<br>";
 //debug($sdTabs);
 //foreach ($sdTabs as $eachTab){  debug($eachTab->tab_name);  }
-
 // Call to use widget
 echo $this->element('widget');
 echo $this->element('generatepdf');
@@ -32,7 +31,6 @@ echo $this->element('generatepdf');
 <head>
     <?= $this->Html->script('dataentry/dataEntryMain.js') ?>
     <?= $this->Html->script('dataentry/fieldLogic.js') ?>
-    <?= $this->Html->script('addDocument/addDocument.js') ?>
     <?= $this->Html->script('meddra.js') ?>
 </head>
 <?php if($this->request->getQuery('readonly')!=1):?>
@@ -170,6 +168,10 @@ echo $this->element('generatepdf');
     </div>
     <?php endif;?>
     <?= $this->Form->end() ?>
+    <?php 
+    //add document button form
+    echo $this->element('documentbtn');
+    ?>
     <?php
     // if($this->request->getQuery('readonly')!=1){
     //     if($tabid==1){

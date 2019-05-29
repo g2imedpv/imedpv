@@ -597,7 +597,19 @@ ul.queryBoxLeft > a {
 .selected-row{
     background-color: #ffc107!important;
 }
+/*general tab:upload document button*/
 
+.doctable tbody tr:nth-child(odd){
+    background-color: #b5d0f7;
+}
+.doctable thead tr{
+    background-color: #7ea4e2;
+    text-align: center;
+}
+.doctable tbody tr:hover {
+    color: #212529;
+    background-color: #ffc107 !important;
+}
 /* radio button css */
 .custom-radio{
     margin-top:10px;
@@ -614,6 +626,7 @@ ul.queryBoxLeft > a {
 #caseTable_info{
 margin-left: -340px;
 }
+/*add product permission collapse */
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
 .panel-title > a.collapsed:before {
     float: left !important;
