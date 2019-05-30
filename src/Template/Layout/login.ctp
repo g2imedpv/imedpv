@@ -30,7 +30,7 @@
         </div>
 
         <div class="fixed-bottom text-center text-muted">
-            Copyright &copy; 2018 G2-MDS. All rights reserved
+            Copyright &copy; <?php echo date("Y");?> G2-MDS. All rights reserved
 			<br> Designed, Developed and Maintained by G2 Biopharma Services
 		</div>
 
