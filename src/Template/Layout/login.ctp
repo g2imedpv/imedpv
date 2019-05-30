@@ -23,17 +23,13 @@
         <?= $this->Html->css('login.css') ?>
 	</head>
 	<body>
-		<div class="stripe"></div>
-		<div class="stripe_title">Welcome to G2-MDS
-		    <div class="stripe_subtitle" >G2-Biopharma-Services</div>
-		</div>
 
         <?= $this->Flash->render() ?>
-        <div class="container clearfix">
+        <div class="container clearfix m-auto">
             <?= $this->fetch('content') ?>
         </div>
 
-        <div class="fixed-bottom text-center">
+        <div class="fixed-bottom text-center text-muted">
             Copyright &copy; 2018 G2-MDS. All rights reserved
 			<br> Designed, Developed and Maintained by G2 Biopharma Services
 		</div>
