@@ -83,10 +83,10 @@ echo $this->element('generatepdf');
         <a class="btn btn-outline-info" href="/sd-documents/add_documents/<?= $caseId ?>" title="Documents Check" target="_blank"><i class="far fa-file-alt"></i> Documents</a>
     </li>
 
-    <!-- "Print" Dropdown Button -->
+    <!-- "Export" Dropdown Button -->
     <li class="nav-item">
-        <a class="btn btn-outline-info" href="#" title="Print Out" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-print"></i> Print Out
+        <a class="btn btn-outline-info" href="#" title="Export" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-print"></i> Export
         </a>
         <div class="dropdown-menu">
             <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>">CIOMS</a>
@@ -99,19 +99,12 @@ echo $this->element('generatepdf');
         </div>
     </li>
 
-    <!-- "Export" Dropdown Button -->
-    <!-- <li class="nav-item">
-        <a class="btn btn-outline-info" href="#" title="Export" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-file-export"></i> Export
+    <!-- "Print" Dropdown Button -->
+    <li class="nav-item">
+        <a class="btn btn-outline-info" href="#" title="Print"  role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-file-export"></i> Print Out
         </a>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">CIOMS</a>
-            <a class="dropdown-item" href="#">FDA</a>
-            <a class="dropdown-item" href="#">XML</a>
-            <div role="separator" class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-        </div>
-    </li> -->
+    </li>
 
     <!-- "Save All" Button -->
     <li class="nav-item">
