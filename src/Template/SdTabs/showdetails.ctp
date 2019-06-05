@@ -2,7 +2,6 @@
 //echo "I am here<br>";
 //debug($sdTabs);
 //foreach ($sdTabs as $eachTab){  debug($eachTab->tab_name);  }
-
 // Call to use widget
 echo $this->element('widget');
 echo $this->element('generatepdf');
@@ -34,7 +33,6 @@ echo $this->element('generatepdf');
     <?= $this->Html->script('select2/select2.min.js') ?>
     <?= $this->Html->script('dataentry/dataEntryMain.js') ?>
     <?= $this->Html->script('dataentry/fieldLogic.js') ?>
-    <?= $this->Html->script('addDocument/addDocument.js') ?>
     <?= $this->Html->script('meddra.js') ?>
 </head>
 <?php if($this->request->getQuery('readonly')!=1):?>
@@ -87,10 +85,10 @@ echo $this->element('generatepdf');
         <a class="btn btn-outline-info" href="/sd-documents/add_documents/<?= $caseId ?>" title="Documents Check" target="_blank"><i class="far fa-file-alt"></i> Documents</a>
     </li>
 
-    <!-- "Print" Dropdown Button -->
+    <!-- "Export" Dropdown Button -->
     <li class="nav-item">
-        <a class="btn btn-outline-info" href="#" title="Print Out" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-print"></i> Print Out
+        <a class="btn btn-outline-info" href="#" title="Export" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-print"></i> Export
         </a>
         <div class="dropdown-menu">
             <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>">CIOMS</a>
@@ -103,19 +101,12 @@ echo $this->element('generatepdf');
         </div>
     </li>
 
-    <!-- "Export" Dropdown Button -->
-    <!-- <li class="nav-item">
-        <a class="btn btn-outline-info" href="#" title="Export" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-file-export"></i> Export
+    <!-- "Print" Dropdown Button -->
+    <li class="nav-item">
+        <a class="btn btn-outline-info" href="#" title="Print"  role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-file-export"></i> Print Out
         </a>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">CIOMS</a>
-            <a class="dropdown-item" href="#">FDA</a>
-            <a class="dropdown-item" href="#">XML</a>
-            <div role="separator" class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-        </div>
-    </li> -->
+    </li>
 
     <!-- "Save All" Button -->
     <li class="nav-item">
@@ -172,6 +163,10 @@ echo $this->element('generatepdf');
     </div>
     <?php endif;?>
     <?= $this->Form->end() ?>
+    <?php 
+    //add document button form
+    echo $this->element('documentbtn');
+    ?>
     <?php
     // if($this->request->getQuery('readonly')!=1){
     //     if($tabid==1){

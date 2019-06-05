@@ -95,10 +95,10 @@ $(document).ready(function(){
     });
     if(tabId == 9){
         //labeling field
-        var filterText = "Country:     <select id=\"country_filter\">";
+        var filterText = "<div class=\"form-control\" style=\"text-align:center;color:#007bff;font-weight:bold;\"><label for=\"country_filter\">Country:&nbsp;&nbsp;&nbsp;</label><select id=\"country_filter\">";
         var countryField = document.getElementById('section-48-select-501');
         var options = countryField.innerHTML;
-        filterText = filterText + options+"</select>";
+        filterText = filterText + options+"</select></div>";
         $('#card-summary-48').prepend(filterText);
         $('#country_filter').find('option:selected').removeAttr("selected");
         autoChangeflag = true;
