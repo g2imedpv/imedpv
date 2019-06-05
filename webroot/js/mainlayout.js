@@ -139,22 +139,22 @@ function onQueryClicked(preferrenceId = null){
             text +="<table id=\"caseTable\" class=\"table table-striped table-bordered table-hover\">";
             text += "<thead>";
             text +="<tr style=\"cursor: pointer;\">";
-            text +="<th class=\"align-middle\" scope=\"col\">Priority SUSAR</th>";
-            text +="<th class=\"align-middle\" scope=\"col\">AER No.</th>";
+            text +="<th class=\"align-middle\" scope=\"col\">"+i18n.gettext("Priority SUSAR")+"</th>";
+            text +="<th class=\"align-middle\" scope=\"col\">"+i18n.gettext("AER No.")+"</th>";
             // text +="<th scope=\"col\">Documents</th>";
-            text +="<th class=\"align-middle\" scope=\"col\">Version</th>";
-            text +="<th class=\"align-middle\" scope=\"col\">Activity</th>";
-            text +="<th class=\"align-middle\" scope=\"col\">Country</th>";
-            text +="<th class=\"align-middle\" scope=\"col\">Project No.</th>";
-            text +="<th class=\"align-middle\" scope=\"col\">Product Type</th>";
-            text +="<th class=\"align-middle\" scope=\"col\">Activity Due Date</th>";
-            text +="<th class=\"align-middle\" scope=\"col\">Submission Due Date</th>";
-            text +="<th class=\"align-middle\" scope=\"col\">Status</th>";
-            text +="<th class=\"align-middle\" scope=\"col\">Action</th>";
+            text +="<th class=\"align-middle\" scope=\"col\">"+i18n.gettext("Version")+"</th>";
+            text +="<th class=\"align-middle\" scope=\"col\">"+i18n.gettext("Activity")+"</th>";
+            text +="<th class=\"align-middle\" scope=\"col\">"+i18n.gettext("Country")+"</th>";
+            text +="<th class=\"align-middle\" scope=\"col\">"+i18n.gettext("Project No.")+"</th>";
+            text +="<th class=\"align-middle\" scope=\"col\">"+i18n.gettext("Product Type")+"</th>";
+            text +="<th class=\"align-middle\" scope=\"col\">"+i18n.gettext("Activity Due Date")+"</th>";
+            text +="<th class=\"align-middle\" scope=\"col\">"+i18n.gettext("Submission Due Date")+"</th>";
+            text +="<th class=\"align-middle\" scope=\"col\">"+i18n.gettext("Status")+"</th>";
+            text +="<th class=\"align-middle\" scope=\"col\">"+i18n.gettext("Action")+"</th>";
             text +="</tr>";
             text +="</thead>";
             text +="<tbody>";
-            var product_type_id=["clinical trials", "individual patient use","other studies"];
+            var product_type_id=[i18n.gettext("clinical trials"), i18n.gettext("individual patient use"),i18n.gettext("other studies")];
             var previous_case = "";
             $.each(result, function(k,caseDetail){
                 if(caseDetail.activity_due_date!=null)
@@ -170,13 +170,13 @@ function onQueryClicked(preferrenceId = null){
                 // text += "<td></td>";
                 text += "<td class=\"align-middle\" id=\"version-"+caseDetail.caseNo+"\">"+ caseDetail.versions + "</td>";
                 text += "<td id=\"activity-"+caseDetail.caseNo+"\" class=\"align-middle\">";
-                if(caseDetail.sd_workflow_activity_id!='9999') text += caseDetail.wa.activity_name;
+                if(caseDetail.sd_workflow_activity_id!='9999') text += i18n.gettext(caseDetail.wa.activity_name+"");
                 else text += "Finished Data Accessment"
                 text += "</td>";
                 text += "<td></td>";
                 text += "<td class=\"align-middle\">" + caseDetail.pd.product_name + "</td>";
                 text += "<td class=\"align-middle\">";
-                if(caseDetail.product_type_label!=null) text += caseDetail.product_type_label;
+                if(caseDetail.product_type_label!=null) text += i18n.gettext(caseDetail.product_type_label+"");
                 text += "</td>";
                 text += "<td class=\"align-middle\">"+caseDetail.activity_due_date+"</td>";
                 text += "<td class=\"align-middle\">";
@@ -190,16 +190,16 @@ function onQueryClicked(preferrenceId = null){
                 }
                 text +="</td>";
                 text += "<td class=\"align-middle\">";
-                if(caseDetail.status==1) text+="Active";
-                else text+="Inactive";
+                if(caseDetail.status==1) text+=i18n.gettext("Active");
+                else text+=i18n.gettext("Inactive");
                 text+="</td>";
                 text += "<td class=\"align-middle\">";
                 if(caseDetail.sd_user_id == userId)
                     if(caseDetail.wa.activity_name=="Triage")text += "<a href=\"/sd-cases/triage/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">Continue Triage</div></a>";
-                    else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">Enter</div></a>";
-                else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-info m-1\">Check Detail</div></a>";
+                    else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">"+i18n.gettext("Enter")+"</div></a>";
+                else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-info m-1\">"+i18n.gettext("Check Detail")+"</div></a>";
                 if((caseDetail.sd_workflow_activity_id=='9999')&&(previous_case!=caseDetail.caseNo))
-                    text += "<button class=\"btn btn-warning m-1\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"versionUp(\'"+caseDetail.caseNo+"\')\">Version Up</button>";
+                    text += "<button class=\"btn btn-warning m-1\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"versionUp(\'"+caseDetail.caseNo+"\')\">"+i18n.gettext("Version Up")+"</button>";
                 text +="</td>";
                 text += "</tr>";
                 previous_case = caseDetail.caseNo;
@@ -238,27 +238,6 @@ function versionUp(caseNo){
         }
     });
 }
-// function closeCase(caseNo){
-//     var request={
-//         "caseNo":caseNo,
-//         "version_no":$('#version-'+caseNo).val()
-//     };
-//     console.log(request);
-//     $.ajax({
-//         headers: {
-//             'X-CSRF-Token': csrfToken
-//         },
-//         type:'POST',
-//         url:'/sd-cases/closeCase',
-//         data:request,
-//         success:function(response){
-//             console.log(response);
-//         },
-//         error:function(response){
-//             console.log(response.responseText);
-//         }
-//     });
-// }
 
 jQuery(document).ready(function($) {
     $(".queryBoxTable").click(function() {

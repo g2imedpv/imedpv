@@ -219,9 +219,17 @@
                 }
                 // debug($dynamic_options);
                 foreach($sdSections as $sdSection){
+                    $sdSection['section_name'] = __($sdSection['section_name']);
                     if($sdSection->parent_section!=0){
                         if(empty($child_list[$sdSection->parent_section])) $child_list[$sdSection->parent_section]="";
                         $child_list[$sdSection->parent_section] = $child_list[$sdSection->parent_section].$sdSection->id.",";
+                    }
+                    foreach($sdSection['sd_section_structures'] as $sd_section_structure){
+                        $sd_section_structure['sd_field']['field_label'] = __($sd_section_structure['sd_field']['field_label']);
+                        $sd_section_structure['sd_field']['comment'] = __($sd_section_structure['sd_field']['comment']);
+                        foreach($sd_section_structure['sd_field']['sd_field_value_look_ups'] as $sd_field_value_look_up){
+                            $sd_field_value_look_up['caption'] = __($sd_field_value_look_up['caption']);
+                        }
                     }
                 }
                 foreach($sdSections as $sdSection){
@@ -238,6 +246,10 @@
                         }, 'SdElementTypes'=> function($q){
                         return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
                             }])->first(); 
+                        $foundField['field_label'] = __($foundField['field_label']);
+                        foreach($foundField['sd_field_value_look_ups'] as $sd_field_value_look_ups){
+                            $sd_field_value_look_ups['caption'] = __($sd_field_value_look_ups['caption']);
+                        }
                         array_push($sdFields,$foundField);
                     }       
                     $sdSection->sd_section_summary['sdFields'] = $sdFields;

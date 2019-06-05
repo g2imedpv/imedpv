@@ -30,6 +30,8 @@ echo $this->element('generatepdf');
 </script>
 <title>Data Entry</title>
 <head>
+    <?= $this->Html->css('select2/select2.min.css') ?>
+    <?= $this->Html->script('select2/select2.min.js') ?>
     <?= $this->Html->script('dataentry/dataEntryMain.js') ?>
     <?= $this->Html->script('dataentry/fieldLogic.js') ?>
     <?= $this->Html->script('addDocument/addDocument.js') ?>
@@ -377,7 +379,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key, $
         }//TODO ADD JS FUNCTION TO DISPLAY SET
         $row++;
     }while($noValue != sizeof($fields));
-    $addtext = "<button type=\"button\" id=\"addbtn-".$sectionId."\" onclick=\"setPageChange(".$sectionId.",".(int)($row-1).",1)\" class='btn btn-outline-primary ml-3 mb-2 panel-collapse show' role='button' title='add'><i class='fas fa-plus'></i> Add</button><br><br>";
+    $addtext = "<button type=\"button\" id=\"addbtn-".$sectionId."\" onclick=\"setPageChange(".$sectionId.",".(int)($row-1).",1)\" class='btn btn-outline-primary ml-3 mb-2 panel-collapse show' role='button' title='add'><i class='fas fa-plus'></i>".__("Add")."</button><br><br>";
     $text = $text."</tr>"; 
     $text = $text."</tbody>";
     $text = $text."</table>";
@@ -502,7 +504,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                             $text = $text."<div class=\"form-row\">";
                                 $text = $text."<div class=\"col-sm-4\">";
                                     $text = $text."<select class=\"custom-select js-example-basic-single\" placeholder=\"Day\" id=\"unspecified-day_section-".$section->id."-unspecifieddate-".$sd_section_structure_detail->sd_field->id."\" >";
-                                        $text = $text."<option value=\"00\">Day</option>";
+                                        $text = $text."<option value=\"00\">".__("Day")."</option>";
                                         for($i=1;$i<32;$i++){
                                             $text = $text."<option value=\"".sprintf("%02d",$i)."\"";
                                             if (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j])&&(substr($sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value,0,2)==sprintf("%02d",$i))) $text = $text."selected";
@@ -513,7 +515,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                                 $text = $text."<div class=\"col-sm-4\">";
                                     $text = $text."<select class=\"custom-select js-example-basic-single\" placeholder=\"Month\" id=\"unspecified-month_section-".$section->id."-unspecifieddate-".$sd_section_structure_detail->sd_field->id."\" >";
                                     $month_str = ['Jan-1','Feb-2','Mar-3','Apr-4','May-5','Jun-6','Jul-7','Aug-8','Sep-9','Oct-10','Nov-11','Dec-12'];
-                                        $text = $text."<option value=\"00\">Month</option>";
+                                        $text = $text."<option value=\"00\">".__("Month")."</option>";
                                         foreach($month_str as $i => $month){
                                             $text = $text."<option value=\"".sprintf("%02d",$i+1)."\"";
                                             if (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j])&&(substr($sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value,2,2)==sprintf("%02d",$i+1))) $text = $text."selected";
@@ -523,7 +525,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                                 $text = $text."</div>";
                                 $text = $text."<div class=\"col-sm-4\">";
                                     $text = $text."<select class=\"custom-select js-example-basic-single yearSelect\" placeholder=\"Year\" id=\"unspecified-year_section-".$section->id."-unspecifieddate-".$sd_section_structure_detail->sd_field->id."\" >";
-                                        $text = $text."<option value=\"0000\">Year</option>";
+                                        $text = $text."<option value=\"0000\">".__("Year")."</option>";
                                         for($i=1900;$i<=2050;$i++){
                                             $text = $text."<option value=\"".sprintf("%04d",$i)."\"";
                                             if (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j])&&(substr($sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value,4,4)==sprintf("%02d",$i))) $text = $text."selected";
@@ -561,7 +563,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                             if(!empty($sd_section_structure_detail->sd_field->sd_field_values[$j])) $valuesSet = $sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value;
                             foreach($sd_section_structure_detail->sd_field->sd_field_value_look_ups as $option_no=>$option_detail){
                                 $text =$text. "<div class=\"custom-control custom-radio custom-control-inline col-md-3\">";
-                                $text =$text. "<input id=\"section-".$section->id."-checkbox-".$sd_section_structure_detail->sd_field->id."-option-".$option_detail['value']."\" class=\"checkboxstyle\"  name=".$field_value_nameHolder." value=";
+                                $text =$text. "<input id=\"section-".$section->id."-checkbox-".$sd_section_structure_detail->sd_field->id."-option-".$option_detail['value']."\" class=\"checkboxstyle\" value=";
                                 $text =$text. $option_detail['value'];
                                 if($permission==2) $text =$text. " disabled";
                                 if((!empty($valuesSet))&&(substr($valuesSet, $option_detail['value']-1,1)==1))

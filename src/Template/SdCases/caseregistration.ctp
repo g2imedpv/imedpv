@@ -14,7 +14,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-header text-center">
-                    <h3>Case Registration / Duplicate Detection</h3>
+                    <h3><?php echo __("Case Registration / Duplicate Detection")?></h3>
                 </div>
                 <?= $this->Form->create($productInfo,['id'=>'caseRegistrationForm']);?>
                 <div class="card-body">
@@ -22,7 +22,7 @@
                         <!-- Add Product -->
                         <div class="form-row">
                             <div class="form-group col-md-3">
-                                <label>Product Name: <i class="fas fa-asterisk reqField"></i></label>
+                                <label><?php echo __("Product Name")?> <i class="fas fa-asterisk reqField"></i>"</label>
                                 <select type="text" class="form-control" id="product_id">
                                     <option value="null">Select Project No</option>
                                     <?php
@@ -34,7 +34,7 @@
                                 <input name="product_id" type="hidden" id="input_product_id">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>Country: <i class="fas fa-asterisk reqField"></i></label>
+                                <label><?php echo __("Country")?> <i class="fas fa-asterisk reqField"></i></label>
                                 <select type="text" class="form-control" id="sd_product_workflow_id">
                                     <option value="null">Select Country:</option>
                                     <!-- html->form(project_no) -->
@@ -42,18 +42,18 @@
                                 <input name="sd_product_workflow_id" id="input_product_workflow_id" type="hidden">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>Event Report Term:</label>
+                                <label><?php echo __("Event Report Term:")?></label>
                                 <input type="text" class="form-control" name="field_value[149]" id="event_report_term">
                              </div>
                              <div class="form-group col-md-3">
-                                <label>Reaction Onset Date (B.2.i.4b):</label>
+                                <label><?php echo __("Reaction Onset Date (B.2.i.4b):")?></label>
                                 <input type="hidden" class="form-control" name="field_value[156]" id="event_onset_date">
                                 <input type="date" class="form-control"  id="event_onset_date_plugin">
                              </div>
                         </div>
                         <div class="form-row">
                              <div class="form-group col-md-3">
-                                <label>Patient Gender:</label>
+                                <label><?php echo __("Patient Gender:")?></label>
                                 <select type="text" class="form-control" name="field_value[93]" id="patient_gender">
                                     <option value="">Select Patient Gender</option>
                                     <option value="1">Male</option>
@@ -63,12 +63,12 @@
                                 </select>
                              </div>
                             <div class="form-group col-md-5">
-                                <label>Age at Time of Onset of Reaction/event (B.1.2.2a)</label>
+                                <label><?php echo __("Age at Time of Onset of Reaction/event (B.1.2.2a)")?></label>
                                 <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Field Helper" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
                                 <input type="text" class="form-control" name="field_value[86]" id="patient_age">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>Age Unit:</label>
+                                <label><?php echo __("Age Unit:")?></label>
                                 <select class="form-control" name="field_value[87]" id="patient_age_unit">
                                     <option value="null">Select Unit</option>
                                     <option value="800">Decade</option>
@@ -86,19 +86,19 @@
                             <hr class="my-3">
                             <div class="form-row">
                                 <div class="form-group col-md-3">
-                                    <label>Reporter First Name:</label>
+                                    <label><?php echo __("Reporter First Name:")?></label>
                                     <input type="text" class="form-control" name="field_value[26]" id="reporter_firstname">
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label>Reporter Last name:</label>
+                                    <label><?php echo __("Reporter Last name:")?></label>
                                     <input type="text" class="form-control" name="field_value[28]" id="reporter_lastname">
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label>Subject No.:</label>
+                                    <label><?php echo __("Subject No.:")?></label>
                                     <input type="text" class="form-control" name="" id="">
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label>Patient Ethnic origin:</label>
+                                    <label><?php echo __("Patient Ethnic origin:")?></label>
                                     <select class="form-control" id="patient_ethnic_origin" name="field_value[235]">
                                         <option value="null"></option>
                                         <option  value="1">American Indian or Alaskan Native</option>
@@ -115,35 +115,29 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-3">
-                                    <label>Patient Initial:</label>
+                                    <label><?php echo __("Patient Initial:")?></label>
                                     <input type="text" class="form-control" name="field_value[79]" id="patient_initial">
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label>Patient Date of Birth:</label>
-                                    <?php if($field_value_set['85']['id']!=null)
-                                    echo "<input type=\"hidden\" id=\"id_patientField_dob_id\" name=\"field_value[85][id]\" value=\"".$field_value_set['85']['id']."\">";?>
+                                    <label><?php echo __("Patient Date of Birth:")?></label>
                                     <div class="form-row">
                                         <div class="col-sm-4">
-                                            <select class="custom-select js-example-basic-single" placeholder="Day" id="patientField_dob_day" name="field_value[85][value]">
+                                            <select class="custom-select js-example-basic-single" placeholder="Day" id="patientField_dob_day">
+                                            <option value="00">Day</option>
                                             <?php
-                                            echo "<option value=\"00\">Day</option>";
                                             for($i=1;$i<32;$i++){
-                                                echo "<option value=\"".sprintf("%02d",$i)."\"";
-                                                if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],0,2)==sprintf("%02d",$i))) echo "selected";
-                                                echo ">".$i."</option>"; 
+                                                echo "<option value=\"".sprintf("%02d",$i)."\">".$i."</option>"; 
                                             }
                                             ?>
                                             </select>
                                         </div>
                                         <div class="col-sm-4">
-                                            <select class="custom-select js-example-basic-single"  name="field_value[85][value]" placeholder="Month" id="patientField_dob_month">
+                                            <select class="custom-select js-example-basic-single" placeholder="Month" id="patientField_dob_month">
                                             <?php
                                             $month_str = ['Jan-1','Feb-2','Mar-3','Apr-4','May-5','Jun-6','Jul-7','Aug-8','Sep-9','Oct-10','Nov-11','Dec-12'];
                                             echo "<option value=\"00\">Month</option>";
                                             foreach($month_str as $i => $month){
-                                                echo "<option value=\"".sprintf("%02d",$i+1)."\"";
-                                                if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],2,2)==sprintf("%02d",$i+1))) echo "selected";
-                                                echo ">".$month."</option>";
+                                                echo "<option value=\"".sprintf("%02d",$i+1)."\">".$month."</option>";
                                             }
                                             ?>
                                             </select>
@@ -153,19 +147,16 @@
                                             <option value="0000">Year</option>
                                             <?php
                                             for($i=1900;$i<=2050;$i++){
-                                                echo "<option value=\"".sprintf("%04d",$i)."\"";
-                                                if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],4,4)==sprintf("%02d",$i))) echo "selected";
-                                                echo ">".$i."</option>";
+                                                echo "<option value=\"".sprintf("%04d",$i)."\">".$i."</option>";
                                             }
                                             ?>
-                                                
                                             </select>
                                         </div>
                                     </div>
                                     <input type="hidden" class="form-control" name="field_value[85]" id="patient_dob">
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label>Patient Age group:</label>
+                                    <label><?php echo __("Patient Age group:")?></label>
                                     <select class="form-control" name="field_value[90]" id="patient_age_group">
                                         <option value="null"></option>
                                         <option value="1">Neonate</option>
@@ -181,7 +172,7 @@
                                 <h6 class="text-left">Meddra Browser</h6>
                                 <div class="form-row">
                                     <div class="form-group col-md-8">
-                                        <!-- <label>Meddra Browser:</label> -->
+                                        <!-- <label><?php echo __("Meddra Browser:")?></label> -->
                                         <?php
                                         $meddraCell = $this->cell('Meddra');
                                         echo $meddraCell;?>
@@ -189,19 +180,19 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-3">
-                                        <label>LLT Code</label>
+                                        <label><?php echo __("LLT Code")?></label>
                                         <input type="text" class="form-control" name="field_value[392]" id="meddraptname">
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>LLT Name</label>
+                                        <label><?php echo __("LLT Name")?></label>
                                         <input type="text" class="form-control" name="field_value[391]" id="meddralltname">
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>PT Code</label>
+                                        <label><?php echo __("PT Code")?></label>
                                         <input type="text" class="form-control" name="field_value[394]" id="meddrahltname">
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>PT Name</label>
+                                        <label><?php echo __("PT Name")?></label>
                                         <input type="text" class="form-control" name="field_value[393]" id="meddrahltname">
                                     </div>
                                 </div>

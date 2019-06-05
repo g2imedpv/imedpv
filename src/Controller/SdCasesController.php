@@ -4,7 +4,6 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
-
 /**
  * SdCases Controller
  *
@@ -913,74 +912,142 @@ class SdCasesController extends AppController
        }
    }
 
+   public function deleteTriageEvent($caseNo, $versionNo=1){
+    if ($this->request->is(['patch', 'post', 'put'])) {
+        $this->autoRender = false;
+        $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$versionNo])->first();
+        $requestData = $this->request->getData();
+        $sdFieldValueTable = TableRegistry::get('SdFieldValues');
+        $sdSectionSets = TableRegistry::get('SdSectionSets');
+        foreach($requestData as $setNo => $setDetail){
+            foreach($setDetail as $field_id => $detail_data){
+                if($detail_data['id']!=null) {
+                        $previous_field_value = $sdFieldValueTable->get($detail_data['id']);
+                        $previous_field_value['status'] = 0;
+                    $savedFieldValue = $sdFieldValueTable->save($previous_field_value);
+                    if(!$savedFieldValue) {
+                        echo "problem in saving".$field_id."sdfields";
+                        debug($savedFieldValueEntity);
+                        return null;
+                    }            
+                }
+                $largerset_field_values = $sdFieldValueTable->find()->where(['sd_case_id'=>$case['id'],'sd_field_id'=>$field_id,'status'=>'1', 'set_number >'=>(int)$setNo]);
+                // debug($largerset_field_values->toArray());
+                foreach($largerset_field_values as $key => $field_value ){
+                    $field_value['set_number'] = (int)$field_value['set_number'] - 1;
+                    $savedFieldValue = null;
+                    $savedFieldValue = $sdFieldValueTable->save($field_value);
+                    if(!$savedFieldValue) {
+                        echo "problem in saving".$field_id."sdfields";
+                        debug($savedFieldValueEntity);
+                        return null;
+                    }
+                }  
+            }
+        }
+        $event_set = [];    
+        $event_ids = ['149','496','392','457','394','458'];
+        foreach($event_ids as $field_id){
+            try{
+            $event_field_values = $sdFieldValueTable->find()->where(['sd_case_id'=>$case['id'],'sd_field_id'=>$field_id,'status'=>'1']);
+            foreach($event_field_values as $event_field){
+                $event_set[$event_field['set_number']][$field_id]['field_value'] = $event_field['field_value'];
+                $event_set[$event_field['set_number']][$field_id]['id'] = $event_field['id'];
+            }
+            }catch (\PDOException $e){
+                $event_set = null;
+            }
+        } 
+        echo json_encode($event_set);
+        die();
+   }
+}
     /**
      * Create cases
-     *
+     * Save triage info and event info
      *
      *
      */
     public function triage($caseNo, $versionNo=1){
+        // Prior to 3.5 use I18n::locale()
         if ($this->request->is(['patch', 'post', 'put'])) {
             $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$versionNo])->first();
             $requestData = $this->request->getData();
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
             $sdSectionSets = TableRegistry::get('SdSectionSets');
-            //TODO if the case is to push to Data Entry
-            // print_r($requestData);die();
-            //debug($requestData);die();
-            foreach($requestData['field_value'] as $field_id => $detail_data){
-                //to convert date format of plugin 
-                // if(($field_id==10)||($field_id==12)||($field_id==225)){
-                //     $date=str_replace("-",",",$detail_data['value']);
-                //     $dateArray=array_reverse(explode(",","$date"));
-                //     $dateString=$dateArray[0].$dateArray[1].$dateArray[2];
-                //     $detail_data['value']=$dateString;
-                // }
-                if($detail_data['id']!=null) {
-                    $previous_field_value = $sdFieldValueTable->get($detail_data['id']);
-                    if($detail_data['value']==$previous_field_value['field_value']) continue;
-                    $savedFieldValueEntity = $previous_field_value;
-                    $savedFieldValueEntity['field_value'] = $detail_data['value'];
-                }
-                else {
-                    if($detail_data['value']==null) continue;
-                    $sdFieldValueEntity = $sdFieldValueTable->newEntity();
-                    $dataSet = [
-                        'sd_case_id' => $case->id,
-                        'sd_field_id' => $field_id,
-                        'set_number' => '1',
-                        'created_time' =>date("Y-m-d H:i:s"),
-                        'field_value' =>$detail_data['value'],
-                        'status' =>'1',
-                    ];
-                    $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
-                }
-                
-                $savedFieldValue = $sdFieldValueTable->save($savedFieldValueEntity);
-                if(!$savedFieldValue) {
-                    echo "problem in saving".$field_id."sdfields";
-                    debug($savedFieldValueEntity);
-                    return null;
+            foreach($requestData['event'] as $setNo => $event_detail){
+                foreach($event_detail as $field_id => $detail_data){
+                    if($detail_data['id']!="") {
+                        $previous_field_value = $sdFieldValueTable->get($detail_data['id']);
+                        if($detail_data['value']==$previous_field_value['field_value']) continue;
+                        $savedFieldValueEntity = $previous_field_value;
+                        $savedFieldValueEntity['field_value'] = $detail_data['value'];
+                    }
+                    else {
+                        if($detail_data['value']=="") continue;
+                        $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                        $dataSet = [
+                            'sd_case_id' => $case->id,
+                            'sd_field_id' => $field_id,
+                            'set_number' => $setNo,
+                            'created_time' =>date("Y-m-d H:i:s"),
+                            'field_value' =>$detail_data['value'],
+                            'status' =>'1',
+                        ];
+                        $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                    }
+                    $savedFieldValue = $sdFieldValueTable->save($savedFieldValueEntity);
+                    if(!$savedFieldValue) {
+                        echo "problem in saving".$field_id."sdfields";
+                        debug($savedFieldValueEntity);
+                        return null;
+                    }
                 }
             }
-            if (!$this->is_empty($requestData['document']))
-            {
-                if (!$this->saveDocuments($requestData['document'], $case->id))
-                {
-                    $this->Flash->error(__('Problem in saving documents.'));
-                }
-                else
-                {
-                    $this->Flash->success(__('Documents have been uploaded successfully.'));
+            if(array_key_exists('field_value', $requestData)){
+                foreach($requestData['field_value'] as $field_id => $detail_data){
+                    if($detail_data['id']!=null) {
+                        $previous_field_value = $sdFieldValueTable->get($detail_data['id']);
+                        if($detail_data['value']==$previous_field_value['field_value']) continue;
+                        $savedFieldValueEntity = $previous_field_value;
+                        $savedFieldValueEntity['field_value'] = $detail_data['value'];
+                    }
+                    else {
+                        if($detail_data['value']==null) continue;
+                        $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                        $dataSet = [
+                            'sd_case_id' => $case->id,
+                            'sd_field_id' => $field_id,
+                            'set_number' => '1',
+                            'created_time' =>date("Y-m-d H:i:s"),
+                            'field_value' =>$detail_data['value'],
+                            'status' =>'1',
+                        ];
+                        $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                    }
+                    
+                    $savedFieldValue = $sdFieldValueTable->save($savedFieldValueEntity);
+                    if(!$savedFieldValue) {
+                        echo "problem in saving".$field_id."sdfields";
+                        debug($savedFieldValueEntity);
+                        return null;
+                    }
                 }
             }
-            if($this->request->is(['patch', 'post', 'put'])&&array_key_exists('endTriage',$requestData))
-            {
-                echo "succuess";
-                die();
-            }else $this->Flash->success(__('This page has been saved.'));
+            if(array_key_exists('document', $requestData)){
+                if (!$this->is_empty($requestData['document']))
+                {
+                    if (!$this->saveDocuments($requestData['document'], $case->id))
+                    {
+                        $this->Flash->error(__('Problem in saving documents.'));
+                    }
+                    else
+                    {
+                        $this->Flash->success(__('Documents have been uploaded successfully.'));
+                    }
+                }
+            }
         }
-        $this->viewBuilder()->setLayout('main_layout');
         $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$versionNo])
             ->select(['pwf.id','pd.id','SdCases.id'])
             ->join([
@@ -1037,11 +1104,18 @@ class SdCasesController extends AppController
             }
             $this->set('version_up_set',$version_up_set);
         }
-            if($this->request->is(['patch', 'post', 'put'])&&array_key_exists('endTriage',$requestData))
-            {
-                echo $field_value_set;
-                die();
-            }else $this->Flash->success(__('This page has been saved.'));
+        if($this->request->is(['patch', 'post', 'put'])&&array_key_exists('endTriage',$requestData))
+        {
+            $response = [];
+            $response['event_set'] = $event_set;
+            $response['field_value_set'] = $field_value_set;
+            echo json_encode($response);
+            die();
+        }else if($this->request->is(['patch', 'post', 'put'])&&array_key_exists('saveEvent',$requestData)){
+            echo json_encode($event_set);
+            die();
+        }else $this->Flash->success(__('This page has been saved.'));
+        $this->viewBuilder()->setLayout('main_layout');
         // Load document list if there is any. 
         // Chloe Wang @ Mar 31, 2019
         $this->loadModel("SdDocuments");

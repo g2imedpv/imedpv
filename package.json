@@ -1,0 +1,27 @@
+{
+  "name": "imedpv",
+  "version": "1.0.0",
+  "description": "# CakePHP Application Skeleton #############################",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "jed": "^1.1.1",
+    "po2json": "^1.0.0-alpha"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/g2imedpv/imedpv.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/g2imedpv/imedpv/issues"
+  },
+  "homepage": "https://github.com/g2imedpv/imedpv#readme"
+}

@@ -144,16 +144,21 @@ class SdUsersController extends AppController
         $this->request->getSession()->destroy();
         return $this->redirect($this->Auth->logout());
     }
-
+    public function setLanguage($language){
+        $session = $this->getRequest()->getSession();
+        $session->write('Language', $language);
+        return $this->redirect($this->referer());
+    }
     public function login() {
         $this->viewBuilder()->setLayout('login');
+        $session = $this->getRequest()->getSession();
             if ($this->request->is('post')) {
                 $sdUser = $this->Auth->identify();
                 if ($sdUser) {
                     $this->Auth->setUser($sdUser);
                     $SdRoles = TableRegistry::get('SdRoles')->get($sdUser['sd_role_id']);
-                    $session = $this->getRequest()->getSession();
                     $session->write('Auth.User.role_name', $SdRoles['description']);
+                    $session->write('Language', 'en_US');
                     return $this->redirect($this->Auth->redirectUrl(
                         // Set the first page after user logged in
                         ['controller' => 'SdCompanies','action' => 'selectCompany']
@@ -163,6 +168,7 @@ class SdUsersController extends AppController
                     $this->Flash->error(__('Sorry, your username or password is wrong!'));
                 }
             }
+            if($session->read('Language')== null) $session->write('Language', 'en_US');;
     }
     
     public function searchPreviousAvailable($caseNo, $version=1){

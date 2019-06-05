@@ -463,7 +463,7 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = false) {
     $("[id^=input-").each(function(){
         $(this).find("[id^=llt-searchbar]").val("");
         let orignalId = $(this).attr('id').split('-')[1];
-        
+        if(resultflag&&orignalId!=section_id) return true;
         let sectionId = $(this).attr('id').split('-')[1];
         let sectionKey = $(this).attr('id').split('-')[3];
         let inputSetflag  = true;
@@ -472,7 +472,6 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = false) {
                 sectionId = $("[name=section\\["+sectionId+"\\]]").val().split(',')[$("[name=section\\["+sectionId+"\\]]").val().split(',').length - 1].split(':')[0];
             else inputSetflag = false;
         }
-        if(resultflag&&sectionId!=section_id) return true;
         if(sectionId!=section_id&&!inputSetflag) return true;
             //get this field setArray
             let targetSetArray = {};

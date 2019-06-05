@@ -46,8 +46,8 @@ $(document).ready(function(){
                 newattach += "</td>";
                 newattach += "<td>";
                     newattach += "<select class=\"custom-select\" onchange=\"fileUrlSwitcher("+set_number+")\" name=\"document["+set_number+"][doc_source]\" id=\"doc_source_" + set_number + "\">";
-                        newattach += "<option value=\"File Attachment\">File Attachment</option>";
-                        newattach += "<option value=\"URL Reference\">URL Reference</option>";
+                        newattach += "<option value=\"File Attachment\">"+i18n.gettext("File Attachment")+"</option>";
+                        newattach += "<option value=\"URL Reference\">"+i18n.gettext("URL Reference")+"</option>";
                     newattach += "</select>";
                 newattach += "</td>";
                 newattach += "<td>";
@@ -124,10 +124,10 @@ $(document).ready(function(){
         validCase = patient_element + reporter_element + event_element;
         if (validCase <= 1) {
             $('#validcase').val('2');
-            swal("This is an invalid case and it will be inactivated. Are you sure you want to continue?","","warning", {
+            swal(i18n.gettext("This is an invalid case and it will be inactivated. Are you sure you want to continue?"),"","warning", {
                 buttons: {
-                    continue: true,
-                    cancel: "Cancel"
+                    continue: i18n.gettext("Continue"),
+                    cancel: i18n.gettext("Cancel")
                 },
             })
             .then((value) => {
@@ -147,7 +147,7 @@ $(document).ready(function(){
                         processData:false,
                         success:function(response){
                             console.log(response);
-                            swal("Your case has been inactivated","", "warning",{
+                            swal(i18n.gettext("Your case has been inactivated"),"", "warning",{
                                 buttons: {
                                     continue: true,
                                 },
@@ -164,18 +164,18 @@ $(document).ready(function(){
                 }
             });
         }else if(validCase == 2) {
-            swal("This is an invalid case. Do you want to continue this case?","","warning", {
+            swal(i18n.gettext("This is an invalid case. Do you want to continue this case?"),"","warning", {
                 buttons: {
-                    Yes: true,
-                    No: true,
-                    cancel: "Cancel"
+                    Yes: i18n.gettext("Yes"),
+                    No: i18n.gettext("No"),
+                    cancel: i18n.gettext("Cancel")
                 },
             })
             .then((value) => {
                 switch (value) {
                     case "Yes":
                         $('#validcase').val('2');
-                        swal("Please Select Reasons in following step","", "success");
+                        swal(i18n.gettext("Please Select Reasons in following step"),"", i18n.gettext("success"));
                         $("#basicInfo :input").each(function(){
                             $(this).prop("readonly", true);
                         });
@@ -192,7 +192,6 @@ $(document).ready(function(){
                     case "No":
                         $('#validcase').val('2');
                         var form = new FormData(document.getElementById("triageForm"));
-                        console.log(request);
                         $.ajax({
                             headers: {
                                 'X-CSRF-Token': csrfToken
@@ -204,7 +203,7 @@ $(document).ready(function(){
                             contentType:false,
                             processData:false,
                             success:function(response){
-                                swal("Your case has been inactivated","", "warning");
+                                swal(i18n.gettext("Your case has been inactivated"),"", "warning");
                                 window.location.href = "/sd-cases/caselist";
                             },
                             error:function(response){
@@ -269,6 +268,7 @@ $(document).ready(function(){
             $('#otherReason').hide();
         }
     });
+    $("#eventSet-1").addClass("selected-row");
     $('[id^=reason]').change(function(){
         $('#reason_value').prop('diasbled',false);
         var text ="";
@@ -325,9 +325,140 @@ $(document).ready(function(){
     $(document).ready(function() {
         $('.js-example-basic-single').select2();
     });
-
     $('[id^=prioritize]').change(function(){prioritizeDate()});
 });
+function mapfieldId(setNo){
+    $("#llt-searchbar_496").val("");
+    $("[id^=eventDiv]").attr("id","eventDiv-"+setNo);
+    $("#eventSummary").find(".selected-row").removeClass("selected-row");
+    $("#eventSet-"+setNo).addClass("selected-row");
+    $("input[name^=event][name$=\\[id\\]]").each(function(){
+        if(typeof event_set[setNo] !="undefined"){
+            if(typeof event_set[setNo][$(this).attr('name').split(/[\[\]]/)[3]] !="undefined"){
+                if(typeof event_set[setNo][$(this).attr('name').split(/[\[\]]/)[3]]['id'] !="undefined")
+                    $(this).val(event_set[setNo][$(this).attr('name').split(/[\[\]]/)[3]]['id']);
+                else $(this).val("");
+            }else $(this).val("");
+        }else $(this).val("");
+    });
+    $("input[name^=event][name$=\\[value\\]]").each(function(){
+        if(typeof event_set[setNo] !="undefined"){
+            if(typeof event_set[setNo][$(this).attr('name').split(/[\[\]]/)[3]] !="undefined"){
+                if(typeof event_set[setNo][$(this).attr('name').split(/[\[\]]/)[3]]['field_value'] !="undefined")
+                    $(this).val(event_set[setNo][$(this).attr('name').split(/[\[\]]/)[3]]['field_value']);
+                else $(this).val("");
+            }else $(this).val("");
+        }else $(this).val("");
+    });
+}
+function saveEvent(){
+    let request = {};
+    let eventrequest = {};
+    let eventDetail = {};
+    $("input[name^=event][name$=\\[id\\]]").each(function(){
+        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]= {};
+        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]['id'] = $(this).val(); 
+    });
+    $("input[name^=event][name$=\\[value\\]]").each(function(){
+        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]['value'] = $(this).val(); 
+    });
+    request['saveEvent'] = true;
+    eventrequest[$("[id^=eventDiv]").attr('id').split('-')[1]] = eventDetail;
+    request['event'] = eventrequest;
+    console.log(request);
+    $.ajax({
+        headers: {
+            'X-CSRF-Token': csrfToken
+        },
+        type:'POST',
+        url:'/sd-cases/triage/'+caseNo+'/'+versionNo,
+        data:request,
+        success:function(response){
+            console.log(response);
+            event_set = $.parseJSON(response);
+            renderTable($("[id^=eventDiv]").attr('id').split('-')[1]);
+            mapfieldId($("[id^=eventDiv]").attr('id').split('-')[1]);
+        },
+        error:function(response){
+            console.log(response);
+        },
+    });
+}
+function deleteEvent(){
+    let eventrequest = {};
+    let eventDetail = {};
+    $("input[name^=event][name$=\\[id\\]]").each(function(){
+        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]= {};
+        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]['id'] = $(this).val(); 
+    });
+    $("input[name^=event][name$=\\[value\\]]").each(function(){
+        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]['value'] = $(this).val(); 
+    });
+    eventrequest[$("[id^=eventDiv]").attr('id').split('-')[1]] = eventDetail;
+    console.log(eventrequest);
+    // return false;
+    $.ajax({
+        headers: {
+            'X-CSRF-Token': csrfToken
+        },
+        type:'POST',
+        url:'/sd-cases/deleteTriageEvent/'+caseNo+'/'+versionNo,
+        data:eventrequest,
+        success:function(response){
+            console.log(response);
+            event_set = $.parseJSON(response);
+            renderTable(1);
+            mapfieldId(1);
+        },
+        error:function(response){
+            console.log(response);
+        },
+    });
+    
+}
+function renderTable(selectedNo){
+    let tbodyText = "";
+    $("#llt-searchbar_496").val("");
+    $.each(event_set, function(setNo, fields){
+        tbodyText = tbodyText+"<tr id=\"eventSet-"+setNo+"\" onclick=\"mapfieldId("+setNo+")\">";
+        tbodyText = tbodyText+"<td>"+setNo+"</td>";
+        tbodyText = tbodyText+"<td>";
+        if('149' in fields)
+        tbodyText = tbodyText+fields['149']['field_value'];
+        tbodyText = tbodyText+"</td>";
+        tbodyText = tbodyText+"<td>";
+        if('392' in fields)
+        tbodyText = tbodyText+fields['392']['field_value'];
+        tbodyText = tbodyText+"</td>";
+        tbodyText = tbodyText+"<td>";
+        if('457' in fields)
+        tbodyText = tbodyText+fields['457']['field_value'];
+        tbodyText = tbodyText+"</td>";
+        tbodyText = tbodyText+"<td>";
+        if('394' in fields)
+        tbodyText = tbodyText+fields['394']['field_value'];
+        tbodyText = tbodyText+"</td>";
+        tbodyText = tbodyText+"<td>";
+        if('458' in fields)
+        tbodyText = tbodyText+fields['458']['field_value'];
+        tbodyText = tbodyText+"</td>";
+        tbodyText = tbodyText+"<tr>";
+    });
+    $("#eventSummary").find("tbody").html(tbodyText);
+    $("#eventSet-"+selectedNo).addClass("selected-row");
+    console.log(tbodyText);
+}
+function addEvent(){
+    let setNo = 1;
+    $('[id^=eventSet]').each(function(){
+        setNo++;
+    });
+    $('input[name^=event]').each(function(){
+        let id = $(this).attr('name').split(/[\[\]]/);
+        $(this).attr('name', "event["+setNo+"]["+id[3]+"]["+id[5]+"]");
+    });
+    mapfieldId(setNo);
+}
 function prioritizeDate(){
     console.log(dayZero);
     var text="";
@@ -438,17 +569,17 @@ function endTriage(){
             }
             //add function to chose most avaiable person
             text +="<div class=\"form-group\">";
-            text +="<label><h6>Select person you want to send to:</h6></label><select class=\"form-control\" id=\"receiverId\">";
+            text +="<label><h6>"+i18n.gettext("Select person you want to send to")+":</h6></label><select class=\"form-control\" id=\"receiverId\">";
             $.each(response['users'],function(k,v){
                 text +="<option value="+v['id']+">"+v['firstname']+" "+v['lastname'];
                 if(v['sd_cases'].length > 0)
-                    text +="(currently working on "+v['sd_cases']['0']['casesCount']+" cases)";
+                    text +="("+i18n.translate("currently working on  %d case").ifPlural("currently working on %d case").fetch(v['sd_cases']['0']['casesCount'])+")";
                 else text +="(currently working on 0 case)";
                 text +="</option>";
             });
             text +="</select>";
             text +="</div>";
-            text +="<div class=\"text-center\"><div class=\"btn btn-primary w-25\" onclick=\"confirmEndTriage()\">Confirm</div></div>";
+            text +="<div class=\"text-center\"><div class=\"btn btn-primary w-25\" onclick=\"confirmEndTriage()\">"+i18n.translate("Confirm")+"</div></div>";
             text +="</div>";
             $('#action-text-hint').html(text);
         },

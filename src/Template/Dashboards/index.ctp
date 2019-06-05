@@ -1,4 +1,4 @@
-<title>Dashboard</title>
+<title><?php echo __("Dashboard")?></title>
 <head>
 <?= $this->Html->script('dashboard/index.js') ?>
 <head>
@@ -7,144 +7,25 @@ var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
 var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
 </script>
 <div class="container" >
-  <div class="row mt-3"style="display:none;">
-    <div class="col">
-        <div class="card text-center">
-            <h5 class="card-header">Serious AE/EOSI Cases Alert (For Medical Review ONLY)</h5>
-            <div class="card-body">
-				<!--
-                <h5 class="card-title">Special title treatment</h5>
-				<p class="card-text">With additional content.</p>
-				-->
-					<table class="table table-hover">
-						<thead>
-							<tr class="table-secondary">
-							<th scope="col">Death</th>
-							<th scope="col">Life Threat</th>
-							<th scope="col">Hospitalization</th>
-							<th scope="col">Disability</th>
-							<th scope="col">Anomaly</th>
-							<th scope="col">Other</th>
-							<th scope="col">EOSI</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-							<th scope="row">8</th>
-							<th scope="col">3</th>
-							<th scope="col">5</th>
-							<th scope="col">4</th>
-							<th scope="col">2</th>
-							<th scope="col">3</th>
-							<th scope="col">3</th>
-							</tr>
-						</tbody>
-					</table>
-            </div>
-        </div>
-    </div>
-  </div>
-  <!-- <div class="modal fade versionUpFrame" tabindex="-1" role="dialog" aria-labelledby="versionUpFrame" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Version Up</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body m-3">
-                            <div class="form-group text-center">
-                                <label for="">Reason For Version Up:</label>
-                                <select  class="form-control w-50 mx-auto">
-                                    <option>Select reason for version up</option>
-                                    <option>Data Correction</option>
-                                    <option>Follow Up</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary w-25" id="confirmVersionUp" onclick="">Confirm </button>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
-  <div class="row mt-3" id="pendcase" style="display:none;">
-    <div class="col">
-        <div class="card text-center">
-            <h5 class="card-header"> <span class="badge badge-pill badge-danger" id="alertNew">3</span> Pending Cases (For Data Entry ONLY)</h5>
-            <div class="card-body">
-				<!--
-                <h5 class="card-title">Special title treatment</h5>
-				<p class="card-text">With additional content.</p>
-				-->
-                <table class="table table-hover" >
-                    <thead>
-                        <tr class="table-secondary">
-                        <th scope="col">Flag</th>
-                        <th scope="col">Due Date</th>
-                        <th scope="col">Version</th>
-                        <th scope="col">Country</th>
-                        <th scope="col">Product Type</th>
-                        <th scope="col">Activity Due Date</th>
-                        <th scope="col">Submission Due Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-href="/sd-tabs/showdetails/1?caseId=1">
-                            <th scope="row"><i class="fas fa-flag text-warning"></i></th>
-                            <th scope="col">12/30/2018</th>
-                            <th scope="col">1</th>
-                            <th scope="col">USA</th>
-                            <th scope="col">Medicine</th>
-                            <th scope="col">03/10/2018</th>
-                            <th scope="col">02/10/2019</th>
-                        </tr>
-                        <tr data-href="#">
-                            <th scope="row"><i class="fas fa-flag text-danger"></i></th>
-                            <th scope="col">5/30/2018</th>
-                            <th scope="col">1</th>
-                            <th scope="col">Japan</th>
-                            <th scope="col">Device</th>
-                            <th scope="col">01/23/2018</th>
-                            <th scope="col">02/04/2019</th>
-                        </tr>
-                        <tr data-href="#">
-                            <th scope="row"><i class="fas fa-flag"></i></th>
-                            <th scope="col">12/25/2018</th>
-                            <th scope="col">1</th>
-                            <th scope="col">Canada</th>
-                            <th scope="col">Device</th>
-                            <th scope="col">05/10/2018</th>
-                            <th scope="col">12/12/2019</th>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-  </div>
-
 
   <div class="card my-3 searchmodal">
     <div class="card-header text-center">
-        <h3>Dashboard</h3>
+        <h3><?php echo __("Dashboard");?></h3>
     </div>
     <div class="card-body">
-        <h4 class="display-8 text-center">Quick Look</h4>
+        <h4 class="display-8 text-center"><?php echo __("Quick Look");?></h4>
         <div class="form-row justify-content-center">
             <?php
             foreach($preferrence_list as $preferrence_detail){
                 if ($preferrence_detail['id']==7) {
                     echo "<div class=\"form-group col-lg-4\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\"><button class=\"form-control btn btn-danger w-100\">";
-                    echo $preferrence_detail['preferrence_name']." ";
+                    echo __($preferrence_detail['preferrence_name'])." ";
                     echo "<span class=\"badge badge-light\">".$preferrence_detail['count']."</span>";
                     echo "</button></div>";
                 }
                 else {
                     echo "<div class=\"form-group col-lg-2\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\"><button class=\"form-control btn btn-outline-primary w-100\">";
-                    echo $preferrence_detail['preferrence_name']." ";
+                    echo __($preferrence_detail['preferrence_name'])." ";
                     echo "<span class=\"badge badge-danger\">".$preferrence_detail['count']."</span>";
                     echo "</button></div>";
                 }
@@ -152,59 +33,59 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             ?>
         </div>
         <hr class="my-4">
-        <h4 class="display-8 text-center">Search</h4>
+        <h4 class="display-8 text-center"><?php echo __("Search")?></h4>
         <div class="form-row  justify-content-center" id="basicSearch">
             <div class="form-group col-lg-3">
                 <input type="text" class="form-control" id="searchProductName" name="searchProductName" placeholder="Search by Product Name">
             </div>
             <div class="form-group col-lg-2">
-                <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary"><i class="fas fa-search"></i> Search</button>
+                <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary"><i class="fas fa-search"></i><?php echo __("Search")?></button>
             </div>
             <div class="form-group col-lg-2">
-                <button id="fullSearchBtn" class="form-control btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</button>
+                <button id="fullSearchBtn" class="form-control btn btn-outline-info"><i class="fas fa-keyboard"></i> <?php echo __("Advanced Search")?></button>
             </div>
         </div>
         <div id="fullSearch" style="display:none;">
             <div class="form-row">
                 <div class="form-group col-lg-4">
-                    <label>Product Name</label>
+                    <label><?php echo __("Product Name")?></label>
                     <input type="text" class="form-control" id="searchProductName" name="searchProductName" placeholder="Search by Product Name">
                 </div>
                 <div class="form-group col-lg-4">
-                    <label>Case No.</label>
+                    <label><?php echo __("Case No.")?></label>
                     <input type="text" class="form-control"  id="searchName" name="searchName" placeholder="Search by Case No.">
                 </div>
                 <div class="form-group col-lg-4">
-                    <label>Case Status</label>
+                    <label><?php echo __("Case Status")?></label>
                     <select class="form-control" id="caseStatus" name="caseStatus">
-                        <option value="">Search by Case Status</option>
-                        <option value="1">Active</option>
-                        <option value="2">Inactive</option>
-                        <option value="3">All</option>
+                        <option value=""><?php echo __("Search by Case Status");?></option>
+                        <option value="1"><?php echo __("Active");?></option>
+                        <option value="2"><?php echo __("Inactive");?></option>
+                        <option value="3"><?php echo __("All");?></option>
                     </select>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-lg-4">
-                    <label>Patient ID</label>
+                    <label><?php echo __("Patient ID");?></label>
                     <input type="text" class="form-control" id="patient_id" placeholder="Search by Patient ID">
                 </div>
                 <div class="form-group col-lg-4">
-                    <label>Date of Birth</label>
+                    <label><?php echo __("Date of Birth");?></label>
                     <input type="date" class="form-control" id="datepicker5" placeholder="Search by Birthday">
                 </div>
                 <div class="form-group col-lg-4">
-                    <label>Gender</label>
+                    <label><?php echo __("Gender");?></label>
                     <select id="inputState" class="form-control">
-                        <option value="">Search by Gender</option>
-                        <option value="1">Male</option>
-                        <option value="2">Female</option>
-                        <option value="3">Unknown</option>
+                        <option value=""><?php echo __("Search by Gender");?></option>
+                        <option value="1"><?php echo __("Male");?></option>
+                        <option value="2"><?php echo __("Female");?></option>
+                        <option value="3"><?php echo __("Unknown");?></option>
                     </select>
                 </div>
             </div>
             <div class="form-row">
-                <p class="duedate form-group col-2">Activity Due Date:</p>
+                <p class="duedate form-group col-2"><?php echo __("Activity Due Date:");?></p>
                 <div class="form-group col-3">
                     <input type="date" class="form-control" id="datepicker1" placeholder="[mm/dd/yyyy]">
                 </div>
@@ -216,7 +97,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 </div>
             </div>
             <div class="form-row">
-                <p class="duedate form-group col-2 float-right">Submission Due Date:</p>
+                <p class="duedate form-group col-2 float-right"><?php echo __("Submission Due Date:");?></p>
                 <div class="form-group col-3">
                     <input type="date" class="form-control" id="datepicker3" placeholder="[mm/dd/yyyy]">
                 </div>
@@ -229,10 +110,10 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             </div>
             <div class="form-row justify-content-center">
                 <div class="form-group col-lg-3">
-                    <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary w-100"><i class="fas fa-search"></i> Search</button>
+                    <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary w-100"><i class="fas fa-search"></i><?php echo __("Search");?><"/button>
                 </div>
                 <div class="form-group col-lg-1">
-                    <button class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> Clear</button>
+                    <button class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> <?php echo __("Clear");?></button>
                 </div>
             </div>
         </div>

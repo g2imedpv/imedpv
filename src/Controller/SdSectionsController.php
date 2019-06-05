@@ -188,9 +188,17 @@ class SdSectionsController extends AppController
         $child_list = [];
         
         foreach($sdSections as $sdSection){
+            $sdSection['section_name'] = __($sdSection['section_name']);
             if($sdSection->parent_section!=0){
                 if(empty($child_list[$sdSection->parent_section])) $child_list[$sdSection->parent_section]="";
                 $child_list[$sdSection->parent_section] = $child_list[$sdSection->parent_section].$sdSection->id.",";
+            }
+            foreach($sdSection['sd_section_structures'] as $sd_section_structure){
+                $sd_section_structure['sd_field']['field_label'] = __($sd_section_structure['sd_field']['field_label']);
+                $sd_section_structure['sd_field']['comment'] = __($sd_section_structure['sd_field']['comment']);
+                foreach($sd_section_structure['sd_field']['sd_field_value_look_ups'] as $sd_field_value_look_up){
+                    $sd_field_value_look_up['caption'] = __($sd_field_value_look_up['caption']);
+                }
             }
         }
         foreach($sdSections as $sdSection){
@@ -208,6 +216,10 @@ class SdSectionsController extends AppController
                 }, 'SdElementTypes'=> function($q){
                 return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
                     }])->first(); 
+                $foundField['field_label'] = __($foundField['field_label']);
+                foreach($foundField['sd_field_value_look_ups'] as $sd_field_value_look_ups){
+                    $sd_field_value_look_ups['caption'] = __($sd_field_value_look_ups['caption']);
+                }
                 array_push($sdFields,$foundField);
             }
             $sdSection->sd_section_summary['sdFields'] = $sdFields;
@@ -304,7 +316,7 @@ class SdSectionsController extends AppController
             }
 
             //Fetch tab structures
-            //TODO according to model
+            //TODO according to $sdFieldTable = TableRegistry::get('SdFields');
             $sdFieldTable = TableRegistry::get('SdFields');
             $sdTab = TableRegistry::get('SdSections');
             $sdSections = $sdTab ->find()->where(['sd_tab_id'=>$tabid,'status'=>true])
@@ -312,30 +324,25 @@ class SdSectionsController extends AppController
                                 ->contain(['SdSectionSummaries','SdSectionStructures'=>function($q)use($caseId,$distribution_condition){
                                     return $q->order(['SdSectionStructures.row_no'=>'ASC','SdSectionStructures.field_start_at'=>'ASC'])
                                         ->contain(['SdFields'=>['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
-                                            return $q->contain(['SdSectionSets'])->where(['SdFieldValues.sd_case_id'=>$caseId, $distribution_condition,
-                                                             'SdFieldValues.status'=>true]);
+                                            return $q->where(['SdFieldValues.sd_case_id'=>$caseId, $distribution_condition,
+                                                                'SdFieldValues.status'=>true]);
                                         }, 'SdElementTypes'=> function($q){
                                         return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
                                             }]]);
                                 }])->toArray();
             $child_list = [];
+            
             foreach($sdSections as $sdSection){
+                $sdSection['section_name'] = __($sdSection['section_name']);
                 if($sdSection->parent_section!=0){
                     if(empty($child_list[$sdSection->parent_section])) $child_list[$sdSection->parent_section]="";
                     $child_list[$sdSection->parent_section] = $child_list[$sdSection->parent_section].$sdSection->id.",";
                 }
-                //select correct set
-                foreach($sdSection->sd_section_structures as $structures){
-                    foreach($structures->sd_field->sd_field_values as $field_values){
-                        $setMatch = 0;
-                        if(empty($field_values->sd_section_sets)) continue;
-                        foreach($field_values->sd_section_sets as $section_set){
-                            if($section_set->sd_section_id == $sdSection->id) {
-                                $field_values->sd_section_sets = $section_set;
-                                $setMatch = 1;
-                                break;
-                            }
-                        }if(!$setMatch) $field_values->sd_section_sets = "";
+                foreach($sdSection['sd_section_structures'] as $sd_section_structure){
+                    $sd_section_structure['sd_field']['field_label'] = __($sd_section_structure['sd_field']['field_label']);
+                    $sd_section_structure['sd_field']['comment'] = __($sd_section_structure['sd_field']['comment']);
+                    foreach($sd_section_structure['sd_field']['sd_field_value_look_ups'] as $sd_field_value_look_up){
+                        $sd_field_value_look_up['caption'] = __($sd_field_value_look_up['caption']);
                     }
                 }
             }
@@ -347,31 +354,21 @@ class SdSectionsController extends AppController
                 $fields = explode(',',$sdSection->sd_section_summary->fields);
                 $sdFields = [];
                 foreach($fields as $sdField){
-                    $foundField = $sdFieldTable->find()->where(['SdFields.id'=>$sdField])->contain(['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
-                        return $q->contain(['SdSectionSets'])->where(['SdFieldValues.sd_case_id'=>$caseId, $distribution_condition,
-                                         'SdFieldValues.status'=>true]);
+                    $foundField = $sdFieldTable->find()->where(['SdFields.id'=>$sdField])
+                        ->contain(['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
+                                    return $q->where(['SdFieldValues.sd_case_id'=>$caseId, $distribution_condition,
+                                            'SdFieldValues.status'=>true]);
                     }, 'SdElementTypes'=> function($q){
                     return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
                         }])->first(); 
-                    foreach($foundField->sd_field_values as $fvalue){
-                        foreach($fvalue->sd_section_sets as $setDetail){
-                            
-                            if($setDetail->sd_section_id == $sdSection->id||in_array($setDetail->sd_section_id, explode(',',$child_list[$sdSection->id])))
-                            {
-                                $fvalue->sd_section_sets = [0=>$setDetail];
-                            }
-                        }
+                    $foundField['field_label'] = __($foundField['field_label']);
+                    foreach($foundField['sd_field_value_look_ups'] as $sd_field_value_look_ups){
+                        $sd_field_value_look_ups['caption'] = __($sd_field_value_look_ups['caption']);
                     }
                     array_push($sdFields,$foundField);
-                }       
+                }
                 $sdSection->sd_section_summary['sdFields'] = $sdFields;
             }
-            if($userinfo['sd_role_id']>2){
-                foreach($sdSections as $sectionKey => $sdSection){
-                    if(!array_key_exists($sdSection['id'],$activitySectionPermissions)) unset($sdSections[$sectionKey]);
-                }
-            }
-            //child section
         }else $this->autoRender = true;
         echo json_encode($sdSections);
         die();

@@ -1,7 +1,7 @@
 <?php
 //debug($sdProductTypes);
 ?>
-<title>Search Product</title>
+<title><?php echo __("Search Product")?></title>
 <head>
 <?= $this->Html->script('product/search.js') ?>
 <head>
@@ -14,7 +14,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-header text-center">
-                    <h3>Search Product</h3>
+                    <h3><?php echo __("Search Product")?></h3>
                 </div>
                 <div class="card-body">
                     <div class="text-center">
@@ -22,34 +22,34 @@
                         <span id="errorMsg" class="alert alert-danger" role="alert" style="display:none"></span>
                         <div id="addpro" class="form-row">
                             <div class="form-group col-md-3">
-                                <label>Key Word</label>
+                                <label><?php echo __("Key Word");?></label>
                                 <input type="text" class="form-control" id="key_word" name="key_word" placeholder="Search Key Word">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>Product Name</label>
+                                <label><?php echo __("Product Name");?></label>
                                 <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Search Product Name">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>Sponsor Study Number (A.2.3.2)</label>
+                                <label><?php echo __("Sponsor Study Number (A.2.3.2)");?></label>
                                 <input type="text" class="form-control" id="study_no" name="study_no" placeholder="Search Study Number">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>Status</label>
+                                <label><?php echo __("Status");?></label>
                                 <input type="text" class="form-control" id="status" name="status" placeholder="Search Status">
                             </div>
                         </div>
                         <div id="advsearchfield" style="display:none;">
                             <div class="form-row">
                                 <div class="form-group col-md-3">
-                                    <label>Study Type (A.2.3.3)</label>
+                                    <label><?php echo __("Study Type (A.2.3.3)");?></label>
                                     <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Search Study Type">
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label>Product Flag (B.4.k.1)</label>
+                                    <label><?php echo __("Product Flag (B.4.k.1)");?></label>
                                     <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Search Product Flag">
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label>Product Type</label>
+                                    <label><?php echo __("Product Type");?></label>
                                     <select class="form-control" name="sd_product_type_id" id="sd_product_type_id">
                                     <?php
                                         echo "<option value=''>Select Product Type</option>";
@@ -62,28 +62,28 @@
                                     <input type="hidden" id="status" name="status" value="1">
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label>Study Name (A.2.3.1)</label>
+                                    <label><?php echo __("Study Name (A.2.3.1)");?></label>
                                     <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Search Study Name">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-3">
-                                    <label>Sponsor Company</label>
+                                    <label><?php echo __("Sponsor Company");?></label>
                                     <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Search Sponsor Company">
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label>CRO</label>
+                                    <label><?php echo __("CRO");?></label>
                                     <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Search CRO">
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label>Call Center</label>
+                                    <label><?php echo __("Call Center");?></label>
                                     <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Search Call Center">
                                 </div>
                             </div>
                         </div>
-                        <button onclick="searchProd()" class="btn btn-primary w-25"><i class="fas fa-search"></i> Search</button>
-                        <button id="advsearch" class="btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</button>
-                        <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> Clear</button>
+                        <button onclick="searchProd()" class="btn btn-primary w-25"><i class="fas fa-search"></i> <?php echo __("Search")?></button>
+                        <button id="advsearch" class="btn btn-outline-info"><i class="fas fa-keyboard"></i> <?php echo __("Advanced Search")?></button>
+                        <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> <?php echo __("Clear")?></button>
                         <!-- <div class="form-row justify-content-center">
                             <div class="form-group col-lg-3">
                                 <div onclick="searchProd()" class="btn btn-primary w-100"><i class="fas fa-search"></i> Search</div>
@@ -101,7 +101,7 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title text-center">Workflow Details</h5>
+                                            <h5 class="modal-title text-center"><?php echo __("Workflow Details")?></h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                             </button>
@@ -110,41 +110,41 @@
                                             <table class="table table-hover" id="ifram_view">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="row" class="w-25">Workflow Name</th>
+                                                        <th scope="row" class="w-25"><?php echo __("Workflow Name")?></th>
                                                         <td id="viewWFname"></td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <th scope="row" class="w-25">Call Center</th>
+                                                        <th scope="row" class="w-25"><?php echo __("Call Center")?></th>
                                                         <td id="viewCC"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="row" class="w-25">Country</th>
+                                                        <th scope="row" class="w-25"><?php echo __("Country")?></th>
                                                         <td id="viewCountry"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="row" class="w-25">Description</th>
+                                                        <th scope="row" class="w-25"><?php echo __("Description")?></th>
                                                         <td id="viewDesc"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="row" class="w-25">Workflow Manager</th>
+                                                        <th scope="row" class="w-25"><?php echo __("Workflow Manager")?></th>
                                                         <td id="viewMan"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="row" class="w-25">Team Resources</th>
+                                                        <th scope="row" class="w-25"><?php echo __("Team Resources")?></th>
                                                         <td id="viewRes"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                             <div>
-                                                <h4>Workflow Steps</h4>
+                                                <h4><?php echo __("Workflow Steps")?></h4>
                                                 <div id="view_activities"></div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <a class="btn btn-primary" id="allocate_workflow" href="#">Allocate This Workflow</a>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <a class="btn btn-primary" id="allocate_workflow" href="#"><?php echo __("Allocate This Workflow")?></a>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo __("Close")?></button>
                                             <!-- <button type="button" class="btn btn-primary">Send message</button> -->
                                         </div>
                                     </div>
@@ -154,7 +154,7 @@
                             <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title text-center">Product Detail</h5>
+                                            <h5 class="modal-title text-center"><?php echo __("Product Detail")?></h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                             </button>
@@ -162,87 +162,87 @@
                                         <div class="modal-body m-3">
                                             <div id="addpro" class="form-row">
                                                 <div class="form-group col-md-3">
-                                                    <label>Product Name</label>
+                                                    <label><?php echo __("Product Name");?></label>
                                                     <input class="form-control" id="detail_product_name" readonly="readonly">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label>Sponsor Company</label>
+                                                    <label><?php echo __("Sponsor Company");?></label>
                                                     <input type="text"  class="form-control" id="detail_sponsor_company" readonly="readonly">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label>Product flag (B.4.k.1)</label>
+                                                    <label><?php echo __("Product flag (B.4.k.1)");?></label>
                                                     <input type="text" class="form-control" id="detail_sd_product_flag" readonly="readonly">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label>Blinding technique</label>
+                                                    <label><?php echo __("Blinding technique");?></label>
                                                     <input type="text" class="form-control" id="detail_blinding_tech" readonly="readonly">
                                                 </div>
                                             </div>
 
                                             <div class="form-row">
                                                 <div class="form-group col-md-3">
-                                                    <label>Study Name</label>
+                                                    <label><?php echo __("Study Name");?></label>
                                                     <input type="text" class="form-control" id="detail_study_name" readonly="readonly">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label>Study Number</label>
+                                                    <label><?php echo __("Study Number");?></label>
                                                     <input type="text" class="form-control" id="detail_study_no" readonly="readonly">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label>Mfr. name</label>
+                                                    <label><?php echo __("Mfr. name");?></label>
                                                     <input type="text" class="form-control" id="detail_mfr_name" readonly="readonly">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label>Study type (A.2.3.3)</label>
+                                                    <label><?php echo __("Study type (A.2.3.3)");?></label>
                                                     <input class="form-control" id="detail_study_type" readonly="readonly">
                                                 </div>
                                             </div>
 
                                             <div class="form-row">
                                                 <div class="form-group col-md-3">
-                                                    <label>WHODD Code</label>
+                                                    <label><?php echo __("WHODD Code");?></label>
                                                     <input type="text" readonly="readonly" class="form-control" id="detail_whodracode">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label>WHODD Name</label>
+                                                    <label><?php echo __("WHODD Name");?></label>
                                                     <input type="text" readonly="readonly" class="form-control" id="detail_whodraname">
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label>Preferred WHO DD decode</label>
+                                                    <label><?php echo __("Preferred WHO DD decode");?></label>
                                                     <input type="text" readonly="readonly" class="form-control" id="detail_WHODD_decode">
                                                 </div>
                                             </div>
 
                                             <div class="form-row">
                                                 <div class="form-group col-md-3">
-                                                    <label>Start Date</label>
+                                                    <label><?php echo __("Start Date");?></label>
                                                     <input type="text" readonly="readonly" class="form-control" id="detail_start_date">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label>End Date</label>
+                                                    <label><?php echo __("End Date");?></label>
                                                     <input type="text" readonly="readonly" class="form-control" id="detail_end_date">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label>Status</label>
+                                                    <label><?php echo __("Status");?></label>
                                                     <input type="text" class="form-control" id="detail_status" readonly="readonly">
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
-                                                    <label>Short Description</label>
+                                                    <label><?php echo __("Short Description");?></label>
                                                     <input type="text" readonly="readonly" class="form-control" id="detail_short_desc">
                                                 </div>
                                             </div>
 
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
-                                                    <label>Product Description (B.4.k.2.1)</label>
+                                                    <label><?php echo __("Product Description (B.4.k.2.1)");?></label>
                                                     <input type="text" readonly="readonly" class="form-control" id="detail_product_desc">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo __("Close")?></button>
                                             <!-- <button type="button" class="btn btn-primary">Send message</button> -->
                                         </div>
                                     </div>

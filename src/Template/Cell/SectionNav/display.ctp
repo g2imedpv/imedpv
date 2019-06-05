@@ -14,7 +14,7 @@
             // echo ($multiSec)?"dropdown-toggle\" aria-haspopup=\"true\" aria-expanded=\"false\" data-toggle=\"dropdown ":null;
             echo "\" href=\"/sd-tabs/showdetails/".$caseNo."/".$version."/".$sdTabV->id;
             if($readonly) echo "?readonly=1";
-            echo "\">".$sdTabV->tab_name."</a>";
+            echo "\">".__($sdTabV->tab_name)."</a>";
             // if($multiSec){
             //     echo "<div class=\"dropdown-menu\">";
             //     foreach($sdTabV->sd_sections as $sectionK => $sectionV){

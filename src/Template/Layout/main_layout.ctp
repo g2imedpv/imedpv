@@ -7,7 +7,12 @@
     <!-- For local jQuery link, Bootstrap required -->
     <?= $this->Html->script('bootstrap/jquery-3.3.1.min.js') ?>
     <?= $this->Html->script('bootstrap/popper.min.js') ?>
-
+    <?= $this->Html->script('jed/jed.js') ?>
+    <?php $language = $this->request->getSession()->read('Language');
+    if($language == "en_US")
+      echo $this->Html->script('language/en_US.js');
+    else if($language == "zh_CN")
+      echo $this->Html->script('language/zh_CN.js') ?>
     <!-- For local Font Awesome icon link -->
     <?= $this->Html->css('fontAwesome/all.min.css') ?>
 
@@ -57,15 +62,18 @@
         echo $mailNotice;
         ?>
       </div>
-
+        <ul><?php echo __("Language");?>
+          <a class="dropdown-item" href="/sd-users/setLanguage/en_US"><?php echo __("English");?></a>
+          <a class="dropdown-item" href="/sd-users/setLanguage/zh_CN"><?php echo __("Chinese");?></a>
+        </ul>
       <div class="nav-item dropdown p-2 bd-highlight myaccount">
         <a class="nav-link text-dark bg-light" href="/sd-users/myaccount" id="accountInfo" role="button" aria-haspopup="true" aria-expanded="false">
-          <h5>Hi, <span id="roleName"> <?php print $this->request->getSession()->read('Auth.User.firstname'); ?>&nbsp;<?php print $this->request->getSession()->read('Auth.User.lastname'); ?> </span> </h5>
+          <h5><?php echo   __("Hi") ?><span id="roleName"> <?php echo $this->request->getSession()->read('Auth.User.firstname'); ?>&nbsp;<?php print $this->request->getSession()->read('Auth.User.lastname'); ?> </span> </h5>
         </a>
         <div class="dropdown-menu login" aria-labelledby="accountInfo">
           <h5 class="dropdown-header"><?php echo $this->request->getSession()->read('Auth.User.role_name'); ?></h5>
-          <a class="dropdown-item my-1" href="/sd-users/myaccount"><i class="fas fa-user-cog"></i> My Account</a>
-          <a class="dropdown-item my-1" href="/sd-users/logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+          <a class="dropdown-item my-1" href="/sd-users/myaccount"><i class="fas fa-user-cog"></i> <?php echo __("My Account");?></a>
+          <a class="dropdown-item my-1" href="/sd-users/logout"><i class="fas fa-sign-out-alt"></i> <?php echo __("Log Out");?></a>
         </div>
       </div>
 
@@ -75,27 +83,27 @@
 <nav class="navbar navbar-expand-lg mainNav navbar-dark bg-primary">
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="nav navbar-nav mr-auto">
-      <li class="nav-item"><a class="nav-link" href="/Dashboards/index">Dashboard <span class="sr-only">(current)</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="/Dashboards/index"><?php echo __("Dashboard");?><span class="sr-only">(current)</span></a></li>
       <!-- <li class="nav-item"><a class="nav-link" href="#">Link</a></li> -->
-      <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#">Product</a>
+      <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("Product");?> </a>
         <ul class="dropdown-menu">
-          <a class="dropdown-item" href="/sd-products/search">Search Product</a>
-          <a class="dropdown-item" href="/sd-products/addproduct">Add Product</a>
+          <a class="dropdown-item" href="/sd-products/search"><?php echo __("Search Product");?></a>
+          <a class="dropdown-item" href="/sd-products/addproduct"><?php echo __("Add Product");?></a>
         </ul>
       </li>
-      <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#">Contact</a>
+      <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("Contact");?></a>
         <ul class="dropdown-menu">
-          <a class="dropdown-item" href="/sd-contacts/search">Search Contact</a>
-          <a class="dropdown-item" href="/sd-contacts/addcontact">Add Contact</a>
+          <a class="dropdown-item" href="/sd-contacts/search"><?php echo __("Search Contact");?></a>
+          <a class="dropdown-item" href="/sd-contacts/addcontact"><?php echo __("Add Contact");?></a>
         </ul>
       </li>
-      <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#">ICSR</a>
+      <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("ICSR");?></a>
         <ul class="dropdown-menu">
-          <a class="dropdown-item" href="/sd-cases/caseregistration">Register SAE/AE</a>
-          <a class="dropdown-item" href="/sd-cases/caselist">Case List</a>
+          <a class="dropdown-item" href="/sd-cases/caseregistration"><?php echo __("Register SAE/AE");?></a>
+          <a class="dropdown-item" href="/sd-cases/caselist"><?php echo __("Case List");?></a>
         </ul>
       </li>
-      <li class="nav-item"><a class="nav-link" href="/sd-users/myaccount">My Account</a></li>
+      <li class="nav-item"><a class="nav-link" href="/sd-users/myaccount"><?php echo __("My Account");?></a></li>
     </ul>
   </div>
 </nav>

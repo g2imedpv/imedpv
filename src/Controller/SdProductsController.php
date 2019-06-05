@@ -525,7 +525,7 @@ class SdProductsController extends AppController
         $sd_tabs = $sd_tabs_table->find()
                     ->contain(['SdSections'=>function($q){
                         return $q->order(['SdSections.section_level'=>'ASC','SdSections.display_order'=>'ASC'])
-                                ->select(['SdSections.id','SdSections.sd_tab_id','SdSections.section_name','SdSections.section_level','SdSections.child_section']);
+                                ->select(['SdSections.id','SdSections.sd_tab_id','SdSections.section_name','SdSections.section_level','SdSections.parent_section']);
                     }])->order(['SdTabs.display_order'=>'ASC']);
         $child_list = [];
         foreach($sd_tabs as $sdTab){
