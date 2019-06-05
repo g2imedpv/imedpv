@@ -171,19 +171,19 @@ $(document).ready(function(){
             // Congenital Anomaly field
             selectShowORhide ("#section-16-field-277","#section-16-radio-273-option-1","#section-16-radio-273-option-2");
         //Relevant medical history and concurrent conditions(B.1.7) section
-            //add title to distinct meddraw browser
-            $("#section-77-field-472").parent().prepend('<h5 class="col-md-12 mb-3">Drug Indication</h5>');
-            $("#section-77-field-473").parent().prepend('<h5 class="col-md-12 mb-3">Drug Reaction</h5>');
-            $("#section-5-field-401").parent().prepend('<h5 class="col-md-12 mb-3">Disease</h5>');
-            $("#section-8-field-477").parent().prepend('<h5 class="col-md-12 mb-3">Parent Disease</h5>');
-            $("#section-78-field-482").parent().prepend('<h5 class="col-md-12 mb-3">Drug Indication</h5>');
-            $("#section-78-field-486").parent().prepend('<h5 class="col-md-12 mb-3">Drug Reaction</h5>');
-            $("#section-19-field-490").parent().prepend('<h5 class="col-md-12 mb-3">Reported cause of death</h5>');
-            $("#section-19-field-494").parent().prepend('<h5 class="col-md-12 mb-3">Autopsy-determined cause of death</h5>');
-            $("#section-26-field-496").parent().prepend('<h5 class="col-md-12 mb-3">Reaction or event</h5>');
-            $("#section-69-field-499").parent().prepend('<h5 class="col-md-12 mb-3">Sender\'s diagnosis or syndrome</h5>');
-            $("#section-44-field-497").parent().prepend('<h5 class="col-md-12 mb-3">Recurred reaction</h5>');
-            $("#section-45-field-498").parent().prepend('<h5 class="col-md-12 mb-3">Reaction assessed</h5>');
+            // //add title to distinct meddraw browser
+            // $("#section-77-field-472").parent().prepend('<h5 class="col-md-12 mb-3">Drug Indication</h5>');
+            // $("#section-77-field-473").parent().prepend('<h5 class="col-md-12 mb-3">Drug Reaction</h5>');
+            // $("#section-5-field-401").parent().prepend('<h5 class="col-md-12 mb-3">Disease</h5>');
+            // $("#section-8-field-477").parent().prepend('<h5 class="col-md-12 mb-3">Parent Disease</h5>');
+            // $("#section-78-field-482").parent().prepend('<h5 class="col-md-12 mb-3">Drug Indication</h5>');
+            // $("#section-78-field-486").parent().prepend('<h5 class="col-md-12 mb-3">Drug Reaction</h5>');
+            // $("#section-19-field-490").parent().prepend('<h5 class="col-md-12 mb-3">Reported cause of death</h5>');
+            // $("#section-19-field-494").parent().prepend('<h5 class="col-md-12 mb-3">Autopsy-determined cause of death</h5>');
+            // $("#section-26-field-496").parent().prepend('<h5 class="col-md-12 mb-3">Reaction or event</h5>');
+            // $("#section-69-field-499").parent().prepend('<h5 class="col-md-12 mb-3">Sender\'s diagnosis or syndrome</h5>');
+            // $("#section-44-field-497").parent().prepend('<h5 class="col-md-12 mb-3">Recurred reaction</h5>');
+            // $("#section-45-field-498").parent().prepend('<h5 class="col-md-12 mb-3">Reaction assessed</h5>');
             //diease therapy date,if choose continue,no end date and duration
             selectShowORhide('#section-5-field-240,#section-5-field-241,#section-5-field-102',"#section-5-radio-100-option-2,#section-5-radio-100-option-3","#section-5-radio-100-option-1");
             //parent diease therapy date,if choose continue,no end date and duration
@@ -201,16 +201,8 @@ $(document).ready(function(){
                 });
             }
             optionalGrayout("#unspecified-day_section-22-unspecifieddate-205,#unspecified-month_section-22-unspecifieddate-205,#unspecified-year_section-22-unspecifieddate-205,#section-22-text-206,#section-22-select-207","#section-22-checkbox-434-2-final");
-    //Event Tab:
-        //->Assessment add subtitle
-        $("#section-29-field-7").parent().prepend('<h5 class="col-md-12 mb-3">Reporter Assessment</h5>');
-        $("#section-29-field-351").parent().prepend('<h5 class="col-md-12 mb-3">Company Assessment</h5>');
-        $("#section-29-field-353").parent().prepend('<h5 class="col-md-12 mb-3">HQ Assessment</h5>');
             
     //Seriousness Criteria Tab:
-        //->Assessment add subtitle
-        $("#section-80-field-540").parent().prepend('<h5 class="col-md-12 mb-3">Reporter Assessment</h5>');
-        $("#section-80-field-544").parent().prepend('<h5 class="col-md-12 mb-3">Company Assessment</h5>');
             
         function duration(startDay,startMonth,startYear,endDay,endMonth,endYear,dur,durUnit) {
             var endTime=($(endYear)*365+$(endMonth)*30+$(endDay))*24*60;
