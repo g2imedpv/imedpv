@@ -275,7 +275,7 @@
                                     </div>
                                 </div>
                                 <button id="exit_accessment_workflow" type="button" class="btn btn-outline-warning">Exit</button>
-                                <div id="submit_accessment_country" class="btn btn-primary w-25">Countinue</div>
+                                <div id="submit_accessment_country" class="btn btn-primary w-25">Continue</div>
                             </div>
                             <div id="choose_accessment_wf">
                                 <div class="row" style="min-height: 740px;">
@@ -394,9 +394,9 @@
 
                                 <div class="d-block mt-3">
                                     <button id="undocho-accessment-con" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
-                                    <button id="confirm_accessment_activities" class="btn btn-primary w-25" style="display:none;">Countinue</button>
+                                    <button id="confirm_accessment_activities" class="btn btn-primary w-25" style="display:none;">Continue</button>
                                     <button id="undo_accessment_activities" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
-                                    <button id="submit_accessment_workflow" class="btn btn-primary w-25" style="display:none;">Countinue</button>
+                                    <button id="submit_accessment_workflow" class="btn btn-primary w-25" style="display:none;">Continue</button>
                                 </div>
                             </div>
                         </div>
@@ -555,7 +555,7 @@
                             <div class="newDistrictArea"></div>
                             <button id="addNew-distribution-WL" type="button" class="btn btn-sm btn-outline-primary float-left"><i class="fas fa-plus"></i> Add New</button>
                             <button id="backDistri" class="btn btn-outline-warning w-25">Last Step</button>
-                            <button id="submitDistri" class="btn btn-primary w-25">Countinue</button>
+                            <button id="submitDistri" class="btn btn-primary w-25">Continue</button>
                         </div>
                         <div id="cho-distribution-workflow" class="prodiff text-center mt-1" style="display:none;">
                         <!-- Title for "Add New" -->
@@ -586,7 +586,7 @@
                                     </div>
                                 </div>
                                 <button id="exit_distribution_workflow" type="button" class="btn btn-outline-warning">Exit</button>
-                                <div id="submit_distribution_country" class="btn btn-primary w-25">Countinue</div>
+                                <div id="submit_distribution_country" class="btn btn-primary w-25">Continue</div>
                             </div>
                             <div id="choose_distribution_wf">
                                 <div class="row" style="min-height: 740px;">
@@ -649,9 +649,9 @@
 
                                 <div class="d-block mt-3">
                                     <button id="undocho-distribution-con" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
-                                    <button id="confirm_distribution_activities" class="btn btn-primary w-25" style="display:none;">Countinue</button>
+                                    <button id="confirm_distribution_activities" class="btn btn-primary w-25" style="display:none;">Continue</button>
                                     <button id="undo_distribution_activities" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
-                                    <button id="submit_distribution_workflow" class="btn btn-primary w-25" style="display:none;">Countinue</button>
+                                    <button id="submit_distribution_workflow" class="btn btn-primary w-25" style="display:none;">Continue</button>
                                 </div>
                             </div>
                         </div>

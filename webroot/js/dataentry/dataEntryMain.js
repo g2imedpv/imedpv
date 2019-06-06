@@ -935,7 +935,7 @@ function action(type){
                 text +="<tr>";
                 text +="<th scope=\"col\">Activity </th>";
                 text +="<th scope=\"col\">Previous User On This Activity </th>";
-                text +="<th scope=\"col\">Avaliable User </th>";
+                text +="<th scope=\"col\">Available User </th>";
                 text +="</tr>";
                 text +="</thead>";
                 $.each(response,function(k,activity){
@@ -961,7 +961,7 @@ function action(type){
                 text +="<hr class=\"my-4\">";
                 //add function to chose most avaiable person
                 text +="<div class=\"form-group\">";
-                text +="<label>Which you want to push to?</label>";
+                text +="<label>Which activity do you want to push to?</label>";
                 text +="<select class=\"form-control w-50 mx-auto\" id=\"next-activity-id\" >";
                 text +="<option value=\"null\">Select Activity</option>";
                 $.each(response,function(k,v){

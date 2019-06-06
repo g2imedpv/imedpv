@@ -56,19 +56,24 @@
       <a class="navLogo navbar-brand mr-auto my-auto bd-highlight" href="/Dashboards/index">
         <img src="/img/logo-mds.png" title="MDS" alt="logo" style="width:200px;">
       </a>
+      <div class="nav-item dropdown p-2 bd-highlight language">
+        <button class="btn btn-info dropdown-toggle" type="button" id="languageSwitcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-language" style="font-size:20px;"></i>&nbsp<?php echo __("Language");?>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="languageSwitcher">
+          <a class="dropdown-item" href="/sd-users/setLanguage/en_US"><?php echo __("English");?></a>
+          <a class="dropdown-item" href="/sd-users/setLanguage/zh_CN"><?php echo __("Chinese");?></a>
+        </div>
+      </div>
       <div class="d-flex p-2 bd-highlight">
         <?php
         $mailNotice = $this->cell('QueryNotice',[$this->request->getSession()->read('Auth.User.id')]);
         echo $mailNotice;
         ?>
       </div>
-        <ul><?php echo __("Language");?>
-          <a class="dropdown-item" href="/sd-users/setLanguage/en_US"><?php echo __("English");?></a>
-          <a class="dropdown-item" href="/sd-users/setLanguage/zh_CN"><?php echo __("Chinese");?></a>
-        </ul>
       <div class="nav-item dropdown p-2 bd-highlight myaccount">
         <a class="nav-link text-dark bg-light" href="/sd-users/myaccount" id="accountInfo" role="button" aria-haspopup="true" aria-expanded="false">
-          <h5><?php echo   __("Hi") ?><span id="roleName"> <?php echo $this->request->getSession()->read('Auth.User.firstname'); ?>&nbsp;<?php print $this->request->getSession()->read('Auth.User.lastname'); ?> </span> </h5>
+          <h5><?php echo   __("Hi!") ?>&nbsp;&nbsp;<span id="roleName"><?php echo $this->request->getSession()->read('Auth.User.firstname'); ?>&nbsp;<?php print $this->request->getSession()->read('Auth.User.lastname'); ?> </span></h5>
         </a>
         <div class="dropdown-menu login" aria-labelledby="accountInfo">
           <h5 class="dropdown-header"><?php echo $this->request->getSession()->read('Auth.User.role_name'); ?></h5>
