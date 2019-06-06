@@ -541,10 +541,10 @@ function endTriage(){
         },
         type:'POST',
         url:'/sd-users/searchNextAvailable/'+caseNo+'/'+versionNo,
-        success:function(response){
-            console.log(response);
-            response = JSON.parse(response);
-            console.log(response);
+        success:function(allresponse){
+            allresponse = JSON.parse(allresponse);
+            console.log(allresponse);
+            response = allresponse['one'];
             text +="<div class=\"modal-header\">";
             text +="<h3 class=\"modal-title text-center w-100\" id=\"exampleModalLabel\">Sign Off</h3>";
             text +="<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
@@ -572,8 +572,11 @@ function endTriage(){
             text +="<label><h6>"+i18n.gettext("Select person you want to send to")+":</h6></label><select class=\"form-control\" id=\"receiverId\">";
             $.each(response['users'],function(k,v){
                 text +="<option value="+v['id']+">"+v['firstname']+" "+v['lastname'];
-                if(v['sd_cases'].length > 0)
-                    text +="("+i18n.translate("currently working on  %d case").ifPlural("currently working on %d case").fetch(v['sd_cases']['0']['casesCount'])+")";
+                if(v['sd_cases'].length > 0){
+                    var num = Number(v['sd_cases']['0']['casesCount']);
+                    text +="("+i18n.translate("currently working on  %d case").ifPlural(num, "currently working on %d case").fetch(num)+")";
+                }
+                    
                 else text +="(currently working on 0 case)";
                 text +="</option>";
             });
