@@ -133,7 +133,7 @@
             </div>
         </div>
 
-        <button type="button" id="confirmElements" class="btn btn-primary m-auto w-25">Countinue</button>
+        <button type="button" id="confirmElements" class="btn btn-primary m-auto w-25">Continue</button>
     </div>
 
     <hr class="my-2">
