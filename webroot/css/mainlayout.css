@@ -79,7 +79,7 @@ ul.topbar > li.nav-item {
 
 .dataentrychange {
     top:55px;
-    
+
 }
 
 .caseNumber {
@@ -124,7 +124,7 @@ ul.topbar > li.nav-item {
     text-align: center;
     font-size: 3.5em;
     color:#ffc107;
-   
+
 }
 
 .modalheader {
@@ -466,13 +466,13 @@ ul.queryBoxLeft > a {
     margin-left: 20px;
 }
 #navbarNavDropdown > ul > li > a.nav-link{
-    color:rgba(225,225,225); 
+    color:rgba(225,225,225);
     font-weight: bolder;
 }
 #navbarNavDropdown > ul > li > a.nav-link:hover{
     background-color:#ffc107;
     color:rgba(0,0,0);
-    
+
 }
 #navbarNavDropdown > ul > li > a.active{
     color:rgba(0,0,0);
@@ -544,7 +544,7 @@ ul.queryBoxLeft > a {
     background-color: #eee;
     border-left: 1px solid rgba(0, 0, 0, 0.1);
     border-right: 1px solid rgba(0, 0, 0, 0.1);
-    
+
 }
 .form-row{
     line-height:0.8;
@@ -574,8 +574,8 @@ ul.queryBoxLeft > a {
 
  .btn[title="add"]{
     display:inline-block;
-   
-} 
+
+}
 .card{
     display:block;
 }
@@ -621,7 +621,7 @@ ul.queryBoxLeft > a {
 }
 /* Dashboard "Show xxx entries" on top/bottom */
 #caseTable_length{
-    margin-left: -510px; 
+    margin-left: -510px;
 }
 #caseTable_info{
 margin-left: -340px;
@@ -637,4 +637,16 @@ margin-left: -340px;
     font-family: FontAwesome;
     content:"-";
     padding-right: 5px;
+}
+
+.flag {
+    width: 30px;
+    height: 20px;
+    transition: transform .3s;
+}
+
+.flag:hover {
+    -ms-transform: scale(1.2); /* IE 9 */
+    -webkit-transform: scale(1.2); /* Safari 3-8 */
+    transform: scale(1.2);
 }

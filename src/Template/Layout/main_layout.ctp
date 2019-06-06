@@ -7,12 +7,15 @@
     <!-- For local jQuery link, Bootstrap required -->
     <?= $this->Html->script('bootstrap/jquery-3.3.1.min.js') ?>
     <?= $this->Html->script('bootstrap/popper.min.js') ?>
+
+    <!-- For Language Switch -->
     <?= $this->Html->script('jed/jed.js') ?>
     <?php $language = $this->request->getSession()->read('Language');
     if($language == "en_US")
       echo $this->Html->script('language/en_US.js');
     else if($language == "zh_CN")
       echo $this->Html->script('language/zh_CN.js') ?>
+
     <!-- For local Font Awesome icon link -->
     <?= $this->Html->css('fontAwesome/all.min.css') ?>
 
@@ -56,16 +59,17 @@
       <a class="navLogo navbar-brand mr-auto my-auto bd-highlight" href="/Dashboards/index">
         <img src="/img/logo-mds.png" title="MDS" alt="logo" style="width:200px;">
       </a>
-      <div class="nav-item dropdown p-2 bd-highlight language">
-        <button class="btn btn-info dropdown-toggle" type="button" id="languageSwitcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-language" style="font-size:20px;"></i>&nbsp<?php echo __("Language");?>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="languageSwitcher">
-          <a class="dropdown-item" href="/sd-users/setLanguage/en_US"><?php echo __("English");?></a>
-          <a class="dropdown-item" href="/sd-users/setLanguage/zh_CN"><?php echo __("Chinese");?></a>
-        </div>
+
+      <div class="my-auto border border-white p-2 rounded">
+        <a href="/sd-users/setLanguage/en_US" class="mx-2">
+          <img class="flag" src="/img/flags/4x3/us.svg" href="/sd-users/setLanguage/en_US" alt="English Version" title="English Version">
+        </a>
+        <a href="/sd-users/setLanguage/zh_CN" class="mx-2">
+          <img class="flag" src="/img/flags/4x3/cn.svg" href="/sd-users/setLanguage/zh_CN" alt="Chinese Version" title="Chinese Version">
+        </a>
       </div>
-      <div class="d-flex p-2 bd-highlight">
+
+      <div class="d-flex p-2 bd-highlight mx-2">
         <?php
         $mailNotice = $this->cell('QueryNotice',[$this->request->getSession()->read('Auth.User.id')]);
         echo $mailNotice;
