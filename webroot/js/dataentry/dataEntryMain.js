@@ -598,7 +598,8 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = false) {
                     thisElement.attr('id',idholder[0]+'-'+idholder[1]+'-'+idholder[2]+'-'+idholder[3]+'-'+idholder[4]+'-'+maxindex+'-'+idholder[6]);
                 };    
             });
-
+            if(addFlag) $("#addbtnalert-"+orignalId).show();
+            else $("#addbtnalert-"+orignalId).hide();
             $(this).find("[id^=section-"+orignalId+"][name$=\\[field_value\\]]").each(function(){
                 let sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
                 let thisId = $(this).attr('id').split('-');
