@@ -28,18 +28,18 @@ $(document).ready(function(){
                 {
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").show();
                     //$(this).find("[id^=section-"+id[1]+"-error_message-]").text('/numbers only');
-                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Numbers Only", "Please re-entry the valid data", "warning"));
+                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Numbers Only", "Please re-enter the valid data", "warning"));
                     validate = 0;
                 }else if((rule[1]=="A")&&(!/^[a-zA-Z]+$/.test(field_value))){
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").show();
-                    //$(this).find("[id^=section-"+id[1]+"-error_message-]").text('/alphabet only');
-                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Alphabet Only", "Please re-entry the valid data", "warning"));
+                    //$(this).fin d("[id^=section-"+id[1]+"-error_message-]").text('/alphabet only');
+                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Alphabet Only", "Please re-enter the valid data", "warning"));
                     validate = 0;
                 }
                 if(rule[0]<field_value.length) {
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").show();
                     //$(this).find("[id^=section-"+id[1]+"-error_message-]").text( $(this).find("[id^=section-"+id[1]+"-error_message-]").text()+'/exccess the length');
-                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Exccess the length", "Please re-entry the valid data", "warning"));
+                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Exccess the length", "Please re-enter the valid data", "warning"));
                     validate = 0;
                 }
             };

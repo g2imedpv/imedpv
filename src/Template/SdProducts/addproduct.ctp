@@ -231,7 +231,7 @@
                             <div class="jumbotron jumbotron-fluid bg-warning">
                                 <div class="container">
                                     <h1 class="display-4">Add New Workflow</h1>
-                                    <p class="lead">You can edit the specific info in the following steps</p>
+                                    <p class="lead">Customize the workflow by editing the information in the section below</p>
                                 </div>
                             </div>
                             <!-- Choose Country  id="choosecon"-->
@@ -318,7 +318,7 @@
 
                                             <div id="errAccessmentWorkflow" class="invalid-feedback" style="display:none;">Workflow name is required!</div>
 
-                                            <p>You can edit the workflow here and please drag the yellow box to anywhere in the workflow for customization</p>
+                                            <p>You can customize the workflow by editing the yellow box and dragging it to anywhere in the workflow</p>
                                             <ul>
                                                 <li id="draggable" class="custworkflowstep">
                                                     <div class="card w-100 h-25 my-2">
@@ -629,7 +629,7 @@
 
                                             <div id="errAccessmentWorkflow" class="invalid-feedback" style="display:none;">Workflow name is required!</div>
 
-                                            <p>You can edit the workflow here and please drag the yellow box to anywhere in the workflow for customization</p>
+                                            <p>You can customize the workflow by editing the yellow box and dragging it to anywhere in the workflow</p>
                                             <ul>
                                                 <li id="draggable" class="custworkflowstep">
                                                     <div class="card w-100 h-25 my-2">

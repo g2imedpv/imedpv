@@ -10,8 +10,8 @@ class SdExportController extends AppController
         public function getDirectValue($caseId,$field_id,$set_num=null){
             $more_conditions = "";
             if (!is_null($set_num))
-            {
-                $more_conditions = "set_number=".substr($set_num,-1);
+            { 
+                $more_conditions = "set_number=".substr($set_num,0,1);
             }
             $sdFieldValues = TableRegistry::get('sdFieldValues');
             $direct =$sdFieldValues->find()
@@ -26,7 +26,7 @@ class SdExportController extends AppController
             $more_conditions = "";
             if (!is_null($set_num))
             {
-                $more_conditions = "set_number=".substr($set_num,-1);
+                $more_conditions = "set_number=".substr($set_num,0,1);
             }
             $sdFieldValues = TableRegistry::get('sdFieldValues');
             $lookup= $sdFieldValues ->find()
@@ -196,7 +196,11 @@ class SdExportController extends AppController
                     if ($resultsTestsProcedures=="null"){
                         $resultsTestsProcedures=" ";
                     }
-                $result=$description."<br>".$narrativeIncludeClinical."<br>".$resultsTestsProcedures;
+                $compamyRemarks=$this->getDirectValue($caseId,222,1);
+                if ($compamyRemarks=="null"){
+                    $compamyRemarks=" ";
+                }
+                $result=$description."<br>".$narrativeIncludeClinical."<br>".$resultsTestsProcedures."<br>".$compamyRemarks;
             }
             return $result;
 
@@ -673,17 +677,17 @@ class SdExportController extends AppController
                         for($i=0;$i<strlen($MedValue);$i++){
                             $checked[]=substr($MedValue,$i,1);
                         }
+                        
                         foreach($checked as $key=>$value){
                             if($value=='1'){
+                                $option=$key+1;
                                 $positions=$sdMedwatchPositions->find()
                                 ->select(['position_top','position_left','position_width','position_height'])
-                                ->where(['sd_field_id='.$field_id,$more_conditions,'substr(sdMedwatchPositions.field_name,-1)='.$key+1])
+                                ->where(['sd_field_id='.$field_id,$more_conditions,'substr(sdMedwatchPositions.field_name,-1)='.$option])
                                 ->first();
                                 $text = $text." <style> p {position: absolute;}  </style>";
                                 $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                                             .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
-                            }else{
-                                continue;
                             }
                         }
                         break;
@@ -764,6 +768,111 @@ class SdExportController extends AppController
                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$ready_value.'</p>';
                 return $text;
             }
+            //b6 relevant tests/laboratory data in page one
+            public function labDataOne($caseId){
+                $sdFieldValues = TableRegistry::get('sdFieldValues');
+                $lab= $sdFieldValues->find()
+                    ->select(['set_number'])
+                    ->where(['sd_case_id='.$caseId,'sd_field_id=168','status=1']);
+                $labSet=array();
+                foreach($lab as $lab_details){
+                    $labSet[]=$lab_details['set_number'];
+                }
+                $length=count($labSet);
+                $testdata="";
+                for($i=0;$i<$length;$i++){
+                    $setNumber=$labSet[$i];
+                    $query1=$this->getDirectValue($caseId,168,$setNumber);
+                    if($query1!=null){
+                        $query1="Test Name:".$query1."/";
+                    }
+                    $query2=$this->getDateValue($caseId,167,$setNumber);
+                    if($query2!=null){
+                        $query2="Test Date:".$query2."/";
+                    }
+                    $query3=$this->getDirectValue($caseId,169,$setNumber);
+                    if($query3!=null){
+                        $query3="Test Result:".$query3." ";
+                    }
+                    
+                    $query4=$this->getLookupValue($caseId,170,$setNumber);
+                    if($query4!=null){
+                        $query4=$query4."/";
+                    }
+                    $query5=$this->getDirectValue($caseId,171,$setNumber);
+                    if($query5!=null){
+                        $query5="Normal value low:".$query5."/";
+                    }
+                    $query6=$this->getDirectValue($caseId,172,$setNumber);
+                    if($query6!=null){
+                        $query6="Normal value high:".$query6."/";
+                    }
+                    $query7=$this->getDirectValue($caseId,361,$setNumber);
+                    if($query7!=null){
+                        $query7="Comments:".$query7;
+                    }
+                    $description=$query1.$query2.$query3.$query4.$query5.$query6.$query7; 
+                    $j=$i+1;
+                    $testdata.= "#".$j.")  ".$description."<br>";  
+                }
+                $labdata =$this->getDirectValue($caseId,174,1)."<br>".$testdata;
+                $labDataOne=substr($labdata,0,300);
+                $labPositionOne=$this->getPosition($caseId,174,1,$labDataOne);
+                return $labPositionOne;
+            }
+            //b6 in page three
+            public function labDataThree($caseId){
+                $sdFieldValues = TableRegistry::get('sdFieldValues');
+                $lab= $sdFieldValues->find()
+                    ->select(['set_number'])
+                    ->where(['sd_case_id='.$caseId,'sd_field_id=168','status=1']);
+                $labSet=array();
+                foreach($lab as $lab_details){
+                    $labSet[]=$lab_details['set_number'];
+                }
+                $length=count($labSet);
+                $testdata="";
+                for($i=0;$i<$length;$i++){
+                    $setNumber=$labSet[$i];
+                    $query1=$this->getDirectValue($caseId,168,$setNumber);
+                    if($query1!=null){
+                        $query1="Test Name:".$query1."/";
+                    }
+                    $query2=$this->getDateValue($caseId,167,$setNumber);
+                    if($query2!=null){
+                        $query2="Test Date:".$query2."/";
+                    }
+                    $query3=$this->getDirectValue($caseId,169,$setNumber);
+                    if($query3!=null){
+                        $query3="Test Result:".$query3." ";
+                    }
+                    
+                    $query4=$this->getLookupValue($caseId,170,$setNumber);
+                    if($query4!=null){
+                        $query4=$query4."/";
+                    }
+                    $query5=$this->getDirectValue($caseId,171,$setNumber);
+                    if($query5!=null){
+                        $query5="Normal value low:".$query5."/";
+                    }
+                    $query6=$this->getDirectValue($caseId,172,$setNumber);
+                    if($query6!=null){
+                        $query6="Normal value high:".$query6."/";
+                    }
+                    $query7=$this->getDirectValue($caseId,361,$setNumber);
+                    if($query7!=null){
+                        $query7="Comments:".$query7;
+                    }
+                    $description=$query1.$query2.$query3.$query4.$query5.$query6.$query7; 
+                    $j=$i+1;
+                    $testdata.= "#".$j.")  ".$description."<br>";  
+                }
+                $labdata =$this->getDirectValue($caseId,174,1)."<br>".$testdata;
+                $labDataThree=substr($labdata,300);
+                $labPositionThree=$this->getPosition($caseId,174,2,$labDataThree);
+                return $labPositionThree;
+            }
+
             //c2 concomitanat medical products and therapy dates in page one
             public function concomitantTherapyOne($caseId){
                 $concomitant=$this->ConcomitantRole($caseId);
@@ -813,8 +922,10 @@ class SdExportController extends AppController
                 return $text;
             }
 
+
             public function genFDApdf($caseId)
-            {    
+            {   
+            
                 //a1 patientID field
                $result=$this->getMedPosition($caseId,79,1,1);
                 //a2 age field  
@@ -852,8 +963,7 @@ class SdExportController extends AppController
                 $describeOne=substr($this->getMedValue($caseId,515,1),0,400);
                 $result=$result.$this->getPosition($caseId,515,1,$describeOne);   
                 // b6 relevant tests/laboratory data
-                $labOne=substr($this->getMedValue($caseId,174,1),0,300);
-                $result=$result.$this->getPosition($caseId,174,1,$labOne);   
+                $result=$result.$this->labDataOne($caseId);   
                 // b7 other relevant history
                 $historyOne=substr($this->getMedValue($caseId,104,1),0,300);
                 $result=$result.$this->getPosition($caseId,104,1,$historyOne);   
@@ -880,7 +990,8 @@ class SdExportController extends AppController
                 $dosageOne=$this->getMedValue($caseId,183,1,$suspect[0]).$this->getMedValue($caseId,184,2,$suspect[0]);
                 $result=$result.$this->getPosition($caseId,183,1,$dosageOne);
                 //c3#1 frequency
-                $frequencyOne=$this->getMedValue($caseId,185,1,$suspect[0])."time(s)".$this->getMedValue($caseId,186,1,$suspect[0]).$this->getMedValue($caseId,187,2,$suspect[0]);
+                $frequencyOne=$this->getMedValue($caseId,185,1,$suspect[0]);
+                if($frequencyOne!=null){$frequencyOne=$frequencyOne."time(s)".$this->getMedValue($caseId,186,1,$suspect[0]).$this->getMedValue($caseId,187,2,$suspect[0]);}
                 $result=$result.$this->getPosition($caseId,185,1,$frequencyOne);
                 //c3#1 route used
                 $result=$result.$this->getMedPosition($caseId,192,2,1,$suspect[0]);
@@ -888,7 +999,8 @@ class SdExportController extends AppController
                 $dosageTwo=$this->getMedValue($caseId,183,1,$suspect[1]).$this->getMedValue($caseId,184,2,$suspect[1]);
                 $result=$result.$this->getPosition($caseId,183,2,$dosageTwo);
                 //c3#2 frequency
-                $frequencyTwo=$this->getMedValue($caseId,185,1,$suspect[1])."time(s)".$this->getMedValue($caseId,186,1,$suspect[1]).$this->getMedValue($caseId,187,2,$suspect[1]);
+                $frequencyTwo=$this->getMedValue($caseId,185,1,$suspect[1]);
+                if($frequencyTwo!=null){$frequencyTwo=$frequencyTwo."time(s)".$this->getMedValue($caseId,186,1,$suspect[1]).$this->getMedValue($caseId,187,2,$suspect[1]);}
                 $result=$result.$this->getPosition($caseId,185,2,$frequencyTwo);
                 //c3#2 route used
                 $result=$result.$this->getMedPosition($caseId,192,2,1,$suspect[1]);
@@ -975,8 +1087,8 @@ class SdExportController extends AppController
                 $mpdf->AddPage();
                 $describeThree=substr($this->getMedValue($caseId,515,1),400);//b5 describe event continue
                 $continue=$this->getPosition($caseId,515,2,$describeThree);
-                $labThree=substr($this->getMedValue($caseId,174,1),300);// b6 relevant tests continue
-                $continue=$continue.$this->getPosition($caseId,174,2,$labThree);  
+                // b6 relevant tests continue
+                $continue=$continue.$this->labDataThree($caseId);
                 $historyThree=substr($this->getMedValue($caseId,104,1),300);//b7 other relevant history continue
                 $continue=$continue.$this->getPosition($caseId,104,2,$historyThree);   
                 $continue=$continue.$this->concomitantTherapyThree($caseId); //c2 concomitant medical continue
