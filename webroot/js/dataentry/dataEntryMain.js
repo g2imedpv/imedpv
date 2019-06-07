@@ -330,6 +330,7 @@ function renderSummaries(section_id, pageNo){
 
         if(sectionId==48) tableFields = $('table[id^=sectionSummary-48]').find("tbody").html();
         if($(this).find("table").find(".dataTables_empty").length==0){
+            console.log(sectionId);
             $("#addbtn-"+sectionId).show();
         }
         else{
@@ -400,6 +401,7 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
     let setArray = {};
     let fieldTargetArray = [];
     //TODO HIGHLIGHT SELECTED PAGE
+    let realsection_id = section_id;
     if(!$("[id=summary-"+section_id+"]").length&&!$("#pagination-section-"+section_id).length){
         if($("[name=section\\["+section_id+"\\]]").length)
             section_id = $("[name=section\\["+section_id+"\\]]").val().split(',')[$("[name=section\\["+section_id+"\\]]").val().split(',').length - 1].split(':')[0];
@@ -463,7 +465,7 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
     $("[id^=input-").each(function(){
         $(this).find("[id^=llt-searchbar]").val("");
         let orignalId = $(this).attr('id').split('-')[1];
-        if(resultflag==1&&orignalId!=section_id) return true;
+        if(resultflag==1&&orignalId!=realsection_id) return true;
         let sectionId = $(this).attr('id').split('-')[1];
         let sectionKey = $(this).attr('id').split('-')[3];
         let inputSetflag  = true;
@@ -741,10 +743,10 @@ function deleteSection(sectionId, setNo,sectionKey){
               });
             section = $.parseJSON(response);
             // var country = $('#country_filter').val("");
+            autoChangeflag = true;
             setPageChange(sectionId,1,null,2);
+            autoChangeflag = false;
             // if(sectionId == 48) $('#country_filter').val(country).trigger("change");
-            
-            $("[id=addbtnalert-"+sectionId+"]").hide();
             return false;
         },
         error:function(response){
@@ -818,7 +820,6 @@ function saveSection(sectionId,setNo){
             setPageChange(sectionId,setNo, null, 1);
             if(sectionId == 48) $('#country_filter').val(country).trigger("change");
             autoChangeflag = false;
-            $("[id=addbtnalert-"+sectionId+"]").hide();
             return false;
         },
         error:function(response){
