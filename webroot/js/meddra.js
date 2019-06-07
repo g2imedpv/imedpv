@@ -238,6 +238,9 @@ function clickOption(term, key){
     });
     if(hasP) searchMedDra(meddraFieldId,2);
 }
+function meddrabrowser(meddraFieldId){
+    $("#meddraSelectBtn").attr("onclick","selectMeddraButton("+meddraFieldId+")");
+}
 function selectMeddraButton(meddraFieldId){
     console.log($('#whodrug-code'+meddraFieldId));
     let descriptor = $('#descriptor_'+meddraFieldId).val().split(',');

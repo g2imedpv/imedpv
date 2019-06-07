@@ -582,7 +582,7 @@ function endTriage(){
             });
             text +="</select>";
             text +="</div>";
-            text +="<div class=\"text-center\"><div class=\"btn btn-primary w-25\" onclick=\"confirmEndTriage()\">"+i18n.translate("Confirm")+"</div></div>";
+            text +="<div class=\"text-center\"><div class=\"btn btn-primary w-25\" onclick=\"confirmEndTriage()\">"+i18n.translate("Confirm").fetch()+"</div></div>";
             text +="</div>";
             $('#action-text-hint').html(text);
         },

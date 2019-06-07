@@ -265,7 +265,7 @@ class SdSectionsController extends AppController
                             }
                             $field_valueEntity['set_number'] = $field_value['set_number'];
                         }
-                        // debug($field_valueEntity);
+                        
                         if(!$sdFieldValuesTable->save($field_valueEntity)) {
                             echo "error in updating!" ;
                             debug($field_valueEntity);
