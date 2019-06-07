@@ -389,7 +389,7 @@ function renderSummaries(section_id, pageNo){
         }
     });
 }
-function setPageChange(section_id, pageNo, addFlag=null, resultflag = false) {
+function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
     let filterFlag =false;
     if(section_id==48) filterFlag = true;
     if(pageNo == 0) return false;
@@ -463,7 +463,7 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = false) {
     $("[id^=input-").each(function(){
         $(this).find("[id^=llt-searchbar]").val("");
         let orignalId = $(this).attr('id').split('-')[1];
-        if(resultflag&&orignalId!=section_id) return true;
+        if(resultflag==1&&orignalId!=section_id) return true;
         let sectionId = $(this).attr('id').split('-')[1];
         let sectionKey = $(this).attr('id').split('-')[3];
         let inputSetflag  = true;
@@ -667,7 +667,7 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = false) {
             });
 
     });
-    if(!(filterFlag||(section_id==48&&addFlag))||resultflag)
+    if(!(filterFlag||(section_id==48&&addFlag))||resultflag !=null)
         renderSummaries(section_id, pageNo, addFlag);
     else if(addFlag){
         console.log($("table[id^=sectionSummary-48-sectionKey]").find('.selected-row'))
@@ -708,8 +708,22 @@ function searchWhoDra(){
 function deleteSection(sectionId, setNo,sectionKey){
     let request = {};
     console.log()
-    if('child_section' in section[sectionKey])
+    if('child_section' in section[sectionKey]){
         request['child_section'] =  section[sectionKey].child_section;
+        let added="";
+        $.each(section[sectionKey].child_section.split(','), function(k, sectionid){
+            if(sectionid =="") return true;
+            $.each(section,function(k,sectiondetail){
+                if(sectiondetail['id']==sectionid){
+                    if('child_section' in sectiondetail)
+                        added = added + sectiondetail['child_section']+',';
+                    return false;
+                }
+            });
+        });
+        added = added.substr(0,added.length-1);
+        request['child_section'] = request['child_section'] +added;
+    }
     let i = 0;
     console.log(request);
     $.ajax({
@@ -727,7 +741,7 @@ function deleteSection(sectionId, setNo,sectionKey){
               });
             section = $.parseJSON(response);
             // var country = $('#country_filter').val("");
-            setPageChange(sectionId,1,null,true);
+            setPageChange(sectionId,1,null,2);
             // if(sectionId == 48) $('#country_filter').val(country).trigger("change");
             
             $("[id=addbtnalert-"+sectionId+"]").hide();
@@ -801,7 +815,7 @@ function saveSection(sectionId,setNo){
             var country = $("#section-48-select-501").val();
             autoChangeflag = true;
             if(sectionId == 48) $('#country_filter').val("").trigger("change");
-            setPageChange(sectionId,setNo, null, true);
+            setPageChange(sectionId,setNo, null, 1);
             if(sectionId == 48) $('#country_filter').val(country).trigger("change");
             autoChangeflag = false;
             $("[id=addbtnalert-"+sectionId+"]").hide();
