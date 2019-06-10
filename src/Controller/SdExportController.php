@@ -483,10 +483,10 @@ class SdExportController extends AppController
             $choice=$this->getDirectValue($caseId,$field_id,$set_num);
             switch($choice){
                 case '1':
-                    $this->set('followup','checked');
-                    break;
-                default:
                     $this->set('initial','checked');
+                    break;
+                case '2':
+                    $this->set('followup','checked');
                     break;
                 }
         }
@@ -552,7 +552,7 @@ class SdExportController extends AppController
             //24d
             $this->getCiomsReportSourceValue($caseId);
             //25a.
-            $this->getCiomsReportTypeValue($caseId,18);//report type
+            $this->getCiomsReportTypeValue($caseId,558);//report type
 
         }
 
