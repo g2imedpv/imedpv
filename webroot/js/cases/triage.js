@@ -470,11 +470,11 @@ function prioritizeDate(){
     console.log(formatDayZero);
     if(dueType == 1){
         formatDayZero.setDate(formatDayZero.getDate()+8);
-        text +=i18n.translate("Priority")+":"+i18n.translate("High, 7 Days");
+        text +=i18n.gettext("Priority")+":"+i18n.gettext("High, 7 Days");
         $('#id_case_type_value').val('0');
     }else{
         formatDayZero.setDate(formatDayZero.getDate()+16);
-        text +=i18n.translate("Priority")+":"+i18n.translate("Normal, 15 Days");
+        text +=i18n.gettext("Priority")+":"+i18n.gettext("Normal, 15 Days");
         $('#id_case_type_value').val('1');
     }
     if(submitType == 1){

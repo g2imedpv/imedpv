@@ -150,7 +150,7 @@ function checkDuplicate(){
                     if(!jQuery.isEmptyObject(caseDetail.patient_initial)) text +=caseDetail.patient_initial;
                     text +=  "</td>";
                     text += "<td>";
-                    if(!jQuery.isEmptyObject(caseDetail.patient_age)) {text +=caseDetail.patient_age+" "+i18n.gettext(age_unit[caseDetail.patient_age_unit])}
+                    if(!jQuery.isEmptyObject(caseDetail.patient_age)) {text +=caseDetail.patient_age+" "+i18n.gettext(age_unit[caseDetail.patient_age_unit]+"")}
                     text += "</td>";
                     text += "<td>";
                     if(!jQuery.isEmptyObject(caseDetail.patient_gender)) text +=i18n.gettext(gender[caseDetail.patient_gender]);
