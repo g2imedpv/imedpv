@@ -128,14 +128,14 @@ function checkDuplicate(){
                 text +="<table class=\"table table-hover\">";
                 text +="<thead>";
                 text +="<tr>";
-                text +="<th class=\"align-middle text-center\" scope=\"col\">Caes No.</th>";
-                text +="<th scope=\"col\">Patient Initial</th>";
-                text +="<th scope=\"col\">Patient Age</th>";
-                text +="<th scope=\"col\">Patient Gender</th>";
-                text +="<th scope=\"col\">Patient Date of Birth</th>";
-                text +="<th scope=\"col\">Reporter Name</th>";
-                text +="<th scope=\"col\">Event Report Term</th>";
-                text +="<th scope=\"col\">Meddra Pt Term</th>";
+                text +="<th class=\"align-middle text-center\" scope=\"col\">"+i18n.gettext("Caes No.")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Patient Initial")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Patient Age")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Patient Gender")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Patient Date of Birth")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Reporter Name")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Event Report Term")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Meddra Pt Term")+"</th>";
                 text +="</tr>";
                 text +="</thead>";
                 text +="<tbody>";
@@ -150,19 +150,19 @@ function checkDuplicate(){
                     if(!jQuery.isEmptyObject(caseDetail.patient_initial)) text +=caseDetail.patient_initial;
                     text +=  "</td>";
                     text += "<td>";
-                    if(!jQuery.isEmptyObject(caseDetail.patient_age)) {text +=caseDetail.patient_age+" "+age_unit[caseDetail.patient_age_unit]}
+                    if(!jQuery.isEmptyObject(caseDetail.patient_age)) {text +=caseDetail.patient_age+" "+i18n.gettext(age_unit[caseDetail.patient_age_unit]+"")}
                     text += "</td>";
                     text += "<td>";
-                    if(!jQuery.isEmptyObject(caseDetail.patient_gender)) text +=gender[caseDetail.patient_gender];
+                    if(!jQuery.isEmptyObject(caseDetail.patient_gender)) text +=i18n.gettext(gender[caseDetail.patient_gender]);
                     text += "</td>";
                     text += "<td>";
                     if(!jQuery.isEmptyObject(caseDetail.patient_dob)) {
                         var monthes=[
-                            "Uk", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                            "Unkown", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
                         ]
-                        if(caseDetail.patient_dob.substring(0,2)=="00") text+="Uk"; else text+=caseDetail.patient_dob.substring(0,2);
-                        text += "-"+monthes[Number(caseDetail.patient_dob.substring(2,4))]+"-";
-                        if(caseDetail.patient_dob.substring(4,8)=="0000") text+="Uk"; else text+=caseDetail.patient_dob.substring(4,8);
+                        if(caseDetail.patient_dob.substring(0,2)=="00") text+="Unkown"; else text+=caseDetail.patient_dob.substring(0,2);
+                        text += "-"+i18n.gettext(monthes[Number(caseDetail.patient_dob.substring(2,4))])+"-";
+                        if(caseDetail.patient_dob.substring(4,8)=="0000") text+="Unkown"; else text+=caseDetail.patient_dob.substring(4,8);
                     }
                     text += "</td>";
                     text += "<td>";
@@ -202,10 +202,10 @@ function checkDuplicate(){
 function createCase(){
     var confirmFlag = 0;
     swal({
-        title: "Is your duplicate search completed?",
+        title: i18n.gettext("Is your duplicate search completed?"),
         text: "",
         icon: "warning",
-        buttons: ["No", "Yes - Continue"],
+        buttons: [i18n.gettext("No"), i18n.gettext("Yes")+" - "+i18n.gettext("Continue")],
         dangerMode: true,
         closeOnClickOutside: false,
       })

@@ -28,18 +28,18 @@ $(document).ready(function(){
                 {
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").show();
                     //$(this).find("[id^=section-"+id[1]+"-error_message-]").text('/numbers only');
-                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Numbers Only", "Please re-enter the valid data", "warning"));
+                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal(i18n.gettext("Numbers Only"), i18n.gettext("Please re-entry the valid data"), "warning"));
                     validate = 0;
                 }else if((rule[1]=="A")&&(!/^[a-zA-Z]+$/.test(field_value))){
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").show();
-                    //$(this).fin d("[id^=section-"+id[1]+"-error_message-]").text('/alphabet only');
-                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Alphabet Only", "Please re-enter the valid data", "warning"));
+                    //$(this).find("[id^=section-"+id[1]+"-error_message-]").text('/alphabet only');
+                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal(i18n.gettext("Alphabet Only"), i18n.gettext("Please re-entry the valid data"), "warning"));
                     validate = 0;
                 }
                 if(rule[0]<field_value.length) {
                     $(this).find("[id^=section-"+id[1]+"-error_message-]").show();
                     //$(this).find("[id^=section-"+id[1]+"-error_message-]").text( $(this).find("[id^=section-"+id[1]+"-error_message-]").text()+'/exccess the length');
-                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal("Exccess the length", "Please re-enter the valid data", "warning"));
+                    $(this).find("[id^=section-"+id[1]+"-error_message-]").html(swal(i18n.gettext("Exccess the length"), i18n.gettext("Please re-entry the valid data"), "warning"));
                     validate = 0;
                 }
             };
@@ -81,7 +81,7 @@ $(document).ready(function(){
                     text +="<td>"+v['field']['field_label']+"</td>";
                     text +="<td>"+v['tab']['tab_name']+"</td>";
                     text +="<td>"+v['section_name']+"</td>";
-                    text +="<td><a class=\"btn btn-outline-info btn-sm\" onclick=\"hightlightField("+v['field']['id']+")\" role=\"button\" href=\"/sd-tabs/showdetails/"+caseNo+"/"+version+"/"+v['tab']['id']+"#secdiff-"+v['id']+"\">Go</a></td></tr>";
+                    text +="<td><a class=\"btn btn-outline-info btn-sm\" onclick=\"hightlightField("+v['field']['id']+")\" role=\"button\" href=\"/sd-tabs/showdetails/"+caseNo+"/"+version+"/"+v['tab']['id']+"#secdiff-"+v['id']+"\">"+i18n.gettext("Go")+"</a></td></tr>";
                 });
                 text +="</table>";
                 $('#searchFieldResult').html(text);
@@ -95,7 +95,7 @@ $(document).ready(function(){
     });
     if(tabId == 9){
         //labeling field
-        var filterText = "<div class=\"form-control\" style=\"text-align:center;color:#007bff;font-weight:bold;\"><label for=\"country_filter\">Country:&nbsp;&nbsp;&nbsp;</label><select id=\"country_filter\">";
+        var filterText = "<div class=\"form-control\" style=\"text-align:center;color:#007bff;font-weight:bold;\"><label for=\"country_filter\">"+i18n.gettext("Country")+":&nbsp;&nbsp;&nbsp;</label><select id=\"country_filter\">";
         var countryField = document.getElementById('section-48-select-501');
         var options = countryField.innerHTML;
         filterText = filterText + options+"</select></div>";
@@ -357,7 +357,7 @@ function renderSummaries(section_id, pageNo){
         text = text+    "<li class=\"page-item\" id=\"left_set-"+sdSectionId+"-sectionKey-"+sectionKey+"-setNo-1\" onclick=\"setPageChange("+sdSectionId+",0)\" >";
         text = text+    "<a class=\"page-link\" aria-label=\"Previous\">";
         text = text+        "<span aria-hidden=\"true\">&laquo;</span>";
-        text = text+        "<span class=\"sr-only\">Previous</span>";
+        text = text+        "<span class=\"sr-only\">"+i18n.gettext("Previous")+"</span>";
         text = text+    "</a>";
         text = text+    "</li>";
         if(max_set_No != 0){
@@ -372,7 +372,7 @@ function renderSummaries(section_id, pageNo){
         text = text+    "<li class=\"page-item\" id=\"right_set-"+sdSectionId+"-sectionKey-"+sectionKey+"-setNo-1\" onclick=\"setPageChange("+sdSectionId+",2)\">";
         text = text+    "<a class=\"page-link\" aria-label=\"Next\">";
         text = text+        "<span aria-hidden=\"true\">&raquo;</span>";
-        text = text+        "<span class=\"sr-only\">Next</span>";
+        text = text+        "<span class=\"sr-only\">"+i18n.gettext("Next")+"</span>";
         text = text+    "</a>";
         text = text+    "</li>";
         text = text+ "</ul>";
@@ -702,7 +702,7 @@ function searchWhoDra(){
         error:function(response){
                 console.log(response.responseText);
 
-            $("#textHint").html("Sorry, no case matches");
+            $("#textHint").html(i18n.gettext("Sorry, no case matches"));
 
         }
     });
@@ -739,7 +739,7 @@ function deleteSection(sectionId, setNo,sectionKey){
             console.log(response);
             swal({
                 icon: "success",
-                title: "This set has been deleted",
+                title: i18n.gettext("This set has been deleted"),
               });
             section = $.parseJSON(response);
             // var country = $('#country_filter').val("");
@@ -858,21 +858,21 @@ function action(type){
                 console.log(response);
                 if('one' in response) response = response['one'];
                 text +="<div class=\"modal-header\">";
-                text +="<h3 class=\"modal-title text-center w-100\" id=\"exampleModalLabel\">Sign Off</h3>";
+                text +="<h3 class=\"modal-title text-center w-100\" id=\"exampleModalLabel\">"+i18n.gettext("Sign Off")+"</h3>";
                 text +="<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
                 text +="<span aria-hidden=\"true\">&times;</span>";
                 text +="</button>";
                 text +="</div>";
                 text +="<div class=\"modal-body text-center m-3\">";
-                text +="<p class=\"lead\">Next activity is: "+response['actvity']['activity_name']+"</p>";
+                text +="<p class=\"lead\">"+i18n.gettext("Next activity is")+": "+response['actvity']['activity_name']+"</p>";
                 text +="<input type=\"hidden\" id=\"next-activity-id\" value=\""+response['actvity']['id']+"\">";
                 text +="<div class=\"form-group\">";
-                text +="<label><h5>Comment</h5></label>";
+                text +="<label><h5>"+i18n.gettext("Comment")+"</h5></label>";
                 text +="<textarea class=\"form-control\" id=\"query-content\" rows=\"3\"></textarea>";
                 text +="</div>";
                 text +="<hr class=\"my-4\">";
                 if(response['previousUserOnNextActivity'].length > 0){
-                    text +="<div><h6>Previous User On This Case On Next Activity: </h6>";
+                    text +="<div><h6>"+i18n.gettext("Previous User On This Case On Next Activity")+": </h6>";
                     $.each(response['previousUserOnNextActivity'],function(k,v){
                         text +=v['user']['firstname']+" "+v['user']['lastname']+"("+v['company']['company_name']+"), ";
                     });
@@ -881,7 +881,7 @@ function action(type){
                 }
                 //add function to chose most avaiable person
                 text +="<div class=\"form-group\">";
-                text +="<label><h6>Select person you want to send to:</h6></label><select class=\"form-control\" id=\"receiverId\">";
+                text +="<label><h6>"+i18n.gettext("Select person you want to send to")+":</h6></label><select class=\"form-control\" id=\"receiverId\">";
                 $.each(response['users'],function(k,v){
                     text +="<option value="+v['id']+">"+v['firstname']+" "+v['lastname'];
                     if(v['sd_cases'].length > 0)
@@ -891,7 +891,7 @@ function action(type){
                 });
                 text +="</select>";
                 text +="</div>";
-                text +="<h3>Field Required</h3>"
+                text +="<h3>"+i18n.gettext("Field Required")+"</h3>"
                 text +="<table class=\"table table-hover\">";
                 text +="<tr>";
                 text +="<th scope=\"col\">Category</th>";
@@ -915,7 +915,7 @@ function action(type){
                     previousTabk = tabK;
                 });
                 text +="</table>"
-                text +="<div class=\"text-center\"><button class=\"btn btn-primary w-25\" onclick=\"forward()\">Confirm</button></div>";
+                text +="<div class=\"text-center\"><button class=\"btn btn-primary w-25\" onclick=\"forward()\">"+i18n.gettext("Confirm")+"</button></div>";
                 text +="</div>";
                 $('#action-text-hint').html(text);
             },
@@ -935,23 +935,23 @@ function action(type){
                 response = JSON.parse(response);
                 console.log(response);
                 text +="<div class=\"modal-header\">";
-                text +="<h3 class=\"modal-title text-center w-100\" id=\"exampleModalLabel\">Push Backward</h3>";
+                text +="<h3 class=\"modal-title text-center w-100\" id=\"exampleModalLabel\">"+i18n.gettext("Push Backward")+"</h3>";
                 text +="<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
                 text +="<span aria-hidden=\"true\">&times;</span>";
                 text +="</button>";
                 text +="</div>";
                 text +="<div class=\"modal-body text-center m-3\">";
                 text +="<div class=\"form-group\">";
-                text +="<label><h5>Comment</h5></label>";
+                text +="<label><h5>"+i18n.gettext("Comment")+"</h5></label>";
                 text +="<textarea class=\"form-control\" id=\"query-content\" rows=\"3\"></textarea>";
                 text +="</div>";
                 text +="<h5>Case Info:</h5>";
                 text +="<table class=\"table table-hover\">";
                 text +="<thead>";
                 text +="<tr>";
-                text +="<th scope=\"col\">Activity </th>";
-                text +="<th scope=\"col\">Previous User On This Activity </th>";
-                text +="<th scope=\"col\">Available User </th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Activity")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Previous User On This Activity")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Available User")+"</th>";
                 text +="</tr>";
                 text +="</thead>";
                 $.each(response,function(k,activity){
@@ -966,9 +966,8 @@ function action(type){
                         text += "</td><td>";
                         $.each(activity['users'],function(k,v){
                             text +=v['firstname']+" "+v['lastname'];
-                            if(v['sd_cases'].length > 0)
-                                text +="(currently working on "+v['sd_cases']['0']['casesCount']+" cases)<br>";
-                            else text +="(currently working on 0 case)<br>";
+                                num = v['sd_cases']['0']['casesCount']
+                                text +="("+i18n.translate("currently working on %d case").ifPlural(num, "currently working on %d cases").fetch(num)+")";
                         });
                         text +="</tr>";
                     }
@@ -977,17 +976,17 @@ function action(type){
                 text +="<hr class=\"my-4\">";
                 //add function to chose most avaiable person
                 text +="<div class=\"form-group\">";
-                text +="<label>Which activity do you want to push to?</label>";
+                text +="<label>"+i18n.gettext("Which activity do you want to push to?")+"</label>";
                 text +="<select class=\"form-control w-50 mx-auto\" id=\"next-activity-id\" >";
-                text +="<option value=\"null\">Select Activity</option>";
+                text +="<option value=\"null\">"+i18n.gettext("Select Activity")+"</option>";
                 $.each(response,function(k,v){
                     text += "<option value=\""+v['id']+"\">"+v['activity_name']+"</option>";
                 });
                 text +="</select>";
-                text +="<label class=\"my-2\">Select person you want to send to:</label><select class=\"form-control w-50 mx-auto\" id=\"receiverId\">";
+                text +="<label class=\"my-2\">"+i18n.gettext("Select person you want to send to")+":</label><select class=\"form-control w-50 mx-auto\" id=\"receiverId\">";
                 text +="</select>";
                 text +="</div>";
-                text +="<div class=\"text-center\"><button class=\"btn btn-primary w-25\" onclick=\"backward()\">Confirm</button></div>";
+                text +="<div class=\"text-center\"><button class=\"btn btn-primary w-25\" onclick=\"backward()\">"+i18n.gettext("Confirm")+"</button></div>";
                 text +="</div>";
                 $('#action-text-hint').html(text);
                 $('#next-activity-id').change(function(){

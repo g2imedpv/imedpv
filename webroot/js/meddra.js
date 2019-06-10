@@ -122,13 +122,13 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
             if(result['type']==3){
                 let text = "<ul>";
                 $.each(result['llt_name']['codes'],function(k,details){
-                    text +="<li id=\"quickSearchResult-"+meddraFieldId+"-"+k+"\">"+details[0]+"-"+details[1]+"</li>";
+                    text +="<li id=\"quickSearchResult-"+meddraFieldId+"-"+k+"\">"+details[0]+"---"+details[1]+"</li>";
                 })
                 text +="</ul>";
                 $("#meddraQuickSearch_"+meddraFieldId).html(text);
                 $('[id*=quickSearchResult]').click(function(){
-                    let meddraFieldId = $(this).attr('id').split('-')[1];
-                    searchMedDra(meddraFieldId, 4, $(this).text().split('-')[0]);
+                    let meddraFieldId = $(this).attr('id').split('-')[1]; 
+                    searchMedDra(meddraFieldId, 4, $(this).text().split('---')[0]);
                     $('#meddraQuickSearch_'+meddraFieldId).hide();
                 });
                 return false;
@@ -141,7 +141,7 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
                     if(mappedLabel=="ver") {
                         $('[id$=meddrashow-'+mappedId+']').val('18.1');
                         return true;
-                    }
+                    }console.log(result);
                     switch(mappedLabel[0]){
                         case "llt":
                             if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][1]);
