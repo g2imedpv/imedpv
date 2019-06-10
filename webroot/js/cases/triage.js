@@ -470,11 +470,11 @@ function prioritizeDate(){
     console.log(formatDayZero);
     if(dueType == 1){
         formatDayZero.setDate(formatDayZero.getDate()+8);
-        text +="Priority: High, 7 Days";
+        text +=i18n.translate("Priority")+":"+i18n.translate("High, 7 Days");
         $('#id_case_type_value').val('0');
     }else{
         formatDayZero.setDate(formatDayZero.getDate()+16);
-        text +="Priority: Normal, 15 Days";
+        text +=i18n.translate("Priority")+":"+i18n.translate("Normal, 15 Days");
         $('#id_case_type_value').val('1');
     }
     if(submitType == 1){
@@ -574,7 +574,7 @@ function endTriage(){
                 text +="<option value="+v['id']+">"+v['firstname']+" "+v['lastname'];
                 if(v['sd_cases'].length > 0){
                     var num = Number(v['sd_cases']['0']['casesCount']);
-                    text +="("+i18n.translate("currently working on  %d case").ifPlural(num, "currently working on %d case").fetch(num)+")";
+                    text +="("+i18n.translate("currently working on  %d case").ifPlural(num, "currently working on %d cases").fetch(num)+")";
                 }
                     
                 else text +="(currently working on 0 case)";

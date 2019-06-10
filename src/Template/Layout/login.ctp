@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>Welcome To G2-MDS</title>
+		<title><?php echo __("Welcome To G2-MDS")?></title>
 
 		<!-- For local jQuery link, Bootstrap required -->
 		<?= $this->Html->script('bootstrap/jquery-3.2.1.slim.min.js') ?>

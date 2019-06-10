@@ -36,8 +36,8 @@ $(document).ready(function(){
                 newattach += "</td>";
                 newattach += "<td>";
                     newattach += "<select class=\"custom-select\" name=\"doc_source_" + attachCount + "\" id=\"doc_source_" + attachCount + "\">";
-                        newattach += "<option value=\"File Attachment\">File Attachment</option>";
-                        newattach += "<option value=\"URL Reference\">URL Reference</option>";
+                        newattach += "<option value=\"File Attachment\">"+i18n.gettext("File Attachment")+"</option>";
+                        newattach += "<option value=\"URL Reference\">"+i18n.gettext("URL Reference")+"</option>";
                     newattach += "</select>";
                 newattach += "</td>";
                 newattach += "<td>";
@@ -45,7 +45,7 @@ $(document).ready(function(){
                     newattach += "<input type=\"file\" name=\"doc_attachment_" + attachCount + "\" id=\"doc_attachment_" + attachCount + "\">";
                 newattach += "</td>";
                 newattach += "<td>";
-                    newattach += "<button type=\"button\" class=\"btn btn-outline-danger btn-sm my-1 w-100 attachDel\">Delete</button>";
+                    newattach += "<button type=\"button\" class=\"btn btn-outline-danger btn-sm my-1 w-100 attachDel\">"+i18n.gettext("Delete")+"</button>";
                 newattach += "</td>";
             newattach += "</tr>";
 
