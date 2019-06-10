@@ -153,7 +153,7 @@ $(document).ready(function(){
 });
 // Search Bar
     function hightlightField (fieldID) {
-        $("div[id*='"+fieldID+"']").css("border", "3px dotted red").delay(2000);
+        $("div[id$='field-"+fieldID+"']").css("border", "3px dotted red").delay(2000);
     };
 $(document).ready(function(){
  if(readonly) {
@@ -1101,11 +1101,11 @@ jQuery(function($) {
          
          $("input[id^=specified-date]").change(function (){
             if(!autoChangeflag)
-                $("[id^=save-btn"+$(this).attr('id').split('-')[5]+"]").show();
+                $("[id^=save-btn"+$(this).attr('id').split('-')[3]+"]").show();
          });
-         $("input[id^=unspecified]").change(function (){
+         $("select[id^=unspecified]").change(function (){
             if(!autoChangeflag)
-                $("[id^=save-btn"+$(this).attr('id').split('-')[4]+"]").show();
+                $("[id^=save-btn"+$(this).attr('id').split('-')[2]+"]").show();
          });
     });
 
