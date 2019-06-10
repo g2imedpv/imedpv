@@ -102,7 +102,7 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
         else request['full_text'] = 0;
         request['type'] = 2;
     }else{
-        request['llt_name'] = encodeURIComponent(llt_name);
+        request['llt_name'] = llt_name;
         request['full_text'] = 0;
         request['type'] = type;
     }
