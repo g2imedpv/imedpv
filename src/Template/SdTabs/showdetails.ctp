@@ -27,7 +27,7 @@ echo $this->element('generatepdf');
     // });
     // })
 </script>
-<title>Data Entry</title>
+<title><?php echo __("Data Entry")?></title>
 <head>
     <?= $this->Html->css('select2/select2.min.css') ?>
     <?= $this->Html->script('select2/select2.min.js') ?>
@@ -42,13 +42,13 @@ echo $this->element('generatepdf');
 
     <!-- "Case Number" Display -->
     <span class="caseNumber" id="caseNumber" title="Case Number">
-        Full Data Entry - <b><?= $caseNo ?></b> [<?= $product_name?>]<b>(Version:<?= $version?>)</b>
+        <?php echo __("Full Data Entry")?> - <b><?= $caseNo ?></b> [<?= $product_name?>]<b>(<?php echo __("Version")?>:<?= $version?>)</b>
     </span>
 
     <!-- "Search" Button -->
     <li class="nav-item">
         <button class="btn btn-outline-info" title="Search" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-search"></i> Search</button>
+        <i class="fas fa-search"></i> <?php echo __("Search")?></button>
         </b>
         <div class="dropdown-menu p-3">
             <div class="form-group">
@@ -62,7 +62,7 @@ echo $this->element('generatepdf');
     <!-- "Version Switch" Dropdown Button -->
     <li class="nav-item">
         <a class="btn btn-outline-info" href="#" title="Version Switch" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-code-branch"></i> Switch Version
+        <i class="fas fa-code-branch"></i> <?php echo __("Switch Version")?>
         </a>
         <?php
         if(sizeof($case_versions->toList())>1){
@@ -82,18 +82,18 @@ echo $this->element('generatepdf');
 
     <!-- "Documents" Button -->
     <li class="nav-item">
-        <a class="btn btn-outline-info" href="/sd-documents/add_documents/<?= $caseId ?>" title="Documents Check" target="_blank"><i class="far fa-file-alt"></i> Documents</a>
+        <a class="btn btn-outline-info" href="/sd-documents/add_documents/<?= $caseId ?>" title="Documents Check" target="_blank"><i class="far fa-file-alt"></i> <?php echo __("Documents")?></a>
     </li>
 
     <!-- "Export" Dropdown Button -->
     <li class="nav-item">
         <a class="btn btn-outline-info" href="#" title="Export" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-print"></i> Export
+            <i class="fas fa-print"></i> <?php echo __("Export")?>
         </a>
         <div class="dropdown-menu">
-            <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>">CIOMS</a>
-            <a class="dropdown-item" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>">FDA</a>
-            <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXML/<?php echo $caseId ?>">XML</a>
+            <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>"><?php echo __("CIOMS")?></a>
+            <a class="dropdown-item" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>"><?php echo __("FDA")?></a>
+            <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXML/<?php echo $caseId ?>"><?php echo __("XML")?></a>
             <!-- Add this if location had details
             <div role="separator" class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Separated link</a>
@@ -104,7 +104,7 @@ echo $this->element('generatepdf');
     <!-- "Print" Dropdown Button -->
     <li class="nav-item">
         <a class="btn btn-outline-info" href="#" title="Print"  role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-file-export"></i> Print Out
+            <i class="fas fa-file-export"></i> <?php echo __("Print Out")?>
         </a>
     </li>
 
@@ -159,7 +159,7 @@ echo $this->element('generatepdf');
     ?>
     <?php if(($writePermission)&&($this->request->getQuery('readonly')!=1)):?>
     <div class="text-center">
-    <button type="submit" class="completeBtn w-25 btn btn-success mb-5">Complete</button>
+    <button type="submit" class="completeBtn w-25 btn btn-success mb-5"><?php echo __("Complete")?></button>
     </div>
     <?php endif;?>
     <?= $this->Form->end() ?>
@@ -197,7 +197,7 @@ echo $this->element('generatepdf');
   <div class="modal-dialog modal-lg" role="document" style="max-width: 1175px !important;">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="">MedDRA Browser (Version: MedDRA 18.1)</h5>
+        <h5 class="modal-title" id=""><?php echo __("MedDRA Browser")?> (<?php echo __("Version")?>: MedDRA 18.1)</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -219,7 +219,7 @@ echo $this->element('generatepdf');
                         <input type="text" class="form-control" id="wildcard_search"  placeholder="Search by SMQ">
                     </div>
                     <div class="form-group">
-                        <label for="meddra-full_text">Full Search</label>
+                        <label for="meddra-full_text"><?php echo __("Full Text Search")?></label>
                         <input type="checkbox" class="form-control" id="meddra-full_text">
                     </div>
                 </div>
@@ -264,7 +264,7 @@ echo $this->element('generatepdf');
                     </div>
             </div>
             <!-- Table field (Should be hidden before search) -->
-            <h4 class="text-center">MedDra Details</h4> <hr>
+            <h4 class="text-center"><?php echo __("MedDra Details")?></h4> <hr>
             <div class="container">
                 <fieldset disabled>
                     <div class="form-row justify-content-center">
@@ -321,7 +321,7 @@ echo $this->element('generatepdf');
             </div>
       </div>
       <div class="modal-footer">
-        <button type="button" id="meddraSelectBtn" class="btn btn-success w-25 mx-auto"  onclick="selectMeddraButton()" data-dismiss="modal">Select</button>
+        <button type="button" id="meddraSelectBtn" class="btn btn-success w-25 mx-auto"  onclick="selectMeddraButton()" data-dismiss="modal"><?php echo __("Select")?></button>
       </div>
     </div>
   </div>
@@ -589,7 +589,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
             }
             $text =$text. "<div id=\"section-".$section->id."-field-".$sd_section_structure_detail->sd_field->id."\" class=\"form-group col-md-".$sd_section_structure_detail->field_length." offset-md-".($sd_section_structure_detail->field_start_at-$length_taken)."\">";
             $text =$text. "<label id= \"section-".$section->id."-field_label-".$sd_section_structure_detail->sd_field->id."\" >".$sd_section_structure_detail->sd_field->field_label;
-            if($sd_section_structure_detail->sd_field->e2b_code!="") $text =$text."(".$sd_section_structure_detail->sd_field->e2b_code.")";
+            if($sd_section_structure_detail->sd_field->e2b_code!="") $text =$text." (".$sd_section_structure_detail->sd_field->e2b_code.")";
             $text =$text."</label>";
             if(!empty($sd_section_structure_detail->sd_field->comment))
             $text =$text. " <a id=\"field_helper-".$sd_section_structure_detail->sd_field->id."\" tabindex=\"0\" role=\"button\" data-toggle=\"popover\" title=\"Field Helper\" data-content=\"<div>".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->comment)."</div>\"><i class=\"qco fas fa-info-circle\"></i></a>";
