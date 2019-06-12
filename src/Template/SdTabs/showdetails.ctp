@@ -215,7 +215,7 @@ echo $this->element('generatepdf');
                         <input type="text" class="form-control" id="pt_term"  placeholder="Search PT Term">
                     </div> -->
                     <div class="form-group col-md-4">
-                        <label>SMQ:</label>
+                        <label><?php echo __("SMQ")?>:</label>
                         <input type="text" class="form-control" id="wildcard_search"  placeholder="Search by SMQ">
                     </div>
                     <div class="form-group">
@@ -235,23 +235,23 @@ echo $this->element('generatepdf');
             <div class="container mb-5">
                     <div class="form-row justify-content-around">
                         <div class="form-group col-md-2">
-                            <label for="">SOC Name</label>
+                            <label for=""><?php echo __("SOC Name")?></label>
                             <input type="text" class="form-control" id="typed-soc-name">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="">HLGT Name</label>
+                            <label for=""><?php echo __("HLGT Name")?></label>
                             <input type="text" class="form-control" id="typed-hlgt-name">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="">HLT Name</label>
+                            <label for=""><?php echo __("HLT Name")?></label>
                             <input type="text" class="form-control" id="typed-hlt-name">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="">PT Name</label>
+                            <label for=""><?php echo __("PT Name")?></label>
                             <input type="text" class="form-control" id="typed-pt-name">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="">LLT Name</label>
+                            <label for=""><?php echo __("LLT Name")?></label>
                             <input type="text" class="form-control" id="typed-llt-name">
                         </div>
                     </div>
@@ -269,51 +269,51 @@ echo $this->element('generatepdf');
                 <fieldset disabled>
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-4">
-                            <label for="">LLT Name</label>
+                            <label for=""><?php echo __("LLT Name")?></label>
                             <input type="text" class="form-control" id="select-llt-n">
                         </div>
                         <div class="form-group col-md-3 offset-md-1">
-                            <label for="">LLT Code</label>
+                            <label for=""><?php echo __("LLT Code")?></label>
                             <input type="text" class="form-control" id="select-llt-c">
                         </div>
                     </div>
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-4">
-                            <label for="">PT Name</label>
+                            <label for=""><?php echo __("PT Name")?></label>
                             <input type="text" class="form-control" id="select-pt-n">
                         </div>
                         <div class="form-group col-md-3 offset-md-1">
-                            <label for="">PT Code</label>
+                            <label for=""><?php echo __("PT Code")?></label>
                             <input type="text" class="form-control" id="select-pt-c">
                         </div>
                     </div>
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-4">
-                            <label for="">HLT Name</label>
+                            <label for=""><?php echo __("HLT Name")?></label>
                             <input type="text" class="form-control" id="select-hlt-n">
                         </div>
                         <div class="form-group col-md-3 offset-md-1">
-                            <label for="">HLT Code</label>
+                            <label for=""><?php echo __("HLT Code")?></label>
                             <input type="text" class="form-control" id="select-hlt-c">
                         </div>
                     </div>
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-4">
-                            <label for="">HLGT Name</label>
+                            <label for=""><?php echo __("HLGT Name")?></label>
                             <input type="text" class="form-control" id="select-hlgt-n">
                         </div>
                         <div class="form-group col-md-3 offset-md-1">
-                            <label for="">HLGT Code</label>
+                            <label for=""><?php echo __("HLGT Code")?></label>
                             <input type="text" class="form-control" id="select-hlgt-c">
                         </div>
                     </div>
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-4">
-                            <label for="">SOC Name</label>
+                            <label for=""><?php echo __("SOC Name")?></label>
                             <input type="text" class="form-control" id="select-soc-n">
                         </div>
                         <div class="form-group col-md-3 offset-md-1">
-                            <label for="">SOC Code</label>
+                            <label for=""><?php echo __("SOC Code")?></label>
                             <input type="text" class="form-control" id="select-soc-c">
                         </div>
                     </div>

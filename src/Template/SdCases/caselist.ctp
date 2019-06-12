@@ -21,48 +21,48 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             </div>
         </div>
         <div class="form-row">
-            <div class="duedate form-group col-2">Activity Due Date:</div>
+            <div class="duedate form-group col-2"><?php echo __("Activity Due Date")?>:</div>
             <div class="form-group col-1">
-                <input type="text" class="form-control" id="datepicker1" placeholder="[mm/dd/yyyy]">
+                <input type="text" class="form-control" id="datepicker1" placeholder="<?php echo __("[mm/dd/yyyy]")?>">
             </div>
             <div class="arrow">
                 <i class="far fa-window-minimize"></i>
             </div>
             <div class="form-group col-1">
-                <input type="text" class="form-control" id="datepicker2" placeholder="[mm/dd/yyyy]">
+                <input type="text" class="form-control" id="datepicker2" placeholder="<?php echo __("[mm/dd/yyyy]")?>">
             </div>
 
-            <div class="duedate form-group col-2 float-right">Submission Due Date:</div>
+            <div class="duedate form-group col-2 float-right"><?php echo __("Submission Due Date")?>:</div>
             <div class="form-group col-1">
-                <input type="text" class="form-control" id="datepicker3" placeholder="[mm/dd/yyyy]">
+                <input type="text" class="form-control" id="datepicker3" placeholder="<?php echo __("[mm/dd/yyyy]")?>">
             </div>
             <div class="arrow">
                 <i class="far fa-window-minimize"></i>
             </div>
             <div class="form-group col-1">
-                <input type="text" class="form-control" id="datepicker4" placeholder="[mm/dd/yyyy]">
+                <input type="text" class="form-control" id="datepicker4" placeholder="<?php echo __("[mm/dd/yyyy]")?>">
             </div>
         </div>
         <div class="form-row" id="advsearchfield">
             <div class="form-group col-lg-2">
-                <input type="text" class="form-control" id="patient_id" placeholder="Search by Patient ID">
+                <input type="text" class="form-control" id="patient_id" placeholder="<?php echo __("Search by Patient ID")?>">
             </div>
             <div class="form-group col-lg-2">
-                <input type="text" class="form-control" id="datepicker5" placeholder="Choose Date of Birth">
+                <input type="text" class="form-control" id="datepicker5" placeholder="<?php echo __("Choose Date of Birth")?>">
             </div>
             <div class="form-group col-lg-2">
                 <select id="inputState" class="form-control">
-                    <option selected>Select Gender</option>
-                    <option>Male</option>
-                    <option>Female</option>
-                    <option>Unknown</option>
+                    <option selected><?php echo __("Select Gender")?></option>
+                    <option><?php echo __("Male")?></option>
+                    <option><?php echo __("Female")?></option>
+                    <option><?php echo __("Unknown")?></option>
                 </select>
             </div>
         </div>
         <div class="text-center">
-            <button onclick="onQueryClicked()" class="btn btn-primary w-25"><i class="fas fa-search"></i> Search</button>
+            <button onclick="onQueryClicked()" class="btn btn-primary w-25"><i class="fas fa-search"></i> <?php echo __("Search")?></button>
             <!-- <button id="advsearch" class="btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</button> -->
-            <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> Clear</button>
+            <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> <?php echo __("Clear")?></button>
         </div>
 
         <div id="textHint" class="d-block w-100 text-center"></div>
