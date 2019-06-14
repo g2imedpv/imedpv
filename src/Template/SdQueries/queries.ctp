@@ -1,4 +1,4 @@
-<title>Query Box</title>
+<title><?php echo __("Query Box")?></title>
 
 <div class="container-fluid w-75 my-3">
     <div class="row">
@@ -13,12 +13,12 @@
             <hr>
             -->
             <ul class="nav nav-pills nav-stacked queryBoxLeft">
-                <a href="/sd-queries/queries" class=""><li class="active"><i class="fas fa-inbox mr-5"></i> Inbox <span class="badge pull-right"><?php $newQueryCount ?></span></li></a>
-                <a href="/sd-queries/queries/unread" class=""><li><i class="fas fa-envelope mr-5"></i> Unread</li></a>
-                <a href="/sd-queries/queries/system"><li><i class="fas fa-cogs mr-5"></i> System</li></a>
-                <a href="/sd-queries/queries/flaged"><li><i class="fas fa-flag mr-5"></i> Flagged</li></a>
-                <a href="/sd-queries/queries/sent"><li><i class="fas fa-paper-plane mr-5"></i> Sent Mail</li></a>
-                <a href="/sd-queries/queries/deleted"><li><i class="fas fa-trash mr-5"></i> Trash <span class="badge pull-right"></span></li></a>
+                <a href="/sd-queries/queries" class=""><li class="active"><i class="fas fa-inbox mr-5"></i> <?php echo __("Inbox")?> <span class="badge pull-right"><?php $newQueryCount ?></span></li></a>
+                <a href="/sd-queries/queries/unread" class=""><li><i class="fas fa-envelope mr-5"></i> <?php echo __("Unread")?></li></a>
+                <a href="/sd-queries/queries/system"><li><i class="fas fa-cogs mr-5"></i> <?php echo __("System")?></li></a>
+                <a href="/sd-queries/queries/flaged"><li><i class="fas fa-flag mr-5"></i> <?php echo __("Flagged")?></li></a>
+                <a href="/sd-queries/queries/sent"><li><i class="fas fa-paper-plane mr-5"></i> <?php echo __("Sent Mail")?></li></a>
+                <a href="/sd-queries/queries/deleted"><li><i class="fas fa-trash mr-5"></i> <?php echo __("Trash")?> <span class="badge pull-right"></span></li></a>
             </ul>
         </div>
         <div class="col-sm-9 col-md-10">
@@ -61,9 +61,9 @@
                 <table class="table table-hover table-borderless table-striped">
                     <thead>
                         <tr>
-                            <th scope="col" style="width:15%;">Sender</th>
-                            <th scope="col" style="width:65%">Title</th>
-                            <th scope="col" style="width:15%">Date</th>
+                            <th scope="col" style="width:15%;"><?php echo __("Sender")?></th>
+                            <th scope="col" style="width:65%"><?php echo __("Title")?></th>
+                            <th scope="col" style="width:15%"><?php echo __("Date")?></th>
                             <!-- <th scope="col" style="width:5%">Action</th> -->
                         </tr>
                     </thead>
@@ -79,7 +79,7 @@
                             echo "<td>";
                             if(empty($sdQuery['read_date']))
                             echo "<b>";
-                            echo $sdQuery['title'];
+                            echo __($sdQuery['title']+"");
                             if(empty($sdQuery['read_date']))
                             echo "</b>";
                             echo "</td>";

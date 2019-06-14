@@ -1,6 +1,5 @@
 $(document).ready(function(){
     $('[name$=\\[field_value\\]').change(function(){
-        console.log($(this));
         let id = $(this).attr('id').split('-');
         $('#section-'+id[1]+'-error_message-'+id[3]).text();
         $('#section-'+id[1]+'-error_message-'+id[3]).hide();
@@ -620,27 +619,26 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
                             });
                         }
                         if ((typeof value != "undefined")&&(setMatch)){
-                            if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
+                            valueFlag = true;
+                            if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox'&&thisElement.attr('id').split('-')[2]!='unspecifieddate')){
                                 autoChangeflag = true;
                                 thisElement.val(value.field_value).trigger('change');
                                 autoChangeflag = false;
-                                valueFlag = true;
+                                
                             }else{
                                 if(thisElement.attr('id').split('-')[2]=='unspecifieddate'){
                                     let fieldId = thisElement.attr('id').split('-')[3];
                                     let sectionId = thisElement.attr('id').split('-')[1];
                                     autoChangeflag = true;
-                                    $("#unspecified-day_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(0,2)).trigger('change');
-                                    $("#unspecified-month_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(2,4)).trigger('change');
-                                    $("#unspecified-year_section-"+sectionId+"unspecifieddate"+fieldId).val(value.field_value.substring(4,8)).trigger('change');
+                                    $("#unspecified-day_section-"+sectionId+"-unspecifieddate-"+fieldId).val(value.field_value.substring(0,2)).trigger('change');
+                                    $("#unspecified-month_section-"+sectionId+"-unspecifieddate-"+fieldId).val(value.field_value.substring(2,4)).trigger('change');
+                                    $("#unspecified-year_section-"+sectionId+"-unspecifieddate-"+fieldId).val(value.field_value.substring(4,8)).trigger('change');
                                     autoChangeflag = false;
                                 }else if(thisElement.attr('id').split('-')[2]=='radio'){
                                     if(thisElement.val()==value.field_value) {
                                         thisElement.prop('checked',true);
-                                        valueFlag = true;
                                     }else thisElement.prop('checked',false);
                                 }else if(thisElement.attr('id').split('-')[2]=='checkbox'){
-                                    valueFlag = true;
                                     if(value.field_value.charAt(Number(thisElement.val())-1) == 1){
                                         thisElement.prop('checked',true);
                                     }else thisElement.prop('checked',false);
@@ -651,20 +649,42 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
                     });
                 }
                 if(valueFlag == false) {
-                    if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox')){
+                    if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox'&&thisElement.attr('id').split('-')[2]!='unspecifieddate')){
                         autoChangeflag = true;
                         thisElement.val(null).trigger('change');
                         autoChangeflag = false;
                     }else{
-                        thisElement.prop('checked',false);
-                        if((typeof thisId[5] != "undefined")&&(thisId[5]=="final")) {
-                            val = "";
-                            for (i = 0; i < thisId[4]; i++){
-                                val = val+"0";
+                        if(thisElement.attr('id').split('-')[2]=='unspecifieddate'){
+                            let fieldId = thisElement.attr('id').split('-')[3];
+                            let sectionId = thisElement.attr('id').split('-')[1];
+                            autoChangeflag = true;
+                            console.log(valueFlag);
+                            $("#unspecified-day_section-"+sectionId+"-unspecifieddate-"+fieldId).val("00").trigger('change');
+                            $("#unspecified-month_section-"+sectionId+"-unspecifieddate-"+fieldId).val("00").trigger('change');
+                            $("#unspecified-year_section-"+sectionId+"-unspecifieddate-"+fieldId).val("0000").trigger('change');
+                            autoChangeflag = false;
+                        }else{
+                            thisElement.prop('checked',false);
+                            if((typeof thisId[5] != "undefined")&&(thisId[5]=="final")) {
+                                val = "";
+                                for (i = 0; i < thisId[4]; i++){
+                                    val = val+"0";
+                                }
+                                thisElement.val(val);
                             }
-                            thisElement.val(val);
                         }
+
                     }
+                    // if(thisElement.attr('id').split('-')[2]=='unspecifieddate'){
+                        
+                    //     let fieldId = thisElement.attr('id').split('-')[3];
+                    //     let sectionId = thisElement.attr('id').split('-')[1];console.log($("#unspecified-day_section-"+sectionId+"unspecifieddate"+fieldId));
+                    //     autoChangeflag = true;
+                    //     $("#unspecified-day_section-"+sectionId+"unspecifieddate"+fieldId).val("00").trigger('change');
+                    //     $("#unspecified-month_section-"+sectionId+"unspecifieddate"+fieldId).val("00").trigger('change');
+                    //     $("#unspecified-year_section-"+sectionId+"unspecifieddate"+fieldId).val("0000").trigger('change');
+                    //     autoChangeflag = false;
+                    // }
                 };
             });
 

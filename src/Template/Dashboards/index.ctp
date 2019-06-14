@@ -87,25 +87,25 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             <div class="form-row">
                 <p class="duedate form-group col-2"><?php echo __("Activity Due Date:");?></p>
                 <div class="form-group col-3">
-                    <input type="date" class="form-control" id="datepicker1" placeholder="[mm/dd/yyyy]">
+                    <input type="date" class="form-control" id="datepicker1" placeholder="<?php echo __("[mm/dd/yyyy]")?>">
                 </div>
                 <div class="arrow">
                     <i class="far fa-window-minimize"></i>
                 </div>
                 <div class="form-group col-3">
-                    <input type="date" class="form-control" id="datepicker2" placeholder="[mm/dd/yyyy]">
+                    <input type="date" class="form-control" id="datepicker2" placeholder="<?php echo __("[mm/dd/yyyy]")?>">
                 </div>
             </div>
             <div class="form-row">
                 <p class="duedate form-group col-2 float-right"><?php echo __("Submission Due Date:");?></p>
                 <div class="form-group col-3">
-                    <input type="date" class="form-control" id="datepicker3" placeholder="[mm/dd/yyyy]">
+                    <input type="date" class="form-control" id="datepicker3" placeholder="<?php echo __("[mm/dd/yyyy]")?>">
                 </div>
                 <div class="arrow">
                     <i class="far fa-window-minimize"></i>
                 </div>
                 <div class="form-group col-3">
-                    <input type="date" class="form-control" id="datepicker4" placeholder="[mm/dd/yyyy]">
+                    <input type="date" class="form-control" id="datepicker4" placeholder="<?php echo __("[mm/dd/yyyy]")?>">
                 </div>
             </div>
             <div class="form-row justify-content-center">
