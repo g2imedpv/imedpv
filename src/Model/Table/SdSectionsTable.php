@@ -37,7 +37,7 @@ class SdSectionsTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('sd_sections');
+        $this->setTable($config['table']);
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
@@ -55,7 +55,7 @@ class SdSectionsTable extends Table
             'foreignKey' => 'sd_section_id'
         ]);
         $this->hasOne('SdSectionSummaries', [
-            'foreignKey' => 'sd_section_id'
+            'foreignKey' => 'sd_section_id' 
         ]);
     }
 

@@ -33,7 +33,7 @@ class SdFieldValueLookUpsTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('sd_field_value_look_ups');
+        $this->setTable($config['table']);
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 

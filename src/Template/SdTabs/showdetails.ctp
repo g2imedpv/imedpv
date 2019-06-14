@@ -18,8 +18,9 @@ echo $this->element('generatepdf');
     var tabId = <?= $tabid?>;
     var tableFields ="";
     var dynamic_options = <?php if(empty($dynamic_options)) echo"null"; else echo json_encode($dynamic_options)?>;
-    var section = <?php $sdSections;
-    echo json_encode($sdSections)?>;
+    var section = <?php 
+    echo json_encode($sdSections,JSON_UNESCAPED_UNICODE)?>;
+    
     var caseId = <?= $caseId ?>;
     // jQuery(function($) {
     //     $(document).ready(function () {
@@ -455,7 +456,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key, $
         $text = $text."<th scope=\"col\" id=\"col-".$sectionId."-".$field_detail->id."\">".$field_detail->field_label."</th>";
 
     }
-    $text = $text."<th scope=\"col\">Action</th>";
+    $text = $text."<th scope=\"col\">".__("Action")."</th>";
     $row = 1;
     $text = $text."</thead>";
     $text = $text."<tbody>";
@@ -777,7 +778,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
             $length_taken = $sd_section_structure_detail->field_length + $sd_section_structure_detail->field_start_at;
         }
         if($i!=0) $text =$text."</div>";
-        $text =$text. "<div class=\"text-center pb-3\"><input id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.",1)\" class=\"ml-3 px-5 btn btn-outline-primary panel-collapse show\" type=\"button\" style=\"display:none\" value=\"Save\"></div>";
+        $text =$text. "<div class=\"text-center pb-3\"><button id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.",1)\" class=\"ml-3 px-5 btn btn-outline-primary panel-collapse show\" type=\"button\" style=\"display:none\">".__("Save")."</button></div>";
         $text =$text. "</div>";
         
     // }
@@ -795,8 +796,8 @@ function displaySelectBar($sdSections, $setArray, $section_key){
     }
     $text = "";
     if($sdSections->id!="44" && $sdSections->id!="65" && $max_set_No>0){
-        $text = $text."<button type=\"button\" onclick=\"setPageChange(".$sdSections['id'].",".(int)($max_set_No+1).",1)\" id=\"addbtn-".$sdSections['id']."\" class=\"btn btn-outline-primary float-right panel-collapse show\" role=\"button\" title=\"add\"><i class=\"fas fa-plus\"></i>Add</button>";
-        $text = $text."<button type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1,".$section_key.")\" id=\"deletebtn-".$sdSections['id']."\" class=\"btn btn-outline-danger float-right panel-collapse show\" role=\"button\" title=\"delete\"><i class=\"fas fa-trash-alt\"></i>Delete</button>"; 
+        $text = $text."<button type=\"button\" onclick=\"setPageChange(".$sdSections['id'].",".(int)($max_set_No+1).",1)\" id=\"addbtn-".$sdSections['id']."\" class=\"btn btn-outline-primary float-right panel-collapse show\" role=\"button\" title=\"add\"><i class=\"fas fa-plus\"></i>".__("Add")."</button>";
+        $text = $text."<button type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1,".$section_key.")\" id=\"deletebtn-".$sdSections['id']."\" class=\"btn btn-outline-danger float-right panel-collapse show\" role=\"button\" title=\"delete\"><i class=\"fas fa-trash-alt\"></i>".__("Delete")."</button>"; 
     }
     $text = $text."<input type=\"hidden\" id='setArray-".$sdSections->id."' value='";
         for($i = sizeof($setArray);$i>0;$i--){
@@ -824,7 +825,7 @@ function displaySelectBar($sdSections, $setArray, $section_key){
     $text =$text.    "<li class=\"page-item\" id=\"right_set-".$sdSections->id."-sectionKey-".$section_key."-setNo-1\" onclick=\"setPageChange(".$sdSections->id.",2)\">";
     $text =$text.    "<a class=\"page-link\" aria-label=\"Next\">";
     $text =$text.        "<span aria-hidden=\"true\">&raquo;</span>";
-    $text =$text.        "<span class=\"sr-only\">Next</span>";
+    $text =$text.        "<span class=\"sr-only\">".__("Next")."</span>";
     $text =$text.    "</a>";
     $text =$text.    "</li>";
     $text =$text. "</ul>";

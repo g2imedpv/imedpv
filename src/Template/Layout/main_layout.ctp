@@ -68,6 +68,12 @@
           <img class="flag" src="/img/flags/4x3/cn.svg" href="/sd-users/setLanguage/zh_CN" alt="Chinese Version" title="Chinese Version">
         </a>
       </div>
+      <div class="my-auto border border-white p-2 rounded"> <? __("E2B Version")?>
+        <a href="/sd-users/setVersion/2" class="mx-2"><? __("version")?> 2
+        </a>
+        <a href="/sd-users/setVersion/3" class="mx-2"><? __("version")?> 3
+        </a>
+      </div>
 
       <div class="d-flex p-2 bd-highlight mx-2">
         <?php

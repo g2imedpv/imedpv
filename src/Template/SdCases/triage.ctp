@@ -20,7 +20,7 @@
     <?= $this->Form->create($caseNo,['id'=>"triageForm", 'enctype'=>"multipart/form-data"]) ?>
     <!-- Basic Info Fields Set -->
     <?php if($versionNo>1){
-        echo "<div id=\"versionInfo\" class=\"form-group\"><h4 class=\"text-left\">Version Info</h4>";
+        echo "<div id=\"versionInfo\" class=\"form-group\"><h4 class=\"text-left\">".__("Version Info")."</h4>";
         echo "<div class=\"form-row\">";
         echo "<div class=\"form-group col-md-3\">";
         echo "<label>".__("Reason For Version Up")."</label>";

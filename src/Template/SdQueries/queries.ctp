@@ -79,7 +79,7 @@
                             echo "<td>";
                             if(empty($sdQuery['read_date']))
                             echo "<b>";
-                            echo __($sdQuery['title']+"");
+                            echo __($sdQuery['title']);
                             if(empty($sdQuery['read_date']))
                             echo "</b>";
                             echo "</td>";
