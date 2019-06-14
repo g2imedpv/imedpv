@@ -110,7 +110,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             </div>
             <div class="form-row justify-content-center">
                 <div class="form-group col-lg-3">
-                    <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary w-100"><i class="fas fa-search"></i><?php echo __("Search");?><"/button>
+                    <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary w-100"><i class="fas fa-search"></i><?php echo __("Search");?></button>
                 </div>
                 <div class="form-group col-lg-1">
                     <button class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> <?php echo __("Clear");?></button>
