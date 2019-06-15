@@ -71,10 +71,10 @@ $(document).ready(function(){
                 // console.log(response);
                 searchResult = $.parseJSON(response);
                 let text ="<table class=\"table table-hover w-100\">";
-                text +="<tr><th scope=\"col\">Field Lable</th>";
-                text +="<th scope=\"col\">Tab Name</th>";
-                text +="<th scope=\"col\">Section Name</th>";
-                text +="<th scope=\"col\">Action</th><tr>";
+                text +="<tr><th scope=\"col\">"+i18n.gettext("Field Label")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Tab Name")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Section Name")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Action")+"</th><tr>";
                 $.each(searchResult,function(k,v){
                     text +="<tr>";
                     text +="<td>"+v['field']['field_label']+"</td>";
@@ -265,11 +265,11 @@ function renderSummaries(section_id, pageNo){
             text = "<table class=\"table table-bordered table-hover layer"+section[sectionKey].section_level+"\" id=\"sectionSummary-"+sectionId+"-sectionKey-"+sectionKey+"\">";
             text = text+"<thead>";
             text = text+"<tr>";
-            text = text+"<th>SetNo</th>";
+            text = text+"<th>"+i18n.gettext("SetNo")+"</th>";
             $.each(section[sectionKey].sd_section_summary.sdFields, function(k,field_detail){
                 text = text+"<th scope=\"col\" id=\"col-"+sectionId+"-"+field_detail.id+"\">"+field_detail.field_label+"</th>";
             });
-            text = text+"<th scope=\"col\">Action</th>";
+            text = text+"<th scope=\"col\">"+i18n.gettext("Action")+"</th>";
             text = text+"</thead>";
             do{
                 noValue = section[sectionKey].sd_section_summary.sdFields.length;

@@ -17,7 +17,7 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\I18n\I18n;
-
+use Cake\ORM\TableRegistry;
 /**
  * Application Controller
  *
@@ -41,13 +41,17 @@ class AppController extends Controller
     public function initialize()
     {
         $language = $this->request->getSession()->read('Language');
+        $version = $this->request->getSession()->read('version');
+        if($version == 2||$version ==null) $version = "";
+        if($version == 3) $version = "_r3";
         I18n::setLocale($language);
         parent::initialize();
-
+        TableRegistry::config('SdFields', ['table' => 'sd_fields'.$version]);
+        TableRegistry::config('SdSections', ['table' => 'sd_sections'.$version]);
+        TableRegistry::config('SdFieldValueLookUps', ['table' => 'sd_field_value_look_ups'.$version]);
+        TableRegistry::config('SdSectionStructures', ['table' => 'sd_section_structures'.$version]);
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
-
-
         $this->loadComponent('Auth', [
             'authenticate' => [
                 'Form' => [
@@ -67,7 +71,7 @@ class AppController extends Controller
              // If unauthorized, return them to page they were just on
             'unauthorizedRedirect' => $this->referer()
         ]);
-
+        $this->Auth->allow(['setLanguage']);
 
         // Allow the display action so our PagesController
         // continues to work. Also enable the read only actions.

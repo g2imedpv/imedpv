@@ -34,8 +34,7 @@ class SdSectionStructuresTable extends Table
     public function initialize(array $config)
     {
         parent::initialize($config);
-
-        $this->setTable('sd_section_structures');
+        $this->setTable($config['table']);
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 

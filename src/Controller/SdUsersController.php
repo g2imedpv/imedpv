@@ -141,12 +141,20 @@ class SdUsersController extends AppController
 
     public function logout() {
         $this->Flash->success('You are now logged out.');
-        $this->request->getSession()->destroy();
+        $session = $this->getRequest()->getSession();
+        $language = $session->read('Language');
+        $session->destroy();
+        $session->write('Language', $language);
         return $this->redirect($this->Auth->logout());
     }
     public function setLanguage($language){
         $session = $this->getRequest()->getSession();
         $session->write('Language', $language);
+        return $this->redirect($this->referer());
+    }
+    public function setVersion($version){
+        $session = $this->getRequest()->getSession();
+        $session->write('version', $version);
         return $this->redirect($this->referer());
     }
     public function login() {
@@ -158,7 +166,8 @@ class SdUsersController extends AppController
                     $this->Auth->setUser($sdUser);
                     $SdRoles = TableRegistry::get('SdRoles')->get($sdUser['sd_role_id']);
                     $session->write('Auth.User.role_name', $SdRoles['description']);
-                    $session->write('Language', 'en_US');
+                    // $session->write('Language', 'en_US');
+                    if($session->read('Language')== null) $session->write('Language', 'en_US');;
                     return $this->redirect($this->Auth->redirectUrl(
                         // Set the first page after user logged in
                         ['controller' => 'SdCompanies','action' => 'selectCompany']

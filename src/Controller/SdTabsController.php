@@ -28,14 +28,13 @@
                 $this->set(compact('sdTabs'));
             }
 
-
             /**
              * ShowDetail method
              *
              * @return \Cake\Http\Response|void
              */
             public function showdetails($caseNo, $version = 1,$tabid = 1, $distribution_id = null)
-            { 
+            {         
                 if($distribution_id == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
                 else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";                  
                 $writePermission= 0;
@@ -192,6 +191,10 @@
 
                 //Fetch tab structures
                 //TODO according to model
+                
+                
+                // debug( TableRegistry::getTableLocator()->setConfig('SdFields', ['table' => 'sd_field_r3']));
+                // debug($sdFieldTable);
                 $sdFieldTable = TableRegistry::get('SdFields');
                 $sdTab = TableRegistry::get('SdSections');
                 $sdSections = $sdTab ->find()->where(['sd_tab_id'=>$tabid,'status'=>true])
@@ -228,7 +231,8 @@
                         $sd_section_structure['sd_field']['field_label'] = __($sd_section_structure['sd_field']['field_label']);
                         $sd_section_structure['sd_field']['comment'] = __($sd_section_structure['sd_field']['comment']);
                         foreach($sd_section_structure['sd_field']['sd_field_value_look_ups'] as $sd_field_value_look_up){
-                            $sd_field_value_look_up['caption'] = __($sd_field_value_look_up['caption']);
+                            if($sd_section_structure['sd_field']['id']!=191)
+                                $sd_field_value_look_up['caption'] = __($sd_field_value_look_up['caption']);
                         }
                     }
                 }
