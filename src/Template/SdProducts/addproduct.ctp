@@ -219,7 +219,7 @@
                             </div>
                             <div id="distribution_input" style="display:none;"></div>
                             <div id="no_workflow_notice"><h3><?php echo __("There is no workflow linked to this product, please add workflow first");?>;</h3></div>
-                            <input type="<?php echo __("submit");?>" class="btn btn-success w-25 mt-3 mx-auto">
+                            <input type="submit" class="btn btn-success w-25 mt-3 mx-auto">
                             <?= $this->Form->end() ?>
 
                         </div>
@@ -393,31 +393,31 @@
                                 </div>
 
                                 <div class="d-block mt-3">
-                                    <button id="undocho-accessment-con" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
-                                    <button id="confirm_accessment_activities" class="btn btn-primary w-25" style="display:none;">Continue</button>
-                                    <button id="undo_accessment_activities" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
-                                    <button id="submit_accessment_workflow" class="btn btn-primary w-25" style="display:none;">Continue</button>
+                                    <button id="undocho-accessment-con" type="button" class="btn btn-outline-warning" style="display:none;"><?php echo __("Go back to last step");?></button>
+                                    <button id="confirm_accessment_activities" class="btn btn-primary w-25" style="display:none;"><?php echo __("Continue");?></button>
+                                    <button id="undo_accessment_activities" type="button" class="btn btn-outline-warning" style="display:none;"><?php echo __("Go back to last step");?></button>
+                                    <button id="submit_accessment_workflow" class="btn btn-primary w-25" style="display:none;"><?php echo __("Continue");?></button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Add CROs -->
                         <div id="choose-accessment-company" class="prodiff text-center" style="display:none">
-                            <h3 class="mt-2">Team Members</h3>
+                            <h3 class="mt-2"></h3>
                             <hr>
-                            <p class="card-text">Add the Resources here and assign personnels</p>
-                            <button type="button" class="btn btn-outline-info w-25 mx-auto mb-3" data-toggle="modal" data-target="#accessment-addcromodal">Add Resources</button>
+                            <p class="card-text"><?php echo __("Add the Resources here and assign personnels");?></p>
+                            <button type="button" class="btn btn-outline-info w-25 mx-auto mb-3" data-toggle="modal" data-target="#accessment-addcromodal"><?php echo __("Add Resources");?></button>
                             <div class="modal fade" id="accessment-addcromodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Add Companies</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel"><?php echo __("Add Companies");?></h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <label for="">Add Resources</label>
+                                        <label for=""><?php echo __("Add Resources");?></label>
                                         <select class="custom-select" id="accessment-croname">
                                         <?php 
                                             foreach($cro_companies as $k => $cro_company){
@@ -427,7 +427,7 @@
                                         </select>
                                     </div>
                                     <div class="modal-footer">
-                                        <button id="accessment-croadd"  class="btn btn-primary"  data-dismiss="modal">ADD</button>
+                                        <button id="accessment-croadd"  class="btn btn-primary"  data-dismiss="modal"><?php echo __("Add");?></button>
                                     </div>
                                     </div>
                                 </div>
@@ -443,35 +443,35 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Assign Personnels</h5>
+                                            <h5 class="modal-title"><?php echo __("Assign Personnels");?></h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <p>Assign people as manager or team members.</p>
+                                            <p><?php echo __("Assign people as manager or team members");?>.</p>
                                             <!-- Choose Personnels -->
                                             <div class="card bg-light mb-3 float-left personnelarea">
-                                                <div class="card-header">Candidates of Team Resources</div>
+                                                <div class="card-header"><?php echo __("Candidates of Team Resources");?></div>
                                                 <div id="personnelDraggable" class="card-body p-2">
                                                 </div>
                                             </div>
 
                                             <!-- Droppable Area -->
                                             <div id="dropZone" class="card bg-light mx-3 mb-3 float-right">
-                                                <div class="card-header">Drag Candidates Here for Assignment</div>
+                                                <div class="card-header"><?php echo __("Drag Candidates Here for Assignment");?></div>
                                                 <div class="stack border-success">
-                                                    <div class="stackHdr">Assign as workflow manager</div>
+                                                    <div class="stackHdr"><?php echo __("Assign as workflow manager");?></div>
                                                     <div class="stackDrop1" id="workflow_manager-add"></div>
                                                 </div>
                                                 <div class="stack border-info">
-                                                    <div class="stackHdr">Assign as team resources</div>
+                                                    <div class="stackHdr"><?php echo __("Assign as team resources");?></div>
                                                     <div class="stackDrop2" id="team_resources-add"></div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button id="conass-accessment" class="btn btn-outline-success" type="submit" data-dismiss="modal">Confirm Assignment</button>
+                                            <button id="conass-accessment" class="btn btn-outline-success" type="submit" data-dismiss="modal"><?php echo __("Confirm Assignment");?></button>
                                         </div>
                                     </div>
                                 </div>
@@ -479,25 +479,25 @@
 
                             <div class="d-block mt-3">
                                 <!-- CROs Resources List -->
-                                <h3 class="mt-3">CROs Resources List</h3>
+                                <h3 class="mt-3"><?php echo __("CROs Resources List");?></h3>
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th scope="col">CRO Company</th>
-                                            <th scope="col">Workflow Manager</th>
-                                            <th scope="col">Team Resources</th>
-                                            <th scope="col">Actions</th>
+                                            <th scope="col"><?php echo __("CRO Company");?></th>
+                                            <th scope="col"><?php echo __("Workflow Manager");?></th>
+                                            <th scope="col"><?php echo __("Team Resources");?></th>
+                                            <th scope="col"><?php echo __("Actions");?></th>
                                         </tr>
                                     </thead>
                                     <tbody id="accessment-crotable">
                                     </tbody>
                                 </table>
-                                <button id="undocho-accessment-WF" type="button" class="btn btn-outline-warning mt-3">Reselect Workflow</button>
-                                <button id="confirm-accessment-WFlist" type="button" class="btn btn-primary w-25 mt-3 mx-auto">Continue</button>
+                                <button id="undocho-accessment-WF" type="button" class="btn btn-outline-warning mt-3"><?php echo __("Reselect Workflow");?></button>
+                                <button id="confirm-accessment-WFlist" type="button" class="btn btn-primary w-25 mt-3 mx-auto"><?php echo __("Continue");?></button>
                             </div>
                         <!-- Choose Distribution -->
                         <div id="distribution-workflowlist" class="prodiff text-center" style="display:none;">
-                            <h3>Choose Distribution</h3>
+                            <h3><?php echo __("Choose Distribution");?></h3>
                             <hr>
                             <div id="distriList"></div>
                             <!-- <div id="newDistri-0">
@@ -553,27 +553,27 @@
                                 <hr>
                             </div> -->
                             <div class="newDistrictArea"></div>
-                            <button id="addNew-distribution-WL" type="button" class="btn btn-sm btn-outline-primary float-left"><i class="fas fa-plus"></i> Add New</button>
-                            <button id="backDistri" class="btn btn-outline-warning w-25">Last Step</button>
-                            <button id="submitDistri" class="btn btn-primary w-25">Continue</button>
+                            <button id="addNew-distribution-WL" type="button" class="btn btn-sm btn-outline-primary float-left"><i class="fas fa-plus"></i><?php echo __("Add New");?></button>
+                            <button id="backDistri" class="btn btn-outline-warning w-25"><?php echo __("Last Step");?></button>
+                            <button id="submitDistri" class="btn btn-primary w-25"><?php echo __("Continue");?></button>
                         </div>
                         <div id="cho-distribution-workflow" class="prodiff text-center mt-1" style="display:none;">
                         <!-- Title for "Add New" -->
                             <div class="jumbotron jumbotron-fluid bg-warning">
                                 <div class="container">
-                                    <h1 class="display-4">Add New Distribution Workflow</h1>
+                                    <h1 class="display-4"><?php echo __("Add New Distribution Workflow");?></h1>
                                 </div>
                             </div>
                             <!-- Choose Country  id="choosecon"-->
                             <div class="prodiff text-center mt-1">
-                                <h3>Choose Country and Call Center</h3>
+                                <h3><?php echo __("Choose Country and Call Center");?></h3>
                                 <hr>
                                 <div class="form-row justify-content-md-center">
 
                                     <div class="form-group col-md-3">
-                                        <label for="">Select Country</label>
+                                        <label for=""><?php echo __("Select Country");?></label>
                                         <select class="form-control" id="select-distribution-country" name="product_distribution_workflow[0][country]">
-                                        <option value="">Select Country</option>
+                                        <option value=""><?php echo __("Select Country");?></option>
                                         <?php
                                         foreach($distribution_workflow_structure as $workflow_structure_detail){
                                             echo "<option value=".$workflow_structure_detail->country.">".$country_list[$workflow_structure_detail->country]."</option>";
@@ -581,19 +581,19 @@
                                         ?>
                                         </select>
                                         <div id="select-distribution-country-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
-                                            Country is REQUIRED
+                                        <?php echo __("Country is REQUIRED");?>
                                         </div>
                                     </div>
                                 </div>
-                                <button id="exit_distribution_workflow" type="button" class="btn btn-outline-warning">Exit</button>
-                                <div id="submit_distribution_country" class="btn btn-primary w-25">Continue</div>
+                                <button id="exit_distribution_workflow" type="button" class="btn btn-outline-warning"><?php echo __("Exit");?></button>
+                                <div id="submit_distribution_country" class="btn btn-primary w-25"><?php echo __("Continue");?></div>
                             </div>
                             <div id="choose_distribution_wf">
                                 <div class="row" style="min-height: 740px;">
                                     <!-- Default Workflow -->
                                     <div class="col" id="default_distribution_workflow_div">
-                                        <button type="button" id="default_distribution_btn" class="btn btn-success btn-sm workflow"><span>Default Distribution Workflow</span></button>
-                                        <h3 id="default_distribution_T" style="display:none;">Default Workflow</h3>
+                                        <button type="button" id="default_distribution_btn" class="btn btn-success btn-sm workflow"><span><?php echo __("Default Distribution Workflow");?></span></button>
+                                        <h3 id="default_distribution_T" style="display:none;"><?php echo __("Default Workflow");?></h3>
                                         <hr class="wfhr">
                                         <ol id="default_distribution_workflow" class="defworkflow">
                                         </ol>
@@ -604,40 +604,40 @@
 
                                     <!-- Customize Workflow -->
                                     <div class="col" id="customize_distribution_workflow_div">
-                                        <button type="button" id="cust_distribution_btn" class="btn btn-success btn-sm workflow"><span>Customize Your Workflow</span></button>
-                                        <h3 id="customize_distribution_T" style="display:none;">Customize Workflow</h3>
+                                        <button type="button" id="cust_distribution_btn" class="btn btn-success btn-sm workflow"><span><?php echo __("Customize Your Workflow");?></span></button>
+                                        <h3 id="customize_distribution_T" style="display:none;"><?php echo __("Customize Workflow");?></h3>
                                         <hr class="wfhr">
                                         <div class="custworkflow" id="customize_distribution_workflow">
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
-                                                    <h4>Workflow Name: </h4 >
+                                                    <h4><?php echo __("Workflow Name");?>: </h4 >
                                                     <input class="w-75 text-center" type="text" id="custom_distribution_workflow_name" value=""/>
                                                     <div id="custom_distribution_workflow_name-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
-                                                        Name is REQUIRED
+                                                    <?php echo __("Name is REQUIRED");?>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
-                                                    <h5>Workflow Description </h5 >
+                                                    <h5><?php echo __("Workflow Description");?> </h5 >
                                                     <input class="w-75 text-center" type="text" id="custom_distribution_workflow_description" value=""/>
                                                     <div id="custom_distribution_workflow_description-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
-                                                        Description is REQUIRED
+                                                    <?php echo __("Description is REQUIRED");?>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div id="errAccessmentWorkflow" class="invalid-feedback" style="display:none;">Workflow name is required!</div>
+                                            <div id="errAccessmentWorkflow" class="invalid-feedback" style="display:none;"><?php echo __("Workflow name is required!");?></div>
 
-                                            <p>You can customize the workflow by editing the yellow box and dragging it to anywhere in the workflow</p>
+                                            <p><?php echo __("You can customize the workflow by editing the yellow box and dragging it to anywhere in the workflow");?></p>
                                             <ul>
                                                 <li id="draggable" class="custworkflowstep">
                                                     <div class="card w-100 h-25 my-2">
                                                         <div class="card-body p-3">
                                                             <h5 class="card-title"><input type="text" id="new_distribution_activity_name" placeholder="Type step name here FIRST" class="font-weight-bold" /> </h5>
-                                                            <p class="card-text"><textarea type="text"  id="new_distribution_activity_description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>
+                                                            <p class="card-text"><textarea type="text"  id="new_distribution_activity_description" class="form-control" placeholder="<?php echo __("Type your step description here");?>" aria-label="With textarea"></textarea></p>
                                                         </div>
-                                                        <button id="confirm_new_distribution_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity(1)">Confirm</button>
+                                                        <button id="confirm_new_distribution_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity(1)"><?php echo __("Confirm");?></button>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -648,31 +648,31 @@
                                 </div>
 
                                 <div class="d-block mt-3">
-                                    <button id="undocho-distribution-con" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
-                                    <button id="confirm_distribution_activities" class="btn btn-primary w-25" style="display:none;">Continue</button>
-                                    <button id="undo_distribution_activities" type="button" class="btn btn-outline-warning" style="display:none;">Go back to last step</button>
-                                    <button id="submit_distribution_workflow" class="btn btn-primary w-25" style="display:none;">Continue</button>
+                                    <button id="undocho-distribution-con" type="button" class="btn btn-outline-warning" style="display:none;"><?php echo __("Go back to last step");?></button>
+                                    <button id="confirm_distribution_activities" class="btn btn-primary w-25" style="display:none;"><?php echo __("Continue");?>Continue</button>
+                                    <button id="undo_distribution_activities" type="button" class="btn btn-outline-warning" style="display:none;"><?php echo __("Go back to last step");?></button>
+                                    <button id="submit_distribution_workflow" class="btn btn-primary w-25" style="display:none;"><?php echo __("Continue");?>Continue</button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Add CROs -->
                         <div id="choose-distribution-company" class="prodiff text-center" style="display:none">
-                            <h3 class="mt-2">Team Members</h3>
+                            <h3 class="mt-2"><?php echo __("Team Members");?></h3>
                             <hr>
-                            <p class="card-text">Add the Resources here and assign personnels</p>
-                            <button type="button" class="btn btn-outline-info w-25 mx-auto mb-3" data-toggle="modal" data-target="#distribution-addcromodal">Add Resources</button>
+                            <p class="card-text"><?php echo __("Add the Resources here and assign personnels");?></p>
+                            <button type="button" class="btn btn-outline-info w-25 mx-auto mb-3" data-toggle="modal" data-target="#distribution-addcromodal"><?php echo __("Add Resources");?></button>
                             <div class="modal fade" id="distribution-addcromodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Add Companies</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel"><?php echo __("Add Companies");?></h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <label for="">Add Resources</label>
+                                        <label for=""><?php echo __("Add Resources");?></label>
                                         <select class="custom-select" id="distribution-croname">
                                         <?php 
                                             foreach($cro_companies as $k => $cro_company){
@@ -682,7 +682,7 @@
                                         </select>
                                     </div>
                                     <div class="modal-footer">
-                                        <button id="distribution-croadd"  class="btn btn-primary"  data-dismiss="modal">ADD</button>
+                                        <button id="distribution-croadd"  class="btn btn-primary"  data-dismiss="modal"><?php echo __("Add");?></button>
                                     </div>
                                     </div>
                                 </div>
@@ -698,35 +698,35 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Assign Personnels</h5>
+                                            <h5 class="modal-title"><?php echo __("Assign Personnels");?></h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <p>Assign people as manager or team members.</p>
+                                            <p><?php echo __("Assign people as manager or team members");?>.</p>
                                             <!-- Choose Personnels -->
                                             <div class="card bg-light mb-3 float-left personnelarea">
-                                                <div class="card-header">Candidates of Team Resources</div>
+                                                <div class="card-header"><?php echo __("Candidates of Team Resources");?></div>
                                                 <div id="personnelDraggable" class="card-body p-2">
                                                 </div>
                                             </div>
 
                                             <!-- Droppable Area -->
                                             <div id="dropZone" class="card bg-light mx-3 mb-3 float-right">
-                                                <div class="card-header">Drag Candidates Here for Assignment</div>
+                                                <div class="card-header"><?php echo __("ContiDrag Candidates Here for Assignmentnue");?></div>
                                                 <div class="stack border-success">
-                                                    <div class="stackHdr">Assign as workflow manager</div>
+                                                    <div class="stackHdr"><?php echo __("Assign as workflow manager");?></div>
                                                     <div class="stackDrop1" id="workflow_manager-add"></div>
                                                 </div>
                                                 <div class="stack border-info">
-                                                    <div class="stackHdr">Assign as team resources</div>
+                                                    <div class="stackHdr"><?php echo __("Assign as team resources");?></div>
                                                     <div class="stackDrop2" id="team_resources-add"></div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button id="conass-distribution" class="btn btn-outline-success" type="submit" data-dismiss="modal">Confirm Assignment</button>
+                                            <button id="conass-distribution" class="btn btn-outline-success" type="submit" data-dismiss="modal"><?php echo __("Confirm Assignment");?></button>
                                         </div>
                                     </div>
                                 </div>
@@ -734,21 +734,21 @@
 
                             <div class="d-block mt-3">
                                 <!-- CROs Resources List -->
-                                <h3 class="mt-3">CROs Resources List</h3>
+                                <h3 class="mt-3"><?php echo __("CROs Resources List");?></h3>
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th scope="col">CRO Company</th>
-                                            <th scope="col">Workflow Manager</th>
-                                            <th scope="col">Team Resources</th>
-                                            <th scope="col">Actions</th>
+                                            <th scope="col"><?php echo __("Continue");?><?php echo __("CRO Company");?></th>
+                                            <th scope="col"><?php echo __("Continue");?><?php echo __("Workflow Manager");?></th>
+                                            <th scope="col"><?php echo __("Continue");?><?php echo __("Team Resources");?></th>
+                                            <th scope="col"><?php echo __("Continue");?><?php echo __("Actions");?></th>
                                         </tr>
                                     </thead>
                                     <tbody id="distribution-crotable">
                                     </tbody>
                                 </table>
-                                <button id="undocho-distribution-WF" type="button" class="btn btn-outline-warning mt-3">Reselect Workflow</button>
-                                <button id="confirm-distribution-WFlist" type="button" class="btn btn-primary w-25 mt-3 mx-auto">Continue</button>
+                                <button id="undocho-distribution-WF" type="button" class="btn btn-outline-warning mt-3"><?php echo __("Reselect Workflow");?></button>
+                                <button id="confirm-distribution-WFlist" type="button" class="btn btn-primary w-25 mt-3 mx-auto"><?php echo __("Continue");?></button>
                             </div>
                         </div>
                     </div>
