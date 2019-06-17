@@ -24,7 +24,7 @@
                             <div class="form-group col-md-3">
                                 <label><?php echo __("Product Name")?> <i class="fas fa-asterisk reqField"></i>"</label>
                                 <select type="text" class="form-control" id="product_id">
-                                    <option value="null"><?php echo __("Select Project No")?></option>
+                                    <option value="null"><?php echo __("Select Project No.")?></option>
                                     <?php
                                     foreach($productInfo as $k => $productDetail){
                                         echo "<option value=".$productDetail->id.">".$productDetail->product_name."</option>";
@@ -135,7 +135,7 @@
                                             <select class="custom-select js-example-basic-single" placeholder="<?php echo __("Month")?>" id="patientField_dob_month">
                                             <?php
                                             $month_str = ['Jan-1','Feb-2','Mar-3','Apr-4','May-5','Jun-6','Jul-7','Aug-8','Sep-9','Oct-10','Nov-11','Dec-12'];
-                                            echo "<option value=\"00\">Month</option>";
+                                            echo "<option value=\"00\">".__("Month")."</option>";
                                             foreach($month_str as $i => $month){
                                                 echo "<option value=\"".sprintf("%02d",$i+1)."\">".__($month)."</option>";
                                             }

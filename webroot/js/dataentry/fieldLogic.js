@@ -156,7 +156,7 @@ $(document).ready(function(){
         // For Additional documents (A.1.8.1) select and add document
         selectShowORhide ("#section-1-field-355, #section-1-field-14","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
         //add upload files button
-        var uploadDocButton="<button type=\"button\" class=\"btn btn-primary float-left ml-3 mt-3\" data-toggle=\"modal\" data-target=\".uploadDoc\"><i class=\"fas fa-cloud-upload-alt\"></i> Upload Documents</button>";    
+        var uploadDocButton="<button type=\"button\" class=\"btn btn-primary float-left ml-3 mt-3\" data-toggle=\"modal\" data-target=\".uploadDoc\"><i class=\"fas fa-cloud-upload-alt\"></i>"+i18n.gettext("Upload Documents")+"</button>";    
         $("#section-1-field_label-355").append(uploadDocButton);
         // For Report Nullification (A.1.13) checkbox
         checkboxShowORhide ('#section-1-field-23',"#section-1-checkbox-22-option-1");
