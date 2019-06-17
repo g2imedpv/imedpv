@@ -451,7 +451,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key, $
     $text = $text."<table class=\"table table-bordered table-hover layer".$section_level."\" id=\"sectionSummary-".$sectionId."-sectionKey-".$section_key."\">";
     $text = $text."<thead>";
     $text = $text."<tr>";
-    $text = $text."<th>SetNo</th>";
+    $text = $text."<th>".__("SetNo")."</th>";
     foreach($fields as $field_detail){
         $text = $text."<th scope=\"col\" id=\"col-".$sectionId."-".$field_detail->id."\">".$field_detail->field_label."</th>";
 
@@ -593,7 +593,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
             if($sd_section_structure_detail->sd_field->e2b_code!="") $text =$text." (".$sd_section_structure_detail->sd_field->e2b_code.")";
             $text =$text."</label>";
             if(!empty($sd_section_structure_detail->sd_field->comment))
-            $text =$text. " <a id=\"field_helper-".$sd_section_structure_detail->sd_field->id."\" tabindex=\"0\" role=\"button\" data-toggle=\"popover\" title=\"Field Helper\" data-content=\"<div>".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->comment)."</div>\"><i class=\"qco fas fa-info-circle\"></i></a>";
+            $text =$text. " <a id=\"field_helper-".$sd_section_structure_detail->sd_field->id."\" tabindex=\"0\" role=\"button\" data-toggle=\"popover\" title=\"".__("Field Helper")."\" data-content=\"<div>".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->comment)."</div>\"><i class=\"qco fas fa-info-circle\"></i></a>";
             // if(!empty($sd_section_structure_detail->sd_section_values)) print_r($section->sd_section_sets[0]->set_no);
                 $id_idHolder = 'section-'.$section->id.'-sd_section_structures-'.$i.'-sd_field_values-'.$j.'-id';
                 $id_nameHolder = 'sd_field_values['.$section->id.']['.$sd_section_structureK.'][id]';
@@ -650,7 +650,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                                         foreach($month_str as $i => $month){
                                             $text = $text."<option value=\"".sprintf("%02d",$i+1)."\"";
                                             if (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j])&&(substr($sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value,2,2)==sprintf("%02d",$i+1))) $text = $text."selected";
-                                            $text = $text.">".$month."</option>";
+                                            $text = $text.">".__($month)."</option>";
                                         }
                                     $text = $text."</select>";
                                 $text = $text."</div>";

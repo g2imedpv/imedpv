@@ -132,7 +132,7 @@ function onQueryClicked(preferrenceId = null){
         success:function(response){
             console.log(response);
             if (response==false) {
-                $("#textHint").html("Sorry, no case matches");
+                $("#textHint").html(i18n.gettext("Sorry, no case matches"));
                 return}
             var result = $.parseJSON(response);
             var text = "";
@@ -211,7 +211,7 @@ function onQueryClicked(preferrenceId = null){
         },
         error:function(response){
                 console.log(response.responseText);
-            $("#textHint").html("Sorry, no case matches");
+            $("#textHint").html(i18n.gettext("Sorry, no case matches"));
         }
     });
 }

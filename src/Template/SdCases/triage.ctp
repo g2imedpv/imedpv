@@ -15,7 +15,7 @@
 <div class="card text-center w-75 mx-auto my-3">
   <div class="card-header text-center"><h3><?php echo __("Create New Case")?></h3></div>
   <div class="card-body">
-    <div class="alert alert-primary w-50 mx-auto" role="alert"><h4><?php echo __("New Case Number:")?> <?= $caseNo ?></h4></div>
+    <div class="alert alert-primary w-50 mx-auto" role="alert"><h4><?php echo __("New Case Number")?>: <?= $caseNo ?></h4></div>
     <hr class="my-3">
     <?= $this->Form->create($caseNo,['id'=>"triageForm", 'enctype'=>"multipart/form-data"]) ?>
     <!-- Basic Info Fields Set -->
@@ -23,7 +23,7 @@
         echo "<div id=\"versionInfo\" class=\"form-group\"><h4 class=\"text-left\">".__("Version Info")."</h4>";
         echo "<div class=\"form-row\">";
         echo "<div class=\"form-group col-md-3\">";
-        echo "<label>".__("Reason For Version Up")."</label>";
+        echo "<label>".__("Reason for Version Up")."</label>";
         // if($field_value_set['79']['id']!=null)
         //     echo "<input type=\"hidden\" id=\"id_patientField_id_id\" name=\"field_value[79][id]\" value=\"".$field_value_set['79']['id']."\">";
         // echo "<input type=\"text\" class=\"form-control\" id=\"patientField_id\" name=\"field_value[79][value]\" value=\"".$field_value_set['79']['field_value']."\"></div>";
@@ -43,19 +43,19 @@
         <h4 class="text-left"><?php echo __("Product")?></h4>
         <div class="form-row">
             <div class="form-group col-md-12">
-                <label><?php echo __("Product Name")?>(B.4.k.2.1)<i class="fas fa-asterisk reqField"></i></label>
+                <label><?php echo __("Product Name")?> (B.4.k.2.1)<i class="fas fa-asterisk reqField"></i></label>
                 <p><b><?= $field_value_set['176']['field_value'] ?></b><p>
             </div>
         </div>
         <h4 class="text-left mt-3"><?php echo __("Patient")?></h4>
         <div id="patientInfo" class="form-row bg-light">
             <div class="form-group col-md-3">
-                <label><?php echo __("Patient ID")?>(B.1.1)</label>
+                <label><?php echo __("Patient ID")?> (B.1.1)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_patientField_id_id\" name=\"field_value[79][id]\" value=\"".$field_value_set['79']['id']."\">";?>
                 <input type="text" class="form-control" id="patientField_id" name="field_value[79][value]" value="<?= $field_value_set['79']['field_value']?>">
             </div>
             <div class="form-group col-md-3">
-                <label><?php echo __("Sex")?>(B.1.5)</label>
+                <label><?php echo __("Sex")?> (B.1.5)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_patientField_sex_id\" name=\"field_value[93][id]\" value=\"".$field_value_set['93']['id']."\">";?>
                 <select class="custom-select" id="patientField_sex" name="field_value[93][value]">
                     <option value=""><?php echo __("Select Sex")?></option>
@@ -68,7 +68,7 @@
         </div>
         <div id="patientInfo" class="form-row bg-light">
             <div class="form-group col-md-3">
-                <label><?php echo __("Date of birth")?>(B.1.2.1b)</label>
+                <label><?php echo __("Date of Birth")?> (B.1.2.1b)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_patientField_dob_id\" name=\"field_value[85][id]\" value=\"".$field_value_set['85']['id']."\">";?>
                 <div class="form-row">
                     <div class="col-sm-4">
@@ -91,7 +91,8 @@
                         foreach($month_str as $i => $month){
                             echo "<option value=\"".sprintf("%02d",$i+1)."\"";
                             if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],2,2)==sprintf("%02d",$i+1))) echo "selected";
-                            echo ">".__($month)."</option>";
+                            $j=$i+1;
+                            echo ">".__($month.-$j)."</option>";
                         }
                         ?>
                         </select>
@@ -116,9 +117,9 @@
                 </div>
             </div>
             <div class="form-group col-md-3">
-                <label><?php echo __("Age at time of onset reaction")?>(B.1.2.2a)</label>
+                <label><?php echo __("Age at Time of Onset Reaction")?> (B.1.2.2a)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_patientField_age_id\" name=\"field_value[86][id]\" value=\"".$field_value_set['86']['id']."\">";?>
-                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Field Helper" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
+                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<?php echo __("Field Helper")?>" data-content="<?php echo __("Age at Time of Onset of Reaction/event")?>"><i class="qco fas fa-info-circle"></i></a>
                 <input type="text" class="form-control" id="patientField_age" name="field_value[86][value]" value="<?= $field_value_set['86']['field_value']?>">
             </div>
             <!-- <div class="form-group col-md-3">
@@ -126,7 +127,7 @@
                 <input type="text" class="form-control" id="">
             </div> -->
             <div class="form-group col-md-3">
-                <label><?php echo __("Age Unit")?>(B.1.2.2b)</label>
+                <label><?php echo __("Age Unit")?> (B.1.2.2b)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_patientField_sex_id\" name=\"field_value[87][id]\" value=\"".$field_value_set['87']['id']."\">";?>
                 <select class="custom-select" name="field_value[87][value]" id="patientField_ageunit">
                     <option value=""><?php echo __("Select Age Unit")?></option>
@@ -142,23 +143,23 @@
         <h4 class="text-left mt-3"><?php echo __("Reporter")?></h4>
         <div id="reporterInfo" class="form-row">
             <div class="form-group col-md-3">
-                <label><?php echo __("First Name")?>(A.2.1.1b)</label>
+                <label><?php echo __("First Name")?> (A.2.1.1b)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[26][id]\" value=\"".$field_value_set['26']['id']."\">";?>
                 <input type="text" class="form-control" name="field_value[26][value]" id="reporterField_firstname" value="<?= $field_value_set['26']['field_value']?>">
             </div>
             <div class="form-group col-md-3">
-                <label><?php echo __("Last Name")?>(A.2.1.1d)</label>
+                <label><?php echo __("Last Name")?> (A.2.1.1d)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_reporterField_lastname_id\" name=\"field_value[28][id]\" value=\"".$field_value_set['28']['id']."\">";?>
                 <input type="text" class="form-control" name="field_value[28][value]" id="reporterField_lastname" value="<?= $field_value_set['28']['field_value']?>">
             </div>
             <div class="form-group col-md-3">
-                <label><?php echo __("Latest Received Date")?>(A.1.7.b)</label>
+                <label><?php echo __("Latest Received Date")?> (A.1.7.b)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[12][id]\" value=\"".$field_value_set['12']['id']."\">";?>
                 <input type="hidden" class="form-control" name="field_value[12][value]" id="reporterField_latestreceiveddate" value="<?= $field_value_set['12']['field_value']?>">
                 <input type="date" class="form-control"  id="reporterField_latestreceiveddate_plugin">
             </div>
             <div class="form-group col-md-3" >
-                <label><?php echo __("Initial Received Date")?>(A.1.7.b)</label>
+                <label><?php echo __("Initial Received Date")?> (A.1.7.b)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[10][id]\" value=\"".$field_value_set['10']['id']."\">";?>
                 <input type="hidden" class="form-control" name="field_value[10][value]" id="reporterField_initialreceiveddate" value="<?= $field_value_set['10']['field_value']?>">
                 <input type="date" class="form-control"  id="reporterField_initialreceiveddate_plugin" >
@@ -217,7 +218,7 @@
                         if($event_set!=null)
                             echo array_key_exists('149',$event_set[1])?$event_set[1]['149']['id']:"";
                         echo "\">";?>
-                        <label><?php echo __("Reported term")?>(B.2.i.0) <i class="fas fa-asterisk reqField"></i></label>
+                        <label><?php echo __("Reported Term")?> (B.2.i.0) <i class="fas fa-asterisk reqField"></i></label>
                         <input type="text" class="form-control" name="event[1][149][value]" id="eventField_term" value="<?php
                         if($event_set!=null)
                         echo array_key_exists('149',$event_set[1])?$event_set[1]['149']['field_value']:"";
@@ -374,7 +375,7 @@
         <?php echo "<input type=\"hidden\" id=\"id_validcase\" name=\"field_value[223][id]\" value=\"".$field_value_set['223']['id']."\">";?>
         <?php echo "<input type=\"hidden\" id=\"validcase\" name=\"field_value[223][value]\" value=\"".$field_value_set['223']['field_value']."\">";?>
         <button type="button" id="confirmElements" class="btn btn-primary m-auto w-25"><?php echo __("Continue")?></button>
-        <button type="button" onclick="savenexit()" id="savenexitbtn" class="btn btn-outline-info m-auto w-25"><?php echo __("Save And Exit")?></button>
+        <button type="button" onclick="savenexit()" id="savenexitbtn" class="btn btn-outline-info m-auto w-25"><?php echo __("Save and Exit")?></button>
     </div>
 
     <hr class="my-2">
