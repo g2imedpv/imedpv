@@ -63,17 +63,12 @@
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label><?php echo __("Study Name (A.2.3.1)");?></label>
-<<<<<<< HEAD
                                     <input type="text" class="form-control" id="product_name" name="product_name" placeholder="<?php echo __("Search Study Name")?>">
-=======
-                                    <input type="text" class="form-control" id="product_name" name="product_name" placeholder="<?php echo __("Search Study Name");?>">
->>>>>>> 9d5b09eac74960c6f0755bc48632b23db11e0bcb
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label><?php echo __("Sponsor Company");?></label>
-<<<<<<< HEAD
                                     <input type="text" class="form-control" id="product_name" name="product_name" placeholder="<?php echo __("Search Sponsor Company")?>">
                                 </div>
                                 <div class="form-group col-md-3">
@@ -83,17 +78,6 @@
                                 <div class="form-group col-md-3">
                                     <label><?php echo __("Call Center");?></label>
                                     <input type="text" class="form-control" id="product_name" name="product_name" placeholder="<?php echo __("Search Call Center")?>">
-=======
-                                    <input type="text" class="form-control" id="product_name" name="product_name" placeholder="<?php echo __("Search Sponsor Company");?>">
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label><?php echo __("CRO");?></label>
-                                    <input type="text" class="form-control" id="product_name" name="product_name" placeholder="<?php echo __("Search CRO");?>">
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label><?php echo __("Call Center");?></label>
-                                    <input type="text" class="form-control" id="product_name" name="product_name" placeholder="<?php echo __("Search Call Center");?>">
->>>>>>> 9d5b09eac74960c6f0755bc48632b23db11e0bcb
                                 </div>
                             </div>
                         </div>
