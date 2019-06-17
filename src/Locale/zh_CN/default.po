@@ -3932,7 +3932,8 @@ msgid "Authorization / Application Information"
 msgstr "授权 / 申请编号"
 msgid "Reactions or events"
 msgstr "反应或事件"
-
+msgid "Product Status"
+msgstr "产品状态"
 
 
 
