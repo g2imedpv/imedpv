@@ -26,7 +26,7 @@ function searchProd(){
             console.log(response);
             var result = $.parseJSON(response);
             var text = "";
-            text +="<h3>Product List</h3>";
+            text +="<h3>"+i18n.gettext("Product List")+"</h3>";
             text +="<table class=\"table table-hover table-bordered\" id=\"search_result\">";
             text += "<thead>";
             text +="<tr>";

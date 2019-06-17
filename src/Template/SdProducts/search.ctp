@@ -52,7 +52,7 @@
                                     <label><?php echo __("Product Type");?></label>
                                     <select class="form-control" name="sd_product_type_id" id="sd_product_type_id">
                                     <?php
-                                        echo "<option value=''>Select Product Type</option>";
+                                        echo "<option value=''>".__("Select Product Type")."</option>";
                                         foreach ($sdProductTypes as $eachType)
                                         {
                                             echo "<option value=\"".$eachType['id']."\">".$eachType['type_name']."</option>";

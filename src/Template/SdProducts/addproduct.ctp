@@ -219,7 +219,7 @@
                             </div>
                             <div id="distribution_input" style="display:none;"></div>
                             <div id="no_workflow_notice"><h3><?php echo __("There is no workflow linked to this product, please add workflow first");?>;</h3></div>
-                            <input type="submit" class="btn btn-success w-25 mt-3 mx-auto">
+                            <button type="submit" class="btn btn-success w-25 mt-3 mx-auto"><?php echo __("Submit");?></button>
                             <?= $this->Form->end() ?>
 
                         </div>

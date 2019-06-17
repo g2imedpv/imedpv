@@ -69,9 +69,9 @@
         </a>
       </div>
       <div class="my-auto border border-white p-2 rounded mx-2"> <? __("E2B Version")?>
-        <a href="/sd-users/setVersion/2" class="mx-2"><? __("version")?> E2B V2
+        <a href="/sd-users/setVersion/2" class="mx-2"><? __("version")?> E2B R2
         </a>
-        <a href="/sd-users/setVersion/3" class="mx-2"><? __("version")?> E2B V3
+        <a href="/sd-users/setVersion/3" class="mx-2"><? __("version")?> E2B R3
         </a>
       </div>
 

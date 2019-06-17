@@ -38,7 +38,7 @@
             <hr>
 
             <div>
-                <h4 class="d-inline-block">Workflow Resources</h4>
+                <h4 class="d-inline-block"><?php echo __("Workflow Resources");?></h4>
                 <button type="button" class="btn btn-warning ml-1 mb-1" data-container="body" data-toggle="popover" data-placement="bottom" data-content="<div>Drag the resources below to 'Workflow Activities' for assignments<img src='/img/workflowassignment.gif' style='width:500px;'></div>"><i class="fas fa-question"></i></button>
             </div>
             <div id="workflowResources" class="border border-info p-2 mb-3" style="font-size: 20px;">
@@ -49,35 +49,35 @@
                 <div class="alert alert-info d-inline-block m-2 wfres" role="alert">Jackson</div>
             </div>
 
-            <h4>Workflow Activities</h4>
+            <h4><?php echo __("Workflow Activities");?></h4>
             <div id="workflowActivityDropzone">
                 <div class="badge badge-info p-3 resourceDropzone">
-                    <div class="card-header"><h5>Triage</h5></div>
+                    <div class="card-header"><h5><?php echo __("Triage");?></h5></div>
                 </div>
                 <i class="fas fa-long-arrow-alt-right"></i>
 
                 <div class="badge badge-info p-3 resourceDropzone">
-                    <div class="card-header"><h5>Data Entry</h5></div>
+                    <div class="card-header"><h5><?php echo __("Data Entry");?></h5></div>
                 </div>
                 <i class="fas fa-long-arrow-alt-right"></i>
 
                 <div class="badge badge-info p-3 resourceDropzone">
-                    <div class="card-header"><h5>Quality Check</h5></div>
+                    <div class="card-header"><h5><?php echo __("Quality Check");?></h5></div>
                 </div>
                 <i class="fas fa-long-arrow-alt-right"></i>
 
                 <div class="badge badge-info p-3 resourceDropzone">
-                    <div class="card-header"><h5>Medical Review</h5></div>
+                    <div class="card-header"><h5><?php echo __("Medical Review");?></h5></div>
                 </div>
                 <i class="fas fa-long-arrow-alt-right"></i>
 
                 <div class="badge badge-info p-3 resourceDropzone">
-                    <div class="card-header"><h5>Generate Report</h5></div>
+                    <div class="card-header"><h5><?php echo __("Generate Report");?></h5></div>
                 </div>
             </div>
 
             <div class="text-center">
-                <button type="submit" class="btn btn-success mt-3 w-25">Complete</button>
+                <button type="submit" class="btn btn-success mt-3 w-25"><?php echo __("Manual");?>Complete</button>
             </div>
         </div>
     </div>

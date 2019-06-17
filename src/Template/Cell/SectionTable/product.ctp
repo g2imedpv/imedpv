@@ -1,6 +1,6 @@
 <div class="card mt-1 mb-5">
         <div class="card-header">
-            <h3 class="d-inline">Product List </h3>
+            <h3 class="d-inline"><?php echo __("Product List");?></h3>
             <a class="btn btn-outline-primary float-right" href="#" role="button" title="add"><i class="fas fa-plus"></i> Add</a>
         </div>
         <div class="card-body p-0">
