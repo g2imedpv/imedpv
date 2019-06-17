@@ -49,7 +49,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             <div class="form-row">
                 <div class="form-group col-lg-4">
                     <label><?php echo __("Product Name")?></label>
-                    <input type="text" class="form-control" id="searchProductName" name="searchProductName" placeholder="Search by Product Name">
+                    <input type="text" class="form-control" id="searchProductName" name="searchProductName" placeholder="<?php echo  __("Search by Product Name")?>">
                 </div>
                 <div class="form-group col-lg-4">
                     <label><?php echo __("Case No.")?></label>
@@ -68,11 +68,11 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             <div class="form-row">
                 <div class="form-group col-lg-4">
                     <label><?php echo __("Patient ID");?></label>
-                    <input type="text" class="form-control" id="patient_id" placeholder="Search by Patient ID">
+                    <input type="text" class="form-control" id="patient_id" placeholder="<?php echo  __("Search by Patient ID")?>">
                 </div>
                 <div class="form-group col-lg-4">
                     <label><?php echo __("Date of Birth");?></label>
-                    <input type="date" class="form-control" id="datepicker5" placeholder="Search by Birthday">
+                    <input type="date" class="form-control" id="datepicker5" placeholder="<?php echo  __("Search by Birthday")?>">
                 </div>
                 <div class="form-group col-lg-4">
                     <label><?php echo __("Gender");?></label>

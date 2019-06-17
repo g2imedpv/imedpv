@@ -1,4 +1,4 @@
-﻿msgid "Actions Taken with Drug"
+msgid "Actions Taken with Drug"
 msgstr "针对药物采取的措施"
 msgid "Active Substance Name"
 msgstr "活性物质名称"
