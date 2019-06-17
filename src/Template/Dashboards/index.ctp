@@ -85,7 +85,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 </div>
             </div>
             <div class="form-row">
-                <p class="duedate form-group col-2"><?php echo __("Activity Due Date:");?></p>
+                <p class="duedate form-group col-2"><?php echo __("Activity Due Date");?>:</p>
                 <div class="form-group col-3">
                     <input type="date" class="form-control" id="datepicker1" placeholder="<?php echo __("[mm/dd/yyyy]")?>">
                 </div>
@@ -97,7 +97,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 </div>
             </div>
             <div class="form-row">
-                <p class="duedate form-group col-2 float-right"><?php echo __("Submission Due Date:");?></p>
+                <p class="duedate form-group col-2 float-right"><?php echo __("Submission Due Date");?>:</p>
                 <div class="form-group col-3">
                     <input type="date" class="form-control" id="datepicker3" placeholder="<?php echo __("[mm/dd/yyyy]")?>">
                 </div>

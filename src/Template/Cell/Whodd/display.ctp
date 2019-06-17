@@ -1,10 +1,10 @@
 <div id="whodrabrowser">
-<button type="button" class="btn btn-outline-info float-left mr-3" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-search"></i> WHO-DD Browser</button>
+<button type="button" class="btn btn-outline-info float-left mr-3" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-search"></i> <?php echo __('WHO-DD Browser')?></button>
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document" style="max-width: 1175px !important;">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="">WHO-DD Browser</h5>
+        <h5 class="modal-title" id=""><?php echo __("WHO-DD Browser")?></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -14,51 +14,51 @@
             <div class="container">
                 <div class="form-row">
                     <div class="form-group col-md-3">
-                        <label for="">ATC Code</label>
-                        <input type="text" class="form-control" id="atc" placeholder="ATC code">
+                        <label for=""><?php echo __("ATC Code")?></label>
+                        <input type="text" class="form-control" id="atc" placeholder="<?php echo __("ATC code")?>">
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="">Drug Code</label>
-                        <input type="text" class="form-control" id="drugcode" placeholder="Drug code">
+                        <label for=""><?php echo __("Drug Code")?></label>
+                        <input type="text" class="form-control" id="drugcode" placeholder="<?php echo __("Drug code")?>">
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="">Medicinal Prod ID</label>
-                        <input type="text" class="form-control" id="medicalProd" placeholder="Medicinal Prod ID">
+                        <label for=""><?php echo __("Medicinal Prod ID")?></label>
+                        <input type="text" class="form-control" id="medicalProd" placeholder="<?php echo __("Medicinal Prod ID")?>">
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="">Trade Name</label>
-                        <input type="text" class="form-control" id="tradename" placeholder="Trade Name">
+                        <label for=""><?php echo __("Trade Name")?></label>
+                        <input type="text" class="form-control" id="tradename" placeholder="<?php echo __("Trade Name")?>">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-3">
-                        <label for="">Ingredient</label>
-                        <input type="text" class="form-control" id="ingredient" placeholder="Ingredient">
+                        <label for=""><?php echo __("Ingredient")?></label>
+                        <input type="text" class="form-control" id="ingredient" placeholder="<?php echo __("Ingredient")?>">
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="">Formulation</label>
-                        <input type="text" class="form-control" id="formulation" placeholder="Formulation">
+                        <label for=""><?php echo __("Formulation")?></label>
+                        <input type="text" class="form-control" id="formulation" placeholder="<?php echo __("Formulation")?>">
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="">Strength</label>
-                        <input type="text" class="form-control" id="strength" placeholder="Strength">
+                        <label for=""><?php echo __("Strength")?></label>
+                        <input type="text" class="form-control" id="strength" placeholder="<?php echo __("Strength")?>">
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="">Choose Country</label>
+                        <label for=""><?php echo __("Choose Country")?></label>
                         <select id="country" class="form-control chocon" style="width: 100%">
-                            <option value="null" selected>Choose Country</option>
+                            <option value="null" selected><?php echo __("Choose Country")?></option>
                             <?php foreach($contryList as $key => $contry)
-                            echo "<option value=".$contry->CountryCode.">".$contry->CountryName."</option>";
+                            echo "<option value=".$contry->CountryCode.">".__($contry->CountryName)."</option>";
                             ?>
                         </select>
                     </div>
                 </div>
                 <div class="form-row justify-content-center">
                     <div class="form-group col-sm-3">
-                        <div id="whoddsea" onclick="searchWhoDra()" class="form-control btn btn-primary"><i class="fas fa-search"></i> Search</div>
+                        <div id="whoddsea" onclick="searchWhoDra()" class="form-control btn btn-primary"><i class="fas fa-search"></i> <?php echo __("Search")?></div>
                     </div>
                     <div class="form-group col-sm-1">
-                        <div class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> Clear</div>
+                        <div class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> <?php echo __("Clear")?></div>
                     </div>
                 </div>
             </div>
@@ -68,46 +68,46 @@
 
 
             <!-- Detail field (Should be hidden before search) -->
-            <h4 class="text-center">Drug Details</h4> <hr>
+            <h4 class="text-center"><?php echo __("Drug Details")?></h4> <hr>
             <div class="container">
                 <fieldset disabled>
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="">Trade Name</label>
+                            <label for=""><?php echo __("Trade Name")?></label>
                             <input type="text" class="form-control" id="select-trade-name">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="">MAH</label>
+                            <label for=""><?php echo __("MAH")?></label>
                             <input type="text" class="form-control" id="select-mah">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="">Drug Code</label>
+                            <label for=""><?php echo __("Drug Code")?></label>
                             <input type="text" class="form-control" id="select-drug-code">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="">ATC Code</label>
+                            <label for=""><?php echo __("ATC Code")?></label>
                             <input type="text" class="form-control" id="select-atc-code">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="">Medicinal Product ID</label>
+                            <label for=""><?php echo __("Medicinal Product ID")?></label>
                             <input type="text" class="form-control" id="select-med-pro">
                         </div>
                         <div class="form-group col-md-9">
-                            <label for="">Ingredients</label>
+                            <label for=""><?php echo __("Ingredients")?></label>
                             <input type="text" class="form-control" id="select-ingredient">
                         </div>
                     </div>
                     <div class="form-row">
-                        <label for="">ATC Description</label>
+                        <label for=""><?php echo __("ATC Description")?></label>
                         <textarea class="form-control" id="select-atc-description" rows="3"></textarea>
                     </div>
                 </fieldset>
             </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success w-25 mx-auto" onclick="selectWhoDDButton(<?php echo $fieldId?>)" data-dismiss="modal">Select</button>
+        <button type="button" class="btn btn-success w-25 mx-auto" onclick="selectWhoDDButton(<?php echo $fieldId?>)" data-dismiss="modal"><?php echo __("Select")?></button>
       </div>
     </div>
   </div>
@@ -162,10 +162,10 @@ function searchWhoDra(){
 
         text += "<thead>";
         text +="<tr class=\"table-secondary\">";
-        text +="<th scope=\"col\">Trade Name</th>";
-        text +="<th scope=\"col\">Formulation / Strength</th>";
-        text +="<th scope=\"col\">Sales Country</th>";
-        text +="<th scope=\"col\">Generic?</th>";
+        text +="<th scope=\"col\">"+i18n.gettext("Trade Name")+"</th>";
+        text +="<th scope=\"col\">"+i18n.gettext("Formulation / Strength")+"</th>";
+        text +="<th scope=\"col\">"+i18n.gettext("Sales Country")+"</th>";
+        text +="<th scope=\"col\">"+i18n.gettext("Generic?")+"</th>";
 
         text +="</tr>";
         text +="</thead>";
@@ -187,7 +187,7 @@ function searchWhoDra(){
         error:function(response){
                 console.log(response.responseText);
 
-            $("#textHint").html("Sorry, no case matches");
+            $("#textHint").html(i18n.gettext("Sorry, no case matches"));
 
         }
     });

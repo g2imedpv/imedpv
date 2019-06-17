@@ -4012,22 +4012,3 @@ msgid "Follow-up"
 msgstr "随访"
 msgid "Feotus"
 msgstr "胎儿"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

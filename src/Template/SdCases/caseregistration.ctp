@@ -1,4 +1,4 @@
-<title>Case Registration</title>
+<title><?php echo __("Case Registration")?></title>
 <head>
 <?= $this->Html->script('cases/duplicate_detection.js') ?>
 <head>
@@ -24,7 +24,7 @@
                             <div class="form-group col-md-3">
                                 <label><?php echo __("Product Name")?> <i class="fas fa-asterisk reqField"></i>"</label>
                                 <select type="text" class="form-control" id="product_id">
-                                    <option value="null"><?php echo __("Select Project No.")?></option>
+                                    <option value="null"><?php echo __("Select Project No")?></option>
                                     <?php
                                     foreach($productInfo as $k => $productDetail){
                                         echo "<option value=".$productDetail->id.">".$productDetail->product_name."</option>";
@@ -64,7 +64,7 @@
                              </div>
                             <div class="form-group col-md-5">
                                 <label><?php echo __("Age at Time of Onset of Reaction/event (B.1.2.2a)")?></label>
-                                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Field Helper" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
+                                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<?php echo __("Field Helper")?>" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
                                 <input type="text" class="form-control" name="field_value[86]" id="patient_age">
                             </div>
                             <div class="form-group col-md-3">
@@ -75,6 +75,7 @@
                                     <option value="801"><?php echo __("Year")?></option>
                                     <option value="802"><?php echo __("Month")?></option>
                                     <option value="803"><?php echo __("Week")?></option>
+                                    <option value="804"><?php echo __("Day")?></option>
                                     <option value="805"><?php echo __("Hour")?></option>
                                 </select>
                             </div>
@@ -131,12 +132,12 @@
                                             </select>
                                         </div>
                                         <div class="col-sm-4">
-                                            <select class="custom-select js-example-basic-single" placeholder="Month" id="patientField_dob_month">
+                                            <select class="custom-select js-example-basic-single" placeholder="<?php echo __("Month")?>" id="patientField_dob_month">
                                             <?php
                                             $month_str = ['Jan-1','Feb-2','Mar-3','Apr-4','May-5','Jun-6','Jul-7','Aug-8','Sep-9','Oct-10','Nov-11','Dec-12'];
                                             echo "<option value=\"00\">Month</option>";
                                             foreach($month_str as $i => $month){
-                                                echo "<option value=\"".sprintf("%02d",$i+1)."\">".$month."</option>";
+                                                echo "<option value=\"".sprintf("%02d",$i+1)."\">".__($month)."</option>";
                                             }
                                             ?>
                                             </select>
