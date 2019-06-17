@@ -68,16 +68,16 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             <div class="form-row">
                 <div class="form-group col-lg-4">
                     <label><?php echo __("Patient ID");?></label>
-                    <input type="text" class="form-control" id="patient_id" placeholder="<?php echo  __("Search by Patient ID")?>">
+                    <input type="text" class="form-control" id="patient_id" placeholder="<?php echo  __("Search Patient ID")?>">
                 </div>
                 <div class="form-group col-lg-4">
                     <label><?php echo __("Date of Birth");?></label>
-                    <input type="date" class="form-control" id="datepicker5" placeholder="<?php echo  __("Search by Birthday")?>">
+                    <input type="date" class="form-control" id="datepicker5" placeholder="<?php echo  __("Search Birthday")?>">
                 </div>
                 <div class="form-group col-lg-4">
                     <label><?php echo __("Gender");?></label>
                     <select id="inputState" class="form-control">
-                        <option value=""><?php echo __("Search by Gender");?></option>
+                        <option value=""><?php echo __("Search Gender");?></option>
                         <option value="1"><?php echo __("Male");?></option>
                         <option value="2"><?php echo __("Female");?></option>
                         <option value="3"><?php echo __("Unknown");?></option>
