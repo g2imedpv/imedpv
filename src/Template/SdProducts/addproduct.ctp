@@ -178,48 +178,48 @@
                                             <table class="table table-hover" id="ifram_view">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="row" class="w-25">Workflow Name</th>
+                                                        <th scope="row" class="w-25"><?php echo __("Workflow Name");?></th>
                                                         <td id="viewWFname"></td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <th scope="row" class="w-25">Call Center</th>
+                                                        <th scope="row" class="w-25"><?php echo __("Call Center");?></th>
                                                         <td id="viewCC"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="row" class="w-25">Country</th>
+                                                        <th scope="row" class="w-25"><?php echo __("Country");?></th>
                                                         <td id="viewCountry"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="row" class="w-25">Description</th>
+                                                        <th scope="row" class="w-25"><?php echo __("Description");?></th>
                                                         <td id="viewDesc"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="row" class="w-25">Workflow Manager</th>
+                                                        <th scope="row" class="w-25"><?php echo __("Workflow Manager");?></th>
                                                         <td id="viewMan"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="row" class="w-25">Team Resources</th>
+                                                        <th scope="row" class="w-25"><?php echo __("Team Resources");?></th>
                                                         <td id="viewRes"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                             <div>
-                                                <h4>Workflow Steps</h4>
+                                                <h4><?php echo __("Workflow Steps");?></h4>
                                                 <div id="view_activities"></div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo __("Close");?></button>
                                             <!-- <button type="button" class="btn btn-primary">Send message</button> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="distribution_input" style="display:none;"></div>
-                            <div id="no_workflow_notice"><h3>There is no workflow linked to this product, please add workflow first;</h3></div>
-                            <input type="submit" class="btn btn-success w-25 mt-3 mx-auto">
+                            <div id="no_workflow_notice"><h3><?php echo __("There is no workflow linked to this product, please add workflow first");?>;</h3></div>
+                            <input type="<?php echo __("submit");?>" class="btn btn-success w-25 mt-3 mx-auto">
                             <?= $this->Form->end() ?>
 
                         </div>
@@ -230,20 +230,20 @@
                         <!-- Title for "Add New" -->
                             <div class="jumbotron jumbotron-fluid bg-warning">
                                 <div class="container">
-                                    <h1 class="display-4">Add New Workflow</h1>
-                                    <p class="lead">Customize the workflow by editing the information in the section below</p>
+                                    <h1 class="display-4"><?php echo __("Add New Workflow");?></h1>
+                                    <p class="lead"><?php echo __("Customize the workflow by editing the information in the section below");?></p>
                                 </div>
                             </div>
                             <!-- Choose Country  id="choosecon"-->
                             <div class="prodiff text-center mt-1">
-                                <h3>Choose Country and Call Center</h3>
+                                <h3><?php echo __("Choose Country and Call Center");?></h3>
                                 <hr>
                                 <div class="form-row justify-content-md-center">
 
                                     <div class="form-group col-md-3">
-                                        <label for="">Select Country</label>
+                                        <label for=""><?php echo __("Select Country");?></label>
                                         <select class="form-control" id="select-accessment-country" name="product_accessment_workflow[0][country]">
-                                        <option value="">Select Country</option>
+                                        <option value=""><?php echo __("Select Country");?></option>
                                         <?php
                                         $country_list=[
                                             'USA'=>'Unitied States',
@@ -256,12 +256,12 @@
                                         ?>
                                         </select>
                                         <div id="select-accessment-country-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
-                                            Country is REQUIRED
+                                        <?php echo __("Country is REQUIRED");?>
                                         </div>
                                     </div>
 
                                     <div class="form-group col-md-3">
-                                        <label for="">Select Call Center</label>
+                                        <label for=""><?php echo __("Select Call Center");?></label>
                                         <select class="form-control" id="callCenter" name="product_workflow[0][callCenter]">
                                         <?php 
                                         foreach($call_ctr_companies as $k => $call_ctr_company){
@@ -270,19 +270,19 @@
                                         ?>
                                         </select>
                                         <div id="callCenter-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
-                                            Call Center is REQUIRED
+                                        <?php echo __("Call Center is REQUIRED");?>
                                         </div>
                                     </div>
                                 </div>
-                                <button id="exit_accessment_workflow" type="button" class="btn btn-outline-warning">Exit</button>
-                                <div id="submit_accessment_country" class="btn btn-primary w-25">Continue</div>
+                                <button id="exit_accessment_workflow" type="button" class="btn btn-outline-warning"><?php echo __("Exit");?></button>
+                                <div id="submit_accessment_country" class="btn btn-primary w-25"><?php echo __("Continue");?></div>
                             </div>
                             <div id="choose_accessment_wf">
                                 <div class="row" style="min-height: 740px;">
                                     <!-- Default Workflow -->
                                     <div class="col" id="default_accessment_workflow_div">
-                                        <button type="button" id="default_accessment_btn" class="btn btn-success btn-sm workflow"><span>Default Workflow</span></button>
-                                        <h3 id="default_accessment_T" style="display:none;">Default Workflow</h3>
+                                        <button type="button" id="default_accessment_btn" class="btn btn-success btn-sm workflow"><span><?php echo __("Default Workflow");?></span></button>
+                                        <h3 id="default_accessment_T" style="display:none;"><?php echo __("Default Workflow");?></h3>
                                         <hr class="wfhr">
                                         <ol class="defworkflow" id="default_accessment_workflow">
                                         </ol>
@@ -293,32 +293,32 @@
 
                                     <!-- Customize Workflow -->
                                     <div class="col" id="customize_accessment_workflow_div">
-                                        <button type="button" id="cust_accessment_btn" class="btn btn-success btn-sm workflow"><span>Customize Your Workflow</span></button>
-                                        <h3 id="customize_accessment_T" style="display:none;">Customize Workflow</h3>
+                                        <button type="button" id="cust_accessment_btn" class="btn btn-success btn-sm workflow"><span><?php echo __("Customize Your Workflow");?></span></button>
+                                        <h3 id="customize_accessment_T" style="display:none;"><?php echo __("Customize Workflow");?></h3>
                                         <hr class="wfhr">
                                         <div class="cust-accessment-workflow" id="customize_accessment_workflow">
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
-                                                    <h4>Workflow Name: </h4 >
+                                                    <h4><?php echo __("Workflow Name");?>: </h4 >
                                                     <input class="w-75 text-center" type="text" id="custom_accessment_workflow_name" value=""/>
                                                     <div id="custom_accessment_workflow_name-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
-                                                        Name is REQUIRED
+                                                    <?php echo __("Name is REQUIRED");?>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
-                                                    <h5>Workflow Description </h5 >
+                                                    <h5><?php echo __("Workflow Description");?></h5 >
                                                     <input class="w-75 text-center" type="text" id="custom_accessment_workflow_description" value=""/>
                                                     <div id="custom_accessment_workflow_description-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
-                                                        Description is REQUIRED
+                                                    <?php echo __("Description is REQUIRED");?> 
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div id="errAccessmentWorkflow" class="invalid-feedback" style="display:none;">Workflow name is required!</div>
+                                            <div id="errAccessmentWorkflow" class="invalid-feedback" style="display:none;"><?php echo __("Workflow name is required");?>!</div>
 
-                                            <p>You can customize the workflow by editing the yellow box and dragging it to anywhere in the workflow</p>
+                                            <p><?php echo __("You can customize the workflow by editing the yellow box and dragging it to anywhere in the workflow");?></p>
                                             <ul>
                                                 <li id="draggable" class="custworkflowstep">
                                                     <div class="card w-100 h-25 my-2">
@@ -326,7 +326,7 @@
                                                             <h5 class="card-title"><input type="text" id="new_accessment_activity_name" placeholder="Type step name here FIRST" class="font-weight-bold" /> </h5>
                                                             <p class="card-text"><textarea type="text"  id="new_accessment_activity_description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>
                                                         </div>
-                                                        <button id="confirm_new_accessment_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity()">Confirm</button>
+                                                        <button id="confirm_new_accessment_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity()"><?php echo __("Confirm");?></button>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -341,7 +341,7 @@
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Permission Assignment</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel"><?php echo __("Permission Assignment");?></h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                         </button>

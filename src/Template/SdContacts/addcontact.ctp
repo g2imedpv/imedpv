@@ -200,7 +200,7 @@ use Cake\ORM\TableRegistry;
                         </div>
                     </div>
                     <div class="form-row text-center">
-                    <input type="submit" class="btn btn-success w-25 mt-3 mx-auto">
+                    <input type="<?php echo __("submit");?>" class="btn btn-success w-25 mt-3 mx-auto">
                     </div>
                 </fieldset>
                 <?= $this->Form->end() ?>
