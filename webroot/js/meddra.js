@@ -211,7 +211,7 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
         error:function(response){
                 console.log(response.responseText);
 
-            $("#textHint").html("Sorry, no case matches");
+            $("#textHint").html(i18n.gettext("Sorry, no case matches"));
 
         }
     });

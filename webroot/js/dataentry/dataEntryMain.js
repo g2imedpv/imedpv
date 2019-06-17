@@ -831,7 +831,7 @@ function saveSection(sectionId,setNo){
             console.log(response);
             swal({
                 icon: "success",
-                title: "This section has been saved",
+                title: i18n.gettext("This section has been saved"),
               });
             section = $.parseJSON(response);
             var country = $("#section-48-select-501").val();
