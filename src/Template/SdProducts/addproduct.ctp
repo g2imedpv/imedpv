@@ -120,7 +120,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <label>Sponsor Study Number (A.2.3.2)</label>
+                                <label><?php echo __("Sponsor Study Number (A.2.3.2)");?></label>
                                 <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="Sponsor Study Number (A.2.3.2)" data-content="<div>This section would be completed only if the sender is the study sponsor or has been informed of the study number by the sponsor.</div>" ><i class="qco fas fa-info-circle"></i></a>
                                 <input type="text" class="form-control" id="study_no" name="product[study_no]" placeholder="Study Number">
                             </div>
