@@ -1,7 +1,7 @@
 <?php
 //debug($sdProductTypes);
 ?>
-<title>Add Product</title>
+<title><?php echo __("Add Product")?></title>
 <head>
 <?= $this->Html->script('product/addproduct.js') ?>
 <head>
@@ -14,7 +14,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-header text-center">
-                    <h3>Add Product</h3>
+                    <h3><?php echo __("Add Product")?></h3>
                 </div>
                 <div class="prodiff card-body">
                     <div class="text-center">
@@ -24,73 +24,73 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <label>Product Name (B.4.k.2.1)</label>
+                                <label><?php echo __("Product Name")?> (B.4.k.2.1)</label>
                                 <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="Proprietary medicinal product name (B.4.k.2.1)" data-content="<div>The name should be that used by the reporter. It is recognized that a single product may have different proprietary names in different countries, even when produced by a single manufacturer.</div>" ><i class="qco fas fa-info-circle"></i></a>
-                                <input type="text" class="form-control" id="product_name" name="product[product_name]" placeholder="Proprietary Medicinal Product Name" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
+                                <input type="text" class="form-control" id="product_name" name="product[product_name]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label>Product Type:</label>
+                                <label><?php echo __("Product Type")?></label>
                                 <div class="option_group">
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" id="drug_type" value="1" name="case[product_type]" class="custom-control-input">
-                                        <label for="drug_type" class="custom-control-label">Drug<label>
+                                        <label for="drug_type" class="custom-control-label"><?php echo __("Drug")?><label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" id="vaccine_type" value="2" name="case[product_type]" class="custom-control-input">
-                                        <label for="vaccine_type" class="custom-control-label">Vaccine<label>
+                                        <label for="vaccine_type" class="custom-control-label"><?php echo __("Vaccine")?><label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" id="device_type" value="3" name="case[product_type]" class="custom-control-input">
-                                        <label for="device_type" class="custom-control-label">Device<label>
+                                        <label for="device_type" class="custom-control-label"><?php echo __("Device")?><label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" id="combination_type" value="4" name="case[product_type]" class="custom-control-input">
-                                        <label for="combination_type" class="custom-control-label">Combination<label>
+                                        <label for="combination_type" class="custom-control-label"><?php echo __("Combination")?><label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
-                                <label>Mfr. name</label>
-                                <input type="text" class="form-control" id="mfr_name" name="product[mfr_name]" placeholder="Mfr. name">
+                                <label><?php echo __("Mfr. Name")?></label>
+                                <input type="text" class="form-control" id="mfr_name" name="product[mfr_name]" placeholder="<?php echo __("Mfr. Name");?>">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <label>Drug Role / Product flag (B.4.k.1)</label>
+                                <label><?php echo __("Drug Role / Product Flag")?> (B.4.k.1)</label>
                                 <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="Characterization of drug role (B.4.k.1)" data-content="<div>Characterization of the drug as provided by primary reporter. All spontaneous reports should have at least one suspect drug. If the reporter indicates a suspected interaction, interacting should be selected. All interacting drugs are considered to be suspect drugs.</div>" ><i class="qco fas fa-info-circle"></i></a>
                                 <select class="form-control" id="sd_product_flag" name="product[sd_product_flag]" required oninvalid="this.setCustomValidity('Product flag is REQUIRED')" oninput="this.setCustomValidity('')">
-                                    <option value="">Select Characterization of Drug Role</option>
-                                    <option value="1">Suspect</option>
-                                    <option value="2">Concomitant</option>
-                                    <option value="3">Interacting</option>
+                                    <option value=""><?php echo __("Select Characterization of Drug Role")?></option>
+                                    <option value="1"><?php echo __("Suspect")?></option>
+                                    <option value="2"><?php echo __("Concomitant")?></option>
+                                    <option value="3"><?php echo __("Interacting")?></option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4">
-                                <label>Product Status</label>
+                                <label><?php echo __("Product Status")?></label>
                                 <select class="form-control" id="status" name="product[status]" required oninvalid="this.setCustomValidity('Status is REQUIRED')" oninput="this.setCustomValidity('')">
-                                    <option value="">Select Product Status</option>
-                                    <option value="1">Active</option>
-                                    <option value="2">Close</option>
+                                    <option value=""><?php echo __("Select Product Status")?></option>
+                                    <option value="1"><?php echo __("Active")?></option>
+                                    <option value="2"><?php echo __("Close")?></option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4">
-                                <label>Blinding Method</label>
+                                <label><?php echo __("Blinding Method")?></label>
                                 <select class="form-control" id="blinding_tech" name="product[blinding_tech]">
-                                    <option value="">Select Blinding Method</option>
-                                    <option value="1">Single blind</option>
-                                    <option value="2">Double blind</option>
-                                    <option value="3">Open-label</option>
+                                    <option value=""><?php echo __("Select Blinding Method")?></option>
+                                    <option value="1"><?php echo __("Single blind")?></option>
+                                    <option value="2"><?php echo __("Double blind")?></option>
+                                    <option value="3"><?php echo __("Open-label")?></option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-md-3">
-                                <label>WHO-DD Browser</label>
+                                <label><?php echo __("WHO-DD Browser")?></label>
                                 <div style="margin-left: 47px;">
                                     <?php
                                     $whodraCell = $this->cell('Whodd');
@@ -98,23 +98,23 @@
                                 </div>
                             </div>
                             <div class="form-group col-md-3">
-                                <label>WHO-DD Code</label>
-                                <input type="text" readonly="readonly" class="form-control" id="whodracode" name="product[WHODD_code]" placeholder="WHO-DD Code">
+                                <label><?php echo __("WHO-DD Code")?></label>
+                                <input type="text" readonly="readonly" class="form-control" id="whodracode" name="product[WHODD_code]" placeholder="<?php echo __("WHO-DD Code");?>">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>WHO-DD Name</label>
-                                <input type="text" readonly="readonly" class="form-control" id="whodraname" name="product[WHODD_name]" placeholder="WHO-DD Name">
+                                <label><?php echo __("WHO-DD Name")?></label>
+                                <input type="text" readonly="readonly" class="form-control" id="whodraname" name="product[WHODD_name]" placeholder="<?php echo __("WHO-DD Name");?>">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>WHO-DD Preferred Name</label>
-                                <input type="text" class="form-control" id="WHODD_decode" name="product[WHODD_decode]" placeholder="WHO-DD Preferred Name">
+                                <label><?php echo __("WHO-DD Preferred Name")?></label>
+                                <input type="text" class="form-control" id="WHODD_decode" name="product[WHODD_decode]" placeholder="<?php echo __("WHO-DD Preferred Name");?>">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <label>Study Name (A.2.3.1)</label>
-                                <input type="text" class="form-control" id="study_name" name="product[study_name]" placeholder="Study Name">
+                                <label><?php echo __("Study Name")?> (A.2.3.1)</label>
+                                <input type="text" class="form-control" id="study_name" name="product[study_name]" placeholder="<?php echo __("Study Name");?>">
                             </div>
                         </div>
 
@@ -122,48 +122,48 @@
                             <div class="form-group col-md-4">
                                 <label><?php echo __("Sponsor Study Number (A.2.3.2)");?></label>
                                 <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="Sponsor Study Number (A.2.3.2)" data-content="<div>This section would be completed only if the sender is the study sponsor or has been informed of the study number by the sponsor.</div>" ><i class="qco fas fa-info-circle"></i></a>
-                                <input type="text" class="form-control" id="study_no" name="product[study_no]" placeholder="Study Number">
+                                <input type="text" class="form-control" id="study_no" name="product[study_no]" placeholder="<?php echo __("Study Number");?>">
                             </div>
                             <div class="form-group col-md-4">
-                                <label>Study Type (A.2.3.3)</label>
+                                <label><?php echo __("Study Type");?> (A.2.3.3)</label>
                                 <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="Study type in which the reactions or events were observed (A.2.3.3)" data-content="<div><ol>Clinical trials</ol><ol>Individual patient use; (e.g., compassionate use or named patient basis)</ol><ol>Other studies (e.g., pharmacoepidemiology, pharmacoeconomics, intensive monitoring, PMS)</ol></div>" ><i class="qco fas fa-info-circle"></i></a>
                                 <select class="form-control" id="sd_study_type_id" name="product[study_type]" required oninvalid="this.setCustomValidity('Study Type is REQUIRED')" oninput="this.setCustomValidity('')">
-                                    <option value="">Select Study Type</option>
-                                    <option value="1">Clinical trials</option>
-                                    <option value="2">Individual patient use</option>
-                                    <option value="3">Other studies</option>
+                                    <option value=""><?php echo __("Select Study Type");?></option>
+                                    <option value="1"><?php echo __("Clinical trials");?></option>
+                                    <option value="2"><?php echo __("Individual patient use");?></option>
+                                    <option value="3"><?php echo __("Other studies");?></option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <label>Study Start Date</label>
+                                <label><?php echo __("Study Start Date");?></label>
                                 <input type="text" class="form-control" name="product[start_date]" id="start_date">
                             </div>
                             <div class="form-group col-md-4">
-                                <label>Study End Date</label>
+                                <label><?php echo __("Study End Date");?></label>
                                 <input type="text" class="form-control" name="product[end_date]" id="end_date">
                             </div>
                         </div>
 
 
                         <!-- Workflow List and Add New -->
-                        <button id="addNew-accessment-WL" type="button" class="btn btn-outline-info float-right">Add New Workflow <i class="far fa-plus-square"></i></button>
+                        <button id="addNew-accessment-WL" type="button" class="btn btn-outline-info float-right"><?php echo __("Add New Workflow");?> <i class="far fa-plus-square"></i></button>
 
                         <!-- Hide this when triggered "Add New" -->
                         <div id="accessment-workflowlist" class="mt-3">
-                            <h3>Workflow List</h3>
+                            <h3><?php echo __("Workflow List");?></h3>
 
                             <table class="table table-hover mb-3" id="workflow_list">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Workflow Name</th>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">Call Center</th>
-                                        <th scope="col">Country</th>
-                                        <th scope="col">Company</th>
-                                        <th scope="col">Actions</th>
+                                        <th scope="col"><?php echo __("Workflow Name");?></th>
+                                        <th scope="col"><?php echo __("Description");?></th>
+                                        <th scope="col"><?php echo __("Call Center");?></th>
+                                        <th scope="col"><?php echo __("Country");?></th>
+                                        <th scope="col"><?php echo __("Company");?></th>
+                                        <th scope="col"><?php echo __("Action");?></th>
                                     </tr>
                                 </thead>
                                 <tbody id="workflow_table"></tbody>
@@ -174,7 +174,7 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-body m-3">
-                                            <h4>Workflow Details</h4>
+                                            <h4><?php echo __("Workflow Details");?></h4>
                                             <table class="table table-hover" id="ifram_view">
                                                 <thead>
                                                     <tr>

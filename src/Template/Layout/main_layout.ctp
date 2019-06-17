@@ -68,28 +68,30 @@
           <img class="flag" src="/img/flags/4x3/cn.svg" href="/sd-users/setLanguage/zh_CN" alt="Chinese Version" title="Chinese Version">
         </a>
       </div>
-      <div class="my-auto border border-white p-2 rounded"> <? __("E2B Version")?>
-        <a href="/sd-users/setVersion/2" class="mx-2"><? __("version")?> 2
+      <div class="my-auto border border-white p-2 rounded mx-2"> <? __("E2B Version")?>
+        <a href="/sd-users/setVersion/2" class="mx-2"><? __("version")?> E2B V2
         </a>
-        <a href="/sd-users/setVersion/3" class="mx-2"><? __("version")?> 3
+        <a href="/sd-users/setVersion/3" class="mx-2"><? __("version")?> E2B V3
         </a>
       </div>
 
-      <div class="d-flex p-2 bd-highlight mx-2">
+      <div class="d-flex p-2 mx-2">
         <?php
         $mailNotice = $this->cell('QueryNotice',[$this->request->getSession()->read('Auth.User.id')]);
         echo $mailNotice;
         ?>
       </div>
-      <div class="nav-item dropdown p-2 bd-highlight myaccount">
+      <div class="nav-item dropdown p-2 myaccount">
         <a class="nav-link text-dark bg-light" href="/sd-users/myaccount" id="accountInfo" role="button" aria-haspopup="true" aria-expanded="false">
           <h5><?php echo   __("Hi!") ?>&nbsp;&nbsp;<span id="roleName"><?php echo $this->request->getSession()->read('Auth.User.firstname'); ?>&nbsp;<?php print $this->request->getSession()->read('Auth.User.lastname'); ?> </span></h5>
         </a>
         <div class="dropdown-menu login" aria-labelledby="accountInfo">
           <h5 class="dropdown-header"><?php echo $this->request->getSession()->read('Auth.User.role_name'); ?></h5>
-          <a class="dropdown-item my-1" href="/sd-users/myaccount"><i class="fas fa-user-cog"></i> <?php echo __("My Account");?></a>
-          <a class="dropdown-item my-1" href="/sd-users/logout"><i class="fas fa-sign-out-alt"></i> <?php echo __("Log Out");?></a>
         </div>
+      </div>
+
+      <div class="d-flex p-2 mx-2">
+        <a class="dropdown-item my-1" href="/sd-users/logout"><i class="fas fa-sign-out-alt"></i> <?php echo __("Log Out");?></a>
       </div>
 
     </div>
