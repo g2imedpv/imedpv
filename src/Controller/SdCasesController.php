@@ -1043,7 +1043,7 @@ class SdCasesController extends AppController
                     }
                     else
                     {
-                        $this->Flash->success(__('Documents have been uploaded successfully.'));
+                        $this->Flash->success(__("Documents have been uploaded successfully."));
                     }
                 }
             }
