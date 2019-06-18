@@ -424,7 +424,7 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
         //     $text =$text. "</nav>";
         //     $text =$text."</div>";
         // }
-        $text =$text. "<div id=\"addbtnalert-".$sectionId."\" class=\"addbtnalert mx-3 alert alert-danger\" role=\"alert\" style=\"display:none;\">You are adding a new record</div>";
+        $text =$text. "<div id=\"addbtnalert-".$sectionId."\" class=\"addbtnalert mx-3 alert alert-danger\" role=\"alert\" style=\"display:none;\">".__("You are adding a new record")."</div>";
         $text =$text."</div>";
     return $text;
 }

@@ -418,7 +418,7 @@
                 <div class="col-sm-8 text-left">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="prioritize-seriousness-1" value="1" name="field_value[421][value]" <?php if($field_value_set['421']['field_value']==1) echo "checked"; ?> disabled>
-                        <label class="form-check-label" for="prioritize-seriousness-1"><?php echo __("Fatal")?> / <?php echo __("Life Threatening")?></label>
+                        <label class="form-check-label" for="prioritize-seriousness-1"><?php echo __("Fatal / Life Threatening")?></label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="prioritize-seriousness-2" value="2" name="field_value[421][value]" <?php if($field_value_set['421']['field_value']==2) echo "checked"; ?> disabled>
@@ -426,7 +426,7 @@
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="prioritize-seriousness-3" value="3" name="field_value[421][value]" <?php if($field_value_set['421']['field_value']==3) echo "checked"; ?> disabled>
-                        <label class="form-check-label" for="prioritize-seriousness-3"><?php echo __("Serious")?> / <?php echo __("Spontaneous")?></label>
+                        <label class="form-check-label" for="prioritize-seriousness-3"><?php echo __("Serious / Spontaneous")?></label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="prioritize-seriousness-4" value="4" name="field_value[421][value]" <?php if($field_value_set['421']['field_value']==4) echo "checked"; ?> disabled>

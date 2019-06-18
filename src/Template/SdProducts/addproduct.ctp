@@ -25,7 +25,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label><?php echo __("Product Name")?> (B.4.k.2.1)</label>
-                                <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="Proprietary medicinal product name (B.4.k.2.1)" data-content="<div>The name should be that used by the reporter. It is recognized that a single product may have different proprietary names in different countries, even when produced by a single manufacturer.</div>" ><i class="qco fas fa-info-circle"></i></a>
+                                <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Proprietary Medicinal Product Name")?> (B.4.k.2.1)" data-content="<div><?php echo __("The name should be that used by the reporter. It is recognized that a single product may have different proprietary names in different countries, even when produced by a single manufacturer.");?></div>" ><i class="qco fas fa-info-circle"></i></a>
                                 <input type="text" class="form-control" id="product_name" name="product[product_name]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label><?php echo __("Drug Role / Product Flag")?> (B.4.k.1)</label>
-                                <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="Characterization of drug role (B.4.k.1)" data-content="<div>Characterization of the drug as provided by primary reporter. All spontaneous reports should have at least one suspect drug. If the reporter indicates a suspected interaction, interacting should be selected. All interacting drugs are considered to be suspect drugs.</div>" ><i class="qco fas fa-info-circle"></i></a>
+                                <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Characterization of Drug Role")?> (B.4.k.1)" data-content="<div><?php echo __("Characterization of the drug as provided by primary reporter. All spontaneous reports should have at least one suspect drug. If the reporter indicates a suspected interaction, interacting should be selected. All interacting drugs are considered to be suspect drugs.")?></div>" ><i class="qco fas fa-info-circle"></i></a>
                                 <select class="form-control" id="sd_product_flag" name="product[sd_product_flag]" required oninvalid="this.setCustomValidity('Product flag is REQUIRED')" oninput="this.setCustomValidity('')">
                                     <option value=""><?php echo __("Select Characterization of Drug Role")?></option>
                                     <option value="1"><?php echo __("Suspect")?></option>
@@ -121,12 +121,12 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label><?php echo __("Sponsor Study Number (A.2.3.2)");?></label>
-                                <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="Sponsor Study Number (A.2.3.2)" data-content="<div>This section would be completed only if the sender is the study sponsor or has been informed of the study number by the sponsor.</div>" ><i class="qco fas fa-info-circle"></i></a>
+                                <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Sponsor Study Number (A.2.3.2)");?>" data-content="<div><?php echo __("This section would be completed only if the sender is the study sponsor or has been informed of the study number by the sponsor.");?></div>" ><i class="qco fas fa-info-circle"></i></a>
                                 <input type="text" class="form-control" id="study_no" name="product[study_no]" placeholder="<?php echo __("Study Number");?>">
                             </div>
                             <div class="form-group col-md-4">
                                 <label><?php echo __("Study Type");?> (A.2.3.3)</label>
-                                <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="Study type in which the reactions or events were observed (A.2.3.3)" data-content="<div><ol>Clinical trials</ol><ol>Individual patient use; (e.g., compassionate use or named patient basis)</ol><ol>Other studies (e.g., pharmacoepidemiology, pharmacoeconomics, intensive monitoring, PMS)</ol></div>" ><i class="qco fas fa-info-circle"></i></a>
+                                <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Study type in which the reaction(s)/event(s) were observed");?> (A.2.3.3)" data-content="<div><li><?php echo __("Clinical trials");?></li><li><?php echo __("Individual patient use");?> <?php echo __("(e.g., compassionate use or named patient basis)");?></li><li><?php echo __("Other studies");?> <?php echo __("(e.g., pharmacoepidemiology, pharmacoeconomics, intensive monitoring, PMS)");?></li></div>" ><i class="qco fas fa-info-circle"></i></a>
                                 <select class="form-control" id="sd_study_type_id" name="product[study_type]" required oninvalid="this.setCustomValidity('Study Type is REQUIRED')" oninput="this.setCustomValidity('')">
                                     <option value=""><?php echo __("Select Study Type");?></option>
                                     <option value="1"><?php echo __("Clinical trials");?></option>
@@ -649,9 +649,9 @@
 
                                 <div class="d-block mt-3">
                                     <button id="undocho-distribution-con" type="button" class="btn btn-outline-warning" style="display:none;"><?php echo __("Go back to last step");?></button>
-                                    <button id="confirm_distribution_activities" class="btn btn-primary w-25" style="display:none;"><?php echo __("Continue");?>Continue</button>
+                                    <button id="confirm_distribution_activities" class="btn btn-primary w-25" style="display:none;"><?php echo __("Continue");?></button>
                                     <button id="undo_distribution_activities" type="button" class="btn btn-outline-warning" style="display:none;"><?php echo __("Go back to last step");?></button>
-                                    <button id="submit_distribution_workflow" class="btn btn-primary w-25" style="display:none;"><?php echo __("Continue");?>Continue</button>
+                                    <button id="submit_distribution_workflow" class="btn btn-primary w-25" style="display:none;"><?php echo __("Continue");?></button>
                                 </div>
                             </div>
                         </div>
