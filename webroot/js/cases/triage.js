@@ -478,11 +478,11 @@ function prioritizeDate(){
         $('#id_case_type_value').val('1');
     }
     if(submitType == 1){
-        text +=" Report ";
+        text +=" "+i18n.gettext("Report")+" ";
     }else{
-        text +=" Case ";
+        text +=" "+i18n.gettext("Case")+" ";
     }
-    text+='Due Date:';
+    text+=i18n.gettext("Due Date")+":";
     var yearText =formatDayZero.getFullYear();
     var monthText =(Number(formatDayZero.getMonth())+1);
     var dayText =formatDayZero.getDate();
@@ -546,21 +546,21 @@ function endTriage(){
             console.log(allresponse);
             response = allresponse['one'];
             text +="<div class=\"modal-header\">";
-            text +="<h3 class=\"modal-title text-center w-100\" id=\"exampleModalLabel\">Sign Off</h3>";
+            text +="<h3 class=\"modal-title text-center w-100\" id=\"exampleModalLabel\">"+i18n.gettext("Sign Off")+"</h3>";
             text +="<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
             text +="<span aria-hidden=\"true\">&times;</span>";
             text +="</button>";
             text +="</div>";
             text +="<div class=\"modal-body text-center m-3\">";
-            text +="<p class=\"lead\">Next activity is: "+response['actvity']['activity_name']+"</p>";
+            text +="<p class=\"lead\">"+i18n.gettext("Next activity is")+": "+response['actvity']['activity_name']+"</p>";
             text +="<input type=\"hidden\" id=\"next-activity-id\" value=\""+response['actvity']['id']+"\">";
             text +="<div class=\"form-group\">";
-            text +="<label><h5>Comment</h5></label>";
+            text +="<label><h5>"+i18n.gettext("Comment")+"</h5></label>";
             text +="<textarea class=\"form-control\" id=\"query-content\" rows=\"3\"></textarea>";
             text +="</div>";
             text +="<hr class=\"my-4\">";
             if(response['previousUserOnNextActivity'].length > 0){
-                text +="<div><h6>Previous User On This Case On Next Activity: </h6>";
+                text +="<div><h6>"+i18n.gettext("Previous User on This Case Will Work on Next Activity")+": </h6>";
                 $.each(response['previousUserOnNextActivity'],function(k,v){
                     text +=v['user']['firstname']+" "+v['user']['lastname']+"("+v['company']['company_name']+"), ";
                 });
@@ -569,7 +569,7 @@ function endTriage(){
             }
             //add function to chose most avaiable person
             text +="<div class=\"form-group\">";
-            text +="<label><h6>"+i18n.gettext("Select person you want to send to")+":</h6></label><select class=\"form-control\" id=\"receiverId\">";
+            text +="<label><h6>"+i18n.gettext("Select person you want to send to:")+"</h6></label><select class=\"form-control\" id=\"receiverId\">";
             $.each(response['users'],function(k,v){
                 text +="<option value="+v['id']+">"+v['firstname']+" "+v['lastname'];
                 if(v['sd_cases'].length > 0){

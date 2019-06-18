@@ -18,7 +18,7 @@ $(document).ready(function(){
      * change Workflow Name according to Product selection
      */
     $('#product_id').change(function(){
-        var text = "<option value=\"\">Select Country:</option>";
+        var text = "<option value=\"\">"+i18n.gettext("Select Country")+"</option>";
         var product_id = $(this).val();
         $(productInfo).each(function(k,v){
             if(v.id == $('#product_id').val()){
@@ -128,19 +128,19 @@ function checkDuplicate(){
                 text +="<table class=\"table table-hover\">";
                 text +="<thead>";
                 text +="<tr>";
-                text +="<th class=\"align-middle text-center\" scope=\"col\">"+i18n.gettext("Caes No.")+"</th>";
+                text +="<th class=\"align-middle text-center\" scope=\"col\">"+i18n.gettext("Case No.")+"</th>";
                 text +="<th scope=\"col\">"+i18n.gettext("Patient Initial")+"</th>";
                 text +="<th scope=\"col\">"+i18n.gettext("Patient Age")+"</th>";
                 text +="<th scope=\"col\">"+i18n.gettext("Patient Gender")+"</th>";
                 text +="<th scope=\"col\">"+i18n.gettext("Patient Date of Birth")+"</th>";
-                text +="<th scope=\"col\">"+i18n.gettext("Reporter Name")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("Reporter First Name")+"</th>";
                 text +="<th scope=\"col\">"+i18n.gettext("Event Report Term")+"</th>";
-                text +="<th scope=\"col\">"+i18n.gettext("Meddra Pt Term")+"</th>";
+                text +="<th scope=\"col\">"+i18n.gettext("PT Name")+"</th>";
                 text +="</tr>";
                 text +="</thead>";
                 text +="<tbody>";
-                var age_unit={"800":"decade(s)","801":"year(s)","802":"Month(s)","803":"Week(s)","804":"Day(s)","805":"Hour(s)"};
-                var gender=["","male","female","Unknown","not specified"];
+                var age_unit={"800":"Decade","801":"Year","802":"Month","803":"Week","804":"Day","805":"Hour"};
+                var gender=["","Male","Female","Unknown","Not Specified"];
                 $.each(result, function(k,caseDetail){
                     text += "<tr>";
                     text += "<td><button type=\"button\" class=\"btn btn-outline-info\" onclick=\"caseDetail(\'"+caseDetail.caseNo+"\')\" data-toggle=\"modal\" data-target=\".CaseDetail\">" + caseDetail.caseNo;
@@ -181,7 +181,7 @@ function checkDuplicate(){
                 text +="</table>";
             }else text+="<div class=\"my-3 text-center\"><h3>No Duplicate AER(s) Found</h3></div>"
             //text +="<div class=\"text-center\"> <button onclick=\"clearResult()\" class=\"btn btn-outline-warning mx-2 w-25\">Search Again</button>";
-            text +="<div onclick=\"createCase()\" class=\"btn btn-primary float-right w-25 my-3\" style=\"cursor:pointer;\">Create This Case</div> </div>";
+            text +="<div onclick=\"createCase()\" class=\"btn btn-primary float-right w-25 my-3\" style=\"cursor:pointer;\">"+i18n.gettext("Create This Case")+"</div> </div>";
             $("#caseTable").html(text);
         },
         error:function(response){
