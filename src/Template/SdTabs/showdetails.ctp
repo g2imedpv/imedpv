@@ -509,6 +509,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key, $
         $row++;
     }while($noValue != sizeof($fields));
     $addtext = "<button type=\"button\" id=\"addbtn-".$sectionId."\" onclick=\"setPageChange(".$sectionId.",".(int)($row-1).",1)\" class='btn btn-outline-primary ml-3 mb-2 panel-collapse show' role='button' title='add'><i class='fas fa-plus'></i>".__("Add")."</button><br><br>";
+    $hiddenaddtext = "<button style=\"display:none\" type=\"button\" id=\"addbtn-".$sectionId."\" onclick=\"setPageChange(".$sectionId.",".(int)($row-1).",1)\" class='btn btn-outline-primary ml-3 mb-2 panel-collapse show' role='button' title='add'><i class='fas fa-plus'></i>".__("Add")."</button><br><br>";
     $text = $text."</tr>"; 
     $text = $text."</tbody>";
     $text = $text."</table>";
@@ -517,6 +518,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key, $
     $text =$text. "</div>";
     if($sectionId!="44" && $sectionId!="65" && $row > 2)
         $text = $addtext.$text;
+    else if($sectionId!="44" && $sectionId!="65") $text = $hiddenaddtext.$text;
     return $text;
 }
 function displaySingleSection($section, $setArray, $sectionKey, $html, $permission, $dynamic_options){
