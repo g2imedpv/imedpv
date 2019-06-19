@@ -17,10 +17,10 @@
     <div class="form-group text-white w-75 mx-auto">
         <label class="d-block"><?php echo __("Select Language");?></label>
         <a href="/sd-users/setLanguage/en_US" class="mx-2">
-          <img class="flag" src="/img/flags/4x3/us.svg" href="/sd-users/setLanguage/en_US" alt="English Version" title="English Version">
+          English
         </a>
         <a href="/sd-users/setLanguage/zh_CN" class="mx-2">
-          <img class="flag" src="/img/flags/4x3/cn.svg" href="/sd-users/setLanguage/zh_CN" alt="Chinese Version" title="Chinese Version">
+          Chinses
         </a>
     </div>
     <?= $this->Form->button(__("Login"),['type'=>'submit','class'=>'btn btn-primary w-50 mx-auto my-4']) ?>
