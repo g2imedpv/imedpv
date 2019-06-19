@@ -245,6 +245,7 @@ function renderSummaries(section_id, pageNo){
     if(section_id in setArray)
         setArray[section_id] = parseInt(pageNo);
     $("[id^=sectionSummary-][id$=wrapper]").each(function(){
+        console.log("?");
         let text ="";
         let tbodyText ="";
         let sectionId = $(this).attr('id').split('-')[1];
@@ -323,11 +324,10 @@ function renderSummaries(section_id, pageNo){
         $(this).html(text+tbodyText);
         $(this).find('#section-'+sectionId+'-row-1').removeClass('selected-row');
         $(this).find('#section-'+sectionId+'-row-'+setArray[sectionId]).addClass('selected-row');
-        console.log($(this).html());
         $(this).find("table").DataTable();
-        console.log($(this).html());
 
         if(sectionId==48) tableFields = $('table[id^=sectionSummary-48]').find("tbody").html();
+        console.log($(this).find("table").find(".dataTables_empty").length);
         if($(this).find("table").find(".dataTables_empty").length==0){
             console.log(sectionId);
             $("#addbtn-"+sectionId).show();
@@ -379,6 +379,7 @@ function renderSummaries(section_id, pageNo){
         $("#section-"+sdSectionId+"-page_number-"+setArray[sdSectionId]).addClass('selected-page');
         $("#addbtn-"+sdSectionId).attr("onclick","setPageChange("+sdSectionId+","+parseInt(parseInt(max_set_No)+1)+",1)");
         $("#deletebtn-"+sdSectionId).attr("onclick","deleteSection("+sdSectionId+","+setArray[sdSectionId]+","+sectionKey+")");
+        console.log(max_set_No);
         if(max_set_No>0){
             $("#addbtn-"+sdSectionId).show();
             $("#deletebtn-"+sdSectionId).show();
