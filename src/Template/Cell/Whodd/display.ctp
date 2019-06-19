@@ -117,8 +117,8 @@
 
 <script type="text/javascript">
 function selectWhoDDButton(fieldId){
-    console.log($('#whodrug-code'+fieldId));
-    $('[id$=whodracode]').val($('#select-drug-code').val());
+    console.log($('#select-drug-code').val());
+    $('[id$=whodracode-'+fieldId+']').val($('#select-drug-code').val());
     $('[id*=whodraname]').val($('#select-trade-name').val());
 }
 function selectDrug(key){

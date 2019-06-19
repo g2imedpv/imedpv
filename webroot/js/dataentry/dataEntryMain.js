@@ -323,11 +323,10 @@ function renderSummaries(section_id, pageNo){
         $(this).html(text+tbodyText);
         $(this).find('#section-'+sectionId+'-row-1').removeClass('selected-row');
         $(this).find('#section-'+sectionId+'-row-'+setArray[sectionId]).addClass('selected-row');
-        console.log($(this).html());
         $(this).find("table").DataTable();
-        console.log($(this).html());
 
         if(sectionId==48) tableFields = $('table[id^=sectionSummary-48]').find("tbody").html();
+        console.log($(this).find("table").find(".dataTables_empty").length);
         if($(this).find("table").find(".dataTables_empty").length==0){
             console.log(sectionId);
             $("#addbtn-"+sectionId).show();
@@ -379,6 +378,7 @@ function renderSummaries(section_id, pageNo){
         $("#section-"+sdSectionId+"-page_number-"+setArray[sdSectionId]).addClass('selected-page');
         $("#addbtn-"+sdSectionId).attr("onclick","setPageChange("+sdSectionId+","+parseInt(parseInt(max_set_No)+1)+",1)");
         $("#deletebtn-"+sdSectionId).attr("onclick","deleteSection("+sdSectionId+","+setArray[sdSectionId]+","+sectionKey+")");
+        console.log(max_set_No);
         if(max_set_No>0){
             $("#addbtn-"+sdSectionId).show();
             $("#deletebtn-"+sdSectionId).show();
@@ -986,6 +986,8 @@ function action(type){
                         text += "</td><td>";
                         $.each(activity['users'],function(k,v){
                             text +=v['firstname']+" "+v['lastname'];
+                                num = 0;
+                                if(v['sd_cases']!="")
                                 num = v['sd_cases']['0']['casesCount']
                                 text +="("+i18n.translate("currently working on %d case").ifPlural(num, "currently working on %d cases").fetch(num)+")";
                         });
@@ -1043,7 +1045,7 @@ function forward(){
         data:request,
         success:function(response){
             console.log(response);
-            if(response == "succuess")
+            if(response == "success")
                 window.location.href = "/sd-cases/caselist";
         },
         error:function(response){

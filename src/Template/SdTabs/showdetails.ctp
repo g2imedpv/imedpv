@@ -801,6 +801,9 @@ function displaySelectBar($sdSections, $setArray, $section_key){
     if($sdSections->id!="44" && $sdSections->id!="65" && $max_set_No>0){
         $text = $text."<button type=\"button\" onclick=\"setPageChange(".$sdSections['id'].",".(int)($max_set_No+1).",1)\" id=\"addbtn-".$sdSections['id']."\" class=\"btn btn-outline-primary float-right panel-collapse show\" role=\"button\" title=\"add\"><i class=\"fas fa-plus\"></i>".__("Add")."</button>";
         $text = $text."<button type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1,".$section_key.")\" id=\"deletebtn-".$sdSections['id']."\" class=\"btn btn-outline-danger float-right panel-collapse show\" role=\"button\" title=\"delete\"><i class=\"fas fa-trash-alt\"></i>".__("Delete")."</button>"; 
+    }else if($sdSections->id!="44" && $sdSections->id!="65"){
+        $text = $text."<button style=\"display:none\" type=\"button\" onclick=\"setPageChange(".$sdSections['id'].",".(int)($max_set_No+1).",1)\" id=\"addbtn-".$sdSections['id']."\" class=\"btn btn-outline-primary float-right panel-collapse show\" role=\"button\" title=\"add\"><i class=\"fas fa-plus\"></i>".__("Add")."</button>";
+        $text = $text."<button style=\"display:none\" type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1,".$section_key.")\" id=\"deletebtn-".$sdSections['id']."\" class=\"btn btn-outline-danger float-right panel-collapse show\" role=\"button\" title=\"delete\"><i class=\"fas fa-trash-alt\"></i>".__("Delete")."</button>"; 
     }
     $text = $text."<input type=\"hidden\" id='setArray-".$sdSections->id."' value='";
         for($i = sizeof($setArray);$i>0;$i--){
