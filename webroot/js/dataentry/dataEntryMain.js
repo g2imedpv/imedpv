@@ -986,6 +986,8 @@ function action(type){
                         text += "</td><td>";
                         $.each(activity['users'],function(k,v){
                             text +=v['firstname']+" "+v['lastname'];
+                                num = 0;
+                                if(v['sd_cases']!="")
                                 num = v['sd_cases']['0']['casesCount']
                                 text +="("+i18n.translate("currently working on %d case").ifPlural(num, "currently working on %d cases").fetch(num)+")";
                         });
