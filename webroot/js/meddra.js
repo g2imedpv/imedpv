@@ -145,25 +145,26 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
                     switch(mappedLabel[0]){
                         case "llt":
                             if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][1]);
-                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][0]);
+                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][0]).trigger('change');
                             return true;
                         case "pt":
                             if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][3]);
-                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][2]);
+                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][2]).trigger('change');
                             return true;
                         case "hlt":
                             if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][5]);
-                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][4]);
+                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][4]).trigger('change');
                             return true;
                         case "hlgt":
                             if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][7]);
-                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][6]);
+                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][6]).trigger('change');
                             return true;
                         case "soc":
                             if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][9]);
-                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][8][0]);
+                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][8][0]).trigger('change');
                             return true;
                     }
+                    
                 });
                 return false;
             }
@@ -252,7 +253,7 @@ function selectMeddraButton(meddraFieldId){
             $('[id$=meddrashow-'+mappedId+']').val('18.1');
             return true;
         } 
-        $('[id$=meddrashow-'+mappedId+']').val($('#select-'+mappedLabel.split('-')[0]+'-'+mappedLabel.split('-')[1]).val());
+        $('[id$=meddrashow-'+mappedId+']').val($('#select-'+mappedLabel.split('-')[0]+'-'+mappedLabel.split('-')[1]).val()).trigger('change');
     });
     return false;
 }

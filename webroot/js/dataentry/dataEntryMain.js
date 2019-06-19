@@ -245,7 +245,6 @@ function renderSummaries(section_id, pageNo){
     if(section_id in setArray)
         setArray[section_id] = parseInt(pageNo);
     $("[id^=sectionSummary-][id$=wrapper]").each(function(){
-        console.log("?");
         let text ="";
         let tbodyText ="";
         let sectionId = $(this).attr('id').split('-')[1];
