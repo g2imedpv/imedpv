@@ -1045,7 +1045,7 @@ function forward(){
         data:request,
         success:function(response){
             console.log(response);
-            if(response == "succuess")
+            if(response == "success")
                 window.location.href = "/sd-cases/caselist";
         },
         error:function(response){
