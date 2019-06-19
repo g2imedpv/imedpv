@@ -217,7 +217,7 @@ class WhoDraController extends AppController
                 $qptb->group('test3.DrugRecNo, test3.Seq1, test3.Seq2, test3.Seq3, test3.Seq4, test3.medicinal_product_id');
                 $qptb->order(['test3.trade_name' => 'ASC']);
                 $qptb->order(['test3.mah'=> 'ASC']);
-                print_r($qptb);
+                // print_r($qptb);
                 $drugList = $conn->execute($qptb->distinct())->fetchAll();
                 echo json_encode($drugList);
             }catch (\PDOException $e){
