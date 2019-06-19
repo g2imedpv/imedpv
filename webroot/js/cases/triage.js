@@ -55,7 +55,7 @@ $(document).ready(function(){
                     newattach += "<input type=\"file\" name=\"document["+set_number+"][doc_attachment]\" id=\"doc_attachment_" + set_number + "\">";
                 newattach += "</td>";
                 newattach += "<td>";
-                    newattach += "<button type=\"button\" class=\"btn btn-outline-danger btn-sm my-1 w-100 attachDel\">Delete</button>";
+                    newattach += "<button type=\"button\" class=\"btn btn-outline-danger btn-sm my-1 w-100 attachDel\">"+i18n.gettext("Delete")+"</button>";
                 newattach += "</td>";
             newattach += "</tr>";
 

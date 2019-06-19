@@ -41,7 +41,7 @@ function searchProd(){
             text +="</tr>";
             text +="</thead>";
             text +="<tbody>";
-            var study_type=["","clinical trials", "individual patient use","other studies"];
+            var study_type=["","Clinical trials", "Individual patient use","Other studies"];
             $.each(result, function(k,caseDetail){
                 text += "<tr>";
                 text += "<td>" + caseDetail.product_name + "</td>";
@@ -72,7 +72,7 @@ function searchProd(){
     });
 }
 function view_product(product_id){
-    var study_type=["",i18n.gettext("Clinical trials"), i18n.gettext("Endividual patient use"),i18n.gettext("Other studies")];
+    var study_type=["",i18n.gettext("Clinical trials"), i18n.gettext("Individual patient use"),i18n.gettext("Other studies")];
     var status = ["",i18n.gettext("Active"),i18n.gettext("Close")];
     var blinding_tech = ["",i18n.gettext("Single blind"), i18n.gettext("Open-label")]
     var product_flag = ["",i18n.gettext("Suspect"),i18n.gettext("Concomitant"),i18n.gettext("Interacting")];

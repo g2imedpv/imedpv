@@ -170,11 +170,11 @@
                                                     <input type="text"  class="form-control" id="detail_sponsor_company" readonly="readonly">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label><?php echo __("Product flag (B.4.k.1)");?></label>
+                                                    <label><?php echo __("Product Flag (B.4.k.1)");?></label>
                                                     <input type="text" class="form-control" id="detail_sd_product_flag" readonly="readonly">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label><?php echo __("Blinding technique");?></label>
+                                                    <label><?php echo __("Blinding Technique");?></label>
                                                     <input type="text" class="form-control" id="detail_blinding_tech" readonly="readonly">
                                                 </div>
                                             </div>
@@ -189,26 +189,26 @@
                                                     <input type="text" class="form-control" id="detail_study_no" readonly="readonly">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label><?php echo __("Mfr. name");?></label>
+                                                    <label><?php echo __("Mfr. Name");?></label>
                                                     <input type="text" class="form-control" id="detail_mfr_name" readonly="readonly">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label><?php echo __("Study type (A.2.3.3)");?></label>
+                                                    <label><?php echo __("Study Type (A.2.3.3)");?></label>
                                                     <input class="form-control" id="detail_study_type" readonly="readonly">
                                                 </div>
                                             </div>
 
                                             <div class="form-row">
                                                 <div class="form-group col-md-3">
-                                                    <label><?php echo __("WHODD Code");?></label>
+                                                    <label><?php echo __("WHO-DD Code");?></label>
                                                     <input type="text" readonly="readonly" class="form-control" id="detail_whodracode">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label><?php echo __("WHODD Name");?></label>
+                                                    <label><?php echo __("WHO-DD Name");?></label>
                                                     <input type="text" readonly="readonly" class="form-control" id="detail_whodraname">
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label><?php echo __("Preferred WHO DD decode");?></label>
+                                                    <label><?php echo __("Preferred WHO DD Decode");?></label>
                                                     <input type="text" readonly="readonly" class="form-control" id="detail_WHODD_decode">
                                                 </div>
                                             </div>
@@ -236,7 +236,7 @@
 
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
-                                                    <label><?php echo __("Product Description (B.4.k.2.1)");?></label>
+                                                    <label><?php echo __("Proprietary Medicinal Product Name");?> (B.4.k.2.1)</label>
                                                     <input type="text" readonly="readonly" class="form-control" id="detail_product_desc">
                                                 </div>
                                             </div>

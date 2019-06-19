@@ -154,7 +154,7 @@ function onQueryClicked(preferrenceId = null){
             text +="</tr>";
             text +="</thead>";
             text +="<tbody>";
-            var product_type_id=[i18n.gettext("clinical trials"), i18n.gettext("individual patient use"),i18n.gettext("other studies")];
+            var product_type_id=[i18n.gettext("Clinical trials"), i18n.gettext("Individual patient use"),i18n.gettext("Other studies")];
             var previous_case = "";
             $.each(result, function(k,caseDetail){
                 if(caseDetail.activity_due_date!=null)
@@ -171,7 +171,7 @@ function onQueryClicked(preferrenceId = null){
                 text += "<td class=\"align-middle\" id=\"version-"+caseDetail.caseNo+"\">"+ caseDetail.versions + "</td>";
                 text += "<td id=\"activity-"+caseDetail.caseNo+"\" class=\"align-middle\">";
                 if(caseDetail.sd_workflow_activity_id!='9999') text += i18n.gettext(caseDetail.wa.activity_name+"");
-                else text += "Finished Data Accessment"
+                else text += i18n.gettext("Finished Data Accessment")
                 text += "</td>";
                 text += "<td></td>";
                 text += "<td class=\"align-middle\">" + caseDetail.pd.product_name + "</td>";
