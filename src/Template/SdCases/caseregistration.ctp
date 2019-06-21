@@ -1,6 +1,9 @@
 <title><?php echo __("Case Registration")?></title>
 <head>
-<?= $this->Html->script('cases/duplicate_detection.js') ?>
+    <?= $this->Html->script('cases/duplicate_detection.js') ?>
+
+    <!-- For local CSS link -->
+    <?= $this->Html->css('mainlayout.css') ?>
 <head>
 <?php
 // debug($productInfo);
@@ -22,7 +25,7 @@
                         <!-- Add Product -->
                         <div class="form-row">
                             <div class="form-group col-md-3">
-                                <label><?php echo __("Product Name")?> <i class="fas fa-asterisk reqField"></i>"</label>
+                                <label><?php echo __("Product Name")?> <i class="fas fa-asterisk reqField"></i></label>
                                 <select type="text" class="form-control" id="product_id">
                                     <option value="null"><?php echo __("Select Project No.")?></option>
                                     <?php
@@ -126,7 +129,7 @@
                                             <option value="00"><?php echo __("Day")?></option>
                                             <?php
                                             for($i=1;$i<32;$i++){
-                                                echo "<option value=\"".sprintf("%02d",$i)."\">".$i."</option>"; 
+                                                echo "<option value=\"".sprintf("%02d",$i)."\">".$i."</option>";
                                             }
                                             ?>
                                             </select>
@@ -209,7 +212,7 @@
 
                     <div class="modal fade CaseDetail" tabindex="-1" role="dialog" aria-labelledby="CaseDetail" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="width:1250px;left: -220px;">
+                            <div class="modal-content modalStyle">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="caseLabel"></h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
