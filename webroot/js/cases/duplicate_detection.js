@@ -210,11 +210,13 @@ function createCase(){
         closeOnClickOutside: false,
       })
       .then((value) => {
-           $("select").each(function(){
-            $(this).prop("disabled", false);
+          if(value){
+            $("select").each(function(){
+                $(this).prop("disabled", false);
 
-        });
-        document.getElementById("caseRegistrationForm").submit();
+            });
+            document.getElementById("caseRegistrationForm").submit();
+        }
       });
 }
 function clearResult(){

@@ -787,13 +787,13 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
     return $text;
 }
 
-function displaySelectBar($sdSections, $setArray, $section_key){   
+function displaySelectBar($sdSections, $setArray, $section_key){
     $max_set_No = 0;
     foreach($sdSections->sd_section_structures as $sd_section_structureK =>$sd_section_structure_detail){
         foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
-            $set_array=$value_detail_field_values->set_number;
+            $set_array = $value_detail_field_values->set_number;
             if(explode(",",$set_array)[0]>=$max_set_No)
-            $max_set_No = explode(",",$set_array)[0];
+                $max_set_No = explode(",",$set_array)[0];
         }
     }
     $text = "";
