@@ -108,7 +108,7 @@
                             <div class="form-group col-md-3">
                                 <label><?php echo __("WHO-DD Preferred Name")?></label>
                                 <input type="text" class="form-control" id="WHODD_decode" name="product[WHODD_decode]" placeholder="<?php echo __("WHO-DD Preferred Name");?>">
-                            </div>
+                            </div> 
                         </div>
 
                         <div class="form-row">
@@ -767,8 +767,8 @@ var cro_companies = <?php echo json_encode($cro_companies);?>
 <?php function renderTabs($sections, $exsitList, $sdsections,$tabkey){
     if(!array_key_exists($sections['id'], $exsitList)||$exsitList[$sections['id']]==="")
         return null;
-    $sectionKey = array_search($sections['id'],$exsitList);
-    echo "<div class=\"row text-left panel-heading\" id=\"l2section-".$sections['id']."\"><div class=\"col-md-12 \">";
+    $sectionKey = $sections['id'];
+    echo "<div class=\"row text-left panel-heading\" id=\"section-".$sections['id']."\"><div class=\"col-md-12 \">";
     echo "<span class=\"panel-title\">";
     echo "<a data-toggle=\"collapse\" class=\"collapsed\" href=\"#collapse-".$sections['id']."\">".$sections['section_name'];
     echo "</a></span>";
