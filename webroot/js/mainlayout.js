@@ -79,6 +79,12 @@ jQuery(function($) {  // In case of jQuery conflict
         function(){ $(this).removeClass('shadow')
     });
 
+    // Dashboard "Print" button
+    $('a#printPage').click(function(){
+        window.print();
+        return false;
+    });
+
 // Make nav button has "active" effect
     $(function(){
         // If clicked the first level menu

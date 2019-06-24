@@ -1,7 +1,8 @@
 <title><?php echo __("Triage")?></title>
 <head>
-<?= $this->Html->script('meddra.js') ?>
-<?= $this->Html->script('cases/triage.js') ?>
+    <?= $this->Html->script('meddra.js') ?>
+    <?= $this->Html->script('cases/triage.js') ?>
+
 <head>
 <script>
     var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
@@ -12,9 +13,11 @@
     var field_value_set = <?= json_encode($field_value_set)?>;
     var event_set = <?= json_encode($event_set)?>;
 </script>
-<div class="card text-center w-75 mx-auto my-3">
-  <div class="card-header text-center"><h3><?php echo __("Create New Case")?></h3></div>
-  <div class="card-body">
+<div class="mx-auto my-3 formContainer text-center">
+    <p style="font-size: 2rem;">
+        <?php echo __("Create New Case")?>
+    </p>
+  <div class="">
     <div class="alert alert-primary w-50 mx-auto" role="alert"><h4><?php echo __("New Case Number")?>: <?= $caseNo ?></h4></div>
     <hr class="my-3">
     <?= $this->Form->create($caseNo,['id'=>"triageForm", 'enctype'=>"multipart/form-data"]) ?>
@@ -40,14 +43,16 @@
     }
     ?>
     <div id="basicInfo" class="form-group mx-3">
-        <h4 class="text-left"><?php echo __("Product")?></h4>
-        <div class="form-row">
+        <div class="form-row text-left">
+            <h4><?php echo __("Product")?></h4>
             <div class="form-group col-md-12">
                 <label><?php echo __("Product Name")?> (B.4.k.2.1)<i class="fas fa-asterisk reqField"></i></label>
                 <p><b><?= $field_value_set['176']['field_value'] ?></b><p>
             </div>
         </div>
-        <h4 class="text-left mt-3"><?php echo __("Patient")?></h4>
+
+        <!-- Patient Info -->
+        <h4 class="text-left"><?php echo __("Patient")?></h4>
         <div id="patientInfo" class="form-row bg-light">
             <div class="form-group col-md-3">
                 <label><?php echo __("Patient ID")?> (B.1.1)</label>
@@ -66,12 +71,13 @@
                 </select>
             </div>
         </div>
-        <div id="patientInfo" class="form-row bg-light">
-            <div class="form-group col-md-3">
+
+        <div id="patientInfo" class="form-row bg-light justify-content-between">
+            <div class="form-group col-md-4">
                 <label><?php echo __("Date of Birth")?> (B.1.2.1b)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_patientField_dob_id\" name=\"field_value[85][id]\" value=\"".$field_value_set['85']['id']."\">";?>
-                <div class="form-row">
-                    <div class="col-sm-4">
+                <div class="d-flex">
+                    <div class="col-md-4">
                         <select class="custom-select js-example-basic-single" placeholder="Day" id="patientField_dob_day" name="field_value[85][value]">
                         <?php
                         echo "<option value=\"00\">".__("Day")."</option>";
@@ -83,7 +89,7 @@
                         ?>
                         </select>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-md-4">
                         <select class="custom-select js-example-basic-single"  name="field_value[85][value]" placeholder="Month" id="patientField_dob_month">
                         <?php
                         $month_str = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -97,7 +103,7 @@
                         ?>
                         </select>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-md-4">
                         <select class="custom-select js-example-basic-single yearSelect" placeholder="Year" id="patientField_dob_year" name="field_value[85][value]">
                         <option value="0000"><?php echo __("Year")?></option>
                         <?php
@@ -115,9 +121,11 @@
                     echo " type=\"hidden\">";
                     ?>
                 </div>
+                <!-- <div class="form-row">
+                </div> -->
             </div>
             <div class="form-group col-md-3">
-                <label><?php echo __("Age at Time of Onset Reaction")?> (B.1.2.2a)</label>
+                <label><?php echo __("Age")?> (B.1.2.2a)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_patientField_age_id\" name=\"field_value[86][id]\" value=\"".$field_value_set['86']['id']."\">";?>
                 <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<?php echo __("Field Helper")?>" data-content="<?php echo __("Age at Time of Onset of Reaction/event")?>"><i class="qco fas fa-info-circle"></i></a>
                 <input type="text" class="form-control" id="patientField_age" name="field_value[86][value]" value="<?= $field_value_set['86']['field_value']?>">
@@ -168,12 +176,15 @@
             <input type="hidden" class="form-control" name="field_value[225][value]" id="reporterField_regulatoryclockstartddate" value="<?= $field_value_set['225']['field_value']?>">
 
         </div>
+
         <h4 class="text-left mt-3"><?php echo __("Event")?></h4>
         <div id="eventBlock">
-            <button type="button" id="addBtn" onclick="addEvent()"> <?php echo __("Add Event")?></button>
-            <button type="button" id="saveBtn" onclick="saveEvent()"> <?php echo __("Save Event")?></button>
-            <button type="button" id="deleteBtn" onclick="deleteEvent()"> <?php echo __("Delete Event")?></button>
-            <table id="eventSummary">
+            <div class="text-right mb-2">
+                <button type="button" class="btn btn-info" id="addBtn" onclick="addEvent()"><i class="fas fa-plus-square"></i> <?php echo __("Add Event")?></button>
+                <button type="button" class="btn btn-success" id="saveBtn" onclick="saveEvent()"><i class="fas fa-save"></i> <?php echo __("Save Event")?></button>
+                <button type="button" class="btn btn-danger" id="deleteBtn" onclick="deleteEvent()"><i class="fas fa-trash-alt"></i> <?php echo __("Delete Event")?></button>
+            </div>
+            <table id="eventSummary" class="table table-striped table-bordered table-hover mb-3">
                 <thead>
                     <tr>
                         <th><?php echo __("Event No")?></th>
@@ -185,7 +196,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php 
+                    <?php
                     foreach($event_set as $setNo => $event_detail){
                         echo "<tr id=\"eventSet-".$setNo."\" onclick=\"mapfieldId(".$setNo.")\">";
                         echo "<td>";
@@ -263,7 +274,7 @@
                         if($event_set!=null)
                         echo array_key_exists('457',$event_set[1])?$event_set[1]['457']['id']:"";
                         echo "\">";?>
-                        <input type="text" class="form-control" name="event[1][457][value]" id="eventField_meddrashow-457" value="<?php 
+                        <input type="text" class="form-control" name="event[1][457][value]" id="eventField_meddrashow-457" value="<?php
                         if($event_set!=null)echo array_key_exists('457',$event_set[1])?$event_set[1]['457']['field_value']:"";?>
                         ">
 
@@ -274,7 +285,7 @@
                         if($event_set!=null)
                         echo array_key_exists('394',$event_set[1])?$event_set[1]['394']['id']:"";
                         echo "\">";?>
-                        <input type="text" class="form-control" name="event[1][394][value]" id="eventField_meddrashow-394" value="<?php 
+                        <input type="text" class="form-control" name="event[1][394][value]" id="eventField_meddrashow-394" value="<?php
                         if($event_set!=null)echo array_key_exists('394',$event_set[1])?$event_set[1]['394']['field_value']:"";?>
                         ">
 
@@ -295,7 +306,7 @@
 
         <!-- Attachment -->
         <h4 class="text-left mt-3"><?php echo __("Attachments and References")?>
-            <button id="addNewAttach-1" type="button" class="btn btn-outline-primary mx-1"><?php echo __("Add New")?></button>
+            <button id="addNewAttach-1" type="button" class="btn btn-outline-primary mx-1"><i class="fas fa-plus-square"></i> <?php echo __("Add New")?></button>
         </h4>
         <div class="form-row mb-3">
             <table class="table table-hover">
@@ -318,12 +329,12 @@
                         </select></td>
                     <td><input type="text" class="form-control" style="display:none;" name="document[0][doc_path]" id="doc_path_0">
                         <input type="file" name="document[0][doc_attachment]" id="doc_attachment_0"></td>
-                        <td><button type="button" class="btn btn-outline-danger btn-sm my-1 w-100 attachDel"><?php echo __("Delete")?></button></td>
+                        <td><button type="button" class="btn btn-outline-danger btn-sm my-1 w-100 attachDel"><i class="fas fa-trash-alt"></i> <?php echo __("Delete")?></button></td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        <?php 
+        <?php
             if (count($sdDocList) > 0)
             {
         ?>
@@ -369,7 +380,7 @@
                 </tbody>
                 </table>
             </div>
-        <?php 
+        <?php
             }
         ?>
         <?php echo "<input type=\"hidden\" id=\"id_validcase\" name=\"field_value[223][id]\" value=\"".$field_value_set['223']['id']."\">";?>

@@ -9,6 +9,12 @@ body{
     height: 100%;
     padding: 0;
     margin: 0;
+    font-family: arial;
+}
+
+input,input::placeholder, select {
+    font-size: 12px !important;
+    font-family: arial !important;
 }
 
 /* mainNav */
@@ -155,7 +161,7 @@ tr:nth-child(even) {
     padding:0 20px;
     margin-bottom: 40px;
     font-family: Arial;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 
@@ -455,7 +461,7 @@ ul.queryBoxLeft > a {
 /* Meddra browser */
 .lltQuickSearch {
     position: absolute !important;
-    top:0;
+    top:-45px;
     left: 190px;
 }
 
@@ -586,7 +592,7 @@ ul.queryBoxLeft > a {
     margin-left: -510px;
 }
 #caseTable_info{
-margin-left: -340px;
+    margin-left: -340px;
 }
 /*add product permission collapse */
 
@@ -625,6 +631,23 @@ margin-left: -340px;
     width: 200px;
     left: 80px;
     margin-top: 70px;
+}
+
+.formContainer {
+    width: 90%;
+    font-size: 12px;
+}
+
+/* Change layout while Print */
+@media print {
+    #sidenav, .topNav, .gotop {
+        visibility: hidden;
+    }
+    body, .dataentry {
+        position: absolute !important;
+        width: 100% !important;
+        left: -140px !important;
+    }
 }
 
 /* Responsive Display */

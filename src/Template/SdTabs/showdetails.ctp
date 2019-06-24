@@ -42,7 +42,7 @@ echo $this->element('generatepdf');
 
 <!-- Data Entry Top Bar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" id="topbar">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#DEtopBar" aria-controls="DEtopBar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -51,13 +51,14 @@ echo $this->element('generatepdf');
         <?php echo __("Full Data Entry")?> - <b><?= $caseNo ?></b> [<?= $product_name?>]<b>(<?php echo __("Version")?>:<?= $version?>)</b>
     </h4>
 
-    <div class="collapse navbar-collapse justify-content-end" id="navbarTogglerDemo02">
+    <div class="collapse navbar-collapse justify-content-end" id="DEtopBar">
         <ul class="nav navbar-nav">
 
             <!-- "Search" Button -->
             <li class="nav-item m-1">
                 <button class="btn btn-outline-info" title="Search" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-search"></i> <?php echo __("Search")?></button>
+                    <i class="fas fa-search"></i> <?php echo __("Search")?>
+                </button>
                 </b>
                 <div class="dropdown-menu p-3">
                     <div class="form-group">
@@ -109,7 +110,7 @@ echo $this->element('generatepdf');
 
             <!-- "Print" Dropdown Button -->
             <li class="nav-item m-1">
-                <a class="btn btn-outline-info" href="#" title="Print"  role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn btn-outline-info" href="#" title="Print"  role="button" id="printPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-file-export"></i> <?php echo __("Print Out")?>
                 </a>
             </li>
