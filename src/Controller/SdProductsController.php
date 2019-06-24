@@ -441,6 +441,7 @@ class SdProductsController extends AppController
 
         return $result;
     }
+    
     /**
      *
      *
@@ -474,6 +475,7 @@ class SdProductsController extends AppController
             die();
         } else $this->autoRender = true;
     }
+
     /**
      *
      * for add product add workflows
@@ -495,21 +497,6 @@ class SdProductsController extends AppController
         }
     return $result;
     }
-
-
-    // public function loadSponsorCompanies()
-    // {
-    //     $result = array();
-    //     $sponsor_companies = TableRegistry::get("sd_sponsor_companies");
-    //     $query = $sponsor_companies->find()
-    //                     ->order(['company_name' => 'ASC']);
-
-    //     foreach ($query as $sponsor_company){
-    //         $result[] = array("id"=>$sponsor_company->id, "company_name"=>$sponsor_company->company_name, "country"=>$sponsor_company->country);
-    //     }
-
-    //     return $result;
-    // }
 
 
     /**
