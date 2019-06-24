@@ -84,6 +84,7 @@ class SdExportController extends AppController
                     break;
                 case '12':
                     $monthFormat="DEC";
+                    break;
                 default: 
                     $monthFormat="";
                 }
@@ -95,14 +96,14 @@ class SdExportController extends AppController
             $informalDate=$this->getDirectValue($caseId,$field_id,$set_num);
             $dayFormat=substr($informalDate,0,2);
             //debug($dayFormat);die();
-            if(($dayFormat=='00')&($dayFormat=='')){
+            if(($dayFormat=='00')){
                 $dateFormat="DD";
             }       
             else{
                 $dayFormat=$dayFormat."-";
             }
             $yearFormat=substr($informalDate,4,4);
-            if($yearFormat=='00'){
+            if($yearFormat=='0000'){
                 $yearFormat="YYYY";
             }       
             else{
@@ -591,16 +592,46 @@ class SdExportController extends AppController
                         $result=substr($date,4,4);
                         return $result;
                         break;
-                    case '7':
+                    case '7'://c9 dechallenge and c10 rechallenge
                         $sdFieldValues = TableRegistry::get('sdFieldValues');
-                        $direct =$sdFieldValues->find()
+                        $challenge =$sdFieldValues->find()
                             ->select(['field_value'])
-                            ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'status=1','set_number=1,'.$set_num])->first();
-                        $directValue=$direct['field_value'];
-                        return $directValue;
+                            ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'status=1','substr(set_number,-1)='.$set_num])->toList();
+                            foreach($challenge as $challenge_detail) {
+                                if ($challenge_detail['field_value'] == 1) {
+                                    $result = 1;
+                                    break;
+                                }else if($challenge_detail['field_value'] == 2){
+                                    $result = 2;
+                                }else if($challenge_detail['field_value'] == 3){
+                                    $result = 3;
+                                }else{
+                                    $result = 4;
+                                }
+                            }
+                        return $result;
                     default;
 
                 }
+            }
+            public function challenge($caseId,$field_id,$set_num){
+                $sdFieldValues = TableRegistry::get('sdFieldValues');
+                $direct =$sdFieldValues->find()
+                    ->select(['field_value'])
+                    ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'status=1','substr(set_number,-1)='.$set_num])->toList();
+                    foreach($direct as $direct_detail) {
+                        if ($direct_detail['field_value'] == 1) {
+                            $challenge = 1;
+                            break;
+                        }else if($direct_detail['field_value'] == 2){
+                            $challenge = 2;
+                        }else if($direct_detail['field_value'] == 3){
+                            $challenge = 3;
+                        }else{
+                            $challenge = 4;
+                        }
+                    }
+                return $challenge;
             }
             //call function getMedValue() and find position out
             public function getMedPosition($caseId,$field_id,$value_type,$position_type,$set_num=null){
@@ -921,11 +952,12 @@ class SdExportController extends AppController
                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$pageThree.'</p>';
                 return $text;
             }
-
+            
+          
 
             public function genFDApdf($caseId)
             {   
-            
+                
                 //a1 patientID field
                $result=$this->getMedPosition($caseId,79,1,1);
                 //a2 age field  
@@ -960,8 +992,8 @@ class SdExportController extends AppController
                 //b4
                 $result=$result.$this->CurrentTime();
                 // b5 describe event or problem
-                $describeOne=substr($this->getMedValue($caseId,515,1),0,400);
-                $result=$result.$this->getPosition($caseId,515,1,$describeOne);   
+                $describeOne=substr($this->getMedValue($caseId,218,1),0,400);
+                $result=$result.$this->getPosition($caseId,218,1,$describeOne);   
                 // b6 relevant tests/laboratory data
                 $result=$result.$this->labDataOne($caseId);   
                 // b7 other relevant history
@@ -969,77 +1001,82 @@ class SdExportController extends AppController
                 $result=$result.$this->getPosition($caseId,104,1,$historyOne);   
                 // c1#1 name and strength
                 $suspect=$this->SuspectRole($caseId);
-                $result=$result.$this->getMedPosition($caseId,176,1,1,$suspect[0]);
+                if(!is_null($suspect[0])){
+                    $result=$result.$this->getMedPosition($caseId,176,1,1,$suspect[0]);
+                    // c1#1 NDC or unique ID
+                    $result=$result.$this->getMedPosition($caseId,345,1,1,$suspect[0]);
+                    // c1#1 Manufacturer/compounder
+                    $result=$result.$this->getMedPosition($caseId,284,1,1,$suspect[0]);
+                    // c1#1 Lot number
+                    $result=$result.$this->getMedPosition($caseId,179,1,1,$suspect[0]);
+                    //c3#1 dose
+                    $dosageOne=$this->getMedValue($caseId,183,1,$suspect[0]).$this->getMedValue($caseId,184,2,$suspect[0]);
+                    $result=$result.$this->getPosition($caseId,183,1,$dosageOne);
+                    //c3#1 frequency
+                    $frequencyOne=$this->getMedValue($caseId,185,1,$suspect[0]);
+                    if($frequencyOne!=null){$frequencyOne=$frequencyOne."time(s)".$this->getMedValue($caseId,186,1,$suspect[0]).$this->getMedValue($caseId,187,2,$suspect[0]);}
+                    $result=$result.$this->getPosition($caseId,185,1,$frequencyOne);
+                    //c3#1 route used
+                    $result=$result.$this->getMedPosition($caseId,192,2,1,$suspect[0]);
+                    //c4#1 start day
+                    $result=$result.$this->getMedPosition($caseId,199,3,3,$suspect[0]);
+                    //c4#1 stop day
+                    $result=$result.$this->getMedPosition($caseId,205,3,3,$suspect[0]);
+                    //c5#1 diagnosis for use
+                    $result=$result.$this->getMedPosition($caseId,197,1,1,$suspect[0]);
+                    //c6#1 is the product compounded?
+                    $result=$result.$this->getMedPosition($caseId,425,1,8,$suspect[0]);
+                    //c7#1 Is the product over-the-counter?
+                    $result=$result.$this->getMedPosition($caseId,425,1,9,$suspect[0]);
+                    // c8#1 expiration date
+                    $result=$result.$this->getMedPosition($caseId,298,4,4,$suspect[0]);//day
+                    $result=$result.$this->getMedPosition($caseId,298,5,5,$suspect[0]);//month
+                    $result=$result.$this->getMedPosition($caseId,298,6,6,$suspect[0]);//year
+                    //c9#1 dechallenge?
+                    $result=$result.$this->getMedPosition($caseId,381,7,2,$suspect[0]);
+                    //c10#1 rechallenge?
+                    $result=$result.$this->getMedPosition($caseId,209,7,2,$suspect[0]);
+                }
+                
+                if(!is_null($suspect[1])){
                 // c1#2 name and strength
-                $result=$result.$this->getMedPosition($caseId,176,1,1,$suspect[1]);
-                // c1#1 NDC or unique ID
-                $result=$result.$this->getMedPosition($caseId,345,1,1,$suspect[0]);
-                // c1#2 NDC or unique ID
-                $result=$result.$this->getMedPosition($caseId,345,1,1,$suspect[1]);
-                // c1#1 Manufacturer/compounder
-                $result=$result.$this->getMedPosition($caseId,284,1,1,$suspect[0]);
-                // c1#2 Manufacturer/compounder
-                $result=$result.$this->getMedPosition($caseId,284,1,1,$suspect[1]);
-                // c1#1 Lot number
-                $result=$result.$this->getMedPosition($caseId,179,1,1,$suspect[0]);
-                // c1#2 Lot number
-                $result=$result.$this->getMedPosition($caseId,179,1,1,$suspect[1]);
-                // //c2 concomitant medical products and therapy dates
-                $result=$result.$this->concomitantTherapyOne($caseId);
-                //c3#1 dose
-                $dosageOne=$this->getMedValue($caseId,183,1,$suspect[0]).$this->getMedValue($caseId,184,2,$suspect[0]);
-                $result=$result.$this->getPosition($caseId,183,1,$dosageOne);
-                //c3#1 frequency
-                $frequencyOne=$this->getMedValue($caseId,185,1,$suspect[0]);
-                if($frequencyOne!=null){$frequencyOne=$frequencyOne."time(s)".$this->getMedValue($caseId,186,1,$suspect[0]).$this->getMedValue($caseId,187,2,$suspect[0]);}
-                $result=$result.$this->getPosition($caseId,185,1,$frequencyOne);
-                //c3#1 route used
-                $result=$result.$this->getMedPosition($caseId,192,2,1,$suspect[0]);
-                //c3#2 dose
-                $dosageTwo=$this->getMedValue($caseId,183,1,$suspect[1]).$this->getMedValue($caseId,184,2,$suspect[1]);
-                $result=$result.$this->getPosition($caseId,183,2,$dosageTwo);
-                //c3#2 frequency
-                $frequencyTwo=$this->getMedValue($caseId,185,1,$suspect[1]);
-                if($frequencyTwo!=null){$frequencyTwo=$frequencyTwo."time(s)".$this->getMedValue($caseId,186,1,$suspect[1]).$this->getMedValue($caseId,187,2,$suspect[1]);}
-                $result=$result.$this->getPosition($caseId,185,2,$frequencyTwo);
-                //c3#2 route used
-                $result=$result.$this->getMedPosition($caseId,192,2,1,$suspect[1]);
-                //c4#1 start day
-                $result=$result.$this->getMedPosition($caseId,199,3,3,1);
-                //c4#1 stop day
-                $result=$result.$this->getMedPosition($caseId,205,3,3,1);
-                //c4#2 start day
-                $result=$result.$this->getMedPosition($caseId,199,3,3,2);
-                //c4#2 stop day
-                $result=$result.$this->getMedPosition($caseId,205,3,3,2);
-                //c5#1 diagnosis for use
-                $result=$result.$this->getMedPosition($caseId,197,1,1,$suspect[0]);
-                //c5#2 diagnosis for use
-                $result=$result.$this->getMedPosition($caseId,197,1,1,$suspect[1]);
-                //c6#1 is the product compounded?
-                $result=$result.$this->getMedPosition($caseId,425,1,8,$suspect[0]);
-                //c6#2 is the product compounded?
-                $result=$result.$this->getMedPosition($caseId,425,1,8,$suspect[1]);
-                 //c7#1 Is the product over-the-counter?
-                $result=$result.$this->getMedPosition($caseId,425,1,9,$suspect[0]);
-                //c7#2 Is the product over-the-counter?
-                $result=$result.$this->getMedPosition($caseId,425,1,9,$suspect[1]);
-                // c8#1 expiration date
-                $result=$result.$this->getMedPosition($caseId,298,4,4,$suspect[0]);//day
-                $result=$result.$this->getMedPosition($caseId,298,5,5,$suspect[0]);//month
-                $result=$result.$this->getMedPosition($caseId,298,6,6,$suspect[0]);//year
-                // C8#2 expiration date
-                $result=$result.$this->getMedPosition($caseId,298,4,4,$suspect[1]);//day
-                $result=$result.$this->getMedPosition($caseId,298,5,5,$suspect[1]);//month
-                $result=$result.$this->getMedPosition($caseId,298,6,6,$suspect[1]);//year
-                //c9#1 dechallenge?
-                //$result=$result.$this->getMedPosition($caseId,381,7,2,$suspect[0]);
-                //c9#2 dechallenge?
-                //$result=$result.$this->getMedPosition($caseId,381,7,2,$suspect[1]);
-                //c10#1 rechallenge?
-                //$result=$result.$this->getMedPosition($caseId,209,7,2,$suspect[0]);
-                //c10#2 rechallenge?
-                //$result=$result.$this->getMedPosition($caseId,209,7,2,$suspect[1]);
+                    $result=$result.$this->getMedPosition($caseId,176,1,1,$suspect[1]);
+                    // c1#2 NDC or unique ID
+                    $result=$result.$this->getMedPosition($caseId,345,1,1,$suspect[1]);
+                    // c1#2 Manufacturer/compounder
+                    $result=$result.$this->getMedPosition($caseId,284,1,1,$suspect[1]);
+                    // c1#2 Lot number
+                    $result=$result.$this->getMedPosition($caseId,179,1,1,$suspect[1]);
+                    //c2 concomitant medical products and therapy dates
+                    $result=$result.$this->concomitantTherapyOne($caseId);
+                    //c3#2 dose
+                    $dosageTwo=$this->getMedValue($caseId,183,1,$suspect[1]).$this->getMedValue($caseId,184,2,$suspect[1]);
+                    $result=$result.$this->getPosition($caseId,183,2,$dosageTwo);
+                    //c3#2 frequency
+                    $frequencyTwo=$this->getMedValue($caseId,185,1,$suspect[1]);
+                    if($frequencyTwo!=null){$frequencyTwo=$frequencyTwo."time(s)".$this->getMedValue($caseId,186,1,$suspect[1]).$this->getMedValue($caseId,187,2,$suspect[1]);}
+                    $result=$result.$this->getPosition($caseId,185,2,$frequencyTwo);
+                    //c3#2 route used
+                    $result=$result.$this->getMedPosition($caseId,192,2,1,$suspect[1]);
+                    //c4#2 start day
+                    $result=$result.$this->getMedPosition($caseId,199,3,3,$suspect[1]);
+                    //c4#2 stop day
+                    $result=$result.$this->getMedPosition($caseId,205,3,3,$suspect[1]);
+                    //c5#2 diagnosis for use
+                    $result=$result.$this->getMedPosition($caseId,197,1,1,$suspect[1]);
+                    //c6#2 is the product compounded?
+                    $result=$result.$this->getMedPosition($caseId,425,1,8,$suspect[1]);
+                    //c7#2 Is the product over-the-counter?
+                    $result=$result.$this->getMedPosition($caseId,425,1,9,$suspect[1]);
+                    // C8#2 expiration date
+                    $result=$result.$this->getMedPosition($caseId,298,4,4,$suspect[1]);//day
+                    $result=$result.$this->getMedPosition($caseId,298,5,5,$suspect[1]);//month
+                    $result=$result.$this->getMedPosition($caseId,298,6,6,$suspect[1]);//year 
+                    //c9#2 dechallenge?
+                    $result=$result.$this->getMedPosition($caseId,381,7,2,$suspect[1]);
+                    //c10#2 rechallenge?
+                    $result=$result.$this->getMedPosition($caseId,209,7,2,$suspect[1]);
+                }
                 // e1 last name
                 $result=$result.$this->getMedPosition($caseId,28,1,1);
                 //e1 first name
@@ -1085,8 +1122,8 @@ class SdExportController extends AppController
                 //$test2 = '<img src="img/pdficon.png" />';
                 //$mpdf->WriteHTML("second page");
                 $mpdf->AddPage();
-                $describeThree=substr($this->getMedValue($caseId,515,1),400);//b5 describe event continue
-                $continue=$this->getPosition($caseId,515,2,$describeThree);
+                $describeThree=substr($this->getMedValue($caseId,218,1),400);//b5 describe event continue
+                $continue=$this->getPosition($caseId,218,2,$describeThree);
                 // b6 relevant tests continue
                 $continue=$continue.$this->labDataThree($caseId);
                 $historyThree=substr($this->getMedValue($caseId,104,1),300);//b7 other relevant history continue
