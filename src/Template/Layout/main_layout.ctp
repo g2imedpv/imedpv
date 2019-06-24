@@ -61,11 +61,11 @@
       </a>
 
       <div class="my-auto border border-white p-2 rounded">
-        <a href="/sd-users/setLanguage/en_US" class="mx-2">
-          <img class="flag" src="/img/flags/4x3/us.svg" href="/sd-users/setLanguage/en_US" alt="English Version" title="English Version">
+        <a href="/sd-users/setLanguage/en_US" class="mx-2">English
+          <!-- <img class="flag" src="/img/flags/4x3/us.svg" href="/sd-users/setLanguage/en_US" alt="English Version" title="English Version"> -->
         </a>
-        <a href="/sd-users/setLanguage/zh_CN" class="mx-2">
-          <img class="flag" src="/img/flags/4x3/cn.svg" href="/sd-users/setLanguage/zh_CN" alt="Chinese Version" title="Chinese Version">
+        <a href="/sd-users/setLanguage/zh_CN" class="mx-2">Chinese
+          <!-- <img class="flag" src="/img/flags/4x3/cn.svg" href="/sd-users/setLanguage/zh_CN" alt="Chinese Version" title="Chinese Version"> -->
         </a>
       </div>
       <div class="my-auto border border-white p-2 rounded mx-2"> <? __("E2B Version")?>

@@ -187,7 +187,7 @@ class SdXmlStructuresController extends AppController
     }
     
 
-    public function genXML($caseId){   
+    public function genXMLTwo($caseId){   
         $this->autoRender = false;
         //set file name with caseNo and create time
         $sdCases = TableRegistry::get('sdCases');
@@ -492,4 +492,5 @@ class SdXmlStructuresController extends AppController
         echo $xml->outputMemory(); 
    
     }
+    
 }

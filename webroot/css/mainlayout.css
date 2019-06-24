@@ -9,7 +9,6 @@ body{
     height: 100%;
     padding: 0;
     margin: 0;
-
 }
 
 /* mainNav */
@@ -57,57 +56,18 @@ ul.topbar > li.nav-item {
     position: fixed !important;
     top: 55px;
     z-index: 99;
+    margin-top: 10px !important;
 }
 
-#sidenav {
-    position: absolute;
-    width: 200px;
-    left: 90px;
-    margin-top: 20px;
-}
 
 #sidenav > ul {
     width: 220px;
 }
 
-.dataentry {
-    position: relative;
-    left: 290px;
-    width: 75%;
-    display: inline-block;
-}
 
 .dataentrychange {
     top:55px;
 
-}
-
-.caseNumber {
-    font-size: 22px;
-    position: absolute;
-    left: 20px;
-}
-
-/*
-@media screen and (max-width: 1441px) {}
-*/
-
-@media screen and (max-width: 1367px) {
-    #sidenav {
-        left: 20px;
-        width: 90px;
-    }
-    #sidenav > ul {
-        width: 135px;
-    }
-    .dataentry {
-        left: 120px;
-        width: 91%;
-    }
-    .caseNumber {
-        font-size: 16px;
-        width: 360px;
-    }
 }
 
 #chooseFile {
@@ -194,6 +154,8 @@ tr:nth-child(even) {
     background-color: #ddebff;
     padding:0 20px;
     margin-bottom: 40px;
+    font-family: Arial;
+    font-size: 14px;
 }
 
 
@@ -546,9 +508,9 @@ ul.queryBoxLeft > a {
     border-right: 1px solid rgba(0, 0, 0, 0.1);
 
 }
-.form-row{
+/* .form-row{
     line-height:0.8;
-}
+} */
 .topNav{
     background-color: aliceblue;
 }
@@ -627,7 +589,7 @@ ul.queryBoxLeft > a {
 margin-left: -340px;
 }
 /*add product permission collapse */
-@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
+
 .panel-title > a.collapsed:before {
     float: left !important;
     content:"+";
@@ -649,4 +611,67 @@ margin-left: -340px;
     -ms-transform: scale(1.2); /* IE 9 */
     -webkit-transform: scale(1.2); /* Safari 3-8 */
     transform: scale(1.2);
+}
+
+.dataentry {
+    display: inline-block;
+    position: relative;
+    left: 290px;
+}
+
+
+#sidenav {
+    position: absolute;
+    width: 200px;
+    left: 80px;
+    margin-top: 70px;
+}
+
+/* Responsive Display */
+@media (max-width: 1024px) {
+    .dataentry {
+        left: 140px !important;
+        width: 85%;
+    }
+ }
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+    .modalStyle{
+        position: absolute;
+        width: 1230px;
+        right: -210px;
+    }
+    .dataentry{
+        width: 80%;
+        left: 230px;
+    }
+    #sidenav {
+        left: 20px !important;
+    }
+    .sidenavchange {
+        top:110px;
+    }
+}
+
+/* Default setting for most screen */
+@media (min-width: 1441px) and (max-width: 1920px) {
+    .modalStyle{
+        position: absolute;
+        width: 1800px;
+        right: -500px;
+    }
+    .dataentry {
+        width: 80%;
+    }
+}
+
+@media (min-width: 1921px) {
+    .modalStyle{
+        position: absolute;
+        width: 2200px;
+        right: -690px;
+    }
+    .dataentry{
+        width: 85%;
+    }
 }

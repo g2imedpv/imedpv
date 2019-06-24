@@ -246,6 +246,9 @@ $(document).ready(function(){
             // });
     //labeling Tab:
     $('#section-48-checkbox-383-option-4').parent().removeClass("col-md-3");
+    //Distribution tab:additional infomation
+    grayout("#section-75-textarea-218,#section-75-textarea-222");
+
     //General:date format validation
     function checkValue(str, max) {
       if (str.charAt(0) !== '0' || str == '00') {
