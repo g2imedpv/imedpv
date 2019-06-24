@@ -18,9 +18,9 @@ echo $this->element('generatepdf');
     var tabId = <?= $tabid?>;
     var tableFields ="";
     var dynamic_options = <?php if(empty($dynamic_options)) echo"null"; else echo json_encode($dynamic_options)?>;
-    var section = <?php 
+    var section = <?php
     echo json_encode($sdSections,JSON_UNESCAPED_UNICODE)?>;
-    
+
     var caseId = <?= $caseId ?>;
     // jQuery(function($) {
     //     $(document).ready(function () {
@@ -36,98 +36,109 @@ echo $this->element('generatepdf');
     <?= $this->Html->script('dataentry/fieldLogic.js') ?>
     <?= $this->Html->script('meddra.js') ?>
 </head>
-<?php if($this->request->getQuery('readonly')!=1):?>
-<!-- Data Entry Top Bar -->
 
-<ul class="topbar nav justify-content-end pt-2 pb-2" id="topbar">
+<?php if($this->request->getQuery('readonly')!=1):?>
+
+
+<!-- Data Entry Top Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="topbar">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
     <!-- "Case Number" Display -->
-    <span class="caseNumber" id="caseNumber" title="Case Number">
+    <h4 class="nav-item mx-auto" id="caseNumber" title="Case Number">
         <?php echo __("Full Data Entry")?> - <b><?= $caseNo ?></b> [<?= $product_name?>]<b>(<?php echo __("Version")?>:<?= $version?>)</b>
-    </span>
+    </h4>
 
-    <!-- "Search" Button -->
-    <li class="nav-item">
-        <button class="btn btn-outline-info" title="Search" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-search"></i> <?php echo __("Search")?></button>
-        </b>
-        <div class="dropdown-menu p-3">
-            <div class="form-group">
-                <input type="text" class="form-control" id="searchFieldKey" placeholder="Search Field Here">
-                <!-- <button type="submit" class="btn btn-primary mx-2">Search</button> -->
-            </div>
-            <div id="searchFieldResult"></div>
-        </div>
-    </li>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarTogglerDemo02">
+        <ul class="nav navbar-nav">
 
-    <!-- "Version Switch" Dropdown Button -->
-    <li class="nav-item">
-        <a class="btn btn-outline-info" href="#" title="Version Switch" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-code-branch"></i> <?php echo __("Switch Version")?>
-        </a>
-        <?php
-        if(sizeof($case_versions->toList())>1){
-            echo "<div class=\"dropdown-menu\">";
-            foreach($case_versions as $case_version_detail){
-                echo "<a class=\"dropdown-item\" href=\"/sd-tabs/showdetails/1?caseNo=".$caseNo."&version=".$case_version_detail['version_no']."\">".$case_version_detail['version_no']."</a>";
-            }
-        }
-        echo "</div>";
-        ?>
-    </li>
+            <!-- "Search" Button -->
+            <li class="nav-item m-1">
+                <button class="btn btn-outline-info" title="Search" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-search"></i> <?php echo __("Search")?></button>
+                </b>
+                <div class="dropdown-menu p-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="searchFieldKey" placeholder="Search Field Here">
+                        <!-- <button type="submit" class="btn btn-primary mx-2">Search</button> -->
+                    </div>
+                    <div id="searchFieldResult"></div>
+                </div>
+            </li>
 
-    <!-- "Compare" Button -->
-    <!-- <li class="nav-item">
-        <a class="btn btn-outline-info" href="#" title="Version Compare"><i class="far fa-copy"></i> Compare</a>
-    </li> -->
+            <!-- "Version Switch" Dropdown Button -->
+            <li class="nav-item dropdown m-1">
+                <a class="btn btn-outline-info dropdown-toggle" href="#" title="Version Switch" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-code-branch"></i> <?php echo __("Switch Version")?>
+                </a>
+                <?php
+                if(sizeof($case_versions->toList())>1){
+                    echo "<div class=\"dropdown-menu\"  aria-labelledby=\"navbarDropdownMenuLink\">";
+                    foreach($case_versions as $case_version_detail){
+                        echo "<a class=\"dropdown-item\" href=\"/sd-tabs/showdetails/1?caseNo=".$caseNo."&version=".$case_version_detail['version_no']."\">".$case_version_detail['version_no']."</a>";
+                    }
+                }
+                echo "</div>";
+                ?>
+            </li>
 
-    <!-- "Documents" Button -->
-    <li class="nav-item">
-        <a class="btn btn-outline-info" href="/sd-documents/add_documents/<?= $caseId ?>" title="Documents Check" target="_blank"><i class="far fa-file-alt"></i> <?php echo __("Documents")?></a>
-    </li>
+            <!-- "Compare" Button -->
+            <!-- <li class="nav-item">
+                <a class="btn btn-outline-info" href="#" title="Version Compare"><i class="far fa-copy"></i> Compare</a>
+            </li> -->
 
-    <!-- "Export" Dropdown Button -->
-    <li class="nav-item">
-        <a class="btn btn-outline-info" href="#" title="Export" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-print"></i> <?php echo __("Export")?>
-        </a>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>"><?php echo __("CIOMS")?></a>
-            <a class="dropdown-item" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>"><?php echo __("FDA")?></a>
-            <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLTwo/<?php echo $caseId ?>"><?php echo __("XML-R2")?></a>
-            <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLThree/<?php echo $caseId ?>"><?php echo __("XML-R3")?></a>
-            <!-- Add this if location had details
-            <div role="separator" class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-            -->
-        </div>
-    </li>
+            <!-- "Documents" Button -->
+            <li class="nav-item m-1">
+                <a class="btn btn-outline-info" href="/sd-documents/add_documents/<?= $caseId ?>" title="Documents Check" target="_blank"><i class="far fa-file-alt"></i> <?php echo __("Documents")?></a>
+            </li>
 
-    <!-- "Print" Dropdown Button -->
-    <li class="nav-item">
-        <a class="btn btn-outline-info" href="#" title="Print"  role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-file-export"></i> <?php echo __("Print Out")?>
-        </a>
-    </li>
+            <!-- "Export" Dropdown Button -->
+            <li class="nav-item dropdown m-1">
+                <a class="btn btn-outline-info dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-print"></i> <?php echo __("Export")?>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>"><?php echo __("CIOMS")?></a>
+                    <a class="dropdown-item" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>"><?php echo __("FDA")?></a>
+                    <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLTwo/<?php echo $caseId ?>"><?php echo __("XML-R2")?></a>
+                    <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLThree/<?php echo $caseId ?>"><?php echo __("XML-R3")?></a>
+                </div>
+            </li>
 
-    <!-- "Save All" Button -->
-    <li class="nav-item">
-    <?php if($writePermission==1){
-       echo "<button class=\"btn btn-outline-warning mx-1\" title=\"Sign Off\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(1)\"><i class=\"fas fa-share-square\"></i> ".__("Next Step")."</button>";
-       echo "<button class=\"btn btn-outline-warning mx-1\" title=\"Push Backward\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(2)\"><i class=\"fab fa-pushed\"></i> ".__("Previous Step")."</button>";
-    }?>
-    </li>
+            <!-- "Print" Dropdown Button -->
+            <li class="nav-item m-1">
+                <a class="btn btn-outline-info" href="#" title="Print"  role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-file-export"></i> <?php echo __("Print Out")?>
+                </a>
+            </li>
 
-    <?php endif;?>
-    <div class="modal fade signOff" tabindex="-1" role="dialog" aria-labelledby="signOff" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div id="action-text-hint"></div>
-            </div>
-        </div>
+            <!-- "Next & Previous Step" Button -->
+            <li class="nav-item m-1">
+                <?php if($writePermission==1){
+                echo "<button class=\"btn btn-outline-warning mx-1\" title=\"Sign Off\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(1)\"><i class=\"fas fa-share-square\"></i> ".__("Next Step")."</button>";
+                echo "<button class=\"btn btn-outline-warning mx-1\" title=\"Push Backward\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(2)\"><i class=\"fab fa-pushed\"></i> ".__("Previous Step")."</button>";
+                }?>
+            </li>
+
+            <?php endif;?>
+
+            <li class="nav-item m-1">
+                <div class="modal fade signOff" tabindex="-1" role="dialog" aria-labelledby="signOff" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div id="action-text-hint"></div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
     </div>
-</ul>
-<div class="maintab container-fluid">
+</nav>
+
+<!-- Left Nav Bar -->
 <?php
      $sectionNavCell = $this->cell('SectionNav',[$tabid,$caseNo,$readonly,$version]);
      echo $sectionNavCell;
@@ -165,7 +176,7 @@ echo $this->element('generatepdf');
     </div>
     <?php endif;?>
     <?= $this->Form->end() ?>
-    <?php 
+    <?php
     //add document button form
     echo $this->element('documentbtn');
     ?>
@@ -389,7 +400,7 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
     $text =$text. "<h3 id=\"section_label-".$sectionId."\"class=\"secspace panel-title-dataentry\">";
     $text =$text."<a data-toggle=\"collapse\" href=\"#input-".$sectionId."-sectionKey-".$sectionKey.",#card-summary-".$sectionId.",#addbtn-".$sectionId.",#deletebtn-".$sectionId.",#pagination-section-".$sectionId.",#save-btn".$sectionId."-".$sectionKey."\">".$section_name."</a></h3>";
     //echo"<a role=\"button\" id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
-    $text =$text. "</h3>";
+    $text =$text. "</>";
         // if(($section->is_addable == 1)&&($permission==1))
         // {
         //     $text =$text. "<div id=\"pagination-section-".$sectionId."\" class=\"DEpagination\">";
@@ -430,7 +441,7 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
     return $text;
 }
 function displaySummary($SectionInfo, $setArray, $section_level, $section_key, $dynamic_options){
-    
+
     $fields = $SectionInfo->sd_section_summary->sdFields;
     $sectionId = $SectionInfo->id;
     $text = "";
@@ -440,13 +451,13 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key, $
     $text = $text."<input type=\"hidden\" id='setArray-".$sectionId."' value='";
     for($i = sizeof($setArray);$i>0;$i--){
         $text = $text.$setArray[$i-1].",";
-    } 
+    }
     $text = $text."'>";
     $text = $text."<input type=\"hidden\" id='setArrayValue-".$sectionId."' value='";
     $setV = "";
     for($i = 0; $i < sizeof($setArray) ;$i ++){
         if($i) $setV = $setV."1,";
-    } 
+    }
     $text = $text.substr($setV,0,-1);
     $text = $text."'>";
     $text = $text."<table class=\"table table-bordered table-hover layer".$section_level."\" id=\"sectionSummary-".$sectionId."-sectionKey-".$section_key."\">";
@@ -499,7 +510,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key, $
                 }
             }
             if(!$noMatchFlag) $rowtext = $rowtext."<td id=\"section-".$sectionId."-row-".$row."-td-".$field_detail->id."\"></td>";
-            
+
         }
         if($noValue != sizeof($fields)) {
             $text = $text."<tr ";
@@ -511,11 +522,11 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key, $
     }while($noValue != sizeof($fields));
     $addtext = "<button type=\"button\" id=\"addbtn-".$sectionId."\" onclick=\"setPageChange(".$sectionId.",".(int)($row-1).",1)\" class='btn btn-outline-primary ml-3 mb-2 panel-collapse show' role='button' title='add'><i class='fas fa-plus'></i>".__("Add")."</button><br><br>";
     $hiddenaddtext = "<button style=\"display:none\" type=\"button\" id=\"addbtn-".$sectionId."\" onclick=\"setPageChange(".$sectionId.",".(int)($row-1).",1)\" class='btn btn-outline-primary ml-3 mb-2 panel-collapse show' role='button' title='add'><i class='fas fa-plus'></i>".__("Add")."</button><br><br>";
-    $text = $text."</tr>"; 
+    $text = $text."</tr>";
     $text = $text."</tbody>";
     $text = $text."</table>";
     $text = $text."</div>";
-    $text = $text."</div>"; 
+    $text = $text."</div>";
     $text =$text. "</div>";
     if($sectionId!="44" && $sectionId!="65" && $row > 2)
         $text = $addtext.$text;
@@ -523,7 +534,7 @@ function displaySummary($SectionInfo, $setArray, $section_level, $section_key, $
     return $text;
 }
 function displaySingleSection($section, $setArray, $sectionKey, $html, $permission, $dynamic_options){
-    
+
     $i = 0;
     $text ="";
     if($permission == null) $permission = 1;
@@ -583,7 +594,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                         for($count = sizeof($sectionSetArray) - 1 ; $count >= 0 ; $count--){
                             if($sectionSetArray[$count] != '1'){
                                 $levelMatch = 0;
-                                break;               
+                                break;
                             }
                         }
                         if(!$levelMatch) continue;
@@ -612,7 +623,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                     if($sd_section_structure_detail->is_required) $text =$text. "1" ;else $text =$text. "0";
                     $text =$text. " type=\"hidden\">";
                     $text =$text. "<div id= \"section-".$section->id."-error_message-".$sd_section_structure_detail->sd_field->id."\" style=\"display:none\"></div>";
-                    //  $text =$text. "<input id= \"section-".$section->id."-set_number-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][set_number]\" value=".$setNo." type=\"hidden\">";    
+                    //  $text =$text. "<input id= \"section-".$section->id."-set_number-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][set_number]\" value=".$setNo." type=\"hidden\">";
                     $text =$text. "<input id= \"section-".$section->id."-sd_field_id-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][sd_field_id]\" value=".$sd_section_structure_detail->sd_field->id." type=\"hidden\">";
                 }
                     switch($sd_section_structure_detail->sd_field->sd_element_type->type_name){
@@ -783,32 +794,32 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
         if($i!=0) $text =$text."</div>";
         $text =$text. "<div class=\"text-center pb-3\"><button id=\"save-btn".$section->id."-".$sectionKey."\" onclick=\"saveSection(".$section->id.",1)\" class=\"ml-3 px-5 btn btn-outline-primary panel-collapse show\" type=\"button\" style=\"display:none\">".__("Save")."</button></div>";
         $text =$text. "</div>";
-        
+
     // }
     return $text;
 }
 
-function displaySelectBar($sdSections, $setArray, $section_key){   
+function displaySelectBar($sdSections, $setArray, $section_key){
     $max_set_No = 0;
     foreach($sdSections->sd_section_structures as $sd_section_structureK =>$sd_section_structure_detail){
         foreach ($sd_section_structure_detail->sd_field->sd_field_values as $key_detail_field_values=>$value_detail_field_values){
-            $set_array=$value_detail_field_values->set_number;
+            $set_array = $value_detail_field_values->set_number;
             if(explode(",",$set_array)[0]>=$max_set_No)
-            $max_set_No = explode(",",$set_array)[0];
+                $max_set_No = explode(",",$set_array)[0];
         }
     }
     $text = "";
     if($sdSections->id!="44" && $sdSections->id!="65" && $max_set_No>0){
         $text = $text."<button type=\"button\" onclick=\"setPageChange(".$sdSections['id'].",".(int)($max_set_No+1).",1)\" id=\"addbtn-".$sdSections['id']."\" class=\"btn btn-outline-primary float-right panel-collapse show\" role=\"button\" title=\"add\"><i class=\"fas fa-plus\"></i>".__("Add")."</button>";
-        $text = $text."<button type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1,".$section_key.")\" id=\"deletebtn-".$sdSections['id']."\" class=\"btn btn-outline-danger float-right panel-collapse show\" role=\"button\" title=\"delete\"><i class=\"fas fa-trash-alt\"></i>".__("Delete")."</button>"; 
+        $text = $text."<button type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1,".$section_key.")\" id=\"deletebtn-".$sdSections['id']."\" class=\"btn btn-outline-danger float-right panel-collapse show\" role=\"button\" title=\"delete\"><i class=\"fas fa-trash-alt\"></i>".__("Delete")."</button>";
     }else if($sdSections->id!="44" && $sdSections->id!="65"){
         $text = $text."<button style=\"display:none\" type=\"button\" onclick=\"setPageChange(".$sdSections['id'].",".(int)($max_set_No+1).",1)\" id=\"addbtn-".$sdSections['id']."\" class=\"btn btn-outline-primary float-right panel-collapse show\" role=\"button\" title=\"add\"><i class=\"fas fa-plus\"></i>".__("Add")."</button>";
-        $text = $text."<button style=\"display:none\" type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1,".$section_key.")\" id=\"deletebtn-".$sdSections['id']."\" class=\"btn btn-outline-danger float-right panel-collapse show\" role=\"button\" title=\"delete\"><i class=\"fas fa-trash-alt\"></i>".__("Delete")."</button>"; 
+        $text = $text."<button style=\"display:none\" type=\"button\" onclick=\"deleteSection(".$sdSections['id'].",1,".$section_key.")\" id=\"deletebtn-".$sdSections['id']."\" class=\"btn btn-outline-danger float-right panel-collapse show\" role=\"button\" title=\"delete\"><i class=\"fas fa-trash-alt\"></i>".__("Delete")."</button>";
     }
     $text = $text."<input type=\"hidden\" id='setArray-".$sdSections->id."' value='";
         for($i = sizeof($setArray);$i>0;$i--){
             $text = $text.$setArray[$i-1].",";
-        } 
+        }
     $text = $text."'>";
     $text = $text. "<div id=\"pagination-section-".$sdSections->id."\" class=\"DEpagination float-right panel-collapse show\">";
     $text =$text. "<ul class=\"pagination mb-0 mx-2\">";
@@ -837,10 +848,10 @@ function displaySelectBar($sdSections, $setArray, $section_key){
     $text =$text. "</ul>";
     $text =$text."</div>";
     return $text;
-    
+
 }
 function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,$html,$permission, $dynamic_options){
-    
+
     if(empty($exsitSectionNo)) return null;
     if(!in_array($sdSections->id,$exsitSectionNo)) return ["exsitSectionNo"=>$exsitSectionNo];
     $sectionKey = array_search($sdSections->id,$exsitSectionNo);
@@ -866,7 +877,7 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
     $nav_Text = $nav_Text." nav-link\" id=\"nav-".$sdSections->id."-tab\" data-toggle=\"tab\" href=\"#secdiff-".$sdSections->id."\" role=\"tab\" aria-controls=\"secdiff-".$sdSections->id."\" aria-selected=\"true\">";
     $nav_Text = $nav_Text.$sdSections->section_name;
     $nav_Text = $nav_Text."</a>";
-    if(!empty($sdSections['sd_section_structures'])) 
+    if(!empty($sdSections['sd_section_structures']))
         $field_Text = $field_Text.displaySingleSection($sdSections, $setArray, $sectionKey, $html, $permission, $dynamic_options);//display single section's fields, iterater sectioin's strucutures
     if(empty($sdSections['child_section'])){
         $exsitSectionNo[$sectionKey]= null;
@@ -896,7 +907,7 @@ function displaySection($sdSections, $allsdSections, $setArray, $exsitSectionNo,
 
         }else{
             $child_Field_Text = $child_Field_Text."<div class=\"nested-section layer-".$sdSections->section_level."\">".$result['field_Text'].$result['child_Field_Text']."</div>";//add section label here TODO YULI
-        }    
+        }
         $exsitSectionNo = $result['exsitSectionNo'];
     }
     $nav_Text = "<a class=\"nav-item";
