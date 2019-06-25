@@ -40,11 +40,13 @@ jQuery(function($) {  // In case of jQuery conflict
             $('#topbar').addClass('topbarchange');
             $('#sidenav').addClass('sidenavchange');
             $('.dataentry').addClass('dataentrychange');
+            $('#searchArea').addClass('searchAreaChange');
         }
         else {
             $('#topbar').removeClass('topbarchange');
             $('#sidenav').removeClass('sidenavchange');
             $('.dataentry').removeClass('dataentrychange');
+            $('#searchArea').removeClass('searchAreaChange');
         }
     })
 
@@ -79,11 +81,16 @@ jQuery(function($) {  // In case of jQuery conflict
         function(){ $(this).removeClass('shadow')
     });
 
-    // Dashboard "Print" button
-    $('a#printPage').click(function(){
-        window.print();
-        return false;
-    });
+// Dashboard "Print" button
+$('a#printPage').click(function(){
+    window.print();
+    return false;
+});
+
+// Data Entry Search Area
+$("#DeSearch").click(function() {
+    $("#searchArea").toggle();
+})
 
 // Make nav button has "active" effect
     $(function(){

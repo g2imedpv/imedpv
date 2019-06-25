@@ -16,12 +16,10 @@
     </div>
     <div class="form-group text-white w-75 mx-auto"  style="text-align:center">
         <label class="d-block" style="text-align:left"><?php echo __("Select Language");?></label>
-        <a href="/sd-users/setLanguage/en_US" class="mx-2">
-          English
-        </a>
-        <a href="/sd-users/setLanguage/zh_CN" class="mx-2">
-          Chinese
-        </a>
+        <div class="text-left">
+            <a class="btn btn-sm btn-outline-primary mr-3" href="/sd-users/setLanguage/en_US" role="button"><?php echo __("English");?></a>
+            <a class="btn btn-sm btn-outline-primary" href="/sd-users/setLanguage/zh_CN" role="button"><?php echo __("Chinese");?></a>
+        </div>
     </div>
     <?= $this->Form->button(__("Login"),['type'=>'submit','class'=>'btn btn-primary w-50 mx-auto my-4']) ?>
 <?= $this->Form->end() ?>

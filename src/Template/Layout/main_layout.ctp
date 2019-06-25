@@ -33,7 +33,6 @@
 
     <!-- For local Bootstrap/JS link -->
     <?= $this->Html->script('bootstrap/bootstrap.bundle.min.js') ?>
-    <?= $this->Html->script('bootstrap/bootstrap.min.js') ?>
     <?= $this->Html->script('bootstrap/jquery-1.12.4.js') ?>
     <?= $this->Html->script('bootstrap/jquery-ui.js') ?>
 
@@ -60,20 +59,31 @@
         <img src="/img/logo-mds.png" title="MDS" alt="logo" style="width:200px;">
       </a>
 
-      <div class="my-auto border border-white p-2 rounded">
-        <a href="/sd-users/setLanguage/en_US" class="mx-2">English
+    <!-- Language Switcher -->
+    <div class="btn-group my-auto">
+      <button type="button" class="btn dropdown-toggle" title="Language Switcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-language"></i>
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="/sd-users/setLanguage/en_US">English
           <!-- <img class="flag" src="/img/flags/4x3/us.svg" href="/sd-users/setLanguage/en_US" alt="English Version" title="English Version"> -->
         </a>
-        <a href="/sd-users/setLanguage/zh_CN" class="mx-2">Chinese
+        <a class="dropdown-item" href="/sd-users/setLanguage/zh_CN">Chinese
           <!-- <img class="flag" src="/img/flags/4x3/cn.svg" href="/sd-users/setLanguage/zh_CN" alt="Chinese Version" title="Chinese Version"> -->
         </a>
       </div>
-      <div class="my-auto border border-white p-2 rounded mx-2"> <? __("E2B Version")?>
-        <a href="/sd-users/setVersion/2" class="mx-2"><? __("version")?> E2B R2
-        </a>
-        <a href="/sd-users/setVersion/3" class="mx-2"><? __("version")?> E2B R3
-        </a>
+    </div>
+
+    <!-- E2B Version Switcher -->
+    <div class="btn-group my-auto">
+      <button type="button" class="btn dropdown-toggle" title="E2B Version Switcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <? __("E2B Version")?> E2B
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="/sd-users/setVersion/2"><? __("version")?> E2B R2</a>
+        <a class="dropdown-item" href="/sd-users/setVersion/3"><? __("version")?> E2B R3</a>
       </div>
+    </div>
 
       <div class="d-flex p-2 mx-2">
         <?php

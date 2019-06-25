@@ -56,32 +56,24 @@ echo $this->element('generatepdf');
 
             <!-- "Search" Button -->
             <li class="nav-item m-1">
-                <button class="btn btn-outline-info" title="Search" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-outline-info" title="Search" role="button" id="DeSearch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-search"></i> <?php echo __("Search")?>
                 </button>
-                </b>
-                <div class="dropdown-menu p-3">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="searchFieldKey" placeholder="Search Field Here">
-                        <!-- <button type="submit" class="btn btn-primary mx-2">Search</button> -->
-                    </div>
-                    <div id="searchFieldResult"></div>
-                </div>
             </li>
 
             <!-- "Version Switch" Dropdown Button -->
             <li class="nav-item dropdown m-1">
-                <a class="btn btn-outline-info dropdown-toggle" href="#" title="Version Switch" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn btn-outline-info dropdown-toggle" href="#" title="Version Switch" role="button" id="versionSwitch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-code-branch"></i> <?php echo __("Switch Version")?>
                 </a>
                 <?php
                 if(sizeof($case_versions->toList())>1){
-                    echo "<div class=\"dropdown-menu\"  aria-labelledby=\"navbarDropdownMenuLink\">";
+                    echo "<div class=\"dropdown-menu\"  aria-labelledby=\"versionSwitch\">";
                     foreach($case_versions as $case_version_detail){
                         echo "<a class=\"dropdown-item\" href=\"/sd-tabs/showdetails/1?caseNo=".$caseNo."&version=".$case_version_detail['version_no']."\">".$case_version_detail['version_no']."</a>";
                     }
                 }
-                echo "</div>";
+                // echo "</div>";
                 ?>
             </li>
 
@@ -97,10 +89,10 @@ echo $this->element('generatepdf');
 
             <!-- "Export" Dropdown Button -->
             <li class="nav-item dropdown m-1">
-                <a class="btn btn-outline-info dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn btn-outline-info dropdown-toggle" href="#" id="export" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-print"></i> <?php echo __("Export")?>
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <div class="dropdown-menu" aria-labelledby="export">
                     <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>"><?php echo __("CIOMS")?></a>
                     <a class="dropdown-item" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>"><?php echo __("FDA")?></a>
                     <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLTwo/<?php echo $caseId ?>"><?php echo __("XML-R2")?></a>
@@ -123,21 +115,25 @@ echo $this->element('generatepdf');
                 }?>
             </li>
 
-            <?php endif;?>
-
-            <li class="nav-item m-1">
-                <div class="modal fade signOff" tabindex="-1" role="dialog" aria-labelledby="signOff" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div id="action-text-hint"></div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-
         </ul>
+            <?php endif;?>
     </div>
 </nav>
+
+<!-- Sign Off Modal -->
+<div class="modal fade signOff" tabindex="-1" role="dialog" aria-labelledby="signOff" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="action-text-hint"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Result Area -->
+<div id="searchArea" class="w-50 ml-auto" style="display:none;">
+    <input type="text" class="form-control" id="searchFieldKey" placeholder="Search Field Here">
+    <div id="searchFieldResult"></div>
+</div>
 
 <!-- Left Nav Bar -->
 <?php
@@ -399,7 +395,7 @@ function displayTitle($sectionId, $section_name, $sectionKey, $permission){
     // }
     $text =$text. "<div class=\"header-section panel-heading\">";//Todo
     $text =$text. "<h3 id=\"section_label-".$sectionId."\"class=\"secspace panel-title-dataentry\">";
-    $text =$text."<a data-toggle=\"collapse\" href=\"#input-".$sectionId."-sectionKey-".$sectionKey.",#card-summary-".$sectionId.",#addbtn-".$sectionId.",#deletebtn-".$sectionId.",#pagination-section-".$sectionId.",#save-btn".$sectionId."-".$sectionKey."\">".$section_name."</a></h3>";
+    $text =$text."<a class=\"text-decoration-none\" data-toggle=\"collapse\" href=\"#input-".$sectionId."-sectionKey-".$sectionKey.",#card-summary-".$sectionId.",#addbtn-".$sectionId.",#deletebtn-".$sectionId.",#pagination-section-".$sectionId.",#save-btn".$sectionId."-".$sectionKey."\">".$section_name."</a></h3>";
     //echo"<a role=\"button\" id=\"save-btn".$sectionId."-".$sectionKey."\" onclick=\"saveSection(".$sectionId.")\" class=\"ml-3 px-5 btn btn-outline-secondary\" aria-pressed=\"true\" style=\"display:none\">Save</a>";        // Pagination
     $text =$text. "</>";
         // if(($section->is_addable == 1)&&($permission==1))
