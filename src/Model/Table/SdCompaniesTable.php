@@ -10,8 +10,9 @@ use Cake\Validation\Validator;
  * SdCompanies Model
  *
  * @property \App\Model\Table\SdUserTypesTable|\Cake\ORM\Association\BelongsTo $SdUserTypes
+ * @property |\Cake\ORM\Association\HasMany $SdProductWorkflows
+ * @property |\Cake\ORM\Association\HasMany $SdProducts
  * @property \App\Model\Table\SdUsersTable|\Cake\ORM\Association\HasMany $SdUsers
- * @property |\Cake\ORM\Association\HasMany $SdWorkflows
  *
  * @method \App\Model\Entity\SdCompany get($primaryKey, $options = [])
  * @method \App\Model\Entity\SdCompany newEntity($data = null, array $options = [])
@@ -43,10 +44,13 @@ class SdCompaniesTable extends Table
             'foreignKey' => 'sd_user_type_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('SdUsers', [
+        $this->hasMany('SdProductWorkflows', [
             'foreignKey' => 'sd_company_id'
         ]);
-        $this->hasMany('SdWorkflows', [
+        $this->hasMany('SdProducts', [
+            'foreignKey' => 'sd_company_id'
+        ]);
+        $this->hasMany('SdUsers', [
             'foreignKey' => 'sd_company_id'
         ]);
     }
@@ -218,6 +222,12 @@ class SdCompaniesTable extends Table
             ->dateTime('modified_dt')
             ->requirePresence('modified_dt', 'create')
             ->notEmpty('modified_dt');
+
+        $validator
+            ->scalar('product_abbreviation')
+            ->maxLength('product_abbreviation', 5)
+            ->requirePresence('product_abbreviation', 'create')
+            ->notEmpty('product_abbreviation');
 
         return $validator;
     }
