@@ -124,7 +124,7 @@ function checkDuplicate(){
             var result = $.parseJSON(response);
             var text = "";
             if(response!="[]"){
-                text +="<h3>"+i18n.gettext("Search Results")+"</h3>";
+                text +="<h3 class=\"text-center my-3\">"+i18n.gettext("Search Results")+"</h3>";
                 text +="<table class=\"table table-hover\">";
                 text +="<thead>";
                 text +="<tr>";
@@ -239,7 +239,7 @@ $(document).ready(function(){
     function dateConvert(target){
         var date=$(target).val();
         if(date!=''){
-            var fieldId=$(target).attr('id'); 
+            var fieldId=$(target).attr('id');
             var dateInformat=date.substring(4,8)+'-'+date.substring(2,4)+'-'+date.substring(0,2);
             $("#"+fieldId+"_plugin").val(dateInformat);
         }else{

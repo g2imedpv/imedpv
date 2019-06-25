@@ -9,6 +9,12 @@ body{
     height: 100%;
     padding: 0;
     margin: 0;
+    font-family: arial;
+}
+
+input,input::placeholder, select {
+    font-size: 12px !important;
+    font-family: arial !important;
 }
 
 /* mainNav */
@@ -67,7 +73,13 @@ ul.topbar > li.nav-item {
 
 .dataentrychange {
     top:55px;
+}
 
+.searchAreaChange {
+    position: fixed;
+    top: 55px;
+    right: 0;
+    z-index: 99;
 }
 
 #chooseFile {
@@ -155,7 +167,7 @@ tr:nth-child(even) {
     padding:0 20px;
     margin-bottom: 40px;
     font-family: Arial;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 
@@ -455,7 +467,7 @@ ul.queryBoxLeft > a {
 /* Meddra browser */
 .lltQuickSearch {
     position: absolute !important;
-    top:0;
+    top:-45px;
     left: 190px;
 }
 
@@ -586,7 +598,7 @@ ul.queryBoxLeft > a {
     margin-left: -510px;
 }
 #caseTable_info{
-margin-left: -340px;
+    margin-left: -340px;
 }
 /*add product permission collapse */
 
@@ -619,12 +631,28 @@ margin-left: -340px;
     left: 290px;
 }
 
-
 #sidenav {
     position: absolute;
     width: 200px;
     left: 80px;
     margin-top: 70px;
+}
+
+.formContainer {
+    width: 90%;
+    font-size: 12px;
+}
+
+/* Change layout while Print */
+@media print {
+    #sidenav, .topNav, .gotop {
+        visibility: hidden;
+    }
+    body, .dataentry {
+        position: absolute !important;
+        width: 100% !important;
+        left: -140px !important;
+    }
 }
 
 /* Responsive Display */
@@ -673,5 +701,45 @@ margin-left: -340px;
     }
     .dataentry{
         width: 85%;
+    }
+}
+
+/* Data Entry Search Area fade in EFFECT */
+#searchArea {
+    animation: fadein 1s;
+    -moz-animation: fadein 1s; /* Firefox */
+    -webkit-animation: fadein 1s; /* Safari and Chrome */
+    -o-animation: fadein 1s; /* Opera */
+}
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-moz-keyframes fadein { /* Firefox */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-webkit-keyframes fadein { /* Safari and Chrome */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-o-keyframes fadein { /* Opera */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity: 1;
     }
 }
