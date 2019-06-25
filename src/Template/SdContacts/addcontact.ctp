@@ -10,15 +10,14 @@ use Cake\ORM\TableRegistry;
 <?= $this->Html->script('dataentry/fieldLogic.js') ?>
 <head>
 <body>
-    <form class="container" method="post" accept-charset="utf-8" action="/sd-contacts/addcontact" >
-        <div class="card mt-3">
-            <div class="card-header text-center">
-                <h3><?php echo __("Add Contact");?></h3>
-            </div>
-            <div class="card-body prodiff">
+    <div class="mx-auto my-3 formContainer text-center">
+        <form class="container" method="post" accept-charset="utf-8" action="/sd-contacts/addcontact" >
             <?php echo $this->Form->create($sdContact);?>
                 <fieldset>
-                    <div class="form-row">      
+                    <p class="pageTitle">
+                        <?php echo __("Add Contact");?>
+                    </p>
+                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <div class="input number required ">
                                 <label for="contact-type"><?php echo __("Contact Type");?></label>
@@ -42,7 +41,7 @@ use Cake\ORM\TableRegistry;
                             </div>
                         </div>
                     </div>
-                    <div class="form-row">      
+                    <div class="form-row">
                         <div class="form-group col-md-6" >
                             <div class="input number required">
                                 <label for="blinded-report"><?php echo __("Blinded Report");?></label>
@@ -54,11 +53,11 @@ use Cake\ORM\TableRegistry;
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group col-md-6" >
-                            <div class="input checkbox" style="margin-top:14px; text-align:justify; line-height:28px;">
+                        <div class="form-group col-md-6 position-relative" >
+                            <div class="form-check input checkbox position-absolute" style="top:25px;">
                                 <input type="hidden" name="data_privacy" value="0">
                                 <label for="data-privacy">
-                                    <input type="checkbox" name="data_privacy" value="1" id="data-privacy" ><?php echo __("Data Privacy");?> 
+                                    <input type="checkbox" name="data_privacy" value="1" id="data-privacy" ><?php echo __("Data Privacy");?>
                                 </label>
                             </div>
                         </div>
@@ -204,12 +203,14 @@ use Cake\ORM\TableRegistry;
                     </div>
                 </fieldset>
                 <?= $this->Form->end() ?>
-            </div>
-        </div>
-    </form>
-    <div class="mx-auto text-center w-75 mt-3 ">
-        <h3><?php echo __("Contact List");?></h3>
-        <table class="table table-bordered table-hover " id="contact_list">
+        </form>
+
+        <hr class="my-4">
+
+        <p class="pageTitle">
+            <?php echo __("Contact List");?>
+        </p>
+        <table class="table table-bordered table-hover mb-5" id="contact_list">
             <thead>
                 <tr>
                     <th scope="row"><?php echo __("Contact ID");?></th>
@@ -245,7 +246,7 @@ use Cake\ORM\TableRegistry;
                         echo"<td>".$contacters->website."</td>";
                         echo"</tr>";
                     }
-                ?> 
+                ?>
             </tbody>
         </table>
     </div>

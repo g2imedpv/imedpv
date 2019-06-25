@@ -86,10 +86,6 @@ ul.topbar > li.nav-item {
     display: none;
 }
 
-.searchmodal {
-    left: -195px;
-    width: 135%;
-}
 
 .subtabtitle {
     font-family: 'Quattrocento-Regular';
@@ -105,15 +101,9 @@ ul.topbar > li.nav-item {
     width: 100%;
 }
 
-.duedate {
-    font-size: 20px;
-    text-align: left;
-    padding-left: 10px !important;
-}
-
 .arrow {
     position: relative;
-    top: -10px;
+    top: -14px;
     font-size: 25px;
     color: teal;
 }
@@ -218,11 +208,6 @@ tr:nth-child(even) {
 
 .custworkflow ul, #choosewf ul {
     list-style-type: none;
-}
-
-.card-body > button {
-    position: relative;
-    top: -8px;
 }
 
 #draggable {
@@ -377,11 +362,8 @@ hr.wfhr {
     min-width: 300px;
 }
 
-.searchProductContainer {
-    width: max-content;
-    min-width: -webkit-fill-available;
-    position: relative;
-    right: 135px;
+.pageTitle {
+    font-size: 2rem;
 }
 
 .closewf {
@@ -550,6 +532,13 @@ ul.queryBoxLeft > a {
     display:inline-block;
 
 }
+
+.whoddinput {
+    position: absolute !important;
+    top: 26px;
+    left: 210px;
+}
+
 .card{
     display:block;
 }
@@ -678,6 +667,12 @@ ul.queryBoxLeft > a {
     }
     .sidenavchange {
         top:110px;
+    }
+    .whoddinput {
+        left:160px !important;
+    }
+    .fieldInput {
+        font-size: 18px;
     }
 }
 

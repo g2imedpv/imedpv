@@ -3,54 +3,68 @@
 var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
 var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
 </script>
-<div class="card my-3 w-75 mx-auto">
-    <div class="card-header text-center">
-        <h3><?php echo __("Case List")?></h3>
-    </div>
-    <div class="card-body">
-        <div class="form-row">
-            <div class="form-group col-lg-4">
-                <!-- <label for="recipient-name" class="col-form-label">Recipient:</label> -->
+<div class="my-3 mx-auto formContainer">
+    <div class="text-center">
+        <p class="pageTitle">
+            <?php echo __("Case List")?>
+        </p>
+        <div class="form-row justify-content-center">
+            <div class="form-group col-lg-2">
+                <label class="col-form-label"><?php echo __("Search Product Name")?></label>
                 <input type="text" class="form-control" id="searchProductName" name="searchProductName" placeholder="<?php echo __("Search Product Name")?>">
             </div>
-            <div class="form-group col-lg-4">
+            <div class="form-group col-lg-2">
+                <label class="col-form-label"><?php echo __("Search Case No.")?></label>
                 <input type="text" class="form-control"  id="searchName" name="searchName" placeholder="<?php echo __("Search Case No.")?>">
             </div>
-            <div class="form-group col-lg-4">
+            <div class="form-group col-lg-2">
+                <label class="col-form-label"><?php echo __("Search Case Status")?></label>
                 <input type="text" class="form-control" id="case_status" placeholder="<?php echo __("Search Case Status")?>">
             </div>
         </div>
-        <div class="form-row">
-            <div class="duedate form-group col-2"><?php echo __("Activity Due Date")?>:</div>
-            <div class="form-group col-1">
-                <input type="text" class="form-control" id="datepicker1" placeholder="<?php echo __("mm/dd/yyyy")?>">
-            </div>
-            <div class="arrow">
-                <i class="far fa-window-minimize"></i>
-            </div>
-            <div class="form-group col-1">
-                <input type="text" class="form-control" id="datepicker2" placeholder="<?php echo __("mm/dd/yyyy")?>">
-            </div>
 
-            <div class="duedate form-group col-2 float-right"><?php echo __("Submission Due Date")?>:</div>
-            <div class="form-group col-1">
-                <input type="text" class="form-control" id="datepicker3" placeholder="<?php echo __("mm/dd/yyyy")?>">
+        <div class="form-row justify-content-center">
+            <div class="form-group col-lg-3">
+                <label class="col-form-label"><?php echo __("Activity Due Date")?>:</label>
+                <div class="col-sm-12 row justify-content-center">
+                    <div class="col-sm-5">
+                        <input type="text"  class="form-control" id="datepicker1" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                    </div>
+                    <div class="col-sm-2 arrow">
+                        <i class="far fa-window-minimize"></i>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text"  class="form-control" id="datepicker2" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                    </div>
+                </div>
             </div>
-            <div class="arrow">
-                <i class="far fa-window-minimize"></i>
-            </div>
-            <div class="form-group col-1">
-                <input type="text" class="form-control" id="datepicker4" placeholder="<?php echo __("mm/dd/yyyy")?>">
+            <div class="form-group col-lg-3">
+                <label class="col-form-label"><?php echo __("Submission Due Date")?>:</label>
+                <div class="col-sm-12 row justify-content-center">
+                    <div class="col-sm-5">
+                        <input type="text"  class="form-control" id="datepicker3" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                    </div>
+                    <div class="col-sm-2 arrow">
+                        <i class="far fa-window-minimize"></i>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text"  class="form-control" id="datepicker4" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="form-row" id="advsearchfield">
+
+        <div class="form-row justify-content-center">
             <div class="form-group col-lg-2">
+                <label class="col-form-label"><?php echo __("Search Patient ID")?></label>
                 <input type="text" class="form-control" id="patient_id" placeholder="<?php echo __("Search Patient ID")?>">
             </div>
             <div class="form-group col-lg-2">
+                <label class="col-form-label"><?php echo __("Select Date of Birth")?></label>
                 <input type="text" class="form-control" id="datepicker5" placeholder="<?php echo __("Select Date of Birth")?>">
             </div>
             <div class="form-group col-lg-2">
+                <label class="col-form-label"><?php echo __("Select Gender")?></label>
                 <select id="inputState" class="form-control">
                     <option selected><?php echo __("Select Gender")?></option>
                     <option><?php echo __("Male")?></option>

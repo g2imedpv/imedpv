@@ -26,7 +26,7 @@ function searchProd(){
             console.log(response);
             var result = $.parseJSON(response);
             var text = "";
-            text +="<h3>"+i18n.gettext("Product List")+"</h3>";
+            text +="<p class=\"pageTitle\">"+i18n.gettext("Product List")+"</p>";
             text +="<table class=\"table table-hover table-bordered\" id=\"search_result\">";
             text += "<thead>";
             text +="<tr>";
@@ -52,7 +52,7 @@ function searchProd(){
                 text += "<td>"+i18n.gettext("new")+"</td>";
                 text += "<td>";
                 $.each(caseDetail.sd_product_workflows, function(k,product_workflowdetail){
-                    text += "<div class=\"btn btn-sm btn-outline-info mx-1\" data-toggle=\"modal\" onclick=\"view_workflow("+product_workflowdetail.id+")\" data-target=\".WFlistView\">"+product_workflowdetail.sd_workflow.name+" / "+i18n.gettext(product_workflowdetail.sd_workflow.country+"")+"</div>";                
+                    text += "<div class=\"btn btn-sm btn-outline-info mx-1\" data-toggle=\"modal\" onclick=\"view_workflow("+product_workflowdetail.id+")\" data-target=\".WFlistView\">"+product_workflowdetail.sd_workflow.name+" / "+i18n.gettext(product_workflowdetail.sd_workflow.country+"")+"</div>";
                 });
                 text += "</td>";
                 text += "<td><div class=\"btn btn-sm btn-outline-info\" data-toggle=\"modal\" onclick=\"view_product("+caseDetail.id+")\" data-target=\".product_detail\">"+i18n.gettext("View Detail")+"</div></td>";

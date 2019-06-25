@@ -62,7 +62,7 @@
     <!-- Language Switcher -->
     <div class="btn-group my-auto">
       <button type="button" class="btn dropdown-toggle" title="Language Switcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-language"></i>
+        <i class="fas fa-globe-americas"></i>
       </button>
       <div class="dropdown-menu">
         <a class="dropdown-item" href="/sd-users/setLanguage/en_US">English
