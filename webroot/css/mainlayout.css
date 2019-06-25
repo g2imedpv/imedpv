@@ -158,6 +158,7 @@ tr:nth-child(even) {
     margin-bottom: 40px;
     font-family: Arial;
     font-size: 12px;
+    line-height: 8px;
 }
 
 
@@ -448,8 +449,7 @@ ul.queryBoxLeft > a {
 
 /* Meddra browser */
 .lltQuickSearch {
-    position: absolute !important;
-    top:-45px;
+    top:-33px;
     left: 190px;
 }
 
@@ -535,7 +535,7 @@ ul.queryBoxLeft > a {
 
 .whoddinput {
     position: absolute !important;
-    top: 26px;
+    top: 16px;
     left: 210px;
 }
 
@@ -673,6 +673,7 @@ ul.queryBoxLeft > a {
     }
     .fieldInput {
         font-size: 18px;
+        line-height: 20px;
     }
 }
 
