@@ -124,7 +124,7 @@ function checkDuplicate(){
             var result = $.parseJSON(response);
             var text = "";
             if(response!="[]"){
-                text +="<h3 class=\"text-center my-3\">Search Results</h3>";
+                text +="<h3 class=\"text-center my-3\">"+i18n.gettext("Search Results")+"</h3>";
                 text +="<table class=\"table table-hover\">";
                 text +="<thead>";
                 text +="<tr>";

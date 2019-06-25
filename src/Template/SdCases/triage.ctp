@@ -127,7 +127,7 @@
             <div class="form-group col-md-3">
                 <label><?php echo __("Age")?> (B.1.2.2a)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_patientField_age_id\" name=\"field_value[86][id]\" value=\"".$field_value_set['86']['id']."\">";?>
-                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<?php echo __("Field Helper")?>" data-content="<?php echo __("Age at Time of Onset of Reaction/event")?>"><i class="qco fas fa-info-circle"></i></a>
+                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<?php echo __("Field Helper")?>" data-content="<?php echo __("Age at Time of Onset of Reaction/event (B.1.2.2a)")?>"><i class="qco fas fa-info-circle"></i></a>
                 <input type="text" class="form-control" id="patientField_age" name="field_value[86][value]" value="<?= $field_value_set['86']['field_value']?>">
             </div>
             <!-- <div class="form-group col-md-3">
@@ -187,7 +187,7 @@
             <table id="eventSummary" class="table table-striped table-bordered table-hover mb-3">
                 <thead>
                     <tr>
-                        <th><?php echo __("Event No")?></th>
+                        <th><?php echo __("Event No.")?></th>
                         <th><?php echo __("Reported Term")?></th>
                         <th><?php echo __("LLT Code")?></th>
                         <th><?php echo __("LLT Name")?></th>

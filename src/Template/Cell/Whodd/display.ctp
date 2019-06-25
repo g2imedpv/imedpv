@@ -157,7 +157,7 @@ function searchWhoDra(){
 
 
         var text = "";
-        text +="<h4 class=\"text-center\">Search Results</h4>";
+        text +="<h4 class=\"text-center\">"+i18n.gettext("Search Results")+"</h4>";
         text +="<table class=\"table table-hover table-striped\" id=\"whodd_table\">";
 
         text += "<thead>";
