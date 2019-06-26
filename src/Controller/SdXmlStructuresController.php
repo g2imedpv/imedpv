@@ -900,7 +900,7 @@ class SdXmlStructuresController extends AppController
                                                                             $xml->writeAttribute('value','true');
                                                                             $xml->endElement();
                                                                             $xml->writeComment("D.7.1.r.3: Continuing #1");
-                                                                    $xml->endElement();
+                                                                    $xml->endElement();//inboundRelationship
                                                                 $xml->endElement();
                                                             $xml->endElement();
                                                         $xml->endElement();//observation
@@ -933,14 +933,493 @@ class SdXmlStructuresController extends AppController
                                                                     $xml->writeComment("E.i.6a: Duration of Reaction / Event (number) #1");
                                                                     $xml->writeComment("E.i.6b: Duration of Reaction / Event (unit) #1");
                                                                 $xml->endElement();//comp
+                                                                $xml->startElement("comp");
+                                                                $xml->writeAttribute('operator','A');
+                                                                $xml->writeAttribute('xsi:type','IVL_TS');
+                                                                    $xml->startElement("high");
+                                                                    $xml->writeAttribute('value','20030518');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.5: Date of End of Reaction / Event #1");
+                                                                $xml->endElement();//comp
                                                             $xml->endElement();//effectiveTime
                                                             $xml->startElement("value");
-                                                            $xml->writeAttribute('xsi:type','PQ');
-                                                            $xml->writeAttribute('unit','cm');
-                                                            $xml->writeAttribute('','185');
-                                                            $xml->endElement();
-                                                            $xml->writeComment("D.4: Height (cm)");
+                                                            $xml->writeAttribute('codeSystemVersion','15.0');
+                                                            $xml->writeAttribute('xsi:type','CE');
+                                                            $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
+                                                            $xml->writeAttribute('code','10016558');
+                                                            $xml->writeComment("E.i.2.1a: MedDRA Version for Reaction / Event #1");
+                                                            $xml->writeComment("E.i.2.1b: Reaction / Event (MedDRA code) #1");
+                                                                $xml->StartElement("originalText"); 
+                                                                $xml->WriteAttribute("language", "GB"); 
+                                                                $xml->text("fever 38 C");
+                                                                $xml->EndElement(); 
+                                                                $xml->writeComment("E.i.1.1a: Reaction / Event as Reported by the Primary Source in Native Language #1");
+                                                                $xml->writeComment("E.i.1.1b: Reaction / Event as Reported by the Primary Source Language #1");
+                                                            $xml->endElement();//value
+                                                            $xml->startElement("location");
+                                                            $xml->writeAttribute('typeCode','LOC');
+                                                                $xml->startElement("locatedEntity");
+                                                                $xml->writeAttribute('classCode','LOCE');
+                                                                    $xml->startElement("locatedPlace");
+                                                                    $xml->writeAttribute('determinerCode','INSTANCE');
+                                                                    $xml->writeAttribute('classCode','COUNTRY');
+                                                                        $xml->startElement("code");
+                                                                        $xml->writeAttribute('codeSystem','1.0.3166.1.2.2');
+                                                                        $xml->writeAttribute('code','GB');
+                                                                        $xml->endElement();
+                                                                        $xml->writeComment("E.i.9: Identification of the Country Where the Reaction / Event Occurred #1");
+                                                                    $xml->endElement();
+                                                                $xml->endElement();//locatedEntity
+                                                            $xml->endElement();//location
+                                                            $xml->startElement("outboundRelationship2");
+                                                            $xml->writeAttribute('typeCode','REFR');
+                                                                $xml->startElement("observation");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','OBS');
+                                                                    $xml->startElement("code");
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                                    $xml->writeAttribute('code','34');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("resultsInDeath");
+                                                                    $xml->startElement("value");
+                                                                    $xml->writeAttribute('xsi:type','BL');
+                                                                    $xml->writeAttribute('nullFlavor','NI');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.3.2a: Results in Death #1");
+                                                                $xml->endElement();//observation
+                                                            $xml->endElement();//outboundRelationship2
+                                                            $xml->startElement("outboundRelationship2");
+                                                            $xml->writeAttribute('typeCode','REFR');
+                                                                $xml->startElement("observation");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','OBS');
+                                                                    $xml->startElement("code");
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                                    $xml->writeAttribute('code','27');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("outcome");
+                                                                    $xml->startElement("value");
+                                                                    $xml->writeAttribute('xsi:type','CE');
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.11');
+                                                                    $xml->writeAttribute('code','1');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.7: Outcome of Reaction / Event at the Time of Last Observation #1");
+                                                                $xml->endElement();//observation
+                                                            $xml->endElement();//outboundRelationship2
+                                                            $xml->startElement("outboundRelationship2");
+                                                            $xml->writeAttribute('typeCode','REFR');
+                                                                $xml->startElement("observation");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','OBS');
+                                                                    $xml->startElement("code");
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                                    $xml->writeAttribute('code','24');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("medicalConfirmationByHealthProfessional");
+                                                                    $xml->startElement("value");
+                                                                    $xml->writeAttribute('xsi:type','BL');
+                                                                    $xml->writeAttribute('value','true');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.8: Medical Confirmation by Healthcare Professional #1");
+                                                                $xml->endElement();//observation
+                                                            $xml->endElement();//outboundRelationship2
                                                         $xml->endElement();//observation
+                                                    $xml->endElement();//subjectOf2
+                                                    $xml->startElement("subjectOf2");
+                                                    $xml->writeAttribute('typeCode','SBJ');
+                                                        $xml->startElement("observation");
+                                                        $xml->writeAttribute('moodCode','EVN');
+                                                        $xml->writeAttribute('classCode','OBS');
+                                                            $xml->startElement("id");
+                                                            $xml->writeAttribute('root','rid-2');
+                                                            $xml->endElement();
+                                                            $xml->startElement("code");
+                                                            $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                            $xml->writeAttribute('code','29');
+                                                            $xml->endElement();
+                                                            $xml->writeComment("reaction");
+                                                            $xml->startElement("effectiveTime");
+                                                            $xml->writeAttribute('xsi:type','SXPR_TS');
+                                                                $xml->startElement("comp");
+                                                                $xml->writeAttribute('xsi:type','IVL_TS');
+                                                                    $xml->startElement("low");
+                                                                    $xml->writeAttribute('value','20030511');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.4: Date of Start of Reaction / Event #2");
+                                                                    $xml->startElement("width");
+                                                                    $xml->writeAttribute('unit','wk');
+                                                                    $xml->writeAttribute('value','1');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.6a: Duration of Reaction / Event (number) #2");
+                                                                    $xml->writeComment("E.i.6b: Duration of Reaction / Event (unit) #2");
+                                                                $xml->endElement();//comp
+                                                                $xml->startElement("comp");
+                                                                $xml->writeAttribute('operator','A');
+                                                                $xml->writeAttribute('xsi:type','IVL_TS');
+                                                                    $xml->startElement("high");
+                                                                    $xml->writeAttribute('value','20030518');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.5: Date of End of Reaction / Event #1");
+                                                                $xml->endElement();//comp
+                                                            $xml->endElement();//effectiveTime
+                                                            $xml->startElement("value");
+                                                            $xml->writeAttribute('codeSystemVersion','15.0');
+                                                            $xml->writeAttribute('xsi:type','CE');
+                                                            $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
+                                                            $xml->writeAttribute('code','10012735');
+                                                            $xml->writeComment("E.i.2.1a: MedDRA Version for Reaction / Event #2");
+                                                            $xml->writeComment("E.i.2.1b: Reaction / Event (MedDRA code) #2");
+                                                                $xml->StartElement("originalText"); 
+                                                                $xml->WriteAttribute("language", "GB"); 
+                                                                $xml->text("diarrhoea");
+                                                                $xml->EndElement(); 
+                                                                $xml->writeComment("E.i.1.1a: Reaction / Event as Reported by the Primary Source in Native Language #2");
+                                                                $xml->writeComment("E.i.1.1b: Reaction / Event as Reported by the Primary Source Language #2");
+                                                            $xml->endElement();//value
+                                                            $xml->startElement("location");
+                                                            $xml->writeAttribute('typeCode','LOC');
+                                                                $xml->startElement("locatedEntity");
+                                                                $xml->writeAttribute('classCode','LOCE');
+                                                                    $xml->startElement("locatedPlace");
+                                                                    $xml->writeAttribute('determinerCode','INSTANCE');
+                                                                    $xml->writeAttribute('classCode','COUNTRY');
+                                                                        $xml->startElement("code");
+                                                                        $xml->writeAttribute('codeSystem','1.0.3166.1.2.2');
+                                                                        $xml->writeAttribute('code','GB');
+                                                                        $xml->endElement();
+                                                                        $xml->writeComment("E.i.9: Identification of the Country Where the Reaction / Event Occurred #2");
+                                                                    $xml->endElement();
+                                                                $xml->endElement();//locatedEntity
+                                                            $xml->endElement();//location
+                                                            $xml->startElement("outboundRelationship2");
+                                                            $xml->writeAttribute('typeCode','REFR');
+                                                                $xml->startElement("observation");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','OBS');
+                                                                    $xml->startElement("code");
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                                    $xml->writeAttribute('code','34');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("resultsInDeath");
+                                                                    $xml->startElement("value");
+                                                                    $xml->writeAttribute('xsi:type','BL');
+                                                                    $xml->writeAttribute('nullFlavor','NI');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.3.2a: Results in Death #2");
+                                                                $xml->endElement();//observation
+                                                            $xml->endElement();//outboundRelationship2
+                                                            $xml->startElement("outboundRelationship2");
+                                                            $xml->writeAttribute('typeCode','REFR');
+                                                                $xml->startElement("observation");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','OBS');
+                                                                    $xml->startElement("code");
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                                    $xml->writeAttribute('code','27');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("outcome");
+                                                                    $xml->startElement("value");
+                                                                    $xml->writeAttribute('xsi:type','CE');
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.11');
+                                                                    $xml->writeAttribute('code','1');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.7: Outcome of Reaction / Event at the Time of Last Observation #2");
+                                                                $xml->endElement();//observation
+                                                            $xml->endElement();//outboundRelationship2
+                                                            $xml->startElement("outboundRelationship2");
+                                                            $xml->writeAttribute('typeCode','REFR');
+                                                                $xml->startElement("observation");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','OBS');
+                                                                    $xml->startElement("code");
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                                    $xml->writeAttribute('code','24');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("medicalConfirmationByHealthProfessional");
+                                                                    $xml->startElement("value");
+                                                                    $xml->writeAttribute('xsi:type','BL');
+                                                                    $xml->writeAttribute('value','true');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.8: Medical Confirmation by Healthcare Professional #2");
+                                                                $xml->endElement();//observation
+                                                            $xml->endElement();//outboundRelationship2
+                                                        $xml->endElement();//observation
+                                                    $xml->endElement();//subjectOf2
+                                                    $xml->startElement("subjectOf2");
+                                                    $xml->writeAttribute('typeCode','SBJ');
+                                                        $xml->startElement("observation");
+                                                        $xml->writeAttribute('moodCode','EVN');
+                                                        $xml->writeAttribute('classCode','OBS');
+                                                            $xml->startElement("id");
+                                                            $xml->writeAttribute('root','rid-3');
+                                                            $xml->endElement();
+                                                            $xml->startElement("code");
+                                                            $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                            $xml->writeAttribute('code','29');
+                                                            $xml->endElement();
+                                                            $xml->writeComment("reaction");
+                                                            $xml->startElement("effectiveTime");
+                                                            $xml->writeAttribute('xsi:type','SXPR_TS');
+                                                                $xml->startElement("comp");
+                                                                $xml->writeAttribute('xsi:type','IVL_TS');
+                                                                    $xml->startElement("low");
+                                                                    $xml->writeAttribute('value','20030511');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.4: Date of Start of Reaction / Event #3");
+                                                                    $xml->startElement("width");
+                                                                    $xml->writeAttribute('unit','wk');
+                                                                    $xml->writeAttribute('value','1');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.6a: Duration of Reaction / Event (number) #3");
+                                                                    $xml->writeComment("E.i.6b: Duration of Reaction / Event (unit) #3");
+                                                                $xml->endElement();//comp
+                                                                $xml->startElement("comp");
+                                                                $xml->writeAttribute('operator','A');
+                                                                $xml->writeAttribute('xsi:type','IVL_TS');
+                                                                    $xml->startElement("high");
+                                                                    $xml->writeAttribute('value','20030518');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.5: Date of End of Reaction / Event #3");
+                                                                $xml->endElement();//comp
+                                                            $xml->endElement();//effectiveTime
+                                                            $xml->startElement("value");
+                                                            $xml->writeAttribute('codeSystemVersion','15.0');
+                                                            $xml->writeAttribute('xsi:type','CE');
+                                                            $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
+                                                            $xml->writeAttribute('code','10029354');
+                                                            $xml->writeComment("E.i.2.1a: MedDRA Version for Reaction / Event #3");
+                                                            $xml->writeComment("E.i.2.1b: Reaction / Event (MedDRA code) #3");
+                                                                $xml->StartElement("originalText"); 
+                                                                $xml->WriteAttribute("language", "GB"); 
+                                                                $xml->text("neutroprnia");
+                                                                $xml->EndElement(); 
+                                                                $xml->writeComment("E.i.1.1a: Reaction / Event as Reported by the Primary Source in Native Language #3");
+                                                                $xml->writeComment("E.i.1.1b: Reaction / Event as Reported by the Primary Source Language #3");
+                                                            $xml->endElement();//value
+                                                            $xml->startElement("location");
+                                                            $xml->writeAttribute('typeCode','LOC');
+                                                                $xml->startElement("locatedEntity");
+                                                                $xml->writeAttribute('classCode','LOCE');
+                                                                    $xml->startElement("locatedPlace");
+                                                                    $xml->writeAttribute('determinerCode','INSTANCE');
+                                                                    $xml->writeAttribute('classCode','COUNTRY');
+                                                                        $xml->startElement("code");
+                                                                        $xml->writeAttribute('codeSystem','1.0.3166.1.2.2');
+                                                                        $xml->writeAttribute('code','GB');
+                                                                        $xml->endElement();
+                                                                        $xml->writeComment("E.i.9: Identification of the Country Where the Reaction / Event Occurred #3");
+                                                                    $xml->endElement();
+                                                                $xml->endElement();//locatedEntity
+                                                            $xml->endElement();//location
+                                                            $xml->startElement("outboundRelationship2");
+                                                            $xml->writeAttribute('typeCode','REFR');
+                                                                $xml->startElement("observation");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','OBS');
+                                                                    $xml->startElement("code");
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                                    $xml->writeAttribute('code','34');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("resultsInDeath");
+                                                                    $xml->startElement("value");
+                                                                    $xml->writeAttribute('xsi:type','BL');
+                                                                    $xml->writeAttribute('value','true');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.3.2a: Results in Death #3");
+                                                                $xml->endElement();//observation
+                                                            $xml->endElement();//outboundRelationship2
+                                                            $xml->startElement("outboundRelationship2");
+                                                            $xml->writeAttribute('typeCode','REFR');
+                                                                $xml->startElement("observation");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','OBS');
+                                                                    $xml->startElement("code");
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                                    $xml->writeAttribute('code','33');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("requiresInpatientHospitalization");
+                                                                    $xml->startElement("value");
+                                                                    $xml->writeAttribute('xsi:type','BL');
+                                                                    $xml->writeAttribute('value','true');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.3.2c: Caused / Prolonged Hospitalisation #3");
+                                                                $xml->endElement();//observation
+                                                            $xml->endElement();//outboundRelationship2
+                                                            $xml->startElement("outboundRelationship2");
+                                                            $xml->writeAttribute('typeCode','REFR');
+                                                                $xml->startElement("observation");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','OBS');
+                                                                    $xml->startElement("code");
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                                    $xml->writeAttribute('code','27');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("outcome");
+                                                                    $xml->startElement("value");
+                                                                    $xml->writeAttribute('xsi:type','CE');
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.11');
+                                                                    $xml->writeAttribute('code','1');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.7: Outcome of Reaction / Event at the Time of Last Observation #3");
+                                                                $xml->endElement();//observation
+                                                            $xml->endElement();//outboundRelationship2
+                                                            $xml->startElement("outboundRelationship2");
+                                                            $xml->writeAttribute('typeCode','REFR');
+                                                                $xml->startElement("observation");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','OBS');
+                                                                    $xml->startElement("code");
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                                    $xml->writeAttribute('code','24');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("medicalConfirmationByHealthProfessional");
+                                                                    $xml->startElement("value");
+                                                                    $xml->writeAttribute('xsi:type','BL');
+                                                                    $xml->writeAttribute('value','true');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.8: Medical Confirmation by Healthcare Professional #3");
+                                                                $xml->endElement();//observation
+                                                            $xml->endElement();//outboundRelationship2
+                                                        $xml->endElement();//observation
+                                                    $xml->endElement();//subjectOf2
+                                                    $xml->startElement("subjectOf2");
+                                                    $xml->writeAttribute('typeCode','SBJ');
+                                                        $xml->startElement("organizer");
+                                                        $xml->writeAttribute('moodCode','EVN');
+                                                        $xml->writeAttribute('classCode','GATEGORY');
+                                                            $xml->startElement("code");
+                                                            $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.20');
+                                                            $xml->writeAttribute('code','4');
+                                                            $xml->endElement();
+                                                            $xml->writeComment("drugInformation");
+                                                            $xml->writeComment("G.k Drug(s) Information (repeat as necessary) #1");
+                                                            $xml->startElement("component");
+                                                            $xml->writeAttribute('typeCode','COMP');
+                                                                $xml->startElement("substanceAdministration");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','SBADM');
+                                                                    $xml->startElement("id");
+                                                                    $xml->writeAttribute('root','d-id1');
+                                                                    $xml->endElement();
+                                                                    $xml->startElement("consumable");
+                                                                    $xml->writeAttribute('type','CSM');
+                                                                        $xml->startElement("instanceOfKind");
+                                                                        $xml->writeAttribute('classCode','INST');
+                                                                            $xml->startElement("kindOfProduct");
+                                                                            $xml->writeAttribute('determinerCode','KIND');
+                                                                            $xml->writeAttribute('classCode','MMAT');
+                                                                                $xml->writeElement('name','dantium');
+                                                                                $xml->writeComment("G.k.2.2: Medicinal Product Name as Reported by the Primary Source #1");
+                                                                                $xml->startElement("ingredient");
+                                                                                $xml->writeAttribute('classCode','ACTI');
+                                                                                    $xml->startElement("quantity");
+                                                                                        $xml->startElement("numerator");
+                                                                                        $xml->writeAttribute('unit','mg');
+                                                                                        $xml->writeAttribute('value','20');    
+                                                                                        $xml->endElement();
+                                                                                        $xml->writeComment("G.k.2.3.r.3a: Strength (number) #1-1");
+                                                                                        $xml->writeComment("G.k.2.3.r.3b: Strength (unit) #1-1");
+                                                                                        $xml->startElement("denominator");
+                                                                                        $xml->writeAttribute('value','1');   
+                                                                                        $xml->endElement();
+                                                                                    $xml->endElement();
+                                                                                    $xml->startElement("ingredientSubstance");
+                                                                                    $xml->writeAttribute('determinerCode','KIND');
+                                                                                    $xml->writeAttribute('classCode','MMAT');
+                                                                                        $xml->writeElement('name','asmeprazole');
+                                                                                        $xml->writeComment("G.k.2.3.r.1: Substance / Specified Substance Name #1-1");
+                                                                                    $xml->endElement();
+                                                                                $xml->endElement();
+                                                                            $xml->endElement();//kindOfProduct
+                                                                            $xml->startElement("subjectOf");
+                                                                            $xml->writeAttribute('typeCode','SBJ');
+                                                                                $xml->startElement("productEvent");
+                                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                                $xml->writeAttribute('classCode','ACT');
+                                                                                    $xml->startElement("code");
+                                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.18');
+                                                                                    $xml->writeAttribute('code','1');
+                                                                                    $xml->endElement();
+                                                                                    $xml->writeComment("retailSupply");
+                                                                                    $xml->startElement("performer");
+                                                                                    $xml->writeAttribute('typeCode','PRF');
+                                                                                        $xml->startElement("assignedEntity");
+                                                                                        $xml->writeAttribute('classCode','ASSIGNED');
+                                                                                            $xml->startElement("representedOrganization");
+                                                                                            $xml->writeAttribute('determinerCode','INSTANCE');
+                                                                                            $xml->writeAttribute('classCode','ORG');
+                                                                                                $xml->startElement("addr");
+                                                                                                    $xml->writeElement("country","GB");
+                                                                                                    $xml->writeComment("G.k.2.4: Identification of the Country Where the Drug Was Obtained #1");
+                                                                                                $xml->endElement();
+                                                                                            $xml->endElement();
+                                                                                        $xml->endElement();
+                                                                                    $xml->endElement();
+                                                                                $xml->endElement();
+                                                                            $xml->endElement();//subjectOf
+                                                                        $xml->endElement();//instanceOfKind
+                                                                    $xml->endElement();//consumable
+                                                                $xml->endElement();//substanceAdministration
+                                                            $xml->endElement();//component
+                                                            $xml->startElement("outboundRelationship2");
+                                                            $xml->writeAttribute('typeCode','COMP');
+                                                            $xml->writeComment("G.k.4: Dosage Information (repeat as necessary) #1-1");
+                                                                $xml->startElement("substanceAdministration");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','SBADM');
+                                                                    $xml->startElement("effectiveTime");
+                                                                    $xml->writeAttribute('xsi:type','SXPR_TS');
+                                                                    $xml->startElement("comp");
+                                                                    $xml->writeAttribute('xsi:type','IVL_TS');
+                                                                        $xml->startElement("low");
+                                                                        $xml->writeAttribute('value','20030511');
+                                                                        $xml->endElement();
+                                                                        $xml->writeComment("E.i.4: Date of Start of Reaction / Event #3");
+                                                                        $xml->startElement("width");
+                                                                        $xml->writeAttribute('unit','wk');
+                                                                        $xml->writeAttribute('value','1');
+                                                                        $xml->endElement();
+                                                                        $xml->writeComment("E.i.6a: Duration of Reaction / Event (number) #3");
+                                                                        $xml->writeComment("E.i.6b: Duration of Reaction / Event (unit) #3");
+                                                                    $xml->endElement();//comp
+                                                                $xml->endElement();
+                                                            $xml->endElement();//outboundRelationship2
+                                                            $xml->startElement("outboundRelationship2");
+                                                            $xml->writeAttribute('typeCode','REFR');
+                                                                $xml->startElement("observation");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','OBS');
+                                                                    $xml->startElement("code");
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                                    $xml->writeAttribute('code','27');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("outcome");
+                                                                    $xml->startElement("value");
+                                                                    $xml->writeAttribute('xsi:type','CE');
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.11');
+                                                                    $xml->writeAttribute('code','1');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.7: Outcome of Reaction / Event at the Time of Last Observation #2");
+                                                                $xml->endElement();//observation
+                                                            $xml->endElement();//outboundRelationship2
+                                                            $xml->startElement("outboundRelationship2");
+                                                            $xml->writeAttribute('typeCode','REFR');
+                                                                $xml->startElement("observation");
+                                                                $xml->writeAttribute('moodCode','EVN');
+                                                                $xml->writeAttribute('classCode','OBS');
+                                                                    $xml->startElement("code");
+                                                                    $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.19');
+                                                                    $xml->writeAttribute('code','24');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("medicalConfirmationByHealthProfessional");
+                                                                    $xml->startElement("value");
+                                                                    $xml->writeAttribute('xsi:type','BL');
+                                                                    $xml->writeAttribute('value','true');
+                                                                    $xml->endElement();
+                                                                    $xml->writeComment("E.i.8: Medical Confirmation by Healthcare Professional #2");
+                                                                $xml->endElement();//observation
+                                                            $xml->endElement();//outboundRelationship2
+                                                        $xml->endElement();//organizer
                                                     $xml->endElement();//subjectOf2
                                                 $xml->endElement();//primaryRole
                                             $xml->endElement();//SUBJECT1
