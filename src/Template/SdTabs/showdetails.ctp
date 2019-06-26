@@ -746,7 +746,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                             if($permission==1){
                                 $whoddCell = $html->cell('Whodd',[$sd_section_structure_detail->sd_field->id]);
                                 $text =$text. $whoddCell;
-                                $text =$text. "<input readonly=\"readonly\" style=\"float:left\" id=\"section-".$section->id."-whodracode-".$sd_section_structure_detail->sd_field->id."\" class=\"col-md-5 form-control\" name=".$field_value_nameHolder." type=\"text\"";
+                                $text =$text. "<input readonly=\"readonly\" id=\"section-".$section->id."-whodracode-".$sd_section_structure_detail->sd_field->id."\" class=\"col-md-5 form-control whoddinput\" name=".$field_value_nameHolder." type=\"text\"";
                                 (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?$text =$text."value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":$text =$text.null;
                                 $text =$text. " >";
                             }

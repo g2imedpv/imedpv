@@ -21,7 +21,7 @@
         </div>
         <div class="card-body">
             <!-- Add Document Modal -->
-            <button type="button" class="btn btn-primary float-left" data-toggle="modal" data-target=".uploadDoc"><i class="fas fa-cloud-upload-alt"></i><?php echo __("Upload Documents");?> </button>
+            <button type="button" class="btn btn-primary d-block" data-toggle="modal" data-target=".uploadDoc"><i class="fas fa-cloud-upload-alt"></i> <?php echo __("Upload Documents");?> </button>
             <div class="modal fade uploadDoc" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
@@ -32,7 +32,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <button id="addNewAttach" type="button" class="btn btn-outline-primary mb-3 float-left"><i class="fas fa-folder-plus"></i><?php echo __("Add New");?> </button>
+                            <button id="addNewAttach" type="button" class="btn btn-outline-primary mb-3 float-left"><i class="fas fa-folder-plus"></i> <?php echo __("Add New");?> </button>
                             <div class="form-row mb-3 d-block">
                                 <table class="table table-hover">
                                     <thead>
@@ -54,7 +54,7 @@
                                         </select>
                                         </td>
                                     <td><input class="form-control" style="display:none;" name="doc_path_0" id="doc_path_0" type="text">
-                                    <input name="doc_attachment_0" id="doc_attachment_0" type="file"></td>                                    
+                                    <input name="doc_attachment_0" id="doc_attachment_0" type="file"></td>
                                     <td><button type="button" class="btn btn-outline-danger btn-sm my-1 w-100 attachDel"><?php echo __("Delete");?></button></td>
                                     </tr>
                                     </tbody>

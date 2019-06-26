@@ -15,7 +15,7 @@
 <div class="mx-auto my-3 formContainer">
 
     <div class="text-center">
-        <p style="font-size: 2rem;">
+        <p class="pageTitle">
             <?php echo __("Case Registration / Duplicate Detection")?>
         </p>
 
@@ -201,9 +201,9 @@
         </div>
         <?= $this->Form->end()?>
         <div id="checkbutton" class="d-flex justify-content-center">
-            <div id="caseRegAdvBtn" class="btn btn-outline-info w-25 mx-1"><i class="fas fa-keyboard"></i> <?php echo __("Advanced Search")?></div>
-            <input class="btn btn-success mx-1 w-25" onclick="checkDuplicate()" id="checkbtn" type="button" value="<?php echo __("Search Duplicate")?>" >
-            <input onclick="clearResult()" id="clear" class="btn btn-outline-warning mx-2 w-25" style="display:none;" type="button" value="<?php echo __("Search Again")?>" >
+            <button class="btn btn-sm btn-outline-info w-25 mx-1" id="caseRegAdvBtn"><i class="fas fa-search"></i> <?php echo __("Advanced Search")?></button>
+            <button class="btn btn-sm btn-success mx-1 w-25" onclick="checkDuplicate()" id="checkbtn"><i class="far fa-copy"></i> <?php echo __("Search Duplicate")?></button>
+            <button class="btn btn-sm btn-outline-warning mx-2 w-25"  onclick="clearResult()" id="clear" style="display:none;"><i class="fab fa-searchengin"></i> <?php echo __("Search Again")?></button>
             <!-- <a role="button" onclick="checkDuplicate()" id="checkbtn" class="completeBtn btn btn-success d-block m-auto w-25">Seach Duplicate</a> -->
         </div>
 
