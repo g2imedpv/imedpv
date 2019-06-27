@@ -488,12 +488,39 @@ class SdCasesController extends AppController
                 if(!empty($searchKey['patient_id'])) $searchResult = $searchResult->where(['patient_id.field_value LIKE'=>'%'.$searchKey['patient_id'].'%']);
                 if(!empty($searchKey['searchProductName'])) $searchResult = $searchResult->where(['product_name  LIKE'=>'%'.$searchKey['searchProductName'].'%']);
                 // debug($searchResult);
-                $searchResult->all();                
+                $output = $searchResult->all()->toArray();  
+                foreach($output as $key => $caseDetail){
+                    if($caseDetail['submission_due_date']==null&&$caseDetail['activity_due_date']==null) continue;
+                    $scaseTime = Intval(substr($caseDetail['submission_due_date'],4))*10000+Intval(substr($caseDetail['submission_due_date'],2,2))*100+Intval(substr($caseDetail['submission_due_date'],0,2));
+                    $acaseTime = Intval(substr($caseDetail['activity_due_date'],4))*10000+Intval(substr($caseDetail['activity_due_date'],2,2))*100+Intval(substr($caseDetail['activity_due_date'],0,2));
+                    // debug($acaseTime);
+                    if(!empty($searchKey['submission_due_date_end']))
+                        if($scaseTime > Intval(substr($searchKey['submission_due_date_end'],4))*10000+Intval(substr($searchKey['submission_due_date_end'],2,2))*100+Intval(substr($searchKey['submission_due_date_end'],0,2))){
+                            unset($output[$key]);
+                            continue;
+                        }         
+                    if(!empty($searchKey['submission_due_date_start']))
+                        if($scaseTime < Intval(substr($searchKey['submission_due_date_start'],4))*10000+Intval(substr($searchKey['submission_due_date_start'],2,2))+Intval(substr($searchKey['submission_due_date_start'],0,2))){
+                            unset($output[$key]);
+                            continue;
+                        }    
+                    if(!empty($searchKey['activity_due_date_end']))
+                        if($acaseTime > Intval(substr($searchKey['activity_due_date_end'],4))*10000+Intval(substr($searchKey['activity_due_date_end'],2,2))*100+Intval(substr($searchKey['activity_due_date_end'],0,2))){
+                            unset($output[$key]);
+                            continue;
+                        }         
+                    if(!empty($searchKey['activity_due_date_start']))
+                        if($acaseTime < Intval(substr($searchKey['activity_due_date_start'],4))*10000+Intval(substr($searchKey['activity_due_date_start'],2,2))*100+Intval(substr($searchKey['activity_due_date_start'],0,2))){
+                            unset($output[$key]);
+                            continue;
+                        }    
+                    // debug($acaseTime);                        
+                }              
             }catch (\PDOException $e){
                 echo "Internal Error";
             }
             if($searchResult->count()>0)
-                echo json_encode($searchResult);
+                echo json_encode($output);
             else echo 0;
             // $this->set(compact('searchResult'));
             die();

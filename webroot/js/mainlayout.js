@@ -130,6 +130,10 @@ function onQueryClicked(preferrenceId = null){
         $searchProductName = $("#searchProductName").val();
     else $searchProductName = $("#searchProductNameMin").val();
     var request = {
+        'activity_due_date_start':$("#activity_due_date_start").val(),
+        'activity_due_date_end':$("#activity_due_date_end").val(),
+        'submission_due_date_start':$("#submission_due_date_start").val(),
+        'submission_due_date_end':$("#submission_due_date_end").val(),
         'caseNo': $("#caseNo").val(),
         'searchProductName':$searchProductName,
         'userId':userId,
@@ -150,6 +154,7 @@ function onQueryClicked(preferrenceId = null){
         url:'/sd-cases/search',
         data:request,
         success:function(response){
+            $("#textHint").html("");
             console.log(response);
             if (response==false) {
                 $("#textHint").html(i18n.gettext("Sorry, no case matches"));

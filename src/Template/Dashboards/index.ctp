@@ -83,18 +83,18 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 </select>
             </div>
         </div>
-        <!-- <div class="form-row justify-content-start">
+        <div class="form-row justify-content-start">
             <div class="form-group col-lg-3">
                 <label class="col-form-label"><?php echo __("Activity Due Date")?>:</label>
                 <div class="col-sm-12 row justify-content-start">
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="datepicker1" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                        <input type="text"  class="form-control" id="activity_due_date_start" placeholder="<?php echo __("mm/dd/yyyy")?>">
                     </div>
                     <div class="col-sm-2 arrow">
                         <i class="far fa-window-minimize"></i>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="datepicker2" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                        <input type="text"  class="form-control" id="activity_due_date_end" placeholder="<?php echo __("mm/dd/yyyy")?>">
                     </div>
                 </div>
             </div>
@@ -102,17 +102,17 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 <label class="col-form-label"><?php echo __("Submission Due Date")?>:</label>
                 <div class="col-sm-12 row justify-content-start">
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="datepicker3" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                        <input type="text"  class="form-control" id="submission_due_date_start" placeholder="<?php echo __("mm/dd/yyyy")?>">
                     </div>
                     <div class="col-sm-2 arrow">
                         <i class="far fa-window-minimize"></i>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="datepicker4" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                        <input type="text"  class="form-control" id="submission_due_date_end" placeholder="<?php echo __("mm/dd/yyyy")?>">
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
 
         <div class="form-row justify-content-center">
             <div class="form-group col-lg-3">
