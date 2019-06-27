@@ -377,6 +377,9 @@ class SdCasesController extends AppController
                     'submission_due_date'=>'submission_due_date.field_value',
                     'activity_due_date'=>'activity_due_date.field_value',
                     'caseNo',
+                    'patient_id_v'=>'patient_id.field_value',
+                    'patient_dob_v'=>'patient_dob.field_value',
+                    'patient_gender_v'=>'patient_gender.field_value',
                     'SdCases.status',
                     'sd_workflow_activity_id',
                     'pd.product_name',
@@ -407,6 +410,21 @@ class SdCasesController extends AppController
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
                             'conditions'=>['submission_due_date.sd_field_id = 415','submission_due_date.sd_case_id = SdCases.id','submission_due_date.status = 1']
+                        ],
+                        'patient_id'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['patient_id.sd_field_id = 79','patient_id.sd_case_id = SdCases.id','patient_id.status = 1']
+                        ],
+                        'patient_dob'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['patient_dob.sd_field_id = 85','patient_dob.sd_case_id = SdCases.id','patient_dob.status = 1']
+                        ],
+                        'patient_gender'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['patient_gender.sd_field_id = 93','patient_gender.sd_case_id = SdCases.id','patient_gender.status = 1']
                         ],
                         'activity_due_date'=>[
                             'table'=>'sd_field_values',
@@ -460,15 +478,19 @@ class SdCasesController extends AppController
                             'conditions'=>['ua.sd_product_workflow_id = SdCases.sd_product_workflow_id','ua.sd_user_id = '.$searchKey['userId']]
                         ]
                     ]);}
-                if(!empty($searchKey['searchName'])) $searchResult = $searchResult->where(['caseNo LIKE'=>'%'.$searchKey['searchName'].'%']);
+                if(!empty($searchKey['caseNo'])) $searchResult = $searchResult->where(['caseNo LIKE'=>'%'.$searchKey['caseNo'].'%']);
                 if(!empty($searchKey['caseStatus'])) {
                     if($searchKey['caseStatus']=='1') $searchResult = $searchResult->where(['SdCases.status'=>'1']);
                     else if($searchKey['caseStatus']=='2') $searchResult = $searchResult->where(['SdCases.status'=>'0']);
                 }
+                if(!empty($searchKey['patient_dob'])) $searchResult = $searchResult->where(['patient_dob.field_value'=>$searchKey['patient_dob']]);
+                if(!empty($searchKey['patient_gender'])) $searchResult = $searchResult->where(['patient_gender.field_value'=>$searchKey['patient_gender']]);
+                if(!empty($searchKey['patient_id'])) $searchResult = $searchResult->where(['patient_id.field_value LIKE'=>'%'.$searchKey['patient_id'].'%']);
                 if(!empty($searchKey['searchProductName'])) $searchResult = $searchResult->where(['product_name  LIKE'=>'%'.$searchKey['searchProductName'].'%']);
-                $searchResult->all();
+                // debug($searchResult);
+                $searchResult->all();                
             }catch (\PDOException $e){
-                echo "cannot the case find in database";
+                echo "Internal Error";
             }
             if($searchResult->count()>0)
                 echo json_encode($searchResult);
@@ -493,11 +515,13 @@ class SdCasesController extends AppController
             ->select(['id','product_name'])
             ->contain(['SdProductWorkflows.SdWorkflows'=>['fields'=>['SdWorkflows.country']]])
             ->group(['SdProducts.id']);
-        $date_str = $this->caseNoGenerator()."00001";
+        
         if ($this->request->is(['patch', 'post', 'put'])) {
             $requestData = $this->request->getData();
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
             $sdSectionSetTable = TableRegistry::get('SdSectionSets');
+            $sdCompaniesTable = TableRegistry::get('SdCompanies');
+            $companyDetail = $sdCompaniesTable->find()->select(['product_abbreviation'])->where(['id'=>$userinfo['User']['sd_company_id']])->first();
             // $requestDataField = $requestData['field_value'];
             /**
              * save case
@@ -525,6 +549,8 @@ class SdCasesController extends AppController
                 $sdCase = $this->SdCases->newEntity();
                 $savedData['sd_product_workflow_id'] = $requestData['sd_product_workflow_id'];
                 $savedData['status'] = "1";
+                //TODO ADD CONVENTION
+                $date_str = $this->caseNoGenerator(["prefix","date","random"],$companyDetail['product_abbreviation'])."00001";
                 $savedData['caseNo'] = $date_str;
                 $savedData['version_no'] = "1";
                 //TODO VERSION UP MIGHT BE INCLUDED
@@ -703,11 +729,20 @@ class SdCasesController extends AppController
      * @return string case number
      *
      */
-    private function caseNoGenerator(){
+    private function caseNoGenerator($order, $prefix){
         do{
             $rand_str = rand(0, 99999);
+            $rand_str = str_pad($rand_str, 5, "0", STR_PAD_LEFT);
+            $date_str = "";
+            foreach($order as $item){
+                if($item == "prefix")
+                    $date_str = $date_str + $prefix;
+                else if($item == "date")
+                    $date_str = $date_str+date("ym");
+                else $date_str = $date_str+$rand_str;
+            }
+            
             $date_str = "ICSR".date("ym").$rand_str;
-            $date_str = str_pad($date_str,13,"0", STR_PAD_LEFT);
         }while($this->SdCases->find()->where(['caseNo LIKE '=>'%'.$date_str.'%'])->first()!=null);
         return (String)$date_str;
     }

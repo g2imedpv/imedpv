@@ -125,11 +125,18 @@ $(function(){
 
 function onQueryClicked(preferrenceId = null){
     //TODO enhance search
+    let $searchProductName;
+    if($("#searchProductNameMin").val() =="")
+        $searchProductName = $("#searchProductName").val();
+    else $searchProductName = $("#searchProductNameMin").val();
     var request = {
-        'searchName': $("#searchName").val(),
-        'searchProductName':$("#searchProductName").val(),
+        'caseNo': $("#caseNo").val(),
+        'searchProductName':$searchProductName,
         'userId':userId,
         'caseStatus':$("#caseStatus").val(),
+        'patient_id':$("#patient_id").val(),
+        'patient_dob':$('#patient_dob').val(),
+        'patient_gender':$('#patient_gender').val(),
     };
     if (preferrenceId!=null)
     request['preferrenceId'] = preferrenceId;
