@@ -614,25 +614,6 @@ class SdExportController extends AppController
 
                 }
             }
-            public function challenge($caseId,$field_id,$set_num){
-                $sdFieldValues = TableRegistry::get('sdFieldValues');
-                $direct =$sdFieldValues->find()
-                    ->select(['field_value'])
-                    ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'status=1','substr(set_number,-1)='.$set_num])->toList();
-                    foreach($direct as $direct_detail) {
-                        if ($direct_detail['field_value'] == 1) {
-                            $challenge = 1;
-                            break;
-                        }else if($direct_detail['field_value'] == 2){
-                            $challenge = 2;
-                        }else if($direct_detail['field_value'] == 3){
-                            $challenge = 3;
-                        }else{
-                            $challenge = 4;
-                        }
-                    }
-                return $challenge;
-            }
             //call function getMedValue() and find position out
             public function getMedPosition($caseId,$field_id,$value_type,$position_type,$set_num=null){
                 $more_conditions = "";
@@ -985,7 +966,7 @@ class SdExportController extends AppController
                 $result=$result.$this->getMedPosition($caseId,115,4,4);//day
                 $result=$result.$this->getMedPosition($caseId,115,5,5);//month
                 $result=$result.$this->getMedPosition($caseId,115,6,6);//year
-                // // b3 date of event
+                // b3 date of event
                 $result=$result.$this->getMedPosition($caseId,156,4,4);//day
                 $result=$result.$this->getMedPosition($caseId,156,5,5);//month
                 $result=$result.$this->getMedPosition($caseId,156,6,6);//year
@@ -999,9 +980,11 @@ class SdExportController extends AppController
                 // b7 other relevant history
                 $historyOne=substr($this->getMedValue($caseId,104,1),0,300);
                 $result=$result.$this->getPosition($caseId,104,1,$historyOne);   
-                // c1#1 name and strength
+                //c2 concomitant medical products and therapy dates
+                $result=$result.$this->concomitantTherapyOne($caseId);
                 $suspect=$this->SuspectRole($caseId);
                 if(!is_null($suspect[0])){
+                    // c1#1 name and strength
                     $result=$result.$this->getMedPosition($caseId,176,1,1,$suspect[0]);
                     // c1#1 NDC or unique ID
                     $result=$result.$this->getMedPosition($caseId,345,1,1,$suspect[0]);
@@ -1047,8 +1030,6 @@ class SdExportController extends AppController
                     $result=$result.$this->getMedPosition($caseId,284,1,1,$suspect[1]);
                     // c1#2 Lot number
                     $result=$result.$this->getMedPosition($caseId,179,1,1,$suspect[1]);
-                    //c2 concomitant medical products and therapy dates
-                    $result=$result.$this->concomitantTherapyOne($caseId);
                     //c3#2 dose
                     $dosageTwo=$this->getMedValue($caseId,183,1,$suspect[1]).$this->getMedValue($caseId,184,2,$suspect[1]);
                     $result=$result.$this->getPosition($caseId,183,2,$dosageTwo);

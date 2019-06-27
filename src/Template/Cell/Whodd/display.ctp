@@ -1,5 +1,5 @@
 <div id="whodrabrowser">
-<button type="button" class="btn btn-outline-info float-left mr-3" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-search"></i> <?php echo __('WHO-DD Browser')?></button>
+<button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-search"></i> <?php echo __('WHO-DD Browser')?></button>
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document" style="max-width: 1175px !important;">
     <div class="modal-content">
@@ -55,10 +55,10 @@
                 </div>
                 <div class="form-row justify-content-center">
                     <div class="form-group col-sm-3">
-                        <div id="whoddsea" onclick="searchWhoDra()" class="form-control btn btn-primary"><i class="fas fa-search"></i> <?php echo __("Search")?></div>
+                        <button type="button" id="whoddsea" onclick="searchWhoDra()" class="form-control btn btn-primary"><i class="fas fa-search"></i> <?php echo __("Search")?></button>
                     </div>
-                    <div class="form-group col-sm-1">
-                        <div class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> <?php echo __("Clear")?></div>
+                    <div class="form-group col-sm-2">
+                        <button type="button" class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> <?php echo __("Clear")?></button>
                     </div>
                 </div>
             </div>
@@ -157,7 +157,7 @@ function searchWhoDra(){
 
 
         var text = "";
-        text +="<h4 class=\"text-center\">Search Results</h4>";
+        text +="<h4 class=\"text-center\">"+i18n.gettext("Search Results")+"</h4>";
         text +="<table class=\"table table-hover table-striped\" id=\"whodd_table\">";
 
         text += "<thead>";

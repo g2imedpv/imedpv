@@ -8,45 +8,39 @@ use Cake\ORM\TableRegistry;
 <head>
 
 <body>
-    <div class="container ">
-        <div class="col">
-            <div class="card mt-3">
-                <div class="card-header text-center">
-                    <h3><?php echo __("Search Contact");?></h3>
-                </div>
-                <div class="card-body">
-                    <div class="text-center">
-                        <!-- Search Product -->
-                        <span id="errorMsg" class="alert alert-danger" role="alert" style="display:none"></span>
-                        <div id="addpro" class="form-row">
-                            <div class="form-group col-md-3">
-                                <label><?php echo __("Key Word");?></label>
-                                <input type="text" class="form-control" id="key_word" name="key_word" placeholder="<?php echo __("Search Key Word");?>">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label><?php echo __("Contact ID");?></label>
-                                <input type="text" class="form-control" id="Contact_ID" name="Contact_ID" placeholder="<?php echo __("Search Contact ID");?>">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label><?php echo __("Contact Person");?></label>
-                                <input type="text" class="form-control" id="Contact_person" name="Contact_person" placeholder="<?php echo __("Search Contact Person");?>">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label><?php echo __("Contact Type");?></label>
-                                <input type="text" class="form-control" id="Contact_Type" name="Contact_Type" placeholder="<?php echo __("Search Contact Type");?>">
-                            </div>
-                        </div>
-                        <button  class="btn btn-primary w-25"><i class="fas fa-search"></i> <?php echo __("Search");?> </button>
-                        <!-- <button id="advsearch" class="btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</button> -->
-                        <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> <?php echo __("Clear");?> </button>
-                    </div>
-                </div>
+    <div class="mx-auto my-3 formContainer text-center">
+        <p class="pageTitle">
+            <?php echo __("Search Contact");?>
+        </p>
+        <!-- Search Product -->
+        <span id="errorMsg" class="alert alert-danger" role="alert" style="display:none"></span>
+        <div id="addpro" class="form-row">
+            <div class="form-group col-md-3">
+                <label><?php echo __("Key Word");?></label>
+                <input type="text" class="form-control" id="key_word" name="key_word" placeholder="<?php echo __("Search Key Word");?>">
+            </div>
+            <div class="form-group col-md-3">
+                <label><?php echo __("Contact ID");?></label>
+                <input type="text" class="form-control" id="Contact_ID" name="Contact_ID" placeholder="<?php echo __("Search Contact ID");?>">
+            </div>
+            <div class="form-group col-md-3">
+                <label><?php echo __("Contact Person");?></label>
+                <input type="text" class="form-control" id="Contact_person" name="Contact_person" placeholder="<?php echo __("Search Contact Person");?>">
+            </div>
+            <div class="form-group col-md-3">
+                <label><?php echo __("Contact Type");?></label>
+                <input type="text" class="form-control" id="Contact_Type" name="Contact_Type" placeholder="<?php echo __("Search Contact Type");?>">
             </div>
         </div>
-    </div>
-                   
-    <div class="mx-auto text-center w-75 mt-3 ">
-        <h3><?php echo __("Contact List");?></h3>
+        <button  class="btn btn-primary w-25"><i class="fas fa-search"></i> <?php echo __("Search");?> </button>
+        <!-- <button id="advsearch" class="btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</button> -->
+        <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> <?php echo __("Clear");?> </button>
+
+        <hr class="my-4">
+
+        <p class="pageTitle">
+            <?php echo __("Contact List");?>
+        </p>
         <table class="table table-bordered table-hover " id="contact_list">
             <thead>
                 <tr>
@@ -81,7 +75,7 @@ use Cake\ORM\TableRegistry;
                         echo"<td>".$contacters->website."</td>";
                         echo"</tr>";
                     }
-                ?> 
+                ?>
             </tbody>
         </table>
     </div>

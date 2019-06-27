@@ -62,7 +62,7 @@
     <!-- Language Switcher -->
     <div class="btn-group my-auto">
       <button type="button" class="btn dropdown-toggle" title="Language Switcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-language"></i>
+        <i class="fas fa-globe-americas"></i>
       </button>
       <div class="dropdown-menu">
         <a class="dropdown-item" href="/sd-users/setLanguage/en_US">English
@@ -85,24 +85,28 @@
       </div>
     </div>
 
-      <div class="d-flex p-2 mx-2">
-        <?php
-        $mailNotice = $this->cell('QueryNotice',[$this->request->getSession()->read('Auth.User.id')]);
-        echo $mailNotice;
-        ?>
-      </div>
-      <div class="nav-item dropdown p-2 myaccount">
-        <a class="nav-link text-dark bg-light" href="/sd-users/myaccount" id="accountInfo" role="button" aria-haspopup="true" aria-expanded="false">
-          <h5><?php echo   __("Hi!") ?>&nbsp;&nbsp;<span id="roleName"><?php echo $this->request->getSession()->read('Auth.User.firstname'); ?>&nbsp;<?php print $this->request->getSession()->read('Auth.User.lastname'); ?> </span></h5>
-        </a>
-        <div class="dropdown-menu login" aria-labelledby="accountInfo">
-          <h5 class="dropdown-header"><?php echo $this->request->getSession()->read('Auth.User.role_name'); ?></h5>
-        </div>
-      </div>
+    <!-- Mail Notice -->
+    <div class="d-flex p-2 mx-2">
+      <?php
+      $mailNotice = $this->cell('QueryNotice',[$this->request->getSession()->read('Auth.User.id')]);
+      echo $mailNotice;
+      ?>
+    </div>
 
-      <div class="d-flex p-2 mx-2">
-        <a class="dropdown-item my-1" href="/sd-users/logout"><i class="fas fa-sign-out-alt"></i> <?php echo __("Log Out");?></a>
+    <!-- Account Info -->
+    <div class="nav-item dropdown p-2 myaccount bg-transparent">
+      <a class="nav-link text-dark bg-light" href="/sd-users/myaccount" id="accountInfo" role="button" aria-haspopup="true" aria-expanded="false">
+        <h5><?php echo   __("Hi!") ?>&nbsp;&nbsp;<span id="roleName"><?php echo $this->request->getSession()->read('Auth.User.firstname'); ?>&nbsp;<?php print $this->request->getSession()->read('Auth.User.lastname'); ?> </span></h5>
+      </a>
+      <div class="dropdown-menu login" aria-labelledby="accountInfo">
+        <h5 class="dropdown-header"><?php echo $this->request->getSession()->read('Auth.User.role_name'); ?></h5>
       </div>
+    </div>
+
+    <!-- Log Out -->
+    <div class="d-flex p-2 mx-2">
+      <a class="dropdown-item my-1" href="/sd-users/logout"><i class="fas fa-sign-out-alt"></i> <?php echo __("Log Out");?></a>
+    </div>
 
     </div>
 </div>

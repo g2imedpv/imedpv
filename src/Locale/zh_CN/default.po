@@ -4099,3 +4099,11 @@ msgid "You are adding a new record"
 msgstr "您正在添加新纪录"
 msgid "Short Description"
 msgstr "简短描述"
+msgid "Event No."
+msgstr "事件编号"
+msgid "Search Results"
+msgstr "搜索结果"
+msgid "No Duplicate AER(s) Found"
+msgstr "无重复不良事件报告"
+
+

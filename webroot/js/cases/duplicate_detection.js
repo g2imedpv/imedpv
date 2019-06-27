@@ -124,7 +124,7 @@ function checkDuplicate(){
             var result = $.parseJSON(response);
             var text = "";
             if(response!="[]"){
-                text +="<h3 class=\"text-center my-3\">Search Results</h3>";
+                text +="<h3 class=\"text-center my-3\">"+i18n.gettext("Search Results")+"</h3>";
                 text +="<table class=\"table table-hover\">";
                 text +="<thead>";
                 text +="<tr>";
@@ -179,7 +179,7 @@ function checkDuplicate(){
                 })
                 text +="</tbody>";
                 text +="</table>";
-            }else text+="<div class=\"my-3 text-center\"><h3>No Duplicate AER(s) Found</h3></div>"
+            }else text+="<div class=\"my-3 text-center\"><h3>"+i18n.gettext("No Duplicate AER(s) Found")+"</h3></div>"
             //text +="<div class=\"text-center\"> <button onclick=\"clearResult()\" class=\"btn btn-outline-warning mx-2 w-25\">Search Again</button>";
             text +="<div onclick=\"createCase()\" class=\"btn btn-primary float-right w-25 my-3\" style=\"cursor:pointer;\">"+i18n.gettext("Create This Case")+"</div> </div>";
             $("#caseTable").html(text);
