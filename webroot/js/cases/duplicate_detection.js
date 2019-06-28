@@ -13,6 +13,17 @@
 // });
 
 $(document).ready(function(){
+    //real dob change according to date selected
+    $("#patientField_dob_day").change(function(){
+        $("#patient_dob").val($("#patientField_dob_day").val()+$("#patientField_dob_month").val()+$("#patientField_dob_year").val());
+    });
+    $("#patientField_dob_month").change(function(){
+        $("#patient_dob").val($("#patientField_dob_day").val()+$("#patientField_dob_month").val()+$("#patientField_dob_year").val());
+    });
+    $("#patientField_dob_year").change(function(){
+        $("#patient_dob").val($("#patientField_dob_day").val()+$("#patientField_dob_month").val()+$("#patientField_dob_year").val());
+    });
+
     /**
      *
      * change Workflow Name according to Product selection
@@ -84,6 +95,7 @@ function searchWhoDra(){
     console.log(request);
 
 }
+
 function checkDuplicate(){
     $("[id=checkbutton]").hide();
     var fields =[
@@ -94,15 +106,13 @@ function checkDuplicate(){
         'patient_age_group',
         'patient_age_unit',
         'patient_gender',
-        // 'patient_dob',
+        'patient_dob',
         'reporter_firstname',
         'reporter_lastname',
         'event_onset_date',
         'patient_ethnic_origin',
         'patient_age_group',
-        'meddraptname',
-        'meddralltname',
-        'meddrahltname',
+        'meddraResult-496',
         'event_report_term',
     ];
     var request={

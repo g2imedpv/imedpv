@@ -154,12 +154,7 @@ class SdCasesController extends AppController
                                         'peo.set_number',
                                         'patient_age_group'=>'pag.field_value',
                                         'pag.set_number',
-                                        'meddra_pt'=>'mpt.field_value',
-                                        'mpt.set_number',
-                                        'meddra_llt'=>'mllt.field_value',
-                                        'mllt.set_number',
-                                        'meddra_hlt'=>'mhlt.field_value',
-                                        'mhlt.set_number',
+                                        'meddraResult.field_value',
                                         'product_name'=>'pd.product_name',
                                         'country'=>'wf.country'
                                     ])
@@ -230,22 +225,10 @@ class SdCasesController extends AppController
                                             'conditions' => ['eod.sd_field_id = 156','eod.status = 1','eod.sd_case_id = SdCases.id'
                                             ]
                                         ],
-                                        'mpt' =>[
+                                        'meddraResult' =>[
                                             'table' =>'sd_field_values',
                                             'type'=>'LEFT',
-                                            'conditions' => ['mpt.sd_field_id = 394','mpt.status = 1', 'mpt.sd_case_id = SdCases.id'
-                                            ]
-                                        ],
-                                        'mllt' =>[
-                                            'table' =>'sd_field_values',
-                                            'type'=>'LEFT',
-                                            'conditions' => ['mllt.sd_field_id = 392','mllt.status = 1', 'mllt.sd_case_id = SdCases.id','mllt.set_number = mpt.set_number',
-                                            ]
-                                        ],
-                                        'mhlt' =>[
-                                            'table' =>'sd_field_values',
-                                            'type'=>'LEFT',
-                                            'conditions' => ['mhlt.sd_field_id = 395','mhlt.status = 1', 'mhlt.sd_case_id = SdCases.id','mhlt.set_number = mllt.set_number'
+                                            'conditions' => ['meddraResult.sd_field_id = 496','meddraResult.status = 1', 'meddraResult.sd_case_id = SdCases.id'
                                             ]
                                         ],
                                         'pdw' =>[
@@ -273,6 +256,7 @@ class SdCasesController extends AppController
                 //             'conditions'=>['ua.sd_product_workflow_id = SdCases.sd_product_workflow_id','ua.sd_user_id = '.$user['id']]
                 //         ]
                 //     ]);}
+                
                 if(!empty($searchKey['product_id'])) $searchResult = $searchResult->where(['pd.id '=>$searchKey['product_id']]);
                 if(!empty($searchKey['country'])) $searchResult = $searchResult->where(['wf.country'=>$searchKey['country']]);
                 if(!empty($searchKey['patient_initial'])) $searchResult = $searchResult->where(['pi.field_value LIKE'=>'%'.trim($searchKey['patient_initial']).'%']);
@@ -286,10 +270,8 @@ class SdCasesController extends AppController
                 if(!empty($searchKey['patient_ethnic_origin'])) $searchResult = $searchResult->where(['peo.field_value  LIKE'=>'%'.trim($searchKey['patient_ethnic_origin']).'%']);
                 if(!empty($searchKey['patient_age_group'])) $searchResult = $searchResult->where(['pag.field_value  LIKE'=>'%'.trim($searchKey['patient_age_group']).'%']);
                 if(!empty($searchKey['event_onset_date'])) $searchResult = $searchResult->where(['eod.field_value  LIKE'=>'%'.trim($searchKey['event_onset_date']).'%']);
-                if(!empty($searchKey['meddraptname'])) $searchResult = $searchResult->where(['mpt.field_value  LIKE'=>'%'.trim($searchKey['meddraptname']).'%']);
-                if(!empty($searchKey['meddralltname'])) $searchResult = $searchResult->where(['mllt.field_value  LIKE'=>'%'.trim($searchKey['meddralltname']).'%']);
-                if(!empty($searchKey['meddrahltname'])) $searchResult = $searchResult->where(['mhlt.field_value  LIKE'=>'%'.trim($searchKey['meddrahltname']).'%']);
-                // print_r($searchResult);
+                if(!empty($searchKey['meddraResult-496'])) $searchResult = $searchResult->where(['meddraResult.field_value  LIKE'=>'%'.trim($searchKey['meddraResult-496']).'%']);
+                // debug($searchResult);// print_r($searchResult);
             }catch (\PDOException $e){
                 echo "cannot the case find in database";
             }
