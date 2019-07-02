@@ -4,13 +4,142 @@
 
     <!-- For local CSS link -->
     <?= $this->Html->css('mainlayout.css') ?>
-
+    <?= $this->Html->script('meddra.js') ?>
 <head>
-<?php
-// debug($productInfo);
-// foreach ($productInfo as $k){  debug($k->id);  }
-?>
 
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document" style="max-width: 1175px !important;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id=""><?php echo __("MedDRA Browser")?> (<?php echo __("Version")?>: MedDRA 18.1)</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <!-- Search field -->
+            <div class="container">
+                <div class="form-row mx-2">
+                    <!-- <div class="form-group col-md-4">
+                        <label>Search LLT Term</label>
+                        <input type="text" class="form-control" id="llt_term"  placeholder="Search LLT Term">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Search PT Term</label>
+                        <input type="text" class="form-control" id="pt_term"  placeholder="Search PT Term">
+                    </div> -->
+                    <div class="form-group col-md-4">
+                        <label><?php echo __("SMQ")?>:</label>
+                        <input type="text" class="form-control" id="wildcard_search"  placeholder="Search by SMQ">
+                    </div>
+                    <div class="form-group">
+                        <label for="meddra-full_text"><?php echo __("Full Text Search")?></label>
+                        <input type="checkbox" class="form-control" id="meddra-full_text">
+                    </div>
+                </div>
+                <!-- <div class="form-row justify-content-center">
+                    <div class="form-group col-sm-3">
+                        <div id="meddrasea" onclick="searchMedDra()" class="form-control btn btn-primary w-100"><i class="fas fa-search"></i> Search</div>
+                    </div>
+                    <div class="form-group col-sm-1">
+                        <div class="clearsearch form-control btn btn-outline-danger w-100"><i class="fas fa-eraser"></i> Clear</div>
+                    </div>
+                </div> -->
+            </div>
+            <div class="container mb-5">
+                    <div class="form-row justify-content-around">
+                        <div class="form-group col-md-2">
+                            <label for=""><?php echo __("SOC Name")?></label>
+                            <input type="text" class="form-control" id="typed-soc-name">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for=""><?php echo __("HLGT Name")?></label>
+                            <input type="text" class="form-control" id="typed-hlgt-name">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for=""><?php echo __("HLT Name")?></label>
+                            <input type="text" class="form-control" id="typed-hlt-name">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for=""><?php echo __("PT Name")?></label>
+                            <input type="text" class="form-control" id="typed-pt-name">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for=""><?php echo __("LLT Name")?></label>
+                            <input type="text" class="form-control" id="typed-llt-name">
+                        </div>
+                    </div>
+                    <div style="height: 300px;" class="form-row justify-content-around">
+                        <div class="form-group border h-100 col-md-2 overflow-auto" id="field-soc_name"></div>
+                        <div class="form-group border h-100 col-md-2 overflow-auto" id="field-hlgt_name"></div>
+                        <div class="form-group border h-100 col-md-2 overflow-auto" id="field-hlt_name"></div>
+                        <div class="form-group border h-100 col-md-2 overflow-auto" id="field-pt_name"></div>
+                        <div class="form-group border h-100 col-md-2 overflow-auto" id="field-llt_name"></div>
+                    </div>
+            </div>
+            <!-- Table field (Should be hidden before search) -->
+            <h4 class="text-center"><?php echo __("MedDra Details")?></h4> <hr>
+            <div class="container">
+                <fieldset disabled>
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-4">
+                            <label for=""><?php echo __("LLT Name")?></label>
+                            <input type="text" class="form-control" id="select-llt-n">
+                        </div>
+                        <div class="form-group col-md-3 offset-md-1">
+                            <label for=""><?php echo __("LLT Code")?></label>
+                            <input type="text" class="form-control" id="select-llt-c">
+                        </div>
+                    </div>
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-4">
+                            <label for=""><?php echo __("PT Name")?></label>
+                            <input type="text" class="form-control" id="select-pt-n">
+                        </div>
+                        <div class="form-group col-md-3 offset-md-1">
+                            <label for=""><?php echo __("PT Code")?></label>
+                            <input type="text" class="form-control" id="select-pt-c">
+                        </div>
+                    </div>
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-4">
+                            <label for=""><?php echo __("HLT Name")?></label>
+                            <input type="text" class="form-control" id="select-hlt-n">
+                        </div>
+                        <div class="form-group col-md-3 offset-md-1">
+                            <label for=""><?php echo __("HLT Code")?></label>
+                            <input type="text" class="form-control" id="select-hlt-c">
+                        </div>
+                    </div>
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-4">
+                            <label for=""><?php echo __("HLGT Name")?></label>
+                            <input type="text" class="form-control" id="select-hlgt-n">
+                        </div>
+                        <div class="form-group col-md-3 offset-md-1">
+                            <label for=""><?php echo __("HLGT Code")?></label>
+                            <input type="text" class="form-control" id="select-hlgt-c">
+                        </div>
+                    </div>
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-4">
+                            <label for=""><?php echo __("SOC Name")?></label>
+                            <input type="text" class="form-control" id="select-soc-n">
+                        </div>
+                        <div class="form-group col-md-3 offset-md-1">
+                            <label for=""><?php echo __("SOC Code")?></label>
+                            <input type="text" class="form-control" id="select-soc-c">
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="meddraSelectBtn" class="btn btn-success w-25 mx-auto"  onclick="selectMeddraButton()" data-dismiss="modal"><?php echo __("Select")?></button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="mx-auto my-3 formContainer">
 
@@ -174,26 +303,27 @@
                         <div class="form-group col-md-8">
                             <!-- <label><?php echo __("Meddra Browser")?></label> -->
                             <?php
-                            $meddraCell = $this->cell('Meddra');
+                            $meddraCell = $this->cell('Meddra',['llt-c:392,llt-n:457,pt-c:394,pt-n:458,ver:150,ver:443','496']);
                             echo $meddraCell;?>
+                            <input type="hidden" id="meddraResult-496" name="field_value[496]" value="">
                         </div>
                     </div>
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-2">
                             <label><?php echo __("LLT Code")?></label>
-                            <input type="text" class="form-control" name="field_value[392]" id="meddraptname">
+                            <input type="text" class="form-control" name="field_value[392]" id="meddrashow-392">
                         </div>
                         <div class="form-group col-md-2">
                             <label><?php echo __("LLT Name")?></label>
-                            <input type="text" class="form-control" name="field_value[391]" id="meddralltname">
+                            <input type="text" class="form-control" name="field_value[457]" id="meddrashow-457">
                         </div>
                         <div class="form-group col-md-2">
                             <label><?php echo __("PT Code")?></label>
-                            <input type="text" class="form-control" name="field_value[394]" id="meddrahltname">
+                            <input type="text" class="form-control" name="field_value[394]" id="meddrashow-394">
                         </div>
                         <div class="form-group col-md-2">
                             <label><?php echo __("PT Name")?></label>
-                            <input type="text" class="form-control" name="field_value[393]" id="meddrahltname">
+                            <input type="text" class="form-control" name="field_value[458]" id="meddrashow-458">
                         </div>
                     </div>
                 </div>

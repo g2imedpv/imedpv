@@ -3,12 +3,14 @@ var meddraFieldId = 0;
 var formats = ['llt_name','pt_name','hlt_name','hlgt_name','soc_name'];
 $(document).ready(function(){
     $('[id^=meddraBtn_]').click(function(){
+        
         if(meddraFieldId!=$(this).attr('id').split('_')[1]){
             $(formats).each(function(formatK,formatV){
                 $('#field-'+formatV).html("");
             });
         }
         meddraFieldId = $(this).attr('id').split('_')[1];
+        console.log(meddraFieldId);
         if($('[id$=meddraResult-'+meddraFieldId+']').val()!=""){
             $.each($('[id$=meddraResult-'+meddraFieldId+']').val().split(','), function(k,fieldDetail){
                 switch(k){
@@ -118,7 +120,7 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
             console.log(response);
             var result = $.parseJSON(response);
             console.log(meddraFieldId);
-            $('[id$=-meddraResult-'+meddraFieldId+']').val(result['primary']);
+            $('[id$=meddraResult-'+meddraFieldId+']').val(result['primary']);
             if(result['type']==3){
                 let text = "<ul>";
                 $.each(result['llt_name']['codes'],function(k,details){
