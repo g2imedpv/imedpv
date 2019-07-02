@@ -50,6 +50,7 @@ class AppController extends Controller
         TableRegistry::config('SdSections', ['table' => 'sd_sections'.$version]);
         TableRegistry::config('SdFieldValueLookUps', ['table' => 'sd_field_value_look_ups'.$version]);
         TableRegistry::config('SdSectionStructures', ['table' => 'sd_section_structures'.$version]);
+        TableRegistry::config('SdSectionSummaries', ['table' => 'sd_section_summaries'.$version]);
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
