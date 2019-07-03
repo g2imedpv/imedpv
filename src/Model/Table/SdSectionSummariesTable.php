@@ -33,7 +33,7 @@ class SdSectionSummariesTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('sd_section_summaries');
+        $this->setTable($config['table']);
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
