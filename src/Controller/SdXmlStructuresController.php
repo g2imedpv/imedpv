@@ -3414,7 +3414,7 @@ class SdXmlStructuresController extends AppController
                                                                             $xml->endElement();//comp
                                                                         $xml->endElement();//effectiveTime
                                                                         $xml->startElement("routeCode");
-                                                                        $xml->writeAttribute('code', );
+                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,199,1));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.14');
                                                                         $xml->writeComment(" G.k.4.r.10.2b: Route of Administration TermID ");
                                                                             $xml->writeElement('originalText',$this->XMLvalue($caseId,192,1));
