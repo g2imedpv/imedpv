@@ -35,7 +35,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
     <h4 class="display-8 text-center"><?php echo __("Search")?></h4>
     <div class="form-row  justify-content-center" id="basicSearch">
         <div class="form-group col-lg-3">
-            <input type="text" class="form-control" id="searchProductName" name="searchProductName" placeholder="<?php echo __("Search by Product Name")?>">
+            <input type="text" class="form-control" id="searchProductNameMin"placeholder="<?php echo __("Search by Product Name")?>">
         </div>
         <div class="form-group col-lg-2">
             <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-sm btn-primary"><i class="fas fa-search"></i> <?php echo __("Search")?></button>
@@ -48,15 +48,15 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
         <div class="form-row">
             <div class="form-group col-lg-4">
                 <label><?php echo __("Product Name")?></label>
-                <input type="text" class="form-control" id="searchProductName" name="searchProductName" placeholder="<?php echo  __("Search by Product Name")?>">
+                <input type="text" class="form-control" id="searchProductName" placeholder="<?php echo  __("Search by Product Name")?>">
             </div>
             <div class="form-group col-lg-4">
                 <label><?php echo __("Case No.")?></label>
-                <input type="text" class="form-control"  id="searchName" name="searchName" placeholder="<?php echo __("Search by Case No.")?>">
+                <input type="text" class="form-control"  id="caseNo" placeholder="<?php echo __("Search by Case No.")?>">
             </div>
             <div class="form-group col-lg-4">
                 <label><?php echo __("Case Status")?></label>
-                <select class="form-control" id="caseStatus" name="caseStatus">
+                <select class="form-control" id="caseStatus" >
                     <option value=""><?php echo __("Search by Case Status");?></option>
                     <option value="1"><?php echo __("Active");?></option>
                     <option value="2"><?php echo __("Inactive");?></option>
@@ -71,11 +71,11 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             </div>
             <div class="form-group col-lg-4">
                 <label><?php echo __("Date of Birth");?></label>
-                <input type="date" class="form-control" id="datepicker5" placeholder="<?php echo  __("Search Birthday")?>">
+                <input type="date" class="form-control" id="patient_dob" placeholder="<?php echo  __("Search Birthday")?>">
             </div>
             <div class="form-group col-lg-4">
                 <label><?php echo __("Gender");?></label>
-                <select id="inputState" class="form-control">
+                <select id="patient_gender" class="form-control">
                     <option value=""><?php echo __("Search Gender");?></option>
                     <option value="1"><?php echo __("Male");?></option>
                     <option value="2"><?php echo __("Female");?></option>
@@ -88,13 +88,13 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 <label class="col-form-label"><?php echo __("Activity Due Date")?>:</label>
                 <div class="col-sm-12 row justify-content-start">
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="datepicker1" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                        <input type="text"  class="form-control" id="activity_due_date_start" placeholder="<?php echo __("dd/mm/yyyy")?>">
                     </div>
                     <div class="col-sm-2 arrow">
                         <i class="far fa-window-minimize"></i>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="datepicker2" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                        <input type="text"  class="form-control" id="activity_due_date_end" placeholder="<?php echo __("dd/mm/yyyy")?>">
                     </div>
                 </div>
             </div>
@@ -102,13 +102,13 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 <label class="col-form-label"><?php echo __("Submission Due Date")?>:</label>
                 <div class="col-sm-12 row justify-content-start">
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="datepicker3" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                        <input type="text"  class="form-control" id="submission_due_date_start" placeholder="<?php echo __("dd/mm/yyyy")?>">
                     </div>
                     <div class="col-sm-2 arrow">
                         <i class="far fa-window-minimize"></i>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="datepicker4" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                        <input type="text"  class="form-control" id="submission_due_date_end" placeholder="<?php echo __("dd/mm/yyyy")?>">
                     </div>
                 </div>
             </div>

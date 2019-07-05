@@ -122,6 +122,7 @@ class SdCompaniesController extends AppController
             $this->request->getSession()->write('Auth.User.company_id', $company['company_id']);
             return $this->redirect(['controller'=>'dashboards','action' => 'index']);
         }
+        $userCompany = $sdCompany = $this->SdCompanies->find()->select(['SdCompanies.id','SdCompanies.company_name'])->where(['id'=>$userinfo['sd_company_id']])->first();
         $sdCompany = $this->SdCompanies->find()
         ->select(['SdCompanies.id','SdCompanies.company_name'])->join([
             'pd'=>[
@@ -139,7 +140,7 @@ class SdCompaniesController extends AppController
                 'type'=>'INNER',
                 'conditions'=>['ua.sd_user_id ='.$userinfo['id'],'ua.sd_product_workflow_id = pwf.id']
             ]
-        ])->distinct();
-        $this->set(compact('sdCompany'));
+        ])->where(['SdCompanies.id NOT LIKE'=>$userinfo['sd_company_id']])->distinct();
+        $this->set(compact('sdCompany','userCompany'));
     }
 }

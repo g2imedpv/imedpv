@@ -246,12 +246,12 @@
                             if($event_set!=null)
                             echo array_key_exists('496',$event_set[1])?$event_set[1]['496']['id']:"";
                             echo "\">";
-                            echo "<input type=\"hidden\" id=\"eventField_meddraResult-496\" name=\"event[1][496][field_value]\" value=\"";
+                            echo "<input type=\"hidden\" id=\"eventField_meddraResult-496\" name=\"event[1][496][value]\" value=\"";
                             if($event_set!=null)
                                 echo array_key_exists('496',$event_set[1])?$event_set[1]['496']['field_value']:"";
                             echo "\">";
                             ?>
-                            <input id="eventField-meddraResult-496" class="form-control" name="event[1][496][value]" type="hidden">
+                            <!-- <input id="eventField-meddraResult-496" class="form-control" name="event[1][496][value]" type="hidden"> -->
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ jQuery(function($) {
 
 $(document).ready(function(){
     $("#fullSearchBtn").click(function () {
+        $('#searchProductNameMin').val("");
         $('#fullSearch').show();
         $('#basicSearch').hide();
     });
