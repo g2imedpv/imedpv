@@ -199,7 +199,7 @@ function onQueryClicked(preferrenceId = null){
                 if(caseDetail.sd_workflow_activity_id!='9999') text += i18n.gettext(caseDetail.wa.activity_name+"");
                 else text += i18n.gettext("Finished Data Accessment")
                 text += "</td>";
-                text += "<td></td>";
+                text += "<td class=\"align-middle\">"+caseDetail.country+"</td>";
                 text += "<td class=\"align-middle\">" + caseDetail.pd.product_name + "</td>";
                 text += "<td class=\"align-middle\">";
                 if(caseDetail.product_type_label!=null) text += i18n.gettext(caseDetail.product_type_label+"");
