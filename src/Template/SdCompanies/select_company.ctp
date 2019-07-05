@@ -7,6 +7,7 @@
                 <label class="text-white"><?php echo __("Select Company");?></label>
                 <select class="form-control" name="company_id" id="company_id" placeholder="Please select your company">
                 <?php
+                    echo "<option value=\"".$userCompany['id']."\">".$userCompany['company_name']."</option>";
                     foreach($sdCompany as $company)
                     {
                         echo "<option value=\"".$company['id']."\">".$company['company_name']."</option>";
