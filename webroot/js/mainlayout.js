@@ -181,6 +181,7 @@ function onQueryClicked(preferrenceId = null){
             text +="<tbody>";
             var product_type_id=[i18n.gettext("Clinical trials"), i18n.gettext("Individual patient use"),i18n.gettext("Other studies")];
             var previous_case = "";
+            var monthes = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
             $.each(result, function(k,caseDetail){
                 if(caseDetail.activity_due_date!=null)
                 var ad_time = new Date(caseDetail.activity_due_date.substring(2,4)+" "+caseDetail.activity_due_date.substring(0,2)+" "+caseDetail.activity_due_date.substring(4,8));
@@ -203,12 +204,19 @@ function onQueryClicked(preferrenceId = null){
                 text += "<td class=\"align-middle\">";
                 if(caseDetail.product_type_label!=null) text += i18n.gettext(caseDetail.product_type_label+"");
                 text += "</td>";
-                text += "<td class=\"align-middle\">"+caseDetail.activity_due_date+"</td>";
+                text += "<td class=\"align-middle\">";
+                if((caseDetail.activity_due_date!=null)&&(typeof caseDetail.activity_due_date !="undefined")&&(caseDetail.activity_due_date !="")){
+                    var datestr = caseDetail.activity_due_date;
+                    var year = datestr.substring(4,8);
+                    var month = monthes[Number(datestr.substring(2,4))];
+                    var day = datestr.substring(0,2);
+                    text+= day+"-"+month+"-"+year;
+                }
+                text += "</td>";
                 text += "<td class=\"align-middle\">";
                 if((caseDetail.submission_due_date!=null)&&(typeof caseDetail.submission_due_date !="undefined")&&(caseDetail.submission_due_date !="")){
                     var datestr = caseDetail.submission_due_date;
                     var year = datestr.substring(4,8);
-                    var monthes = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
                     var month = monthes[Number(datestr.substring(2,4))];
                     var day = datestr.substring(0,2);
                     text+= day+"-"+month+"-"+year;
