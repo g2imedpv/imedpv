@@ -154,7 +154,7 @@
                 <div class="form-group col-md-2">
                     <label><?php echo __("Product Name")?> <i class="fas fa-asterisk reqField"></i></label>
                     <select type="text" class="form-control" id="product_id">
-                        <option value="null"><?php echo __("Select Project No.")?></option>
+                        <option value=""><?php echo __("Select Project No.")?></option>
                         <?php
                         foreach($productInfo as $k => $productDetail){
                             echo "<option value=".$productDetail->id.">".$productDetail->product_name."</option>";
@@ -166,7 +166,7 @@
                 <div class="form-group col-md-2">
                     <label><?php echo __("Country")?> <i class="fas fa-asterisk reqField"></i></label>
                     <select type="text" class="form-control" id="sd_product_workflow_id">
-                        <option value="null"><?php echo __("Select Country")?></option>
+                        <option value=""><?php echo __("Select Country")?></option>
                         <!-- html->form(project_no) -->
                     </select>
                     <input name="sd_product_workflow_id" id="input_product_workflow_id" type="hidden">
@@ -200,7 +200,7 @@
                 <div class="form-group col-md-2">
                     <label><?php echo __("Age Unit")?></label>
                     <select class="form-control" name="field_value[87]" id="patient_age_unit">
-                        <option value="null"><?php echo __("Select Unit")?></option>
+                        <option value=""><?php echo __("Select Unit")?></option>
                         <option value="800"><?php echo __("Decade")?></option>
                         <option value="801"><?php echo __("Year")?></option>
                         <option value="802"><?php echo __("Month")?></option>
@@ -230,7 +230,7 @@
                     <div class="form-group col-md-2">
                         <label><?php echo __("Patient Ethnic origin")?></label>
                         <select class="form-control" id="patient_ethnic_origin" name="field_value[235]">
-                            <option value="null"></option>
+                            <option value=""></option>
                             <option  value="1"><?php echo __("American Indian or Alaskan Native")?></option>
                             <option  value="2"><?php echo __("Asian")?></option>
                             <option  value="3"><?php echo __("Black or African American")?></option>
@@ -288,7 +288,7 @@
                     <div class="form-group col-md-2">
                         <label><?php echo __("Patient Age Group")?></label>
                         <select class="form-control" name="field_value[90]" id="patient_age_group">
-                            <option value="null"></option>
+                            <option value=""></option>
                             <option value="1"><?php echo __("Neonate")?></option>
                             <option value="2"><?php echo __("Infant")?></option>
                             <option value="3"><?php echo __("Child")?></option>

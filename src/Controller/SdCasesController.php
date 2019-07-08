@@ -248,14 +248,14 @@ class SdCasesController extends AppController
                                             'conditions' => ['wf.id = pdw.sd_workflow_id']
                                         ]
                                     ])->group('SdCases.id');
-                // if($user['sd_role_id']>=2) {
-                //     $searchResult = $searchResult->join([
-                //         'ua'=>[
-                //             'table' =>'sd_user_assignments',
-                //             'type'=>'INNER',
-                //             'conditions'=>['ua.sd_product_workflow_id = SdCases.sd_product_workflow_id','ua.sd_user_id = '.$user['id']]
-                //         ]
-                //     ]);}
+                if($user['sd_role_id']>=2) {
+                    $searchResult = $searchResult->join([
+                        'ua'=>[
+                            'table' =>'sd_user_assignments',
+                            'type'=>'INNER',
+                            'conditions'=>['ua.sd_product_workflow_id = SdCases.sd_product_workflow_id','ua.sd_user_id = '.$user['id']]
+                        ]
+                    ]);}
                 
                 if(!empty($searchKey['product_id'])) $searchResult = $searchResult->where(['pd.id '=>$searchKey['product_id']]);
                 if(!empty($searchKey['country'])) $searchResult = $searchResult->where(['wf.country'=>$searchKey['country']]);
@@ -381,7 +381,7 @@ class SdCasesController extends AppController
                         ],
                         'pd' => [
                             'table' => 'sd_products',
-                            'type' => 'LEFT',
+                            'type' => 'INNER',
                             'conditions' => ['pw.sd_product_id = pd.id','pd.sd_company_id ='.$userinfo['company_id']],
                         ],
                         'wf'=>[
@@ -475,7 +475,6 @@ class SdCasesController extends AppController
                 if(!empty($searchKey['patient_gender'])) $searchResult = $searchResult->where(['patient_gender.field_value'=>$searchKey['patient_gender']]);
                 if(!empty($searchKey['patient_id'])) $searchResult = $searchResult->where(['patient_id.field_value LIKE'=>'%'.$searchKey['patient_id'].'%']);
                 if(!empty($searchKey['searchProductName'])) $searchResult = $searchResult->where(['product_name  LIKE'=>'%'.$searchKey['searchProductName'].'%']);
-                // debug($searchResult);
                 $output = $searchResult->all()->toArray();  
                 foreach($output as $key => $caseDetail){
                     if($caseDetail['submission_due_date']==null&&$caseDetail['activity_due_date']==null) continue;
@@ -529,6 +528,7 @@ class SdCasesController extends AppController
             ->find()
             ->select(['id','product_name'])
             ->contain(['SdProductWorkflows.SdWorkflows'=>['fields'=>['SdWorkflows.country']]])
+            ->where(['sd_company_id '=>$userinfo['sd_company_id']])
             ->group(['SdProducts.id']);
         
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -536,7 +536,7 @@ class SdCasesController extends AppController
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
             $sdSectionSetTable = TableRegistry::get('SdSectionSets');
             $sdCompaniesTable = TableRegistry::get('SdCompanies');
-            $companyDetail = $sdCompaniesTable->find()->select(['product_abbreviation'])->where(['id'=>$userinfo['User']['sd_company_id']])->first();
+            $companyDetail = $sdCompaniesTable->find()->select(['product_abbreviation'])->where(['id'=>$userinfo['sd_company_id']])->first();
             // $requestDataField = $requestData['field_value'];
             /**
              * save case
@@ -751,14 +751,14 @@ class SdCasesController extends AppController
             $date_str = "";
             foreach($order as $item){
                 if($item == "prefix")
-                    $date_str = $date_str + $prefix;
+                    $date_str = $date_str.$prefix;
                 else if($item == "date")
-                    $date_str = $date_str+date("ym");
-                else $date_str = $date_str+$rand_str;
+                    $date_str = $date_str.date("ym");
+                else $date_str = $date_str.$rand_str;
             }
-            
-            $date_str = "ICSR".date("ym").$rand_str;
+            // $date_str = "ICSR".date("ym").$rand_str;
         }while($this->SdCases->find()->where(['caseNo LIKE '=>'%'.$date_str.'%'])->first()!=null);
+        debug($date_str);
         return (String)$date_str;
     }
 
