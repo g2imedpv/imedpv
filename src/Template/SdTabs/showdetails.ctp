@@ -94,7 +94,7 @@ echo $this->element('generatepdf');
                 </a>
                 <div class="dropdown-menu" aria-labelledby="export">
                     <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>"><?php echo __("CIOMS-R2")?></a>
-                    <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>"><?php echo __("CIOMS-R3")?></a>
+                    <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMSThree/<?php echo $caseId ?>"><?php echo __("CIOMS-R3")?></a>
                     <a class="dropdown-item" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>"><?php echo __("FDA")?></a>
                     <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLTwo/<?php echo $caseId ?>"><?php echo __("XML-R2")?></a>
                     <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLThree/<?php echo $caseId ?>"><?php echo __("XML-R3")?></a>
