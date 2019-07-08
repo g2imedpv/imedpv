@@ -528,6 +528,7 @@ class SdCasesController extends AppController
             ->find()
             ->select(['id','product_name'])
             ->contain(['SdProductWorkflows.SdWorkflows'=>['fields'=>['SdWorkflows.country']]])
+            ->where(['sd_company_id '=>$userinfo['sd_company_id']])
             ->group(['SdProducts.id']);
         
         if ($this->request->is(['patch', 'post', 'put'])) {
