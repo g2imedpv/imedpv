@@ -26,6 +26,22 @@
     </div>
 
     <div class="form-row justify-content-center">
+        <div class="form-group col-md-6">
+            <label><?php echo __("Short Description")?> </label>
+            <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Proprietary Medicinal Product Name")?> (B.4.k.2.1)" data-content="<div><?php echo __("The name should be that used by the reporter. It is recognized that a single product may have different proprietary names in different countries, even when produced by a single manufacturer.");?></div>" ><i class="qco fas fa-info-circle"></i></a>
+            <input type="text" class="form-control" id="short_desc" name="product[short_desc]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
+        </div>
+    </div>
+
+    <div class="form-row justify-content-center">
+        <div class="form-group col-md-6">
+            <label><?php echo __("Product Description")?></label>
+            <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Proprietary Medicinal Product Name")?> (B.4.k.2.1)" data-content="<div><?php echo __("The name should be that used by the reporter. It is recognized that a single product may have different proprietary names in different countries, even when produced by a single manufacturer.");?></div>" ><i class="qco fas fa-info-circle"></i></a>
+            <input type="text" class="form-control" id="product_desc" name="product[product_desc]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
+        </div>
+    </div>
+    
+    <div class="form-row justify-content-center">
         <div class="form-group col-md-3">
             <label><?php echo __("Product Type")?></label>
             <div class="option_group">
@@ -740,10 +756,10 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col"><?php echo __("Continue");?><?php echo __("CRO Company");?></th>
-                        <th scope="col"><?php echo __("Continue");?><?php echo __("Workflow Manager");?></th>
-                        <th scope="col"><?php echo __("Continue");?><?php echo __("Team Resources");?></th>
-                        <th scope="col"><?php echo __("Continue");?><?php echo __("Actions");?></th>
+                        <th scope="col"><?php echo __("CRO Company");?></th>
+                        <th scope="col"><?php echo __("Workflow Manager");?></th>
+                        <th scope="col"><?php echo __("Team Resources");?></th>
+                        <th scope="col"><?php echo __("Actions");?></th>
                     </tr>
                 </thead>
                 <tbody id="distribution-crotable">
@@ -759,7 +775,8 @@
 var accessment_workflow_structure = <?php echo json_encode($accessment_workflow_structure);?>;
 var distribution_workflow_structure = <?php echo json_encode($distribution_workflow_structure);?>;
 var loadTabs = <?php echo json_encode($loadTabs);?>;
-var cro_companies = <?php echo json_encode($cro_companies);?>
+var cro_companies = <?php echo json_encode($cro_companies);?>;
+var call_center_list = <?php echo json_encode($call_ctr_companies);?>;
 </script>
 <?php function renderTabs($sections, $exsitList, $sdsections,$tabkey){
     if(!array_key_exists($sections['id'], $exsitList)||$exsitList[$sections['id']]==="")
