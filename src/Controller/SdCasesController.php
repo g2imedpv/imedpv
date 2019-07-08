@@ -382,7 +382,7 @@ class SdCasesController extends AppController
                         'pd' => [
                             'table' => 'sd_products',
                             'type' => 'LEFT',
-                            'conditions' => ['pw.sd_product_id = pd.id','pd.sd_company_id ='.$userinfo['company_id']],
+                            'conditions' => ['pw.sd_product_id = pd.id'],
                         ],
                         'wf'=>[
                             'table' => 'sd_workflows',
@@ -475,7 +475,6 @@ class SdCasesController extends AppController
                 if(!empty($searchKey['patient_gender'])) $searchResult = $searchResult->where(['patient_gender.field_value'=>$searchKey['patient_gender']]);
                 if(!empty($searchKey['patient_id'])) $searchResult = $searchResult->where(['patient_id.field_value LIKE'=>'%'.$searchKey['patient_id'].'%']);
                 if(!empty($searchKey['searchProductName'])) $searchResult = $searchResult->where(['product_name  LIKE'=>'%'.$searchKey['searchProductName'].'%']);
-                // debug($searchResult);
                 $output = $searchResult->all()->toArray();  
                 foreach($output as $key => $caseDetail){
                     if($caseDetail['submission_due_date']==null&&$caseDetail['activity_due_date']==null) continue;
