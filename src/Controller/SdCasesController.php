@@ -381,8 +381,8 @@ class SdCasesController extends AppController
                         ],
                         'pd' => [
                             'table' => 'sd_products',
-                            'type' => 'LEFT',
-                            'conditions' => ['pw.sd_product_id = pd.id'],
+                            'type' => 'INNER',
+                            'conditions' => ['pw.sd_product_id = pd.id','pd.sd_company_id ='.$userinfo['company_id']],
                         ],
                         'wf'=>[
                             'table' => 'sd_workflows',
