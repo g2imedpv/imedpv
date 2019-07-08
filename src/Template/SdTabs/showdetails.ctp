@@ -47,23 +47,23 @@ echo $this->element('generatepdf');
     </button>
 
     <!-- "Case Number" Display -->
-    <h4 class="nav-item mx-auto" id="caseNumber" title="Case Number">
+    <h5 class="nav-item mx-auto" id="caseNumber" title="Case Number">
         <?php echo __("Full Data Entry")?> - <b><?= $caseNo ?></b> [<?= $product_name?>]<b>(<?php echo __("Version")?>:<?= $version?>)</b>
-    </h4>
+    </h5>
 
     <div class="collapse navbar-collapse justify-content-end" id="DEtopBar">
         <ul class="nav navbar-nav">
 
             <!-- "Search" Button -->
             <li class="nav-item m-1">
-                <button class="btn btn-outline-info" title="Search" role="button" id="DeSearch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-sm btn-outline-info" title="Search" role="button" id="DeSearch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-search"></i> <?php echo __("Search")?>
                 </button>
             </li>
 
             <!-- "Version Switch" Dropdown Button -->
             <li class="nav-item dropdown m-1">
-                <a class="btn btn-outline-info dropdown-toggle" href="#" title="Version Switch" role="button" id="versionSwitch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn btn-sm btn-outline-info dropdown-toggle" href="#" title="Version Switch" role="button" id="versionSwitch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-code-branch"></i> <?php echo __("Switch Version")?>
                 </a>
                 <?php
@@ -84,13 +84,13 @@ echo $this->element('generatepdf');
 
             <!-- "Documents" Button -->
             <li class="nav-item m-1">
-                <a class="btn btn-outline-info" href="/sd-documents/add_documents/<?= $caseId ?>" title="Documents Check" target="_blank"><i class="far fa-file-alt"></i> <?php echo __("Documents")?></a>
+                <a class="btn btn-sm btn-outline-info" href="/sd-documents/add_documents/<?= $caseId ?>" title="Documents Check" target="_blank"><i class="far fa-file-alt"></i> <?php echo __("Documents")?></a>
             </li>
 
             <!-- "Export" Dropdown Button -->
             <li class="nav-item dropdown m-1">
-                <a class="btn btn-outline-info dropdown-toggle" href="#" id="export" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-print"></i> <?php echo __("Export")?>
+                <a class="btn btn-sm btn-outline-info dropdown-toggle" href="#" id="export" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-file-export"></i> <?php echo __("Export")?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="export">
                     <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>"><?php echo __("CIOMS")?></a>
@@ -102,16 +102,16 @@ echo $this->element('generatepdf');
 
             <!-- "Print" Dropdown Button -->
             <li class="nav-item m-1">
-                <a class="btn btn-outline-info" href="#" title="Print"  role="button" id="printPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-file-export"></i> <?php echo __("Print Out")?>
+                <a class="btn btn-sm btn-outline-info" href="#" title="Print"  role="button" id="printPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-print"></i> <?php echo __("Print")?>
                 </a>
             </li>
 
             <!-- "Next & Previous Step" Button -->
             <li class="nav-item m-1">
                 <?php if($writePermission==1){
-                echo "<button class=\"btn btn-outline-warning mx-1\" title=\"Sign Off\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(1)\"><i class=\"fas fa-share-square\"></i> ".__("Next Step")."</button>";
-                echo "<button class=\"btn btn-outline-warning mx-1\" title=\"Push Backward\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(2)\"><i class=\"fab fa-pushed\"></i> ".__("Previous Step")."</button>";
+                echo "<button class=\"btn btn-sm btn-outline-warning mx-1\" title=\"Sign Off\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(1)\"><i class=\"fas fa-share-square\"></i> ".__("Next Step")."</button>";
+                echo "<button class=\"btn btn-sm btn-outline-warning mx-1\" title=\"Push Backward\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(2)\"><i class=\"fab fa-pushed\"></i> ".__("Previous Step")."</button>";
                 }?>
             </li>
 
@@ -143,6 +143,14 @@ echo $this->element('generatepdf');
 
 <!-- Data Entry Body -->
 <div class="dataentry">
+
+    <!-- Print "Case Number and User Name", ONLY WORK ON PRINT STATUS -->
+    <h5 id="infoPrint">
+        <?php echo __("Full Data Entry")?> - <b><?= $caseNo ?></b> [<?= $product_name?>]<b>(<?php echo __("Version")?>:<?= $version?>)</b>
+        <br>
+        <span>Current User:<?php echo $this->request->getSession()->read('Auth.User.firstname'); ?>&nbsp;<?php print $this->request->getSession()->read('Auth.User.lastname'); ?> </span>
+    </h5>
+
     <div class="subtabtitle"><?= $sdSections[0]['section_name']?></div>
     <?= $this->Form->create($sdSections,['id'=> 'dataEntry']);?>
     <?php
