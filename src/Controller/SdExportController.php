@@ -493,7 +493,7 @@ class SdExportController extends AppController
         }
     
         // Call the previous function by $caseId,$field_id and $set_num
-        public function genCIOMS ($caseId) {
+        public function genCIOMS($caseId) {
             $this->viewBuilder()->layout('CIOMS'); 
             //MFR number
             $sdCases = TableRegistry::get('sdCases');
@@ -716,7 +716,7 @@ class SdExportController extends AppController
                             $text = $text." <style> p {position: absolute;}  </style>";
                             $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
-                    }
+                    }else{break;}
                     break;
                     case '9'://c7 OTC?
                     $checked=array();
@@ -731,7 +731,7 @@ class SdExportController extends AppController
                             $text = $text." <style> p {position: absolute;}  </style>";
                             $text=$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.'X'.'</p>';
-                    }
+                    }else{break;}
                     break;
                     default;
                 }
