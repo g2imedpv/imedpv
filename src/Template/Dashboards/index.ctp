@@ -52,7 +52,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             </div>
             <div class="form-group col-lg-4">
                 <label><?php echo __("Case No.")?></label>
-                <input type="text" class="form-control"  id="searchName" placeholder="<?php echo __("Search by Case No.")?>">
+                <input type="text" class="form-control"  id="caseNo" placeholder="<?php echo __("Search by Case No.")?>">
             </div>
             <div class="form-group col-lg-4">
                 <label><?php echo __("Case Status")?></label>

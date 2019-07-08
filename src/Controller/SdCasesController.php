@@ -365,6 +365,7 @@ class SdCasesController extends AppController
                     'SdCases.status',
                     'sd_workflow_activity_id',
                     'pd.product_name',
+                    'country'=>'wf.country',
                     'wa.activity_name',
                     'SdCases.sd_user_id',
                     'serious_case.id',
@@ -382,6 +383,11 @@ class SdCasesController extends AppController
                             'table' => 'sd_products',
                             'type' => 'LEFT',
                             'conditions' => ['pw.sd_product_id = pd.id','pd.sd_company_id ='.$userinfo['company_id']],
+                        ],
+                        'wf'=>[
+                            'table' => 'sd_workflows',
+                            'type'=>'LEFT',
+                            'conditions' => ['wf.id = pw.sd_workflow_id'],
                         ],
                         'wa' => [
                             'table' => 'sd_workflow_activities',
