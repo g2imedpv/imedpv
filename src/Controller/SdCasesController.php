@@ -248,14 +248,14 @@ class SdCasesController extends AppController
                                             'conditions' => ['wf.id = pdw.sd_workflow_id']
                                         ]
                                     ])->group('SdCases.id');
-                // if($user['sd_role_id']>=2) {
-                //     $searchResult = $searchResult->join([
-                //         'ua'=>[
-                //             'table' =>'sd_user_assignments',
-                //             'type'=>'INNER',
-                //             'conditions'=>['ua.sd_product_workflow_id = SdCases.sd_product_workflow_id','ua.sd_user_id = '.$user['id']]
-                //         ]
-                //     ]);}
+                if($user['sd_role_id']>=2) {
+                    $searchResult = $searchResult->join([
+                        'ua'=>[
+                            'table' =>'sd_user_assignments',
+                            'type'=>'INNER',
+                            'conditions'=>['ua.sd_product_workflow_id = SdCases.sd_product_workflow_id','ua.sd_user_id = '.$user['id']]
+                        ]
+                    ]);}
                 
                 if(!empty($searchKey['product_id'])) $searchResult = $searchResult->where(['pd.id '=>$searchKey['product_id']]);
                 if(!empty($searchKey['country'])) $searchResult = $searchResult->where(['wf.country'=>$searchKey['country']]);
@@ -536,7 +536,7 @@ class SdCasesController extends AppController
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
             $sdSectionSetTable = TableRegistry::get('SdSectionSets');
             $sdCompaniesTable = TableRegistry::get('SdCompanies');
-            $companyDetail = $sdCompaniesTable->find()->select(['product_abbreviation'])->where(['id'=>$userinfo['User']['sd_company_id']])->first();
+            $companyDetail = $sdCompaniesTable->find()->select(['product_abbreviation'])->where(['id'=>$userinfo['sd_company_id']])->first();
             // $requestDataField = $requestData['field_value'];
             /**
              * save case
@@ -751,14 +751,14 @@ class SdCasesController extends AppController
             $date_str = "";
             foreach($order as $item){
                 if($item == "prefix")
-                    $date_str = $date_str + $prefix;
+                    $date_str = $date_str.$prefix;
                 else if($item == "date")
-                    $date_str = $date_str+date("ym");
-                else $date_str = $date_str+$rand_str;
+                    $date_str = $date_str.date("ym");
+                else $date_str = $date_str.$rand_str;
             }
-            
-            $date_str = "ICSR".date("ym").$rand_str;
+            // $date_str = "ICSR".date("ym").$rand_str;
         }while($this->SdCases->find()->where(['caseNo LIKE '=>'%'.$date_str.'%'])->first()!=null);
+        debug($date_str);
         return (String)$date_str;
     }
 

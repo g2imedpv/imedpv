@@ -3,7 +3,6 @@ var distribution_resource_list={};
 var workflow_k = 0;
 var workflow_list =[];
 var cro_list=[];
-var call_center_list = {};
 var accessment_permission_list = {};
 var distribution_permission_list ={};
 var distribution_list =[];
@@ -388,7 +387,7 @@ jQuery(function($) {  // In case of jQuery conflict
                 distribution_list[distribution_No].workflow_description= $('#default_'+workflowType+'_workflow_description').val();
             }
         }
-        if (($('#default_'+workflowType+'_workflow').is(':hidden') && $('#customize_'+workflowType+'_workflow').is(':visible')))
+        else if (($('#default_'+workflowType+'_workflow').is(':hidden') && $('#customize_'+workflowType+'_workflow').is(':visible')))
         {
             $('.step_backward').each(function(){
                 $(this).prop("disabled", true);
@@ -407,6 +406,7 @@ jQuery(function($) {  // In case of jQuery conflict
                     activities_list.step_backward = $(this).val();
                 });
                 activities_list.order_no = order_no;
+                activities_list.due_day = $(this).find(".due_day-7").val()+','+$(this).find(".due_day-15").val()+','+$(this).find(".due_day-90").val();
                 if(workflowType=="accessment") workflow_list[workflow_k].activities.push(activities_list);
                 else distribution_list[workflow_k].activities.push(activities_list);
                 order_no++;
@@ -479,7 +479,7 @@ jQuery(function($) {  // In case of jQuery conflict
         
         $('#cho-'+workflowType+'-workflow').slideUp();
         $('#'+workflowType+'-workflowlist').slideDown();
-        $('#addNew-accessment-WL').show();
+        $('#addNew-'+workflowType+'-WL').show();
     });
     $('[id^=submit_][id$=_country]').click(function() {
         var workflowType = $(this).attr('id').split('_')[1];
@@ -658,7 +658,6 @@ jQuery(function($) {  // In case of jQuery conflict
             cro_text +=$(this).text();
             cro_text += " ; "
         });
-
         text +="<tr>";
         text +="<td>"+$('#custom_accessment_workflow_name').val()+"</td>";
         text +="<td>"+$('#custom_accessment_workflow_description').val()+"</td>";
@@ -669,7 +668,6 @@ jQuery(function($) {  // In case of jQuery conflict
         text +="<div class=\"btn btn-sm btn-primary mx-2\" data-toggle=\"modal\" onclick=\"view_workflow("+workflow_k+")\" data-target=\".WFlistView\">View</div>"
         text +="<button class=\"btn btn-sm btn-outline-danger\" onclick=\"$(this).closest('tr').remove();\">Delete</button>";
         text +="</td>";
-
         if(workflow_list[workflow_k].workflow_type == 0){
             text +="<input name=\"accessment_workflow["+workflow_k+"][id]\" value="+workflow_list[workflow_k].id+" type=\"hidden\">";
         }else{
@@ -678,7 +676,6 @@ jQuery(function($) {  // In case of jQuery conflict
             text +="<input name=\"accessment_workflow["+workflow_k+"][country]\" value="+workflow_list[workflow_k].country+" type=\"hidden\">";
             text +="<input name=\"accessment_workflow["+workflow_k+"][workflow_type]\" value=\"1\" type=\"hidden\">";
             $.each(workflow_list[workflow_k]['activities'], function(k, activity_detail){
-                console.log(activity_detail['activity_name']);
                 text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][activity_name]\" value=\""+activity_detail['activity_name']+"\" type=\"hidden\">";
                 text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][description]\" value=\""+activity_detail['activity_description']+"\" type=\"hidden\">";
                 text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][step_backward]\" value=\""+activity_detail['step_backward']+"\" type=\"hidden\">";
@@ -687,6 +684,7 @@ jQuery(function($) {  // In case of jQuery conflict
         }
         text +="<input name=\"accessment_product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
         text +="<input name=\"accessment_product_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_list[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
+        text +="<input name=\"accessment_product_workflow["+workflow_k+"][due_day]\" value="+workflow_list[workflow_k].due_day+" type=\"hidden\">";//TODO
         text +="<input name=\"accessment_product_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
 
         //accessment-distribution relation
@@ -723,7 +721,7 @@ jQuery(function($) {  // In case of jQuery conflict
         //accessment permission
         $.each(accessment_permission_list[workflow_k],function(activity_order,activity_permissions){
             $.each(activity_permissions,function(section_id, permission_action){
-                if(section_id == 0) return true;
+                if(permission_action == '0'||typeof permission_action == 'undefined') return true;
                 text +="<input name=\"accessment_permission["+workflow_k+"]["+activity_order+"]["+section_id+"][action]\" value=\""+permission_action+"\" type=\"hidden\">"
             });
         });
@@ -732,16 +730,17 @@ jQuery(function($) {  // In case of jQuery conflict
         $.each(distribution_permission_list,function(distribution_k, workflow_permissions){
             $.each(workflow_permissions,function(activity_order,activity_permissions){
                 $.each(activity_permissions,function(section_id, permission_action){
-                    if(section_id == 0) return true;
+                    if(permission_action == '0'||typeof permission_action == 'undefined') return true;
                     distribution_text +="<input name=\"distribution_permission["+distribution_k+"]["+activity_order+"]["+section_id+"][action]\" value=\""+permission_action+"\" type=\"hidden\">"
                 });
             });
         });
         
         $.each(distribution_list, function(key, distribution_workflow){
-            text +="<input name=\"distribution_product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
-            text +="<input name=\"distribution_product_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_list[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
+            text +="<input name=\"distribution_product_workflow["+workflow_k+"][sd_company_id]\" value=\""+distribution_list[workflow_k].sd_company_id+"\" type=\"hidden\">";
+            text +="<input name=\"distribution_product_workflow["+workflow_k+"][sd_user_id]\" value=\""+distribution_list[workflow_k].sd_user_id+"\" type=\"hidden\">";//TODO
             text +="<input name=\"distribution_product_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
+            text +="<input name=\"distribution_product_workflow["+workflow_k+"][due_day]\" value=\""+distribution_list[workflow_k].due_day+"\" type=\"hidden\">";
             if(distribution_workflow.workflow_type == 0){
                 distribution_text +="<input name=\"distribution_workflow["+key+"][id]\" value="+distribution_workflow.id+" type=\"hidden\">";
             }else{
@@ -941,9 +940,8 @@ function sectionPermission(activity_id, readonly, workflowTypeFlag){
                 console.log(response);
                 var result = $.parseJSON(response);
                 $("div[id^=section-]").each(function(){
-                    var flag = 0;
                     var id = $(this).attr('id').split('-');
-                    if((typeof result[id[1]]!="undefined")||(result[id[1]]!="0")){
+                    if(typeof result[id[1]]!="undefined" && result[id[1]]!="0"){
                             if(result[id[1]] == 1) {
                                 $(this).find("input[id^=write][id$="+id[1]+"]").prop('checked',true);
                                 $(this).find("input[id^=read][id$="+id[1]+"]").prop('checked',true);
@@ -1122,7 +1120,7 @@ function croDroppableArea(){
 }
 function view_workflow(workflow_k){
     $('#viewWFname').text(workflow_list[workflow_k]['workflow_name']);
-    $('#viewCC').text(call_center_list[workflow_list[workflow_k]['sd_company_id']]['name']);
+    $('#viewCC').text(call_center_list[workflow_list[workflow_k]['sd_company_id']]);
     $('#viewCountry').text(workflow_list[workflow_k]['country']);
     $('#viewDesc').text(workflow_list[workflow_k]['workflow_description']);
     var team_resources_text="";
