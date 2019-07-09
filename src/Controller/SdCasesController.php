@@ -381,8 +381,8 @@ class SdCasesController extends AppController
                         ],
                         'pd' => [
                             'table' => 'sd_products',
-                            'type' => 'LEFT',
-                            'conditions' => ['pw.sd_product_id = pd.id'],
+                            'type' => 'INNER',
+                            'conditions' => ['pw.sd_product_id = pd.id','pd.sd_company_id ='.$userinfo['company_id']],
                         ],
                         'wf'=>[
                             'table' => 'sd_workflows',
@@ -528,6 +528,7 @@ class SdCasesController extends AppController
             ->find()
             ->select(['id','product_name'])
             ->contain(['SdProductWorkflows.SdWorkflows'=>['fields'=>['SdWorkflows.country']]])
+            ->where(['sd_company_id '=>$userinfo['sd_company_id']])
             ->group(['SdProducts.id']);
         
         if ($this->request->is(['patch', 'post', 'put'])) {

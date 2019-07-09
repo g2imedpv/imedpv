@@ -629,18 +629,30 @@ ul.queryBoxLeft > a {
 
 .formContainer {
     width: 90%;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 /* Change layout while Print */
+@media screen {
+    #infoPrint {
+        display: none;
+    }
+}
 @media print {
-    #sidenav, .topNav, .gotop {
+    #infoPrint {
+        @page :first {
+            position: fixed;
+            top: 0;
+        }
+    }
+    #sidenav, .topNav, .mainNav, .gotop, .completeBtn  {
         visibility: hidden;
     }
-    body, .dataentry {
-        position: absolute !important;
+    html, body, .dataentry {
         width: 100% !important;
-        left: -140px !important;
+        height: auto !important;
+        position: absolute !important;
+        left: -60px !important;
     }
 }
 
