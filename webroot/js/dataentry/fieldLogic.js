@@ -161,7 +161,7 @@ $(document).ready(function(){
         // For Report Nullification (A.1.13) checkbox
         checkboxShowORhide ('#section-1-field-23',"#section-1-checkbox-22-option-1");
         // For Exist Other Case Identifiers? (A.1.11) checkbox
-        checkboxShowORhide ('#section-1-field-19, #section-1-field-20', "#section-1-checkbox-18-option-1");
+        checkboxShowORhide ('#section-1-field-19, #section-1-field-20,#section-1-field-1066', "#section-1-checkbox-18-option-1");
         //show document list in field
         var docLists=$('#hidden_docLists').val();
         $('#section-1-text-14').val(docLists)
