@@ -116,7 +116,7 @@ $(document).ready(function(){
         var fieldId=$(target).attr('id').split('-')[3];
         var date=$(target).val();
         if((typeof date!="undefined")&&(date!="")){
-            var dateInformat=date.substring(2,4)+" / "+date.substring(0,2)+" / "+date.substring(4,8);
+            var dateInformat=date.substring(0,2)+" / "+date.substring(2,4)+" / "+date.substring(4,8);
             $("#specified-date-section-"+sectionId+"-date-"+fieldId).val(dateInformat);
         }else{
             $("#specified-date-section-"+sectionId+"-date-"+fieldId).val("");
@@ -141,7 +141,7 @@ $(document).ready(function(){
         let sectionId = $(this).attr('id').split('-')[3];
         let fieldId = $(this).attr('id').split('-')[5];
         let date = $("#specified-date-section-"+sectionId+"-date-"+fieldId).val().split(' / ');
-        $("#section-"+sectionId+"-date-"+fieldId).val(date[1]+date[0]+date[2]);
+        $("#section-"+sectionId+"-date-"+fieldId).val(date[0]+date[1]+date[2]);
     });
     
 
@@ -269,9 +269,11 @@ $(document).ready(function(){
             if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
             var values = input.split('/').map(function(v) {
                 return v.replace(/\D/g, '')
+               
             });
-            if (values[0]) values[0] = checkValue(values[0], 12);
-            if (values[1]) values[1] = checkValue(values[1], 31);
+            console.log(values);
+            if (values[0]) values[0] = checkValue(values[0], 31);
+            if (values[1]) values[1] = checkValue(values[1], 12);
             var output = values.map(function(v, i) {
                 return v.length == 2 && i < 2 ? v + ' / ' : v;
             });
