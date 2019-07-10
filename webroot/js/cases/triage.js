@@ -12,6 +12,7 @@ $('[id^=doc_source]').change(function () {
 });
 $(document).ready(function(){
     $('#docTable').DataTable();
+    $('#reporterField_latestreceiveddate_plugin,#reporterField_initialreceiveddate_plugin').datepicker({dateFormat: 'dd/mm/yy'});
     $(function(){
         // function fileUrlSwitcher () {
         //     $('[id^=doc_source]').each(function(s,v){
@@ -32,7 +33,6 @@ $(document).ready(function(){
         //         })
         //     });
         // };
-
         $('[id^=addNewAttach]').click(function(){
             var set_number = $(this).attr('id').split('-')[1];
             set_number ++;
@@ -233,7 +233,7 @@ $(document).ready(function(){
         var date=$(target).val();
         if(date!=''){
             var fieldId=$(target).attr('id'); 
-            var dateInformat=date.substring(4,8)+'-'+date.substring(2,4)+'-'+date.substring(0,2);
+            var dateInformat=date.substring(0,2)+'/'+date.substring(2,4)+'/'+date.substring(4,8);
             $("#"+fieldId+"_plugin").val(dateInformat);
         }else{
             return ;
@@ -243,7 +243,7 @@ $(document).ready(function(){
     dateConvert("#reporterField_initialreceiveddate");
     $("#reporterField_latestreceiveddate_plugin").change(function(){
         let dayVal = $(this).val();
-        dayZero= dayVal.split('-').reverse()[0]+dayVal.split('-').reverse()[1]+dayVal.split('-').reverse()[2];
+        dayZero= dayVal.split('/')[0]+dayVal.split('/')[1]+dayVal.split('/')[2];
         console.log(dayVal);
         $("#reporterField_regulatoryclockstartddate").val(dayZero);
         $("#reporterField_latestreceiveddate").val(dayZero);
@@ -254,7 +254,7 @@ $(document).ready(function(){
     })
     $("#reporterField_initialreceiveddate_plugin").change(function(){
         date = $(this).val();
-        date = date.split('-').reverse()[0]+date.split('-').reverse()[1]+date.split('-').reverse()[2];
+        date = date.split('/')[0]+date.split('/')[1]+date.split('/')[2];
         $("#reporterField_initialreceiveddate").val(date);
     })
     $("#reason-3").change(function(){

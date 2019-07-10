@@ -247,26 +247,8 @@ function caseDetail(caseNo)
 /**  
  * Case Registration / Duplicate Detection:Reaction Onset Date (B.2.i.4b):date format
  */
-// $(document).ready(function(){
-    
-//     function dateConvert(target){
-//         var date=$(target).val();
-//         if(date!=''){
-//             var fieldId=$(target).attr('id');
-//             var dateInformat=date.substring(4,8)+'-'+date.substring(2,4)+'-'+date.substring(0,2);
-//             $("#"+fieldId+"_plugin").val(dateInformat);
-//         }else{
-//             return ;
-//         }
-//     }
-//     dateConvert("#event_onset_date");
-//     $("#event_onset_date_plugin").change(function(){
-//         date = $(this).val();
-//         date = date.split('-').reverse()[0]+date.split('-').reverse()[1]+date.split('-').reverse()[2];
-//         $("#event_onset_date").val(date);
-//     })
-// });
-$(function() {
-    $( "#myVariable" ).datepicker( "option", "dateFormat", "dd/mm/yy" );
-    $( "#myVariable" ).datepicker( "setDate", new Date("<?php echo date("m/d/Y",strtotime($myVariable)); ?>" )); 
-}
+$(document).ready(function () {
+    $('#event_onset_date_plugin,#datepicker1,#datepicker2,#datepicker3,#datepicker4,#datepicker5').datepicker({dateFormat: 'dd/mm/yy'});
+});
+
+

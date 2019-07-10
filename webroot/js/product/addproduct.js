@@ -19,6 +19,10 @@ $(document).ready(function() {
             return 'Your data is changed, are you sure you want to complete?';
         }
     };
+     /**  
+     * dashboard advanced search:activity due date and submission due date calendar
+     */
+    $('#start_date,#end_date').datepicker({dateFormat: 'dd/mm/yy'});
 });
 function selectCro(id, typeFlag){
     var show_resource_list = {};

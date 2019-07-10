@@ -1,6 +1,14 @@
 <title><?php echo __("Dashboard")?></title>
 <head>
 <?= $this->Html->script('dashboard/index.js') ?>
+<!-- For datepicker in dashboard advanced search page-->
+<?= $this->Html->css('datepicker/jquery-ui.css') ?>
+<?= $this->Html->script('datepicker/jquery-1.10.2.js') ?>
+<?= $this->Html->script('datepicker/jquery-ui-1.10.4.js') ?>
+<!-- For local DataTable CSS/JS link -->
+<?= $this->Html->css('datatable/dataTables.bootstrap4.min.css') ?>
+<?= $this->Html->script('datatable/DataTables/js/jquery.dataTables.min.js') ?>
+<?= $this->Html->script('datatable/DataTables/js/dataTables.bootstrap4.min.js') ?>
 <head>
 <script>
 var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
@@ -71,7 +79,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             </div>
             <div class="form-group col-lg-4">
                 <label><?php echo __("Date of Birth");?></label>
-                <input type="date" class="form-control" id="patient_dob" placeholder="<?php echo  __("Search Birthday")?>">
+                <input type="text" class="form-control" id="patient_dob" placeholder="<?php echo  __("Search Birthday")?>">
             </div>
             <div class="form-group col-lg-4">
                 <label><?php echo __("Gender");?></label>

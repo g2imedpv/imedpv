@@ -2,7 +2,17 @@
 <head>
     <?= $this->Html->script('meddra.js') ?>
     <?= $this->Html->script('cases/triage.js') ?>
-
+    <!-- For datepicker in triage page-->
+    <?= $this->Html->css('datepicker/jquery-ui.css') ?>
+    <?= $this->Html->script('datepicker/jquery-1.10.2.js') ?>
+    <?= $this->Html->script('datepicker/jquery-ui-1.10.4.js') ?>
+    <!-- For local Select2 (External library for quick selecting) CSS/JS link -->
+    <?= $this->Html->css('select2/select2.min.css') ?>
+    <?= $this->Html->script('select2/select2.min.js') ?>
+    <!-- For local DataTable CSS/JS link -->
+    <?= $this->Html->css('datatable/dataTables.bootstrap4.min.css') ?>
+    <?= $this->Html->script('datatable/DataTables/js/jquery.dataTables.min.js') ?>
+    <?= $this->Html->script('datatable/DataTables/js/dataTables.bootstrap4.min.js') ?>
 <head>
 <script>
     var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
@@ -164,13 +174,13 @@
                 <label><?php echo __("Latest Received Date")?> (A.1.7.b)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[12][id]\" value=\"".$field_value_set['12']['id']."\">";?>
                 <input type="hidden" class="form-control" name="field_value[12][value]" id="reporterField_latestreceiveddate" value="<?= $field_value_set['12']['field_value']?>">
-                <input type="date" class="form-control"  id="reporterField_latestreceiveddate_plugin">
+                <input type="text" class="form-control"  id="reporterField_latestreceiveddate_plugin" placeholder="<?php echo __("dd/mm/yyyy")?>">
             </div>
             <div class="form-group col-md-3" >
                 <label><?php echo __("Initial Received Date")?> (A.1.7.b)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[10][id]\" value=\"".$field_value_set['10']['id']."\">";?>
                 <input type="hidden" class="form-control" name="field_value[10][value]" id="reporterField_initialreceiveddate" value="<?= $field_value_set['10']['field_value']?>">
-                <input type="date" class="form-control"  id="reporterField_initialreceiveddate_plugin" >
+                <input type="text" class="form-control"  id="reporterField_initialreceiveddate_plugin" placeholder="<?php echo __("dd/mm/yyyy")?>">
             </div>
             <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[225][id]\" value=\"".$field_value_set['225']['id']."\">";?>
             <input type="hidden" class="form-control" name="field_value[225][value]" id="reporterField_regulatoryclockstartddate" value="<?= $field_value_set['225']['field_value']?>">

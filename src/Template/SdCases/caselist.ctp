@@ -1,8 +1,16 @@
 <title>Case List</title>
-<script>
-var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
-var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
-</script>
+<head>
+    <?= $this->Html->script('cases/duplicate_detection.js') ?>
+    <!-- For datepicker in caselist page-->
+    <?= $this->Html->css('datepicker/jquery-ui.css') ?>
+    <?= $this->Html->script('datepicker/jquery-1.10.2.js') ?>
+    <?= $this->Html->script('datepicker/jquery-ui-1.10.4.js') ?>
+    <script>
+    var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
+    var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
+    </script>
+</head>
+
 <div class="my-3 mx-auto formContainer">
     <div class="text-center">
         <p class="pageTitle">

@@ -221,7 +221,7 @@ tr:nth-child(even) {
 }
 
 .ui-state-highlight {
-    height: 100px;
+    height: 30px;
     border-color: red;
 }
 
