@@ -4,6 +4,10 @@
 <title><?php echo __("Add Product")?></title>
 <head>
 <?= $this->Html->script('product/addproduct.js') ?>
+<!-- For datepicker in caselist page-->
+<?= $this->Html->css('datepicker/jquery-ui.css') ?>
+<?= $this->Html->script('datepicker/jquery-1.10.2.js') ?>
+<?= $this->Html->script('datepicker/jquery-ui-1.10.4.js') ?>
 <head>
 <script type="text/javascript">
     var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
@@ -153,11 +157,11 @@
     <div class="form-row justify-content-center">
         <div class="form-group col-md-3">
             <label><?php echo __("Study Start Date");?></label>
-            <input type="text" class="form-control" name="product[start_date]" id="start_date">
+            <input type="text" class="form-control" name="product[start_date]" id="start_date" placeholder="<?php echo __("dd/mm/yyyy")?>">
         </div>
         <div class="form-group col-md-3">
             <label><?php echo __("Study End Date");?></label>
-            <input type="text" class="form-control" name="product[end_date]" id="end_date">
+            <input type="text" class="form-control" name="product[end_date]" id="end_date" placeholder="<?php echo __("dd/mm/yyyy")?>">
         </div>
     </div>
 

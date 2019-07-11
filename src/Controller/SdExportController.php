@@ -438,10 +438,10 @@ class SdExportController extends AppController
         //function of no.23
         public function getCiomsRelevantValue($caseId,$disease,$medStart,$continue,$medEnd,$comment){
             $sdFieldValues = TableRegistry::get('sdFieldValues');
-            $disease= $sdFieldValues->find()
+            $Disease= $sdFieldValues->find()
                 ->select(['set_number'])
                 ->where(['sd_case_id='.$caseId,'sd_field_id='.$disease,'status=1'])->toArray();
-            $length=count($disease,0);
+            $length=count($Disease,0);
                  for($i=1;$i<=$length;$i++){
                     $query1=$this->getDirectValue($caseId,$disease,$i);
                     $query2=$this->getDateValue($caseId,$medStart,$i);
@@ -450,14 +450,14 @@ class SdExportController extends AppController
                     }
                     $query3=$this->getLookupValue($caseId,$continue,$i);
                     if($query3!=null){
-                        $continue="continuing:".$query3;
+                        $query3="continuing:".$query3;
                     }
                     $query4=$this->getDateValue($caseId,$medEnd,$i);
                     if($query4==null){
                         $query4="unknown";
                     }
                     $query=$this->getDirectValue($caseId,$comment,$i);
-                    $relevant .= "#".$i.")  ".$query1."  |  ".$query2."  |  ".$continue."   |   ".$query4."  |  ".$query5."<br>";  
+                    $relevant .= "#".$i.")  ".$query1."  |  ".$query2."  |  ".$query3."   |   ".$query4."  |  ".$query5."<br>";  
                 }
             return $relevant;
         }

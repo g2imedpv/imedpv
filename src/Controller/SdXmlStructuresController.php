@@ -5170,7 +5170,7 @@ class SdXmlStructuresController extends AppController
                 $xml->endElement();//sender
             $xml->endElement();//MCCI_IN200100UV01
         }
-        else if(substr($this->XMLvalue($caseId,416,1),2,1)==1){
+        else {//if(substr($this->XMLvalue($caseId,416,1),2,1)==1)
             $xml->startElement("MCCI_IN200100UV01");
             $xml->writeAttribute('ITSVersion','XML_1.0');
             $xml->writeAttribute('xsi:schemaLocation','urn:hl7-org:v3 multicacheschemas/MCCI_IN200100UV01.xsd');

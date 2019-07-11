@@ -1268,7 +1268,7 @@ msgstr "皮肤喷雾溶液"
 msgid "Cutaneous spray suspension"
 msgstr "皮肤悬浊液喷雾"
 msgid "Cutaneous stick Cutaneous suspension"
-msgstr 
+msgstr
 msgid "Cyprus"
 msgstr "塞浦路斯"
 msgid "Czech Republic"
@@ -1434,13 +1434,13 @@ msgstr "窦内给药"
 msgid "Endotracheal"
 msgstr "气管内给药"
 msgid "Endotracheopulmonary instillation"
-msgstr 
+msgstr
 msgid "Endotracheopulmonary instillation powder"
-msgstr 
+msgstr
 msgid "Endotracheopulmonary instillation soln"
-msgstr 
+msgstr
 msgid "Endotracheopulmonary instillation suspension"
-msgstr 
+msgstr
 msgid "Enema"
 msgstr "灌肠剂"
 msgid "Enteric-coated tablet"
@@ -2278,7 +2278,7 @@ msgstr "湿敷药"
 msgid "Poultice or patch"
 msgstr "湿敷药或贴片"
 msgid "Pow/solv fr instil sol fr intraocul use"
-msgstr 
+msgstr
 msgid "Powder"
 msgstr "粉剂"
 msgid "Powder & solvent for concentrate for solution"
@@ -2580,7 +2580,7 @@ msgstr "脊柱裂"
 msgid "Spincap"
 msgstr "自旋盖"
 msgid "SPL_LDD"
-msgstr 
+msgstr
 msgid "Spontaneous"
 msgstr "自发"
 msgid "Spontaneous report"
@@ -3407,7 +3407,7 @@ msgid "Documents"
 msgstr "文件"
 msgid "Export"
 msgstr "输出"
-msgid "Print Out"
+msgid "Print"
 msgstr "打印"
 msgid "Next Step"
 msgstr "下一步"
@@ -4117,3 +4117,7 @@ msgid "yes-unk (rechallenge was done, outcome unknown)"
 msgstr "是-未知（重新给药，结果未知）"
 msgid "no-n/a (no rechallenge was done, recurrence is not applicable)"
 msgstr "否-不适用（未重新给药，复发不适用）"
+msgid "Product Description"
+msgstr "产品描述"
+msgid "dd/mm/yyyy"
+msgstr "日/月/年"

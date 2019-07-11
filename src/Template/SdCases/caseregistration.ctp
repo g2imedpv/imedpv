@@ -1,7 +1,10 @@
 <title><?php echo __("Case Registration")?></title>
 <head>
     <?= $this->Html->script('cases/duplicate_detection.js') ?>
-
+    <!-- For datepicker in caselist page-->
+    <?= $this->Html->css('datepicker/jquery-ui.css') ?>
+    <?= $this->Html->script('datepicker/jquery-1.10.2.js') ?>
+    <?= $this->Html->script('datepicker/jquery-ui-1.10.4.js') ?>
     <!-- For local CSS link -->
     <?= $this->Html->css('mainlayout.css') ?>
     <?= $this->Html->script('meddra.js') ?>
@@ -178,7 +181,7 @@
                     <div class="form-group col-md-2">
                     <label><?php echo __("Reaction Onset Date (B.2.i.4b)")?></label>
                     <input type="hidden" class="form-control" name="field_value[156]" id="event_onset_date">
-                    <input type="date" class="form-control"  id="event_onset_date_plugin">
+                    <input type="text" class="form-control"  id="event_onset_date_plugin" placeholder="<?php echo __("dd/mm/yyyy")?>">
                     </div>
             </div>
             <div class="form-row justify-content-center">
