@@ -111,6 +111,12 @@ class SdProductsTable extends Table
             ->notEmpty('sd_product_flag');
 
         $validator
+            ->scalar('product_abbreviation')
+            ->maxLength('product_abbreviation', 5)
+            ->requirePresence('product_abbreviation', 'create')
+            ->notEmpty('product_abbreviation');
+
+        $validator
             ->scalar('WHODD_code')
             ->maxLength('WHODD_code', 50)
             ->requirePresence('WHODD_code', 'create')

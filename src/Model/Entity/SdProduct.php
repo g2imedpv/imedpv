@@ -17,6 +17,7 @@ use Cake\ORM\Entity;
  * @property string $product_desc
  * @property string $blinding_tech
  * @property int $sd_product_flag
+ * @property string $product_abbreviation
  * @property string $WHODD_code
  * @property string $WHODD_name
  * @property string $mfr_name
@@ -50,6 +51,7 @@ class SdProduct extends Entity
         'product_desc' => true,
         'blinding_tech' => true,
         'sd_product_flag' => true,
+        'product_abbreviation' => true,
         'WHODD_code' => true,
         'WHODD_name' => true,
         'mfr_name' => true,

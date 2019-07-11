@@ -52,7 +52,7 @@ class SdCompaniesFixture extends TestFixture
         'created_dt' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'modify_by' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'modified_dt' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
-        'product_abbreviation' => ['type' => 'string', 'length' => 5, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'company_abbreviation' => ['type' => 'string', 'length' => 5, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         '_indexes' => [
             'company_type' => ['type' => 'index', 'columns' => ['sd_user_type_id'], 'length' => []],
             'fax_no1' => ['type' => 'index', 'columns' => ['fax1'], 'length' => []],
@@ -117,10 +117,10 @@ class SdCompaniesFixture extends TestFixture
                 'is_medra' => 1,
                 'is_whodra' => 1,
                 'create_by' => 1,
-                'created_dt' => '2019-06-25 18:01:45',
+                'created_dt' => '2019-07-09 21:02:40',
                 'modify_by' => 1,
-                'modified_dt' => '2019-06-25 18:01:45',
-                'product_abbreviation' => 'Lor'
+                'modified_dt' => '2019-07-09 21:02:40',
+                'company_abbreviation' => 'Lor'
             ],
         ];
         parent::init();

@@ -41,11 +41,12 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created_dt
  * @property int $modify_by
  * @property \Cake\I18n\FrozenTime $modified_dt
- * @property string $product_abbreviation
+ * @property string $company_abbreviation
  *
  * @property \App\Model\Entity\SdUserType $sd_user_type
+ * @property \App\Model\Entity\SdProductWorkflow[] $sd_product_workflows
+ * @property \App\Model\Entity\SdProduct[] $sd_products
  * @property \App\Model\Entity\SdUser[] $sd_users
- * @property \App\Model\Entity\SdWorkflow[] $sd_workflows
  */
 class SdCompany extends Entity
 {
@@ -94,9 +95,10 @@ class SdCompany extends Entity
         'created_dt' => true,
         'modify_by' => true,
         'modified_dt' => true,
-        'product_abbreviation' => true,
+        'company_abbreviation' => true,
         'sd_user_type' => true,
-        'sd_users' => true,
-        'sd_workflows' => true
+        'sd_product_workflows' => true,
+        'sd_products' => true,
+        'sd_users' => true
     ];
 }

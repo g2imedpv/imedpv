@@ -187,6 +187,7 @@ class SdProductsController extends AppController
         
         if ($this->request->is('post')) {
             debug($this->request->getData());
+            die();
             $sdProduct = $this->SdProducts->newEntity();
             $sdProduct = $this->SdProducts->patchEntity($sdProduct, $this->request->getData()['product']);
             $sdProduct['sd_company_id'] = $this->request->getSession()->read('Auth.User.sd_company_id');
