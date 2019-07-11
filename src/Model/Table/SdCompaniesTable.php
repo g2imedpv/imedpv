@@ -10,8 +10,8 @@ use Cake\Validation\Validator;
  * SdCompanies Model
  *
  * @property \App\Model\Table\SdUserTypesTable|\Cake\ORM\Association\BelongsTo $SdUserTypes
- * @property |\Cake\ORM\Association\HasMany $SdProductWorkflows
- * @property |\Cake\ORM\Association\HasMany $SdProducts
+ * @property \App\Model\Table\SdProductWorkflowsTable|\Cake\ORM\Association\HasMany $SdProductWorkflows
+ * @property \App\Model\Table\SdProductsTable|\Cake\ORM\Association\HasMany $SdProducts
  * @property \App\Model\Table\SdUsersTable|\Cake\ORM\Association\HasMany $SdUsers
  *
  * @method \App\Model\Entity\SdCompany get($primaryKey, $options = [])
@@ -224,10 +224,10 @@ class SdCompaniesTable extends Table
             ->notEmpty('modified_dt');
 
         $validator
-            ->scalar('product_abbreviation')
-            ->maxLength('product_abbreviation', 5)
-            ->requirePresence('product_abbreviation', 'create')
-            ->notEmpty('product_abbreviation');
+            ->scalar('company_abbreviation')
+            ->maxLength('company_abbreviation', 5)
+            ->requirePresence('company_abbreviation', 'create')
+            ->notEmpty('company_abbreviation');
 
         return $validator;
     }

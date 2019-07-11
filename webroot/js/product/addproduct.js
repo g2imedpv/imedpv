@@ -680,11 +680,12 @@ jQuery(function($) {  // In case of jQuery conflict
                 text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][description]\" value=\""+activity_detail['activity_description']+"\" type=\"hidden\">";
                 text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][step_backward]\" value=\""+activity_detail['step_backward']+"\" type=\"hidden\">";
                 text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][order_no]\"  value=\""+activity_detail['order_no']+"\" type=\"hidden\">";
+                text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][due_day]\"  value=\""+activity_detail['due_day']+"\" type=\"hidden\">";
             });
         }
         text +="<input name=\"accessment_product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
         text +="<input name=\"accessment_product_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_list[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
-        text +="<input name=\"accessment_product_workflow["+workflow_k+"][due_day]\" value="+workflow_list[workflow_k].due_day+" type=\"hidden\">";//TODO
+        // text +="<input name=\"accessment_product_workflow["+workflow_k+"][due_day]\" value="+workflow_list[workflow_k].due_day+" type=\"hidden\">";//TODO
         text +="<input name=\"accessment_product_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
 
         //accessment-distribution relation
@@ -740,7 +741,7 @@ jQuery(function($) {  // In case of jQuery conflict
             text +="<input name=\"distribution_product_workflow["+workflow_k+"][sd_company_id]\" value=\""+distribution_list[workflow_k].sd_company_id+"\" type=\"hidden\">";
             text +="<input name=\"distribution_product_workflow["+workflow_k+"][sd_user_id]\" value=\""+distribution_list[workflow_k].sd_user_id+"\" type=\"hidden\">";//TODO
             text +="<input name=\"distribution_product_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
-            text +="<input name=\"distribution_product_workflow["+workflow_k+"][due_day]\" value=\""+distribution_list[workflow_k].due_day+"\" type=\"hidden\">";
+            // text +="<input name=\"distribution_product_workflow["+workflow_k+"][due_day]\" value=\""+distribution_list[workflow_k].due_day+"\" type=\"hidden\">";
             if(distribution_workflow.workflow_type == 0){
                 distribution_text +="<input name=\"distribution_workflow["+key+"][id]\" value="+distribution_workflow.id+" type=\"hidden\">";
             }else{

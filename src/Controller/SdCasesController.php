@@ -533,10 +533,11 @@ class SdCasesController extends AppController
         
         if ($this->request->is(['patch', 'post', 'put'])) {
             $requestData = $this->request->getData();
+            $product_data = TableRegistry::get('SdProducts')->get($requestData['product_id']);
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
             $sdSectionSetTable = TableRegistry::get('SdSectionSets');
             $sdCompaniesTable = TableRegistry::get('SdCompanies');
-            $companyDetail = $sdCompaniesTable->find()->select(['product_abbreviation'])->where(['id'=>$userinfo['sd_company_id']])->first();
+            $companyDetail = $sdCompaniesTable->find()->select(['company_abbreviation'])->where(['id'=>$userinfo['sd_company_id']])->first();
             // $requestDataField = $requestData['field_value'];
             /**
              * save case
@@ -564,8 +565,19 @@ class SdCasesController extends AppController
                 $sdCase = $this->SdCases->newEntity();
                 $savedData['sd_product_workflow_id'] = $requestData['sd_product_workflow_id'];
                 $savedData['status'] = "1";
-                //TODO ADD CONVENTION
-                $date_str = $this->caseNoGenerator(["prefix","date","random"],$companyDetail['product_abbreviation'])."00001";
+                $companyDetail['order'] = "company,product,date,random";
+                $order = explode(",",$companyDetail['order']);
+                $date_str = $this->caseNoGenerator($order,$companyDetail['company_abbreviation'],$product_data['product_abbreviation']);
+                $count = $this->SdCases->find()->select(['startDate.enter_time'])
+                            ->join([
+                                'startDate'=>[
+                                    'table'=>'sd_case_histories',
+                                    'type'=>'INNER',
+                                    'conditions'=>['SdCases.id = startDate.sd_case_id','startDate.sd_workflow_activity_id = '.$sdWorkflowActivities['id']]
+                                ]
+                            ])                        
+                            ->where(['SdCases.sd_product_workflow_id'=>$requestData['sd_product_workflow_id'], 'MONTH(startDate.enter_time)'=>date('m'), 'YEAR(startDate.enter_time)'=>date('Y')])->count();
+                $date_str = $date_str.str_pad($count, 5, "0", STR_PAD_LEFT);
                 $savedData['caseNo'] = $date_str;
                 $savedData['version_no'] = "1";
                 //TODO VERSION UP MIGHT BE INCLUDED
@@ -584,7 +596,6 @@ class SdCasesController extends AppController
                  * save field into these cases
                  */
                 //data on product
-                $product_data = TableRegistry::get('SdProducts')->get($requestData['product_id']);
                 $fieldId_product_set = [
                     '176'=>'product_desc', 
                     '40'=>'study_type',
@@ -744,16 +755,19 @@ class SdCasesController extends AppController
      * @return string case number
      *
      */
-    private function caseNoGenerator($order, $prefix){
+    private function caseNoGenerator($order, $product_prefix, $company_prefix=null){
+        
         do{
             $rand_str = rand(0, 99999);
             $rand_str = str_pad($rand_str, 5, "0", STR_PAD_LEFT);
             $date_str = "";
             foreach($order as $item){
-                if($item == "prefix")
-                    $date_str = $date_str.$prefix;
+                if($item == "product")
+                    $date_str = $date_str.$product_prefix;
                 else if($item == "date")
                     $date_str = $date_str.date("ym");
+                else if($item == "company")
+                    $date_str = $date_str.$company_prefix;
                 else $date_str = $date_str.$rand_str;
             }
             // $date_str = "ICSR".date("ym").$rand_str;
