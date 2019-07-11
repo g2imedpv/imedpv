@@ -19,7 +19,7 @@ $(document).ready(function() {
             return 'Your data is changed, are you sure you want to complete?';
         }
     };
-     /**  
+     /**
      * dashboard advanced search:activity due date and submission due date calendar
      */
     $('#start_date,#end_date').datepicker({dateFormat: 'dd/mm/yy'});
@@ -91,7 +91,7 @@ jQuery(function($) {  // In case of jQuery conflict
             $('#custDistriContent-' + custDistriSequence).show();
             $('#defDistriContent-' + custDistriSequence).hide();
         });
-        
+
         $('[id^=write]').change(function(){
             var id = $(this).attr('id').split('-')[2];
             let tabid = $(this).attr('id').split('-')[1];
@@ -143,7 +143,7 @@ jQuery(function($) {  // In case of jQuery conflict
         //     $('#default_accessment_workflow').html(default_text);
         //     $('#accessment-sortable').html(customize_text);
         // });
-        // $("#sd_sponsor_company_id").change(function(){ 
+        // $("#sd_sponsor_company_id").change(function(){
         //     var request = {'sponsor_id': $("#sd_sponsor_company_id").val()};
 
         //     console.log(request);
@@ -251,7 +251,7 @@ jQuery(function($) {  // In case of jQuery conflict
             $('#default_'+workflowType+'_T').show();
             $('#ifdef').addClass("mx-auto w-50");
 
-        }else 
+        }else
         if (($('#default_'+workflowType+'_workflow').is(':hidden') && $('#customize_'+workflowType+'_workflow').is(':visible')))
         {
             if(!$('#custom_'+workflowType+'_workflow_name').val()  ) {
@@ -340,7 +340,7 @@ jQuery(function($) {  // In case of jQuery conflict
             $(this).prop('onclick','sectionPermission('+activity_Id+',3,'+workflowTypeFlag+')');
         });
         if(!finished)return false;
-        
+
         $(this).hide();
         $('#confirm-'+workflowType+'-WFlist, #undocho-'+workflowType+'-WF').show();
         $('#undo_'+workflowType+'_activities').hide();
@@ -480,7 +480,7 @@ jQuery(function($) {  // In case of jQuery conflict
     });
     $('[id^=exit_][id$=_workflow]').click(function(){
         var workflowType = $(this).attr('id').split('_')[1];
-        
+
         $('#cho-'+workflowType+'-workflow').slideUp();
         $('#'+workflowType+'-workflowlist').slideDown();
         $('#addNew-'+workflowType+'-WL').show();
@@ -527,7 +527,7 @@ jQuery(function($) {  // In case of jQuery conflict
             var customize_text = "";
             var country = $('#select-'+workflowType+'-country').val();
             var activities = "";
-            if(workflowType=='accessment'){            
+            if(workflowType=='accessment'){
                 workflow_list[workflow_k].country = $('#select-'+workflowType+'-country').val();
                 workflow_list[workflow_k].sd_company_id = $('#callCenter').val();
                 default_text +="<h4>Name: "+ accessment_workflow_structure[country]['name']+"</h4>";
@@ -605,13 +605,13 @@ jQuery(function($) {  // In case of jQuery conflict
     $('[id^=confirm-][id$=-WFlist').click(function() {
         $(this).hide();
         var workflowType = $(this).attr('id').split('-')[1];
-        $('#undocho-'+workflowType+'-WF').hide(); 
+        $('#undocho-'+workflowType+'-WF').hide();
         $('#addNew-'+workflowType+'-WL').show();
         var text ="";
         if(workflowType == "distribution"){
             $('#cho-distribution-workflow, #choose-distribution-company').hide();
             distribution_No++;
-        } 
+        }
         $('#distribution-workflowlist').show();
         var text ="";
         if(distribution_list.length>0){
@@ -740,7 +740,7 @@ jQuery(function($) {  // In case of jQuery conflict
                 });
             });
         });
-        
+
         $.each(distribution_list, function(key, distribution_workflow){
             text +="<input name=\"distribution_product_workflow["+workflow_k+"][sd_company_id]\" value=\""+distribution_list[workflow_k].sd_company_id+"\" type=\"hidden\">";
             text +="<input name=\"distribution_product_workflow["+workflow_k+"][sd_user_id]\" value=\""+distribution_list[workflow_k].sd_user_id+"\" type=\"hidden\">";//TODO
@@ -759,7 +759,7 @@ jQuery(function($) {  // In case of jQuery conflict
                     distribution_text +="<input name=\"distribution_workflow_activity["+key+"]["+k+"][step_backward]\" value=\""+activity_detail['step_backward']+"\" type=\"hidden\">";
                     distribution_text +="<input name=\"distribution_workflow_activity["+key+"]["+k+"][order_no]\"  value=\""+activity_detail['order_no']+"\" type=\"hidden\">";
                 });
-            }           
+            }
         });
         $('#distribution_input').html(distribution_text);
         $('#addNew-accessment-WL').show();
@@ -886,7 +886,7 @@ jQuery(function($) {  // In case of jQuery conflict
         var workflowType = $(this).attr('id').split('-')[0];
         var cro_name = $('#'+workflowType+'-croname option:selected').text();
         var cro_id = $('#'+workflowType+'-croname').val();
-        
+
         // var newcro = $('<button type="button"class="btn btn-outline-primary"  onclick="selectCro(' + cro_id + ')" data-toggle="modal" data-target=".bd-example-modal-lg">' + cro_name + '</button>');
         var text = '<tr>';
         text += '<th id = "'+workflowType+'-crocompany-'+cro_id+'">' + cro_name + '</th>';
@@ -957,7 +957,7 @@ function sectionPermission(activity_id, readonly, workflowTypeFlag){
                                 $(this).find("input[id^=write][id$="+id[1]+"]").prop('checked',false);
                                 $(this).find("input[id^=read][id$="+id[1]+"]").prop('checked',true);
                             }
-                            return true;  
+                            return true;
                     }else{
                         $(this).find("input[id^=write][id$="+id[1]+"]").prop('checked',false);
                         $(this).find("input[id^=read][id$="+id[1]+"]").prop('checked',false);
@@ -998,13 +998,13 @@ function sectionPermission(activity_id, readonly, workflowTypeFlag){
                 // $(this).find("input[id^=write]").prop('checked',false);
                 // $(this).find("input[id^=read]").prop('checked',false);
                 // return true;
-            // }else 
+            // }else
             var permission_key = 0;
             if(workflowTypeFlag==0)
             {
                 permission_list = accessment_permission_list;
                 permission_key = workflow_k
-            } 
+            }
             else {
                 permission_list = distribution_permission_list;
                 permission_key = distribution_No;
@@ -1042,10 +1042,10 @@ function savePermission(activity_id, workflowTypeFlag){
         workflowType = "distribution";
         permission_list = distribution_permission_list;
         permission_key = distribution_No;
-    } 
+    }
     if(typeof permission_list[permission_key]=='undefined') permission_list[permission_key]=[];
     if(typeof permission_list[permission_key][activity_id]=='undefined') permission_list[permission_key][activity_id]=[];
-    
+
     $('[id^=section]').each(function(){
         var id = $(this).attr('id').split('-');
         if($(this).find("input[id^=write]").prop('checked')==true){
@@ -1184,4 +1184,16 @@ $(document).ready(function(){
     $(".checkAll").click(function () {
         $('.checkboxContent').find('input:checkbox').not(this).prop('checked', this.checked);
     });
+
+    $('#genCaseNum').click(function () {
+        var element1 = $('#casenumber1').val();
+        var element2 = $('#casenumber2').val();
+        var element3 = $('#casenumber3').val();
+        var element4 = $('#casenumber4').val();
+        var element5 = $('#casenumber5').val();
+
+        $('#newCaseFormat').val(element1 + element2 + element3 + element4 + element5);
+    })
+
+
 });
