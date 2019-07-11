@@ -271,7 +271,6 @@ $(document).ready(function(){
                 return v.replace(/\D/g, '')
                
             });
-            console.log(values);
             if (values[0]) values[0] = checkValue(values[0], 31);
             if (values[1]) values[1] = checkValue(values[1], 12);
             var output = values.map(function(v, i) {
@@ -285,6 +284,7 @@ $(document).ready(function(){
     dateListner('specified-date-section-1-date-414');
     dateListner('specified-date-section-1-date-415');
     dateListner('specified-date-section-55-date-388');
+    dateListner('specified-date-section-1-date-1063');
 });
     
     
