@@ -100,7 +100,7 @@ echo $this->element('generatepdf');
                     <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLThree/<?php echo $caseId ?>"><?php echo __("XML-R3")?></a>
                 </div>
             </li>
-
+           
             <!-- "Print" Dropdown Button -->
             <li class="nav-item m-1">
                 <a class="btn btn-sm btn-outline-info" href="#" title="Print"  role="button" id="printPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -133,7 +133,7 @@ echo $this->element('generatepdf');
 <!-- Search Result Area -->
 <div id="searchArea" class="w-50 ml-auto" style="display:none;">
     <input type="text" class="form-control" id="searchFieldKey" placeholder="Search Field Here">
-    <div id="searchFieldResult"></div>
+    <div id="searchFieldResult" style="overflow-y:scroll; max-height:500px;opacity:0.85;"></div>
 </div>
 
 <!-- Left Nav Bar -->

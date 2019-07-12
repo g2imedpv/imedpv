@@ -80,11 +80,11 @@ $(document).ready(function(){
                     text +="<td>"+v['field']['field_label']+"</td>";
                     text +="<td>"+v['tab']['tab_name']+"</td>";
                     text +="<td>"+v['section_name']+"</td>";
-                    text +="<td><a class=\"btn btn-outline-info btn-sm\" onclick=\"hightlightField("+v['field']['id']+")\" role=\"button\" href=\"/sd-tabs/showdetails/"+caseNo+"/"+version+"/"+v['tab']['id']+"#secdiff-"+v['id']+"\">"+i18n.gettext("Go")+"</a></td></tr>";
+                    text +="<td><a class=\"btn btn-outline-info btn-sm\" onclick=\"hightlightField("+v['field']['id']+")\" role=\"button\" href=\"/sd-tabs/showdetails/"+caseNo+"/"+version+"/"+v['tab']['id']+"#secdiff-"+v['id']+"\">"+i18n.gettext("Go")+"</a>";
+                    text +="<a class=\"btn btn-outline-danger btn-sm\" onclick=\"removeField("+v['field']['id']+")\" role=\"button\" href=\"/sd-tabs/showdetails/"+caseNo+"/"+version+"/"+v['tab']['id']+"#secdiff-"+v['id']+"\">"+i18n.gettext("Del")+"</a></td></tr>";
                 });
                 text +="</table>";
                 $('#searchFieldResult').html(text);
-
             },
             error:function(response){
                 // console.log(response.responseText);
@@ -153,6 +153,9 @@ $(document).ready(function(){
 // Search Bar
     function hightlightField (fieldID) {
         $("div[id$='field-"+fieldID+"']").css("border", "3px dotted red").delay(2000);
+    };
+    function removeField(fieldID) {
+        $("div[id$='field-"+fieldID+"']").css("border", "none").delay(2000);
     };
 $(document).ready(function(){
  if(readonly) {
