@@ -71,10 +71,11 @@
                     <div class="card-header"><h5>Complete</h5><p>End of the case</p></div>
                 </div>
             </div>
-
+            <?php if($sdProductWorkflow['status']==1): ?>
             <div class="text-center">
                 <button type="submit" onclick="confirmAllocation()" class="btn btn-success mt-3 w-25">Confirm</button>
             </div>
+        <?php endif; ?>
         </div>
     </div>
 </div>
