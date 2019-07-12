@@ -102,6 +102,28 @@ $(document).ready(function(){
             }
         });
     }
+    // Logic for show or hide some field by choosing one of checkbox options
+    function oneCheckboxShow (target, optionA, optionB) {
+        if(($(optionA).prop('checked')==true)||($(optionB).prop('checked')==true)){
+            $(target).show();
+        }else{
+            $(target).hide();
+        }
+        $(optionA).click(function() {
+            if(($(optionA).prop('checked')==true)||($(optionB).prop('checked')==true)){
+                $(target).show();
+            }else{
+                $(target).hide();
+            }
+        });
+        $(optionB).click(function() {
+            if(($(optionA).prop('checked')==true)||($(optionB).prop('checked')==true)){
+                $(target).show();
+            }else{
+                $(target).hide();
+            }
+        });
+    }
 
     
 
@@ -160,6 +182,8 @@ $(document).ready(function(){
         $("#section-1-field_label-355").append(uploadDocButton);
         // For Report Nullification (A.1.13) checkbox
         checkboxShowORhide ('#section-1-field-23',"#section-1-checkbox-22-option-1");
+        //Report Nullification / Amendment (C.1.11.1)
+        oneCheckboxShow ('#section-1-field-1067',"#section-1-checkbox-1140-option-1","#section-1-checkbox-1140-option-2");
         // For Exist Other Case Identifiers? (A.1.11) checkbox
         checkboxShowORhide ('#section-1-field-19, #section-1-field-20,#section-1-field-1066', "#section-1-checkbox-18-option-1");
         //show document list in field
@@ -271,7 +295,6 @@ $(document).ready(function(){
                 return v.replace(/\D/g, '')
                
             });
-            console.log(values);
             if (values[0]) values[0] = checkValue(values[0], 31);
             if (values[1]) values[1] = checkValue(values[1], 12);
             var output = values.map(function(v, i) {
@@ -285,6 +308,7 @@ $(document).ready(function(){
     dateListner('specified-date-section-1-date-414');
     dateListner('specified-date-section-1-date-415');
     dateListner('specified-date-section-55-date-388');
+    dateListner('specified-date-section-1-date-1063');
 });
     
     

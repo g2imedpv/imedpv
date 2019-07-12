@@ -8,6 +8,9 @@
 <?= $this->Html->css('datepicker/jquery-ui.css') ?>
 <?= $this->Html->script('datepicker/jquery-1.10.2.js') ?>
 <?= $this->Html->script('datepicker/jquery-ui-1.10.4.js') ?>
+<!-- For local Select2 (External library for quick selecting) CSS/JS link -->
+<?= $this->Html->css('select2/select2.min.css') ?>
+<?= $this->Html->script('select2/select2.min.js') ?>
 <head>
 <script type="text/javascript">
     var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
@@ -44,7 +47,7 @@
             <input type="text" class="form-control" id="product_desc" name="product[product_desc]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
         </div>
     </div>
-    
+
     <div class="form-row justify-content-center">
         <div class="form-group col-md-3">
             <label><?php echo __("Product Type")?></label>
@@ -165,7 +168,79 @@
         </div>
     </div>
 
+    <!-- Customize Case Number -->
+    <hr class="my-2 w-50">
 
+        <div class="w-50 mx-auto">
+            <h5 class="">Customize Case Number</h5>
+            <div class="form-row justify-content-center">
+                <div class="form-group col-md-2">
+                    <label><?php echo __("Select Element")?></label>
+                    <select class="form-control" id="casenumber1" name="">
+                        <option value=""><?php echo __("Select Element")?></option>
+                        <option value="1"><?php echo __("Company Number")?></option>
+                        <option value="2"><?php echo __("Product Number")?></option>
+                        <option value="3"><?php echo __("Date")?></option>
+                        <option value="4"><?php echo __("Random")?></option>
+                        <option value="5"><?php echo __("Sequential")?></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label><?php echo __("Select Element")?></label>
+                    <select class="form-control" id="casenumber2" name="">
+                        <option value=""><?php echo __("Select Element")?></option>
+                        <option value="1"><?php echo __("Company Number")?></option>
+                        <option value="2"><?php echo __("Product Number")?></option>
+                        <option value="3"><?php echo __("Date")?></option>
+                        <option value="4"><?php echo __("Random")?></option>
+                        <option value="5"><?php echo __("Sequential")?></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label><?php echo __("Select Element")?></label>
+                    <select class="form-control" id="casenumber3" name="">
+                        <option value=""><?php echo __("Select Element")?></option>
+                        <option value="1"><?php echo __("Company Number")?></option>
+                        <option value="2"><?php echo __("Product Number")?></option>
+                        <option value="3"><?php echo __("Date")?></option>
+                        <option value="4"><?php echo __("Random")?></option>
+                        <option value="5"><?php echo __("Sequential")?></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label><?php echo __("Select Element")?></label>
+                    <select class="form-control" id="casenumber4" name="">
+                        <option value=""><?php echo __("Select Element")?></option>
+                        <option value="1"><?php echo __("Company Number")?></option>
+                        <option value="2"><?php echo __("Product Number")?></option>
+                        <option value="3"><?php echo __("Date")?></option>
+                        <option value="4"><?php echo __("Random")?></option>
+                        <option value="5"><?php echo __("Sequential")?></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label><?php echo __("Select Element")?></label>
+                    <select class="form-control" id="casenumber5" name="">
+                        <option value=""><?php echo __("Select Element")?></option>
+                        <option value="1"><?php echo __("Company Number")?></option>
+                        <option value="2"><?php echo __("Product Number")?></option>
+                        <option value="3"><?php echo __("Date")?></option>
+                        <option value="4"><?php echo __("Random")?></option>
+                        <option value="5"><?php echo __("Sequential")?></option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" id="genCaseNum" class="btn btn-sm btn-info">Generate</button>
+
+            <div class="form-row justify-content-center mt-3">
+                <div class="form-group col-md-6">
+                    <h6><?php echo __("Case Number Format")?></h6>
+                    <input type="text" class="form-control w-75 mx-auto" id="newCaseFormat" name="">
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary px-5">Confirm</button>
+        </div>
+        <hr class="my-2 w-50">
 
     <!-- Hide this when triggered "Add New" -->
     <div id="accessment-workflowlist" class="mt-3">
