@@ -80,7 +80,7 @@ $(document).ready(function(){
                     text +="<td>"+v['field']['field_label']+"</td>";
                     text +="<td>"+v['tab']['tab_name']+"</td>";
                     text +="<td>"+v['section_name']+"</td>";
-                    text +="<td><a class=\"btn btn-outline-info btn-sm\" onclick=\"hightlightField("+v['field']['id']+")\" role=\"button\" href=\"/sd-tabs/showdetails/"+caseNo+"/"+version+"/"+v['tab']['id']+"#secdiff-"+v['id']+"\">"+i18n.gettext("Go")+"</a>";
+                    text +="<td><a class=\"btn btn-outline-info btn-sm\" onclick=\"hightlightField("+v['tab']['id']+","+v['field']['id']+")\" role=\"button\" href=\"/sd-tabs/showdetails/"+caseNo+"/"+version+"/"+v['tab']['id']+"#secdiff-"+v['id']+"?searchFlag=true&field="+v['field']['id']+"&section="+v['id']+"\">"+i18n.gettext("Go")+"</a>";
                     text +="<a class=\"btn btn-outline-danger btn-sm\" onclick=\"removeField("+v['field']['id']+")\" role=\"button\" href=\"/sd-tabs/showdetails/"+caseNo+"/"+version+"/"+v['tab']['id']+"#secdiff-"+v['id']+"\">"+i18n.gettext("Del")+"</a></td></tr>";
                 });
                 text +="</table>";
@@ -151,18 +151,48 @@ $(document).ready(function(){
      }
 });
 // Search Bar
-    function hightlightField (fieldID) {
+    function hightlightField (sectionID,fieldID) {
+        window.location.hash = "#section-"+sectionID+"-field-"+fieldID+"";
         $("div[id$='field-"+fieldID+"']").css("border", "3px dotted red").delay(2000);
     };
     function removeField(fieldID) {
         $("div[id$='field-"+fieldID+"']").css("border", "none").delay(2000);
     };
+//get parameter from url
+    function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+//search result in other page
+$(document).ready(function(){
+    var url = window.location.href; 
+    index = url.indexOf("searchFlag");
+    if(index !=-1){
+        var fieldID = getUrlVars()["field"];
+        var sectionID = getUrlVars()["section"];
+        var parent=$("h3[id='section_label-"+sectionID+"']").parent().parent().parent().parent().attr('id');
+        if(typeof parent!="undefined"){
+        var parentID=parent.split('-')[1];
+        $("a[id$='-tab']")&&$("a[id^='nav-']").removeClass("active");
+        $("#nav-"+parentID+"-tab").addClass("active");
+        $("div[id^='secdiff-']").removeClass("active");
+        $("div[id^='secdiff-']").removeClass("show");
+        $("#secdiff-"+parentID).addClass("active");
+        $("#secdiff-"+parentID).addClass("show");}
+        window.location.hash = "#section-"+sectionID+"-field-"+fieldID+"";
+        $("div[id$='field-"+fieldID+"']").css("border", "3px dotted red");
+    }
+});
+
 $(document).ready(function(){
  if(readonly) {
     $('input').prop("disabled", true);
     $('select').prop("disabled", true);
     $('textarea').prop("disabled", true);
-};
+    };
 
 
     $('input:checkbox[id^=section]').change(
