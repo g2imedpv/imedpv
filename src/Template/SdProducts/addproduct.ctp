@@ -8,6 +8,9 @@
 <?= $this->Html->css('datepicker/jquery-ui.css') ?>
 <?= $this->Html->script('datepicker/jquery-1.10.2.js') ?>
 <?= $this->Html->script('datepicker/jquery-ui-1.10.4.js') ?>
+<!-- For local Select2 (External library for quick selecting) CSS/JS link -->
+<?= $this->Html->css('select2/select2.min.css') ?>
+<?= $this->Html->script('select2/select2.min.js') ?>
 <head>
 <script type="text/javascript">
     var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;

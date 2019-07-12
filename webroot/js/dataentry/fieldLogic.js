@@ -102,6 +102,28 @@ $(document).ready(function(){
             }
         });
     }
+    // Logic for show or hide some field by choosing one of checkbox options
+    function oneCheckboxShow (target, optionA, optionB) {
+        if(($(optionA).prop('checked')==true)||($(optionB).prop('checked')==true)){
+            $(target).show();
+        }else{
+            $(target).hide();
+        }
+        $(optionA).click(function() {
+            if(($(optionA).prop('checked')==true)||($(optionB).prop('checked')==true)){
+                $(target).show();
+            }else{
+                $(target).hide();
+            }
+        });
+        $(optionB).click(function() {
+            if(($(optionA).prop('checked')==true)||($(optionB).prop('checked')==true)){
+                $(target).show();
+            }else{
+                $(target).hide();
+            }
+        });
+    }
 
     
 
@@ -155,11 +177,15 @@ $(document).ready(function(){
         grayout("#specified-date-section-1-date-10,#specified-date-section-1-date-12,#specified-date-section-1-date-225");
         // For Additional documents (A.1.8.1) select and add document
         selectShowORhide ("#section-1-field-355, #section-1-field-14","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
+        // For Additional documents  (C.1.6.1) select and add document
+        selectShowORhide ("#section-1-field-1000, #section-1-field-1064","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
         //add upload files button
         var uploadDocButton="<button type=\"button\" class=\"btn btn-primary float-left ml-3 mt-3\" data-toggle=\"modal\" data-target=\".uploadDoc\"><i class=\"fas fa-cloud-upload-alt\"></i>"+i18n.gettext("Upload Documents")+"</button>";    
         $("#section-1-field_label-355").append(uploadDocButton);
         // For Report Nullification (A.1.13) checkbox
         checkboxShowORhide ('#section-1-field-23',"#section-1-checkbox-22-option-1");
+        //Report Nullification / Amendment (C.1.11.1)
+        oneCheckboxShow ('#section-1-field-1067',"#section-1-checkbox-1140-option-1","#section-1-checkbox-1140-option-2");
         // For Exist Other Case Identifiers? (A.1.11) checkbox
         checkboxShowORhide ('#section-1-field-19, #section-1-field-20,#section-1-field-1066', "#section-1-checkbox-18-option-1");
         //show document list in field
@@ -271,7 +297,6 @@ $(document).ready(function(){
                 return v.replace(/\D/g, '')
                
             });
-            console.log(values);
             if (values[0]) values[0] = checkValue(values[0], 31);
             if (values[1]) values[1] = checkValue(values[1], 12);
             var output = values.map(function(v, i) {
@@ -285,6 +310,7 @@ $(document).ready(function(){
     dateListner('specified-date-section-1-date-414');
     dateListner('specified-date-section-1-date-415');
     dateListner('specified-date-section-55-date-388');
+    dateListner('specified-date-section-1-date-1063');
 });
     
     

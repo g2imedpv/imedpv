@@ -68,8 +68,8 @@ function confirmAllocation(){
         url:'/sd-user-assignments/allocateTeam/'+workflowId,
         data:request,
         success:function(response){
-            // console.log(response);
-            window.location.href = "/sd-products/search";
+            console.log(response);
+            // window.location.href = "/sd-products/search";
         },
         error:function(response){
             console.log(response.responseText);
