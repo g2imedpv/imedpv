@@ -558,7 +558,7 @@ class SdExportController extends AppController
         }
 
         public function genCIOMSThree($caseId) {
-            $this->viewBuilder()->layout('gen_c_i_o_m_s_three'); 
+            $this->viewBuilder()->layout('CIOMS_R3'); 
             //MFR number
             $sdCases = TableRegistry::get('sdCases');
             $name=$sdCases->find()
