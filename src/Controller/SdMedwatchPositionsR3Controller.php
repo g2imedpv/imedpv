@@ -464,6 +464,75 @@ class SdMedwatchPositionsR3Controller extends AppController
                 .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$ready_value.'</p>';
         return $text;
     }
+    //b5 describe Event
+    public function getDescribeEventValue($caseId,$term,$llt,$pt,$narrative,$repoCom,$remark,$additionCom){
+        $sdFieldValues = TableRegistry::get('sdFieldValues');
+        $eventQuantity= $sdFieldValues->find()
+        ->select(['set_number'])
+        ->where(['sd_case_id='.$caseId,'sd_field_id='.$term,'status=1'])->toArray(); 
+        $length=count($eventQuantity);
+        for($i=0;$i<$length;$i++){
+            $set_num=$eventQuantity[$i]['set_number'];
+            $primarySourceReaction= $this->getDirectValue($caseId,$term,$set_num);
+                if($primarySourceReaction=="null"){
+                    $primarySourceReaction=" ";
+                }
+                else{
+                    $primarySourceReaction="Report term:".$primarySourceReaction;
+                }
+            $LLT=$this->getDirectValue($caseId,$llt,$set_num);
+                if($LLT=="null"){
+                    $LLT=" ";
+                }
+                else{
+                    $LLT="/LLT:".$LLT;
+                }
+            $PT=$this->getDirectValue($caseId,$pt,$set_num);
+                if($PT=="null"){
+                    $PT=" ";
+                }
+                else{
+                    $PT="/PT:".$PT;
+                }
+            $j=$i+1;
+            $describe=$primarySourceReaction.$LLT.$PT;
+            $description.="#".$j.")  ".$describe."<br>";
+        }
+        $narrativeIncludeClinical= $this->getDirectValue($caseId,$narrative,1);
+            if ($narrativeIncludeClinical=="null"||$narrativeIncludeClinical==null){
+                $narrativeIncludeClinical=" ";
+            }else{
+                $narrativeIncludeClinical="Case Description:".$narrativeIncludeClinical;
+            }
+        $reporterComment= $this->getDirectValue($caseId,$repoCom,1);
+        if ($reporterComment=="null"||$reporterComment==null){
+            $reporterComment=" ";
+        }else{
+            $reporterComment="Reporter Comments:".$reporterComment;
+        }
+       
+        $compamyRemarksFlag=$this->getDirectValue($caseId,560,1);
+        if($compamyRemarksFlag==1){
+        $compamyRemarks=$this->getDirectValue($caseId,$remark,1);
+            if ($compamyRemarks=="null"||$compamyRemarks==null){
+                $compamyRemarks=" ";
+            }else{
+                $compamyRemarks="Company Remarks:".$compamyRemarks;
+            }
+        }else{$compamyRemarks=" ";}
+        $additionalCommentFlag=$this->getDirectValue($caseId,561,1);
+        if($additionalCommentFlag==1){
+        $additionalComment=$this->getDirectValue($caseId,$additionCom,1);
+            if ($additionalComment=="null"||$additionalComment==null){
+                $additionalComment=" ";
+            }else{
+                $additionalComment="Additioal Comments:".$additionalComment;
+            }
+        }else{$additionalComment=" ";}
+        $result=$description."<br>".$narrativeIncludeClinical."<br>".$reporterComment."<br>".$compamyRemarks."<br>".$additionalComment;
+        return $result;
+
+    }
     //b6 relevant tests/laboratory data in page one
     public function labDataOne($caseId){
         $sdFieldValues = TableRegistry::get('sdFieldValues');
@@ -566,26 +635,60 @@ class SdMedwatchPositionsR3Controller extends AppController
         $labPositionThree=$this->getPosition($caseId,174,2,$labDataThree);
         return $labPositionThree;
     }
-
+    public function getCiomsConcomitantValue($caseId,$product,$substanceName,$botainedCountry,$start,$end,$dosageNum,$dosageUnit,$indication){
+        $concomitant=$this->ConcomitantRole($caseId);
+        $sdFieldValues = TableRegistry::get('sdFieldValues');
+        $length=count($concomitant);
+            for($i=0;$i<$length;$i++){
+                $setNumber=$concomitant[$i];
+                $query1=$this->getDirectValue($caseId,$product,$setNumber);        
+                $query2=$this->getDirectValue($caseId,$substanceName,$setNumber);
+                    if($query2!=null){
+                        $substance="(".$query2.")";
+                    }
+                $query3=$this->getLookupValue($caseId,$botainedCountry,$setNumber);
+                    if($query3!=null){
+                        $countryObtained="(".$query3.")";
+                    }
+                $query4=$this->getDateValue($caseId,$start,$setNumber);
+                    if($query4==null){
+                        $query4="unknown";
+                    }
+                    else{
+                        $query4=$query4." / ";
+                    }
+                $query5=$this->getDateValue($caseId,$end,$setNumber);
+                    
+                    if($query5==null){
+                        $query5="unknown";
+                    }
+                $query6=$this->getDirectValue($caseId,$dosageNum,$setNumber);
+                    if($query6==null){
+                        $query6="unknown";
+                    }
+                $query7=$this->getLookupValue($caseId,$dosageUnit,$setNumber);
+                $query8=$this->getDirectValue($caseId,$indication,$setNumber);
+                    if($query8==null){
+                        $query8="unknown";
+                    }
+                $description=$query1.$substance.$countryObtained." | ".$query4.$query5." | ".$query6." ".$query7." | ".$query8; 
+                $j=$i+1;
+                $concomitantProducts .= "#".$j.")  ".$description."<br>";
+                
+            }
+        return $concomitantProducts;
+    }
     //c2 concomitanat medical products and therapy dates in page one
     public function concomitantTherapyOne($caseId){
-        $concomitant=$this->ConcomitantRole($caseId);
-        $length=count($concomitant,0);   
-        for($i=0;$i<$length;$i++){
-            $setNumber=$concomitant[$i];
-            $concomitantName=$this->getDirectValue($caseId,1114,$setNumber);
-            $startdate=$this->getDateValue($caseId,199,$setNumber);
-            $stopdate=$this->getDateValue($caseId,205,$setNumber);
-            $description=$concomitantName."  ".$startdate."  ".$stopdate;
-            $concomitantProducts .= $description."<br>";
-        }
-        $sdMedwatchPositions = TableRegistry::get('sdMedwatchPositionsR3');
+        $concomitantProducts=$this->getCiomsConcomitantValue($caseId,1114,1115,178,199,205,183,1116,1126);
+        $concomitantProducts='Drug    |    Therapy Start and Stop Date    |    Dose    |    Indication<br>'.$concomitantProducts;
+        $sdMedwatchPositions = TableRegistry::get('sdMedwatchPositions');
         $positions= $sdMedwatchPositions ->find()
             ->select(['id','sd_field_id','position_top','position_left','position_width','position_height'])
             ->where(['medwatch_no="c2"'])
             ->first(); 
         $text = $text."<style> p {position: absolute;font-size:10px;font-family: courier;}  </style>";
-        $pageone=substr($concomitantProducts,0,200);
+        $pageone=substr($concomitantProducts,0,300);
         
         $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                 .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$pageone.'</p>';
@@ -593,29 +696,20 @@ class SdMedwatchPositionsR3Controller extends AppController
     }
     //c2 concomitanat medical products and therapy dates in page three
     public function concomitantTherapyThree($caseId){
-        $concomitant=$this->ConcomitantRole($caseId);
-        $length=count($concomitant,0);   
-        for($i=0;$i<$length;$i++){
-            $setNumber=$concomitant[$i];
-            $concomitantName=$this->getDirectValue($caseId,1114,$setNumber);
-            $startdate=$this->getDateValue($caseId,199,$setNumber);
-            $stopdate=$this->getDateValue($caseId,205,$setNumber);
-            $description=$concomitantName."  ".$startdate."  ".$stopdate;
-            $concomitantProducts .= $description."<br>";
-        }
-        $sdMedwatchPositions = TableRegistry::get('sdMedwatchPositionsR3');
+        $concomitantProducts=$this->getCiomsConcomitantValue($caseId,1114,1115,178,199,205,183,1116,1126);
+        $concomitantProducts='Drug    |    Therapy Start and Stop Date    |    Dose    |    Indication<br>'.$concomitantProducts;
+        $sdMedwatchPositions = TableRegistry::get('sdMedwatchPositions');
         $positions= $sdMedwatchPositions ->find()
             ->select(['id','sd_field_id','position_top','position_left','position_width','position_height'])
             ->where(['medwatch_no="c2+"'])
             ->first(); 
         $text = $text."<style> p {position: absolute;font-size:10px;font-family: courier;}  </style>";
-        $pageThree=substr($concomitantProducts,200);
+        $pageThree=substr($concomitantProducts,300);
         
         $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                 .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$pageThree.'</p>';
         return $text;
     }
-    
     
 
     public function genPdfThree($caseId)
@@ -660,7 +754,7 @@ class SdMedwatchPositionsR3Controller extends AppController
         //b4
         $result=$result.$this->CurrentTime();
         // b5 describe event or problem
-        $describeOne=substr($this->getMedValue($caseId,1134,1),0,400);
+        $describeOne=substr($this->getDescribeEventValue($caseId,1105,392,394,1134,1135,1138,310),0,600);
         $result=$result.$this->getPosition($caseId,1134,1,$describeOne);   
         // b6 relevant tests/laboratory data
         $result=$result.$this->labDataOne($caseId);   
@@ -790,7 +884,7 @@ class SdMedwatchPositionsR3Controller extends AppController
         //$test2 = '<img src="img/pdficon.png" />';
         //$mpdf->WriteHTML("second page");
         $mpdf->AddPage();
-        $describeThree=substr($this->getMedValue($caseId,1134,1),400);//b5 describe event continue
+        $describeThree=substr($this->getDescribeEventValue($caseId,1105,392,394,1134,1135,1138,310),600);//b5 describe event continue
         $continue=$this->getPosition($caseId,1134,2,$describeThree);
         // b6 relevant tests continue
         $continue=$continue.$this->labDataThree($caseId);

@@ -25,10 +25,12 @@ margin: 0;
 }
 @media print {
 table {
-    max-height: 100% !important;
+    max-height:100% !important;
     overflow: hidden !important;
     page-break-after: auto;
-    
+}
+.pageOne{
+    zoom:90%; 
 }
 }
 
