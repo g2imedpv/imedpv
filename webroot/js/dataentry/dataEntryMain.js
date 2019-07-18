@@ -867,6 +867,48 @@ function saveSection(sectionId,setNo){
     });
 
 };
+
+
+//Distribution Decision End
+function endDistributionDecision(){
+    var activityList = {};
+    let count = 0;
+    $("[id^=selectedActivity]").each(function(){
+        if($(this).prop('checked')){
+            var detail = {};
+            let id = $(this).attr('id').split('-')[1];
+            detail['linkId'] = $(this).val();
+            detail['next-activity-id'] = id;
+            detail['receiverId'] = $("#receiverId-"+id).val();
+            detail['content'] = $('#query-content-'+id).text()
+            console.log(detail);
+            activityList[count] = detail;
+            count++;
+        }
+    });    
+    let request ={
+        'senderId':userId,
+        'activityList':activityList,
+    }
+    console.log(request);
+    $.ajax({
+        headers: {
+            'X-CSRF-Token': csrfToken
+        },
+        type:'POST',
+        url:'/sd-cases/distribute/'+caseNo+'/'+version,
+        data:request,
+        success:function(response){console.log(response);
+            response = JSON.parse(response);
+            
+        },
+        error:function(response){
+            console.log(response.responseText);
+        },
+    });
+}
+
+// sign off then push backward && push to next step
 function action(type){
     text = "";
     if(type==1){
@@ -875,71 +917,126 @@ function action(type){
                 'X-CSRF-Token': csrfToken
             },
             type:'POST',
-            url:'/sd-users/searchNextAvailable/'+caseNo+'/'+version,
-            success:function(response){console.log(response);
+            url:'/sd-users/searchNextAvailable/'+caseNo+'/'+version+'/'+distribution_id,
+            success:function(response){
+                console.log(response);
                 response = JSON.parse(response);
                 console.log(response);
-                if('one' in response) response = response['one'];
-                text +="<div class=\"modal-header\">";
-                text +="<h3 class=\"modal-title text-center w-100\" id=\"exampleModalLabel\">"+i18n.gettext("Sign Off")+"</h3>";
-                text +="<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
-                text +="<span aria-hidden=\"true\">&times;</span>";
-                text +="</button>";
-                text +="</div>";
-                text +="<div class=\"modal-body text-center m-3\">";
-                text +="<p class=\"lead\">"+i18n.gettext("Next activity is")+": "+response['actvity']['activity_name']+"</p>";
-                text +="<input type=\"hidden\" id=\"next-activity-id\" value=\""+response['actvity']['id']+"\">";
-                text +="<div class=\"form-group\">";
-                text +="<label><h5>"+i18n.gettext("Comment")+"</h5></label>";
-                text +="<textarea class=\"form-control\" id=\"query-content\" rows=\"3\"></textarea>";
-                text +="</div>";
-                text +="<hr class=\"my-4\">";
-                if(response['previousUserOnNextActivity'].length > 0){
-                    text +="<div><h6>"+i18n.gettext("Previous User On This Case On Next Activity")+": </h6>";
-                    $.each(response['previousUserOnNextActivity'],function(k,v){
-                        text +=v['user']['firstname']+" "+v['user']['lastname']+"("+v['company']['company_name']+"), ";
-                    });
+                if('one' in response) {
+                    response = response['one'];
+                    text +="<div class=\"modal-header\">";
+                    text +="<h3 class=\"modal-title text-center w-100\" id=\"exampleModalLabel\">"+i18n.gettext("Sign Off")+"</h3>";
+                    text +="<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
+                    text +="<span aria-hidden=\"true\">&times;</span>";
+                    text +="</button>";
+                    text +="</div>";
+                    text +="<div class=\"modal-body text-center m-3\">";
+                    text +="<p class=\"lead\">"+i18n.gettext("Next activity is")+": "+response['actvity']['activity_name']+"</p>";
+                    text +="<input type=\"hidden\" id=\"next-activity-id\" value=\""+response['actvity']['id']+"\">";
+                    text +="<div class=\"form-group\">";
+                    text +="<label><h5>"+i18n.gettext("Comment")+"</h5></label>";
+                    text +="<textarea class=\"form-control\" id=\"query-content\" rows=\"3\"></textarea>";
                     text +="</div>";
                     text +="<hr class=\"my-4\">";
-                }
-                //add function to chose most avaiable person
-                text +="<div class=\"form-group\">";
-                text +="<label><h6>"+i18n.gettext("Select person you want to send to")+":</h6></label><select class=\"form-control\" id=\"receiverId\">";
-                $.each(response['users'],function(k,v){
-                    text +="<option value="+v['id']+">"+v['firstname']+" "+v['lastname'];
-                    if(v['sd_cases'].length > 0)
-                        text +="(currently working on "+v['sd_cases']['0']['casesCount']+" cases)";
-                    else text +="(currently working on 0 case)";
-                    text +="</option>";
-                });
-                text +="</select>";
-                text +="</div>";
-                text +="<h3>"+i18n.gettext("Field Required")+"</h3>"
-                text +="<table class=\"table table-hover\">";
-                text +="<tr>";
-                text +="<th scope=\"col\">Category</th>";
-                text +="<th scope=\"col\">Section</th>";
-                text +="<th scope=\"col\">Field Name</th>";
-                text +="<th scope=\"col\">Set Number</th>";
-                text +="<tr>";
-                $.each(response['caseValidate'],function(tabK,tabDetail){
-                    let previousSectionK ="";
-                    $.each(tabDetail,function(sectionK, sectionDetail){
-                        $.each(sectionDetail,function(fieldId,fieldDetail){
-                            text +="<tr>";
-                            text +="<td>"+fieldDetail.tab_name+"</td>";
-                            text +="<td>"+fieldDetail.section_name+"</td>";
-                            text +="<td>"+fieldDetail.field_label+"</td>";
-                            text +="<td>"+fieldDetail.set_number+"</td>";
-                            text +="</tr>";
+                    if(response['previousUserOnNextActivity'].length > 0){
+                        text +="<div><h6>"+i18n.gettext("Previous User On This Case On Next Activity")+": </h6>";
+                        $.each(response['previousUserOnNextActivity'],function(k,v){
+                            text +=v['user']['firstname']+" "+v['user']['lastname']+"("+v['company']['company_name']+"), ";
                         });
-                        previousSectionK = sectionK;
+                        text +="</div>";
+                        text +="<hr class=\"my-4\">";
+                    }
+                    //add function to chose most avaiable person
+                    text +="<div class=\"form-group\">";
+                    text +="<label><h6>"+i18n.gettext("Select person you want to send to")+":</h6></label><select class=\"form-control\" id=\"receiverId\">";
+                    $.each(response['users'],function(k,v){
+                        text +="<option value="+v['id']+">"+v['firstname']+" "+v['lastname'];
+                        if(v['sd_cases'].length > 0)
+                            text +="(currently working on "+v['sd_cases']['0']['casesCount']+" cases)";
+                        else text +="(currently working on 0 case)";
+                        text +="</option>";
                     });
-                    previousTabk = tabK;
-                });
-                text +="</table>"
-                text +="<div class=\"text-center\"><button class=\"btn btn-primary w-25\" onclick=\"forward()\">"+i18n.gettext("Confirm")+"</button></div>";
-                text +="</div>";
+                    text +="</select>";
+                    text +="</div>";
+                    text +="<h3>"+i18n.gettext("Field Required")+"</h3>";
+                    text +="<table class=\"table table-hover\">";
+                    text +="<tr>";
+                    text +="<th scope=\"col\">Category</th>";
+                    text +="<th scope=\"col\">Section</th>";
+                    text +="<th scope=\"col\">Field Name</th>";
+                    text +="<th scope=\"col\">Set Number</th>";
+                    text +="<tr>";
+                    $.each(response['caseValidate'],function(tabK,tabDetail){
+                        let previousSectionK ="";
+                        $.each(tabDetail,function(sectionK, sectionDetail){
+                            $.each(sectionDetail,function(fieldId,fieldDetail){
+                                text +="<tr>";
+                                text +="<td>"+fieldDetail.tab_name+"</td>";
+                                text +="<td>"+fieldDetail.section_name+"</td>";
+                                text +="<td>"+fieldDetail.field_label+"</td>";
+                                text +="<td>"+fieldDetail.set_number+"</td>";
+                                text +="</tr>";
+                            });
+                            previousSectionK = sectionK;
+                        });
+                        previousTabk = tabK;
+                    });
+                    text +="</table>"
+                    text +="<div class=\"text-center\"><button class=\"btn btn-primary w-25\" onclick=\"forward()\">"+i18n.gettext("Confirm")+"</button></div>";
+                    text +="</div>";
+                }else{
+                    text +="<div class=\"modal-header\">";
+                    text +="<h3 class=\"modal-title text-center w-100\" id=\"exampleModalLabel\">"+i18n.gettext("Distribution Decision")+"</h3>";
+                    text +="<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
+                    text +="<span aria-hidden=\"true\">&times;</span>";
+                    text +="</button>";
+                    text +="</div>";
+                    text +="<div class=\"modal-body text-center m-3\">";
+                    text +="<div class=\"form-group\">";
+                    text +="</div>";
+                    text +="<h5>Case Info:</h5>";
+                    text +="<table class=\"table table-hover\">";
+                    text +="<thead>";
+                    text +="<tr>";
+                    text +="<th scope=\"col\">"+i18n.gettext("Select")+"</th>";
+                    text +="<th scope=\"col\">"+i18n.gettext("Activity")+"</th>";
+                    text +="<th scope=\"col\">"+i18n.gettext("Previous User On This Activity")+"</th>";
+                    text +="<th scope=\"col\">"+i18n.gettext("Available User")+"</th>";
+                    text +="<th scope=\"col\">"+i18n.gettext("Comment")+"</th>";
+                    text +="</tr>";
+                    text +="</thead>";
+                    $.each(response,function(k,detail){
+                        if(k=="caseValidate") return true;
+                        activity = detail['activity'];
+                        text += "<div id=\"previous_activity-"+activity['id']+"\" hidden>"+JSON.stringify(activity['users'])+"</div> ";
+                        text +="<tr>";
+                        text += "<td><input value=\""+activity['links']['id']+"\" type=\"checkbox\" id=\"selectedActivity-"+activity['id']+"\"></td>";
+                        text += "<td>"+activity['activity_name']+"</td>";
+                        text +="<td>";
+                        $.each(activity['previousUserOnNextActivity'],function(k,v){
+                            text +=v['user']['firstname']+" "+v['user']['lastname']+"("+v['company']['company_name']+")<br>";
+                        });
+                        text += "</td><td>";
+                        text +="<select id=\"receiverId-"+activity['id']+"\">";
+                        $.each(detail['users'],function(k,v){
+                            text +="<option value=\""+v['id']+"\">";
+                            text +=v['firstname']+" "+v['lastname'];
+                            num = 0;
+                            if(v['sd_cases']!="")
+                                num = v['sd_cases']['0']['casesCount']
+                            text +="("+i18n.translate("currently working on %d case").ifPlural(num, "currently working on %d cases").fetch(num)+")";
+                            text +="</option>";
+                        });
+                        text +="</select></td><td>";
+                        text +="<textarea class=\"form-control\" id=\"query-content-"+activity['id']+"\" rows=\"3\"></textarea></td>";
+                        text +="</tr>";
+                    });
+                    text +="</table>";
+                    text +="<hr class=\"my-4\">";
+                    text +="<div class=\"text-center\"><button class=\"btn btn-primary w-25\" onclick=\"endDistributionDecision()\">"+i18n.gettext("Confirm")+"</button></div>";
+                    text +="</div>";
+                    $('#action-text-hint').html(text);
+                }
                 $('#action-text-hint').html(text);
             },
             error:function(response){
@@ -994,7 +1091,7 @@ function action(type){
                                 num = v['sd_cases']['0']['casesCount']
                                 text +="("+i18n.translate("currently working on %d case").ifPlural(num, "currently working on %d cases").fetch(num)+")";
                         });
-                        text +="</tr>";
+                        text +="</td></tr>";
                     }
                 });
                 text +="</table>";
@@ -1044,7 +1141,7 @@ function forward(){
             'X-CSRF-Token': csrfToken
         },
         type:'POST',
-        url:'/sd-cases/forward/'+caseNo+'/'+version+"/0",
+        url:'/sd-cases/forward/'+caseNo+'/'+version+"/0"+"/"+distribution_id,
         data:request,
         success:function(response){
             console.log(response);

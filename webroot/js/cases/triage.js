@@ -542,8 +542,8 @@ function endTriage(){
         type:'POST',
         url:'/sd-users/searchNextAvailable/'+caseNo+'/'+versionNo,
         success:function(allresponse){
-            allresponse = JSON.parse(allresponse);
             console.log(allresponse);
+            allresponse = JSON.parse(allresponse);
             response = allresponse['one'];
             text +="<div class=\"modal-header\">";
             text +="<h3 class=\"modal-title text-center w-100\" id=\"exampleModalLabel\">"+i18n.gettext("Sign Off")+"</h3>";

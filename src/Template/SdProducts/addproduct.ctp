@@ -35,8 +35,15 @@
     <div class="form-row justify-content-center">
         <div class="form-group col-md-6">
             <label><?php echo __("Short Description")?> </label>
-            <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Proprietary Medicinal Product Name")?> (B.4.k.2.1)" data-content="<div><?php echo __("The name should be that used by the reporter. It is recognized that a single product may have different proprietary names in different countries, even when produced by a single manufacturer.");?></div>" ><i class="qco fas fa-info-circle"></i></a>
+            <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Short Description")?> (B.4.k.2.1)" data-content="<div><?php echo __("The name should be that used by the reporter. It is recognized that a single product may have different proprietary names in different countries, even when produced by a single manufacturer.");?></div>" ><i class="qco fas fa-info-circle"></i></a>
             <input type="text" class="form-control" id="short_desc" name="product[short_desc]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
+        </div>
+    </div>
+    <div class="form-row justify-content-center">
+        <div class="form-group col-md-6">
+            <label><?php echo __("Product Abbreviation")?> </label>
+            <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Proprietary Medicinal Product Name")?> (B.4.k.2.1)" data-content="<div><?php echo __("The name should be that used by the reporter. It is recognized that a single product may have different proprietary names in different countries, even when produced by a single manufacturer.");?></div>" ><i class="qco fas fa-info-circle"></i></a>
+            <input type="text" class="form-control" id="short_desc" name="product[product_abbreviation]" placeholder="<?php echo __("Product Abbreviati");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
         </div>
     </div>
 
@@ -176,61 +183,62 @@
             <div class="form-row justify-content-center">
                 <div class="form-group col-md-2">
                     <label><?php echo __("Select Element")?></label>
-                    <select class="form-control" id="casenumber1" name="">
+                    <select class="form-control" id="casenumber1">
                         <option value=""><?php echo __("Select Element")?></option>
-                        <option value="1"><?php echo __("Company Number")?></option>
-                        <option value="2"><?php echo __("Product Number")?></option>
-                        <option value="3"><?php echo __("Date")?></option>
-                        <option value="4"><?php echo __("Random")?></option>
-                        <option value="5"><?php echo __("Sequential")?></option>
+                        <option value="company"><?php echo __("Company Number")?></option>
+                        <option value="product"><?php echo __("Product Number")?></option>
+                        <option value="date"><?php echo __("Date")?></option>
+                        <option value="random"><?php echo __("Random")?></option>
+                        <option value="sequential"><?php echo __("Sequential")?></option>
                     </select>
                 </div>
                 <div class="form-group col-md-2">
                     <label><?php echo __("Select Element")?></label>
-                    <select class="form-control" id="casenumber2" name="">
+                    <select class="form-control" id="casenumber2">
                         <option value=""><?php echo __("Select Element")?></option>
-                        <option value="1"><?php echo __("Company Number")?></option>
-                        <option value="2"><?php echo __("Product Number")?></option>
-                        <option value="3"><?php echo __("Date")?></option>
-                        <option value="4"><?php echo __("Random")?></option>
-                        <option value="5"><?php echo __("Sequential")?></option>
+                        <option value="company"><?php echo __("Company Number")?></option>
+                        <option value="product"><?php echo __("Product Number")?></option>
+                        <option value="date"><?php echo __("Date")?></option>
+                        <option value="random"><?php echo __("Random")?></option>
+                        <option value="sequential"><?php echo __("Sequential")?></option>
                     </select>
                 </div>
                 <div class="form-group col-md-2">
                     <label><?php echo __("Select Element")?></label>
-                    <select class="form-control" id="casenumber3" name="">
+                    <select class="form-control" id="casenumber3">
                         <option value=""><?php echo __("Select Element")?></option>
-                        <option value="1"><?php echo __("Company Number")?></option>
-                        <option value="2"><?php echo __("Product Number")?></option>
-                        <option value="3"><?php echo __("Date")?></option>
-                        <option value="4"><?php echo __("Random")?></option>
-                        <option value="5"><?php echo __("Sequential")?></option>
+                        <option value="company"><?php echo __("Company Number")?></option>
+                        <option value="product"><?php echo __("Product Number")?></option>
+                        <option value="date"><?php echo __("Date")?></option>
+                        <option value="random"><?php echo __("Random")?></option>
+                        <option value="sequential"><?php echo __("Sequential")?></option>
                     </select>
                 </div>
                 <div class="form-group col-md-2">
                     <label><?php echo __("Select Element")?></label>
-                    <select class="form-control" id="casenumber4" name="">
+                    <select class="form-control" id="casenumber4">
                         <option value=""><?php echo __("Select Element")?></option>
-                        <option value="1"><?php echo __("Company Number")?></option>
-                        <option value="2"><?php echo __("Product Number")?></option>
-                        <option value="3"><?php echo __("Date")?></option>
-                        <option value="4"><?php echo __("Random")?></option>
-                        <option value="5"><?php echo __("Sequential")?></option>
+                        <option value="company"><?php echo __("Company Number")?></option>
+                        <option value="product"><?php echo __("Product Number")?></option>
+                        <option value="date"><?php echo __("Date")?></option>
+                        <option value="random"><?php echo __("Random")?></option>
+                        <option value="sequential"><?php echo __("Sequential")?></option>
                     </select>
                 </div>
                 <div class="form-group col-md-2">
                     <label><?php echo __("Select Element")?></label>
-                    <select class="form-control" id="casenumber5" name="">
+                    <select class="form-control" id="casenumber5">
                         <option value=""><?php echo __("Select Element")?></option>
-                        <option value="1"><?php echo __("Company Number")?></option>
-                        <option value="2"><?php echo __("Product Number")?></option>
-                        <option value="3"><?php echo __("Date")?></option>
-                        <option value="4"><?php echo __("Random")?></option>
-                        <option value="5"><?php echo __("Sequential")?></option>
+                        <option value="company"><?php echo __("Company Number")?></option>
+                        <option value="product"><?php echo __("Product Number")?></option>
+                        <option value="date"><?php echo __("Date")?></option>
+                        <option value="random"><?php echo __("Random")?></option>
+                        <option value="sequential"><?php echo __("Sequential")?></option>
                     </select>
                 </div>
+                <input name="product[caseNo_convention]" value="" style="display:none">
             </div>
-            <button type="button" id="genCaseNum" class="btn btn-sm btn-info">Generate</button>
+            <!-- <button type="button" id="genCaseNum" class="btn btn-sm btn-info">Generate</button>
 
             <div class="form-row justify-content-center mt-3">
                 <div class="form-group col-md-6">
@@ -238,18 +246,18 @@
                     <input type="text" class="form-control w-75 mx-auto" id="newCaseFormat" name="">
                 </div>
             </div>
-            <button type="button" class="btn btn-sm btn-primary px-5">Confirm</button>
+            <button type="button" class="btn btn-sm btn-primary px-5">Confirm</button> -->
         </div>
         <hr class="my-2 w-50">
 
     <!-- Hide this when triggered "Add New" -->
-    <div id="accessment-workflowlist" class="mt-3">
+    <div id="assessment-workflowlist" class="mt-3">
         <div class="position-relative">
             <p class="pageTitle">
                 <?php echo __("Workflow List");?>
             </p>
             <!-- Workflow List and Add New -->
-            <button id="addNew-accessment-WL" type="button" class="btn btn-sm btn-outline-info position-absolute" style="right: 5px;top: 15px;"><?php echo __("Add New Workflow");?> <i class="far fa-plus-square"></i></button>
+            <button id="addNew-assessment-WL" type="button" class="btn btn-sm btn-outline-info position-absolute" style="right: 5px;top: 15px;"><?php echo __("Add New Workflow");?> <i class="far fa-plus-square"></i></button>
         </div>
 
         <table class="table table-hover mb-3" id="workflow_list">
@@ -323,7 +331,7 @@
 
     <!-- Show this when triggered "Add New" -->
     <!-- Choose Workflow -->
-    <div id="cho-accessment-workflow" class="prodiff text-center mt-1" style="display:none;">
+    <div id="cho-assessment-workflow" class="prodiff text-center mt-1" style="display:none;">
     <!-- Title for "Add New" -->
         <div class="jumbotron jumbotron-fluid bg-warning">
             <div class="container">
@@ -339,7 +347,7 @@
 
                 <div class="form-group col-md-3">
                     <label for=""><?php echo __("Select Country");?></label>
-                    <select class="form-control" id="select-accessment-country" name="product_accessment_workflow[0][country]">
+                    <select class="form-control" id="select-assessment-country" name="product_assessment_workflow[0][country]">
                     <option value=""><?php echo __("Select Country");?></option>
                     <?php
                     $country_list=[
@@ -347,12 +355,12 @@
                         'JPN'=>'Japan',
                         'CHN'=>'China'
                     ];
-                    foreach($accessment_workflow_structure as $workflow_structure_detail){
+                    foreach($assessment_workflow_structure as $workflow_structure_detail){
                         echo "<option value=".$workflow_structure_detail->country.">".$country_list[$workflow_structure_detail->country]."</option>";
                     }
                     ?>
                     </select>
-                    <div id="select-accessment-country-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
+                    <div id="select-assessment-country-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
                     <?php echo __("Country is REQUIRED");?>
                     </div>
                 </div>
@@ -371,34 +379,34 @@
                     </div>
                 </div>
             </div>
-            <button id="exit_accessment_workflow" type="button" class="btn btn-outline-warning"><?php echo __("Exit");?></button>
-            <div id="submit_accessment_country" class="btn btn-primary w-25"><?php echo __("Continue");?></div>
+            <button id="exit_assessment_workflow" type="button" class="btn btn-outline-warning"><?php echo __("Exit");?></button>
+            <div id="submit_assessment_country" class="btn btn-primary w-25"><?php echo __("Continue");?></div>
         </div>
-        <div id="choose_accessment_wf">
+        <div id="choose_assessment_wf">
             <div class="row" style="min-height: 740px;">
                 <!-- Default Workflow -->
-                <div class="col" id="default_accessment_workflow_div">
-                    <button type="button" id="default_accessment_btn" class="btn btn-success btn-sm workflow"><span><?php echo __("Default Workflow");?></span></button>
-                    <h3 id="default_accessment_T" style="display:none;"><?php echo __("Default Workflow");?></h3>
+                <div class="col" id="default_assessment_workflow_div">
+                    <button type="button" id="default_assessment_btn" class="btn btn-success btn-sm workflow"><span><?php echo __("Default Workflow");?></span></button>
+                    <h3 id="default_assessment_T" style="display:none;"><?php echo __("Default Workflow");?></h3>
                     <hr class="wfhr">
-                    <ol class="defworkflow" id="default_accessment_workflow">
+                    <ol class="defworkflow" id="default_assessment_workflow">
                     </ol>
-                    <input type="hidden" id="default_accessment_workflow_name"/>
-                    <input type="hidden" id="default_accessment_workflow_id"/>
-                    <input type="hidden" id="default_accessment_workflow_description"/>
+                    <input type="hidden" id="default_assessment_workflow_name"/>
+                    <input type="hidden" id="default_assessment_workflow_id"/>
+                    <input type="hidden" id="default_assessment_workflow_description"/>
                 </div>
 
                 <!-- Customize Workflow -->
-                <div class="col" id="customize_accessment_workflow_div">
-                    <button type="button" id="cust_accessment_btn" class="btn btn-success btn-sm workflow"><span><?php echo __("Customize Your Workflow");?></span></button>
-                    <h3 id="customize_accessment_T" style="display:none;"><?php echo __("Customize Workflow");?></h3>
+                <div class="col" id="customize_assessment_workflow_div">
+                    <button type="button" id="cust_assessment_btn" class="btn btn-success btn-sm workflow"><span><?php echo __("Customize Your Workflow");?></span></button>
+                    <h3 id="customize_assessment_T" style="display:none;"><?php echo __("Customize Workflow");?></h3>
                     <hr class="wfhr">
-                    <div class="cust-accessment-workflow" id="customize_accessment_workflow">
+                    <div class="cust-assessment-workflow" id="customize_assessment_workflow">
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <h4><?php echo __("Workflow Name");?>: </h4 >
-                                <input class="w-75 text-center" type="text" id="custom_accessment_workflow_name" value=""/>
-                                <div id="custom_accessment_workflow_name-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
+                                <input class="w-75 text-center" type="text" id="custom_assessment_workflow_name" value=""/>
+                                <div id="custom_assessment_workflow_name-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
                                 <?php echo __("Name is REQUIRED");?>
                                 </div>
                             </div>
@@ -406,28 +414,28 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <h5><?php echo __("Workflow Description");?></h5 >
-                                <input class="w-75 text-center" type="text" id="custom_accessment_workflow_description" value=""/>
-                                <div id="custom_accessment_workflow_description-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
+                                <input class="w-75 text-center" type="text" id="custom_assessment_workflow_description" value=""/>
+                                <div id="custom_assessment_workflow_description-validate" class="alert alert-danger mt-2" role="alert" style="display:none;">
                                 <?php echo __("Description is REQUIRED");?>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="errAccessmentWorkflow" class="invalid-feedback" style="display:none;"><?php echo __("Workflow name is required");?>!</div>
+                        <div id="errAssessmentWorkflow" class="invalid-feedback" style="display:none;"><?php echo __("Workflow name is required");?>!</div>
 
                         <p><?php echo __("You can customize the workflow by editing the yellow box and dragging it to anywhere in the workflow");?></p>
                         <ul>
                             <li id="draggable" class="custworkflowstep">
                                 <div class="card w-100 h-25 my-2">
                                     <div class="card-body p-3">
-                                        <h5 class="card-title"><input type="text" id="new_accessment_activity_name" placeholder="Type step name here FIRST" class="font-weight-bold" /> </h5>
-                                        <p class="card-text"><textarea type="text"  id="new_accessment_activity_description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>
+                                        <h5 class="card-title"><input type="text" id="new_assessment_activity_name" placeholder="Type step name here FIRST" class="font-weight-bold" /> </h5>
+                                        <p class="card-text"><textarea type="text"  id="new_assessment_activity_description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>
                                     </div>
-                                    <button id="confirm_new_accessment_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity()"><?php echo __("Confirm");?></button>
+                                    <button id="confirm_new_assessment_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity(1)"><?php echo __("Confirm");?></button>
                                 </div>
                             </li>
                         </ul>
-                        <ol id="accessment-sortable" class="cust">
+                        <ol id="assessment-sortable" class="cust">
                         </ol>
                     </div>
                 </div>
@@ -490,21 +498,21 @@
             </div>
 
             <div class="d-block mt-3">
-                <button id="undocho-accessment-con" type="button" class="btn btn-outline-warning" style="display:none;"><?php echo __("Go back to last step");?></button>
-                <button id="confirm_accessment_activities" class="btn btn-primary w-25" style="display:none;"><?php echo __("Continue");?></button>
-                <button id="undo_accessment_activities" type="button" class="btn btn-outline-warning" style="display:none;"><?php echo __("Go back to last step");?></button>
-                <button id="submit_accessment_workflow" class="btn btn-primary w-25" style="display:none;"><?php echo __("Continue");?></button>
+                <button id="undocho-assessment-con" type="button" class="btn btn-outline-warning" style="display:none;"><?php echo __("Go back to last step");?></button>
+                <button id="confirm_assessment_activities" class="btn btn-primary w-25" style="display:none;"><?php echo __("Continue");?></button>
+                <button id="undo_assessment_activities" type="button" class="btn btn-outline-warning" style="display:none;"><?php echo __("Go back to last step");?></button>
+                <button id="submit_assessment_workflow" class="btn btn-primary w-25" style="display:none;"><?php echo __("Continue");?></button>
             </div>
         </div>
     </div>
 
     <!-- Add CROs -->
-    <div id="choose-accessment-company" class="prodiff text-center" style="display:none">
+    <div id="choose-assessment-company" class="prodiff text-center" style="display:none">
         <h3 class="mt-2"></h3>
         <hr>
         <p class="card-text"><?php echo __("Add the Resources here and assign personnels");?></p>
-        <button type="button" class="btn btn-outline-info w-25 mx-auto mb-3" data-toggle="modal" data-target="#accessment-addcromodal"><?php echo __("Add Resources");?></button>
-        <div class="modal fade" id="accessment-addcromodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <button type="button" class="btn btn-outline-info w-25 mx-auto mb-3" data-toggle="modal" data-target="#assessment-addcromodal"><?php echo __("Add Resources");?></button>
+        <div class="modal fade" id="assessment-addcromodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -515,7 +523,7 @@
                 </div>
                 <div class="modal-body">
                     <label for=""><?php echo __("Add Resources");?></label>
-                    <select class="custom-select" id="accessment-croname">
+                    <select class="custom-select" id="assessment-croname">
                     <?php
                         foreach($cro_companies as $k => $cro_company){
                             echo "<option value=\"".$k."\">".$cro_company."</option>";
@@ -524,7 +532,7 @@
                     </select>
                 </div>
                 <div class="modal-footer">
-                    <button id="accessment-croadd"  class="btn btn-primary"  data-dismiss="modal"><?php echo __("Add");?></button>
+                    <button id="assessment-croadd"  class="btn btn-primary"  data-dismiss="modal"><?php echo __("Add");?></button>
                 </div>
                 </div>
             </div>
@@ -568,7 +576,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="conass-accessment" class="btn btn-outline-success" type="submit" data-dismiss="modal"><?php echo __("Confirm Assignment");?></button>
+                        <button id="conass-assessment" class="btn btn-outline-success" type="submit" data-dismiss="modal"><?php echo __("Confirm Assignment");?></button>
                     </div>
                 </div>
             </div>
@@ -586,11 +594,11 @@
                         <th scope="col"><?php echo __("Actions");?></th>
                     </tr>
                 </thead>
-                <tbody id="accessment-crotable">
+                <tbody id="assessment-crotable">
                 </tbody>
             </table>
-            <button id="undocho-accessment-WF" type="button" class="btn btn-outline-warning mt-3"><?php echo __("Reselect Workflow");?></button>
-            <button id="confirm-accessment-WFlist" type="button" class="btn btn-primary w-25 mt-3 mx-auto"><?php echo __("Continue");?></button>
+            <button id="undocho-assessment-WF" type="button" class="btn btn-outline-warning mt-3"><?php echo __("Reselect Workflow");?></button>
+            <button id="confirm-assessment-WFlist" type="button" class="btn btn-primary w-25 mt-3 mx-auto"><?php echo __("Continue");?></button>
         </div>
     <!-- Choose Distribution -->
     <div id="distribution-workflowlist" class="prodiff text-center" style="display:none;">
@@ -724,7 +732,7 @@
                             </div>
                         </div>
 
-                        <div id="errAccessmentWorkflow" class="invalid-feedback" style="display:none;"><?php echo __("Workflow name is required!");?></div>
+                        <div id="errDistributionWorkflow" class="invalid-feedback" style="display:none;"><?php echo __("Workflow name is required!");?></div>
 
                         <p><?php echo __("You can customize the workflow by editing the yellow box and dragging it to anywhere in the workflow");?></p>
                         <ul>
@@ -732,9 +740,9 @@
                                 <div class="card w-100 h-25 my-2">
                                     <div class="card-body p-3">
                                         <h5 class="card-title"><input type="text" id="new_distribution_activity_name" placeholder="Type step name here FIRST" class="font-weight-bold" /> </h5>
-                                        <p class="card-text"><textarea type="text"  id="new_distribution_activity_description" class="form-control" placeholder="<?php echo __("Type your step description here");?>" aria-label="With textarea"></textarea></p>
+                                        <p class="card-text"><textarea type="text"  id="new_distribution_activity_description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>
                                     </div>
-                                    <button id="confirm_new_distribution_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity(1)"><?php echo __("Confirm");?></button>
+                                    <button id="confirm_new_distribution_activity" class="btn btn-primary w-25 mx-auto my-2" onclick="confirm_cust_activity(0)"><?php echo __("Confirm");?></button>
                                 </div>
                             </li>
                         </ul>
@@ -851,7 +859,7 @@
 </div>
 
 <script type="text/javascript">
-var accessment_workflow_structure = <?php echo json_encode($accessment_workflow_structure);?>;
+var assessment_workflow_structure = <?php echo json_encode($assessment_workflow_structure);?>;
 var distribution_workflow_structure = <?php echo json_encode($distribution_workflow_structure);?>;
 var loadTabs = <?php echo json_encode($loadTabs);?>;
 var cro_companies = <?php echo json_encode($cro_companies);?>;

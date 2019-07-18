@@ -5871,7 +5871,7 @@ var i18n = new Jed({
             "Showing 0 to 0 of 0 entries": [
                 "显示第0条至第0条 共0条输入"
             ],
-            "Finished Data Accessment": [
+            "Finished Data Assessment": [
                 "数据评估结束"
             ],
             "No data available in table": [

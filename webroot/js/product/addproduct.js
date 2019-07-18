@@ -1,9 +1,9 @@
-var accessment_resource_list={};
+var assessment_resource_list={};
 var distribution_resource_list={};
 var workflow_k = 0;
 var workflow_list =[];
 var cro_list=[];
-var accessment_permission_list = {};
+var assessment_permission_list = {};
 var distribution_permission_list ={};
 var distribution_list =[];
 var distribution_No = 0;
@@ -23,12 +23,18 @@ $(document).ready(function() {
      * dashboard advanced search:activity due date and submission due date calendar
      */
     $('#start_date,#end_date').datepicker({dateFormat: 'dd/mm/yy'});
+
+    //generate caseNo format
+    $("[id^=casenumber]").change(function(){
+        let val = $('#casenumber1').val()+","+$('#casenumber2').val()+","+$('#casenumber3').val()+","+$('#casenumber4').val()+","+$('#casenumber5').val();
+        $("#product\\[caseNo_convention\\]").val(val);
+    });
 });
 function selectCro(id, typeFlag){
     var show_resource_list = {};
     if(typeFlag == 1){
-        $('[id^=conass]').attr('id', 'conass-accessment-'+id);
-        show_resource_list = accessment_resource_list;
+        $('[id^=conass]').attr('id', 'conass-assessment-'+id);
+        show_resource_list = assessment_resource_list;
     }else{
         $('[id^=conass]').attr('id', 'conass-distribution-'+id);
         show_resource_list = distribution_resource_list;
@@ -63,7 +69,7 @@ function removeCro(id, typeFlag){
       })
       .then((willDelete) => {
         if (willDelete) {
-            if(typeFlag==1) workflowType ="accessment";else workflowType = "distribution"
+            if(typeFlag==1) workflowType ="assessment";else workflowType = "distribution"
             var crocaption = $('#'+workflowType+'-crocompany-' + id).text();
             $('#'+workflowType+'-crocompany-' + id).closest('tr').remove();
             $("#"+workflowType+"-croname").append($("<option></option>").attr("value",id).text(crocaption));
@@ -113,11 +119,11 @@ jQuery(function($) {  // In case of jQuery conflict
         });
 
 
-        // $('#submit_accessment_country').click(function(){
+        // $('#submit_assessment_country').click(function(){
         //     var default_text = "<p>This is default workflow and cannot be changed</p>";
         //     var customize_text = "";
-        //     var country = $('#select-accessment-country').val();
-        //     $(accessment_workflow_structure[country]['sd_workflow_activities']).each(function(k,v){
+        //     var country = $('#select-assessment-country').val();
+        //     $(assessment_workflow_structure[country]['sd_workflow_activities']).each(function(k,v){
 
         //         default_text +="<li class=\"defworkflowstep\">";
         //             default_text +="<div class=\"card w-100 h-25 my-2\">";
@@ -140,8 +146,8 @@ jQuery(function($) {  // In case of jQuery conflict
         //             customize_text +="</div>";
         //         customize_text +="</li>"
         //     });
-        //     $('#default_accessment_workflow').html(default_text);
-        //     $('#accessment-sortable').html(customize_text);
+        //     $('#default_assessment_workflow').html(default_text);
+        //     $('#assessment-sortable').html(customize_text);
         // });
         // $("#sd_sponsor_company_id").change(function(){
         //     var request = {'sponsor_id': $("#sd_sponsor_company_id").val()};
@@ -193,8 +199,8 @@ jQuery(function($) {  // In case of jQuery conflict
         var member_list = [];
         var team_resources = [];
         var workflow_manager = [];
-        if(workflowType == "accessment"){
-            show_resource_list = accessment_resource_list;
+        if(workflowType == "assessment"){
+            show_resource_list = assessment_resource_list;
         }else{
             show_resource_list = distribution_resource_list;
         }
@@ -286,7 +292,7 @@ jQuery(function($) {  // In case of jQuery conflict
                 $(this).hide();
                 //TODO JUN 24st
                 $('#'+workflowType+'-sortable').find('.card-body').append( '<div class="input-group w-25 mx-auto"><i class="fas fa-arrow-up gobackstep"></i><input type="text" class="step_backward form-control form-control-sm backstep_input" aria-label="Back Steps" aria-describedby="backSteps">Workdays in 7 days case<input type="text" class="due_day-7 form-control form-control-sm backstep_input">Workdays in 15 days case<input type="text" class="due_day-15 form-control form-control-sm backstep_input"> Workdays in 90 days case<input type="text" class="due_day-90 form-control form-control-sm backstep_input"></div>');
-                $('#custworkflowname').next('#erraccessmentWorkflow').remove(); // *** this line have been added ***
+                $('#custworkflowname').next('#errassessmentWorkflow').remove(); // *** this line have been added ***
                 $("#"+workflowType+"-sortable").sortable({ disabled: true });
             }
         };
@@ -345,14 +351,14 @@ jQuery(function($) {  // In case of jQuery conflict
         $('#confirm-'+workflowType+'-WFlist, #undocho-'+workflowType+'-WF').show();
         $('#undo_'+workflowType+'_activities').hide();
         $('#choose-'+workflowType+'-company').show();
-        // $('#undochoaccessmentWF, #chooseDistri').show();
-        //$('#chooseaccessmentCompany').show();
+        // $('#undochoassessmentWF, #chooseDistri').show();
+        //$('#chooseassessmentCompany').show();
         // var cro_text = "";
         // $.each(cro_list, function(k,cro){
         //     cro_text +="<option value=\""+cro.id+"\">"+cro.name+"</option>";
         //     });
         // $('#croname').html(cro_text);
-        if(workflowType=="accessment")
+        if(workflowType=="assessment")
             workflow_list[workflow_k].activities = [];
         else distribution_list[distribution_No].activities = [];
         $('#'+workflowType+'-croname').html("");
@@ -375,11 +381,11 @@ jQuery(function($) {  // In case of jQuery conflict
                     activities_list.step_backward = $(this).val();
                 });
                 activities_list.order_no = order_no;
-                if(workflowType=="accessment") workflow_list[workflow_k].activities.push(activities_list);
+                if(workflowType=="assessment") workflow_list[workflow_k].activities.push(activities_list);
                 else distribution_list[workflow_k].activities.push(activities_list);
                 order_no++;
             });
-            if(workflowType=="accessment"){
+            if(workflowType=="assessment"){
                 workflow_list[workflow_k].id = $('#default_'+workflowType+'_workflow_id').val();
                 workflow_list[workflow_k].workflow_type = 0;
                 workflow_list[workflow_k].workflow_name = $('#default_'+workflowType+'_workflow_name').val();
@@ -411,11 +417,11 @@ jQuery(function($) {  // In case of jQuery conflict
                 });
                 activities_list.order_no = order_no;
                 activities_list.due_day = $(this).find(".due_day-7").val()+','+$(this).find(".due_day-15").val()+','+$(this).find(".due_day-90").val();
-                if(workflowType=="accessment") workflow_list[workflow_k].activities.push(activities_list);
+                if(workflowType=="assessment") workflow_list[workflow_k].activities.push(activities_list);
                 else distribution_list[workflow_k].activities.push(activities_list);
                 order_no++;
             });
-            if(workflowType=="accessment"){
+            if(workflowType=="assessment"){
                 workflow_list[workflow_k].workflow_type = 1;
                 workflow_list[workflow_k].workflow_name = $('#custom_'+workflowType+'_workflow_name').val();
                 workflow_list[workflow_k].workflow_description= $('#custom_'+workflowType+'_workflow_description').val();
@@ -429,8 +435,8 @@ jQuery(function($) {  // In case of jQuery conflict
     $('[id^=addNew-][id$=-WL]').click(function() {
         // function addNewWorkflow() {
             var workflowType = $(this).attr('id').split('-')[1];
-            if(workflowType=="accessment"){
-                accessment_resource_list[workflow_k] = {};
+            if(workflowType=="assessment"){
+                assessment_resource_list[workflow_k] = {};
                 workflow_list[workflow_k] = {};
             }else{
                 distribution_resource_list[workflow_k] = {};
@@ -471,7 +477,7 @@ jQuery(function($) {  // In case of jQuery conflict
         //                 icon: "success",
         //             });
         //             addNewWorkflow();
-        //             $('#cho-accessment-workflow, #chooseDistri, #chooseaccessmentCompany').find('select,input').val('');
+        //             $('#cho-assessment-workflow, #chooseDistri, #chooseassessmentCompany').find('select,input').val('');
         //             }
         //         });
         //     }
@@ -489,11 +495,11 @@ jQuery(function($) {  // In case of jQuery conflict
         var workflowType = $(this).attr('id').split('_')[1];
         $('#confirm_'+workflowType+'_activities').hide();
         // if(
-        //     !$('#select-accessment-country').val()  ) {
-        //     $('#select-accessment-country-validate').show().delay(2000).fadeOut();;
+        //     !$('#select-assessment-country').val()  ) {
+        //     $('#select-assessment-country-validate').show().delay(2000).fadeOut();;
         // }
         // else
-        if ((workflowType=='accessment')&&(!$('#callCenter').val())) {
+        if ((workflowType=='assessment')&&(!$('#callCenter').val())) {
             $('#callCenter-validate').show().delay(2000).fadeOut();;
         }
         else
@@ -527,17 +533,17 @@ jQuery(function($) {  // In case of jQuery conflict
             var customize_text = "";
             var country = $('#select-'+workflowType+'-country').val();
             var activities = "";
-            if(workflowType=='accessment'){
+            if(workflowType=='assessment'){
                 workflow_list[workflow_k].country = $('#select-'+workflowType+'-country').val();
                 workflow_list[workflow_k].sd_company_id = $('#callCenter').val();
-                default_text +="<h4>Name: "+ accessment_workflow_structure[country]['name']+"</h4>";
-                default_text +="<h5>Description: "+accessment_workflow_structure[country]['description']+"</h5>";
-                $('#default_accessment_workflow_description').val(accessment_workflow_structure[country]['description']);
-                $('#default_accessment_workflow_name').val(accessment_workflow_structure[country]['name']);
-                $('#custom_accessment_workflow_name').val('customize-'+accessment_workflow_structure[country]['name']);
-                $('#default_accessment_workflow_id').val(accessment_workflow_structure[country]['id']);
-                $('#default_accessment_workflow').html('');
-                activities = accessment_workflow_structure[country]['sd_workflow_activities'];
+                default_text +="<h4>Name: "+ assessment_workflow_structure[country]['name']+"</h4>";
+                default_text +="<h5>Description: "+assessment_workflow_structure[country]['description']+"</h5>";
+                $('#default_assessment_workflow_description').val(assessment_workflow_structure[country]['description']);
+                $('#default_assessment_workflow_name').val(assessment_workflow_structure[country]['name']);
+                $('#custom_assessment_workflow_name').val('customize-'+assessment_workflow_structure[country]['name']);
+                $('#default_assessment_workflow_id').val(assessment_workflow_structure[country]['id']);
+                $('#default_assessment_workflow').html('');
+                activities = assessment_workflow_structure[country]['sd_workflow_activities'];
             }else{
                 distribution_list[distribution_No].country = $('#select-'+workflowType+'-country').val();
                 distribution_list[distribution_No].sd_company_id = $('#callCenter').val();
@@ -578,6 +584,10 @@ jQuery(function($) {  // In case of jQuery conflict
             });
             $('#default_'+workflowType+'_workflow').html(default_text);
             $('#'+workflowType+'-sortable').html(customize_text);
+            $('.close').click(function() {
+                $(this).parents('li.custworkflowstep').fadeOut();
+                $(this).parents('li.custworkflowstep').remove();
+            });
         };
 
     });
@@ -649,8 +659,8 @@ jQuery(function($) {  // In case of jQuery conflict
     });
     $('#backDistri').click(function(){
         $('#distribution-workflowlist').hide();
-        $('#undocho-accessment-WF').show();
-        $('#confirm-accessment-WFlist').show();
+        $('#undocho-assessment-WF').show();
+        $('#confirm-assessment-WFlist').show();
     });
 
     //confirm Distribution company
@@ -658,56 +668,55 @@ jQuery(function($) {  // In case of jQuery conflict
         var text = "";
         var distribution_text = "";
         var cro_text = "";
-        $('[id^=accessment-crocompany-').each(function(){
+        $('[id^=assessment-crocompany-').each(function(){
             cro_text +=$(this).text();
             cro_text += " ; "
         });
         text +="<tr>";
-        text +="<td>"+$('#custom_accessment_workflow_name').val()+"</td>";
-        text +="<td>"+$('#custom_accessment_workflow_description').val()+"</td>";
+        text +="<td>"+$('#custom_assessment_workflow_name').val()+"</td>";
+        text +="<td>"+$('#custom_assessment_workflow_description').val()+"</td>";
         text +="<td>"+$('#callCenter option:selected').text()+"</td>";
-        text +="<td>"+$('#select-accessment-country option:selected').text()+"</td>";
+        text +="<td>"+$('#select-assessment-country option:selected').text()+"</td>";
         text +="<td>"+cro_text+"</td>";
         text +="<td>";
         text +="<div class=\"btn btn-sm btn-primary mx-2\" data-toggle=\"modal\" onclick=\"view_workflow("+workflow_k+")\" data-target=\".WFlistView\">View</div>"
         text +="<button class=\"btn btn-sm btn-outline-danger\" onclick=\"$(this).closest('tr').remove();\">Delete</button>";
         text +="</td>";
         if(workflow_list[workflow_k].workflow_type == 0){
-            text +="<input name=\"accessment_workflow["+workflow_k+"][id]\" value="+workflow_list[workflow_k].id+" type=\"hidden\">";
+            text +="<input name=\"assessment_workflow["+workflow_k+"][id]\" value="+workflow_list[workflow_k].id+" type=\"hidden\">";
         }else{
-            text +="<input name=\"accessment_workflow["+workflow_k+"][name]\" value="+workflow_list[workflow_k].workflow_name+" type=\"hidden\">";
-            text +="<input name=\"accessment_workflow["+workflow_k+"][description]\" value="+workflow_list[workflow_k].workflow_description+" type=\"hidden\">";
-            text +="<input name=\"accessment_workflow["+workflow_k+"][country]\" value="+workflow_list[workflow_k].country+" type=\"hidden\">";
-            text +="<input name=\"accessment_workflow["+workflow_k+"][workflow_type]\" value=\"1\" type=\"hidden\">";
+            text +="<input name=\"assessment_workflow["+workflow_k+"][name]\" value="+workflow_list[workflow_k].workflow_name+" type=\"hidden\">";
+            text +="<input name=\"assessment_workflow["+workflow_k+"][description]\" value="+workflow_list[workflow_k].workflow_description+" type=\"hidden\">";
+            text +="<input name=\"assessment_workflow["+workflow_k+"][country]\" value="+workflow_list[workflow_k].country+" type=\"hidden\">";
+            text +="<input name=\"assessment_workflow["+workflow_k+"][workflow_type]\" value=\"1\" type=\"hidden\">";
             $.each(workflow_list[workflow_k]['activities'], function(k, activity_detail){
-                text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][activity_name]\" value=\""+activity_detail['activity_name']+"\" type=\"hidden\">";
-                text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][description]\" value=\""+activity_detail['activity_description']+"\" type=\"hidden\">";
-                text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][step_backward]\" value=\""+activity_detail['step_backward']+"\" type=\"hidden\">";
-                text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][order_no]\"  value=\""+activity_detail['order_no']+"\" type=\"hidden\">";
-                text +="<input name=\"accessment_workflow_activity["+workflow_k+"]["+k+"][due_day]\"  value=\""+activity_detail['due_day']+"\" type=\"hidden\">";
+                text +="<input name=\"assessment_workflow_activity["+workflow_k+"]["+k+"][activity_name]\" value=\""+activity_detail['activity_name']+"\" type=\"hidden\">";
+                text +="<input name=\"assessment_workflow_activity["+workflow_k+"]["+k+"][description]\" value=\""+activity_detail['activity_description']+"\" type=\"hidden\">";
+                text +="<input name=\"assessment_workflow_activity["+workflow_k+"]["+k+"][step_backward]\" value=\""+activity_detail['step_backward']+"\" type=\"hidden\">";
+                text +="<input name=\"assessment_workflow_activity["+workflow_k+"]["+k+"][order_no]\"  value=\""+activity_detail['order_no']+"\" type=\"hidden\">";
+                text +="<input name=\"assessment_workflow_activity["+workflow_k+"]["+k+"][due_day]\"  value=\""+activity_detail['due_day']+"\" type=\"hidden\">";
             });
         }
-        text +="<input name=\"accessment_product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
-        text +="<input name=\"accessment_product_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_list[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
-        // text +="<input name=\"accessment_product_workflow["+workflow_k+"][due_day]\" value="+workflow_list[workflow_k].due_day+" type=\"hidden\">";//TODO
-        text +="<input name=\"accessment_product_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
+        text +="<input name=\"assessment_product_workflow["+workflow_k+"][sd_company_id]\" value="+workflow_list[workflow_k].sd_company_id+" type=\"hidden\">";
+        text +="<input name=\"assessment_product_workflow["+workflow_k+"][sd_user_id]\" value="+workflow_list[workflow_k].sd_user_id+" type=\"hidden\">";//TODO
+        // text +="<input name=\"assessment_product_workflow["+workflow_k+"][due_day]\" value="+workflow_list[workflow_k].due_day+" type=\"hidden\">";//TODO
+        text +="<input name=\"assessment_product_workflow["+workflow_k+"][status]\" value=\"1\" type=\"hidden\">";
 
-        //accessment-distribution relation
+        //assessment-distribution relation
         $('[id^=selected-distri-]').each(function(){
             var key = $(this).attr('id').split('-')[2];
             if($(this).prop('checked')){
-                text +="<input name=\"accessment_distribution["+workflow_k+"]["+key+"][status]\" value=\"1\" type=\"hidden\">";
+                text +="<input name=\"assessment_distribution["+workflow_k+"]["+key+"][status]\" value=\"1\" type=\"hidden\">";
             }
         });
-        //accessment user assignment
-        $.each(accessment_resource_list,function(key,workflow){
+        //assessment user assignment
+        $.each(assessment_resource_list,function(key,workflow){
             $.each(workflow,function(k,company){
                 $.each(company.team_resources,function(k,personDetail){
-                    text +="<input name=\"accessment_user_assignment["+key+"]["+personDetail.id+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
+                    text +="<input name=\"assessment_user_assignment["+key+"]["+personDetail.id+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
                 })
                 $.each(company.workflow_manager,function(k,personDetail){
-                    text +="<input name=\"accessment_product_workflow["+key+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
-                    accessment_resource_list[key].sd_user_id = personDetail.id;
+                    text +="<input name=\"assessment_product_workflow["+key+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
                 })
             })
         });
@@ -719,15 +728,14 @@ jQuery(function($) {  // In case of jQuery conflict
                 })
                 $.each(company.workflow_manager,function(k,personDetail){
                     distribution_text +="<input name=\"distribution_workflow["+workflow_k+"][sd_user_id]\" value="+personDetail.id+" type=\"hidden\">";
-                    distribution_list[workflow_k].sd_user_id = personDetail.id;
                 })
             })
         });
-        //accessment permission
-        $.each(accessment_permission_list[workflow_k],function(activity_order,activity_permissions){
+        //assessment permission
+        $.each(assessment_permission_list[workflow_k],function(activity_order,activity_permissions){
             $.each(activity_permissions,function(section_id, permission_action){
                 if(permission_action == '0'||typeof permission_action == 'undefined') return true;
-                text +="<input name=\"accessment_permission["+workflow_k+"]["+activity_order+"]["+section_id+"][action]\" value=\""+permission_action+"\" type=\"hidden\">"
+                text +="<input name=\"assessment_permission["+workflow_k+"]["+activity_order+"]["+section_id+"][action]\" value=\""+permission_action+"\" type=\"hidden\">"
             });
         });
 
@@ -762,14 +770,14 @@ jQuery(function($) {  // In case of jQuery conflict
             }
         });
         $('#distribution_input').html(distribution_text);
-        $('#addNew-accessment-WL').show();
-        $('#cho-accessment-workflow, #distribution-workflowlist, #chooseaccessmentCompany').slideUp();
-        $('#accessment-workflowlist').slideDown();
+        $('#addNew-assessment-WL').show();
+        $('#cho-assessment-workflow, #distribution-workflowlist, #chooseassessmentCompany').slideUp();
+        $('#assessment-workflowlist').slideDown();
         swal({
             title: "Your New Workflow has been SET",
             icon: "success",
           });
-        $('#choose-accessment-company').hide()
+        $('#choose-assessment-company').hide()
         $('#workflow_table').append(text);
         $('#no_workflow_notice').hide();
         workflow_k ++;
@@ -782,20 +790,20 @@ jQuery(function($) {  // In case of jQuery conflict
     });
     // Defaultworkflow and Custworkflow button control
 
-    $('#default_accessment_btn').click(function() {
-        $('#confirm_accessment_activities').show();
-        $('#default_accessment_workflow').slideDown();
-        $('#customize_accessment_workflow').slideUp();
+    $('#default_assessment_btn').click(function() {
+        $('#confirm_assessment_activities').show();
+        $('#default_assessment_workflow').slideDown();
+        $('#customize_assessment_workflow').slideUp();
     });
     $('#default_distribution_btn').click(function() {
         $('#confirm_distribution_activities').show();
         $('#default_distribution_workflow').slideDown();
         $('#customize_distribution_workflow').slideUp();
     });
-    $('#cust_accessment_btn').click(function() {
-        $('#confirm_accessment_activities').show();
-        $('#customize_accessment_workflow').slideDown();
-        $('#default_accessment_workflow').slideUp();
+    $('#cust_assessment_btn').click(function() {
+        $('#confirm_assessment_activities').show();
+        $('#customize_assessment_workflow').slideDown();
+        $('#default_assessment_workflow').slideUp();
     });
     $('#cust_distribution_btn').click(function() {
         $('#confirm_distribution_activities').show();
@@ -804,13 +812,15 @@ jQuery(function($) {  // In case of jQuery conflict
     });
 
     // Close customworkflow step
-    $('.closewf').click(function() {
-        $(this).closest('li').remove();
-    });
+    // $('.closewf').click(function() {
+    //     console.log("??");
+    //     $(this).closest('li').remove();
+    // });
     // Custworkflow Close icon
-    $('.close').click(function() {
-        $(this).parents('li.custworkflowstep').fadeOut();
-    });
+    // $('.close').click(function() {
+    //     console.log("!?");
+    //     $(this).parents('li.custworkflowstep').fadeOut();
+    // });
 
 // "Confirm Assignment" button message
     $('#conass').click(function() {
@@ -821,7 +831,7 @@ jQuery(function($) {  // In case of jQuery conflict
     })
     // Custworkflow draggable effect
     $( function() {
-        $( "#accessment-sortable" ).sortable({
+        $( "#assessment-sortable" ).sortable({
             revert: true,
             cancel: ".fixed,input,textarea",
             delay: 100,
@@ -838,11 +848,11 @@ jQuery(function($) {  // In case of jQuery conflict
         });
         // $('#comfirm_activity').click(function(){
         //     $(this).hide();
-        //     $('#new_accessment_activity_name').replaceWith('<b>' + $('#new_accessment_activity_name').val() + '</b>');
+        //     $('#new_assessment_activity_name').replaceWith('<b>' + $('#new_assessment_activity_name').val() + '</b>');
         //     $('#new_activit-description').replaceWith($('#new_activit-description').val());
         //     $('#customize_activity').attr('id','draggable');
         //     $( "#draggable" ).draggable({
-        //         connectToSortable: "#accessment-sortable",
+        //         connectToSortable: "#assessment-sortable",
         //         cursor: "pointer",
         //         helper: "clone",
         //         opacity: 0.6,
@@ -859,13 +869,13 @@ jQuery(function($) {  // In case of jQuery conflict
         //                 $(this).find('.card-body').append( '<button class="close closewf">' +  '&times;' +  '</button>');
         //                 $(this).find('.input-group').append('<i class="fas fa-arrow-up gobackstep"></i><input type="text" class="step_backward form-control form-control-sm" aria-label="Back Steps" aria-describedby="backSteps">');
         //                 // $(this).change(function() {
-        //                 //     $('#new_accessment_activity_name').replaceWith('<h5 id>' + $('#new_accessment_activity_name').val() + '</h5>');
+        //                 //     $('#new_assessment_activity_name').replaceWith('<h5 id>' + $('#new_assessment_activity_name').val() + '</h5>');
         //                 // });
         //                 },
         //         // Remove all inputs in original when drag into new place
         //         stop : function (event,ui) {
         //             $(ui.helper).addClass("w-100 h-75");
-        //             $(this).find('h5').replaceWith('<h5><input id="new_accessment_activity_name" type="text" placeholder="Type your step name here" class="font-weight-bold" /></h5>');
+        //             $(this).find('h5').replaceWith('<h5><input id="new_assessment_activity_name" type="text" placeholder="Type your step name here" class="font-weight-bold" /></h5>');
         //             $(this).find('p').replaceWith('<p class="card-text"><textarea type="text" id="new_activit-description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>')
         //             $(this).attr('id','customize_activity');
         //             $('#comfirm_activity').show();
@@ -879,7 +889,7 @@ jQuery(function($) {  // In case of jQuery conflict
           // Add CRO, triggered by "Add" button for adding CRO button and CRO resource list
     $('[id^=add][id$=cro]').click(function(){
         var workflowType = $(this).attr('id').split('-')[1];
-        $('[id$=croadd').attr('id','accessment-croadd');
+        $('[id$=croadd').attr('id','assessment-croadd');
     });
 
     $('[id$=croadd]').click(function() {
@@ -893,10 +903,10 @@ jQuery(function($) {  // In case of jQuery conflict
         text += '<td id = "'+workflowType+'-cromanager-'+cro_id+'"></td>';
         text += '<td id = "'+workflowType+'-crostaff-'+cro_id+'"></td>';
         text += '<td><button class="'+workflowType+'Btn btn btn-sm btn-outline-info" onclick="selectCro(' + cro_id
-        if(workflowType=="accessment") text +=',1)" '; else text += ',2)" ';
+        if(workflowType=="assessment") text +=',1)" '; else text += ',2)" ';
         text += ' data-toggle="modal" data-target="#addper">Edit</button>';
         text += '<button class="'+workflowType+'Btn btn btn-sm btn-danger ml-3" id="removeCRO-' + cro_id + '" onclick="removeCro(' + cro_id;
-        if(workflowType=="accessment") text +=',1)" '; else text += ',2)" ';
+        if(workflowType=="assessment") text +=',1)" '; else text += ',2)" ';
         text += '>Delete</button></td>';
         text +='</tr>';
         $('#'+workflowType+'-crotable').append(text);
@@ -920,7 +930,7 @@ jQuery(function($) {  // In case of jQuery conflict
                 cro_info.name = cro_name;
                 cro_id.team_resources = [];
                 cro_id.workflow_manager = [];
-                if(workflowType=="accessment") accessment_resource_list[workflow_k][cro_id]=cro_info;
+                if(workflowType=="assessment") assessment_resource_list[workflow_k][cro_id]=cro_info;
                 else distribution_resource_list[workflow_k][cro_id] = cro_info;
             },
             error:function(response){
@@ -931,7 +941,7 @@ jQuery(function($) {  // In case of jQuery conflict
 });
 
 function sectionPermission(activity_id, readonly, workflowTypeFlag){
-    var workflowType = "accessment";
+    var workflowType = "assessment";
     if(workflowTypeFlag == "1") workflowType = "distribution";
     if(readonly==1){
         $('#permissionFooter').find('button').remove();
@@ -1002,7 +1012,7 @@ function sectionPermission(activity_id, readonly, workflowTypeFlag){
             var permission_key = 0;
             if(workflowTypeFlag==0)
             {
-                permission_list = accessment_permission_list;
+                permission_list = assessment_permission_list;
                 permission_key = workflow_k
             }
             else {
@@ -1035,8 +1045,8 @@ function savePermission(activity_id, workflowTypeFlag){
     var workflowType = "";
     if(workflowTypeFlag == 0)
     {
-        workflowType = "accessment";
-        permission_list = accessment_permission_list;
+        workflowType = "assessment";
+        permission_list = assessment_permission_list;
         permission_key = workflow_k;
     }else{
         workflowType = "distribution";
@@ -1129,7 +1139,7 @@ function view_workflow(workflow_k){
     $('#viewCountry').text(workflow_list[workflow_k]['country']);
     $('#viewDesc').text(workflow_list[workflow_k]['workflow_description']);
     var team_resources_text="";
-    $.each(accessment_resource_list[workflow_k], function(company_id, company_detail){
+    $.each(assessment_resource_list[workflow_k], function(company_id, company_detail){
         console.log(company_detail);
         $.each(company_detail['team_resources'],function(k,v){
             console.log(v);
@@ -1151,34 +1161,37 @@ function view_workflow(workflow_k){
 function confirm_cust_activity(type=0){
     // $('#draggable').addClass('ui-draggable ui-draggable-handle');
     var typestr = "";
-    if(type) typestr="accessment";
+    if(type) typestr="assessment";
     else typestr="distribution";
-    $('#new_'+typestr+'_activity_name').replaceWith('<b>'+$('#new_'+typestr+'_activity_name').val()+'</b>');
-    $('#new_'+typestr+'_activity_description').replaceWith($('#new_'+typestr+'_activity_description').val());
-    $( "#draggable" ).draggable( {disabled: false} )
-    $('#new_'+typestr+'_activity_description').remove();
-    $( "#draggable" ).draggable({
-        connectToSortable: "#accessment-sortable",
-        cursor: "pointer",
-        helper: "clone",
-        opacity: 0.6,
-        revert: "invalid",
-        start  : function(event, ui){
-            $(ui.helper).addClass("w-100 h-75");
-            $(this).find('h5').replaceWith('<h5 class=\"card-title\"><input type="text" id="new_'+typestr+'_activity_name" placeholder="Type step name here FIRST" class="font-weight-bold" /></h5>');
-            $(this).find('p').replaceWith('<p class="card-text"><textarea type="text"  id="new_'+typestr+'_activity_description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>');
-            $(this).find('.card').append("<button id=\"new_'+typestr+'_activity_description\" onclick=\"confirm_cust_activity("+type+")\" class=\"btn btn-primary w-25 mx-auto my-2\">Confirm</button>");
-        },
-        // Add "close icon" when drag into new place
-        create: function( event, ui ) {
-            console.log('Here');
-            $(this).find('.card-body').prepend( '<button class="close closewf">' +  '&times;' +  '</button>');
-        },
-        // Remove all inputs in original when drag into new place
-        stop : function (event,ui) {
-            $( "#draggable" ).draggable( {disabled: true} );
-        }
-    });
+    let orignialHTML =  $('#draggable').html();
+    let html = "<li class=\"custworkflowstep\" id=\"cust-"+typestr+"-workflowstep\"><div class=\"card w-100 h-25 my-2\"><div class=\"card-body p-3\"><button class=\"close closewf\">×</button><h5 class=\"card-title\"><b>";
+    html = html + $("#new_"+typestr+"_activity_name").val();
+    html = html+"</b></h5><p class=\"card-text\">" +$("#new_"+typestr+"_activity_description").val()+"</p></div></div></li>";    
+    $("#"+typestr+"-sortable").prepend(html);
+    $("#new_"+typestr+"_activity_name").val("");
+    $("#new_"+typestr+"_activity_description").val("");
+    // $( "#draggable" ).draggable({
+    //     connectToSortable: "#assessment-sortable",
+    //     cursor: "pointer",
+    //     helper: "clone",
+    //     opacity: 0.6,
+    //     revert: "invalid",
+    //     start  : function(event, ui){
+    //         $(ui.helper).addClass("w-100 h-75");
+    //         $(this).find('h5').replaceWith('<h5 class=\"card-title\"><input type="text" id="new_'+typestr+'_activity_name" placeholder="Type step name here FIRST" class="font-weight-bold" /></h5>');
+    //         $(this).find('p').replaceWith('<p class="card-text"><textarea type="text"  id="new_'+typestr+'_activity_description" class="form-control" placeholder="Type your step description here" aria-label="With textarea"></textarea></p>');
+    //         $(this).find('.card').append("<button id=\"new_'+typestr+'_activity_description\" onclick=\"confirm_cust_activity("+type+")\" class=\"btn btn-primary w-25 mx-auto my-2\">Confirm</button>");
+    //     },
+    //     // Add "close icon" when drag into new place
+    //     create: function( event, ui ) {
+    //         console.log('Here');
+    //         $(this).find('.card-body').prepend( '<button class="close closewf">' +  '&times;' +  '</button>');
+    //     },
+    //     // Remove all inputs in original when drag into new place
+    //     stop : function (event,ui) {
+    //         $( "#draggable" ).draggable( {disabled: true} );
+    //     }
+    // });
 }
 $(document).ready(function(){
     $(".checkAll").click(function () {

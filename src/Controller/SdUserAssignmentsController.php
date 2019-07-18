@@ -142,8 +142,8 @@ class SdUserAssignmentsController extends AppController
                         ];
                         $sdUserAssignment = $this->SdUserAssignments->newEntity();
                         $sdUserAssignment = $this->SdUserAssignments->patchEntity($sdUserAssignment, $dataSet);
-                        debug($sdUserAssignment);
-                        // if (!$this->SdUserAssignments->save($sdUserAssignment)) echo "error in saving";
+                        // debug($sdUserAssignment);
+                        if (!$this->SdUserAssignments->save($sdUserAssignment)) echo "error in saving";
                     }
                 }
                 $sdProductWorkflow = TableRegistry::get("SdProductWorkflows")->get($productWorkflowId);

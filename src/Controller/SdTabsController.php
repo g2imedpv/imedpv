@@ -34,9 +34,10 @@
              * @return \Cake\Http\Response|void
              */
             public function showdetails($caseNo, $version = 1,$tabid = 1, $distribution_id = null)
-            {         
+            {
                 if($distribution_id == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
-                else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";                  
+                else $distribution_condition = ['OR' => [["SdFieldValues.sd_case_distribution_id ='".$distribution_id."'"], ["SdFieldValues.sd_case_distribution_id IS NULL"]]];
+                // = "(SdFieldValues.sd_case_distribution_id ='".$distribution_id."') OR (SdFieldValues.sd_case_distribution_id IS NULL)";                  
                 $writePermission= 0;
                 $userinfo = $this->request->getSession()->read('Auth.User');
                 $sdCasesTable = TableRegistry::get('SdCases');
@@ -263,7 +264,7 @@
                         if(!array_key_exists($sdSection['id'],$activitySectionPermissions)) unset($sdSections[$sectionKey]);
                     }
                 }
-                $this->set(compact('validatedDatas','sdSections','caseNo','version','tabid','caseId','product_name','case_versions','writePermission','dynamic_options'));
+                $this->set(compact('distribution_id','validatedDatas','sdSections','caseNo','version','tabid','caseId','product_name','case_versions','writePermission','dynamic_options'));
                 //get document list
                 $sdDocumentTable = TableRegistry::get('SdDocuments');
                 $sdDocList = $sdDocumentTable ->find()

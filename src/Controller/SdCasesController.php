@@ -565,19 +565,9 @@ class SdCasesController extends AppController
                 $sdCase = $this->SdCases->newEntity();
                 $savedData['sd_product_workflow_id'] = $requestData['sd_product_workflow_id'];
                 $savedData['status'] = "1";
-                $companyDetail['order'] = "company,product,date,random";
+                $companyDetail['order'] = $product_data['caseNo_convention'];//TODO
                 $order = explode(",",$companyDetail['order']);
-                $date_str = $this->caseNoGenerator($order,$companyDetail['company_abbreviation'],$product_data['product_abbreviation']);
-                $count = $this->SdCases->find()->select(['startDate.enter_time'])
-                            ->join([
-                                'startDate'=>[
-                                    'table'=>'sd_case_histories',
-                                    'type'=>'INNER',
-                                    'conditions'=>['SdCases.id = startDate.sd_case_id','startDate.sd_workflow_activity_id = '.$sdWorkflowActivities['id']]
-                                ]
-                            ])                        
-                            ->where(['SdCases.sd_product_workflow_id'=>$requestData['sd_product_workflow_id'], 'MONTH(startDate.enter_time)'=>date('m'), 'YEAR(startDate.enter_time)'=>date('Y')])->count();
-                $date_str = $date_str.str_pad($count, 5, "0", STR_PAD_LEFT);
+                $date_str = $this->caseNoGenerator($order,$sdWorkflowActivities['id'], $requestData['sd_product_workflow_id'], $companyDetail['company_abbreviation'],$product_data['product_abbreviation']);
                 $savedData['caseNo'] = $date_str;
                 $savedData['version_no'] = "1";
                 //TODO VERSION UP MIGHT BE INCLUDED
@@ -597,6 +587,9 @@ class SdCasesController extends AppController
                  */
                 //data on product
                 $fieldId_product_set = [
+                    '39'=>'study_no',
+                    '367'=>'product_name',
+                    '368'=>'short_desc',
                     '176'=>'product_desc', 
                     '40'=>'study_type',
                     '175'=>'sd_product_flag',
@@ -755,8 +748,16 @@ class SdCasesController extends AppController
      * @return string case number
      *
      */
-    private function caseNoGenerator($order, $product_prefix, $company_prefix=null){
-        
+    private function caseNoGenerator($order, $sdWorkflowActivitiesId, $sd_product_workflow_id, $product_prefix, $company_prefix=null){
+        $count = $this->SdCases->find()->select(['startDate.enter_time'])
+        ->join([
+            'startDate'=>[
+                'table'=>'sd_case_histories',
+                'type'=>'INNER',
+                'conditions'=>['SdCases.id = startDate.sd_case_id','startDate.sd_workflow_activity_id = '.$sdWorkflowActivitiesId]
+            ]
+        ])->where(['SdCases.sd_product_workflow_id'=>$sd_product_workflow_id, 'MONTH(startDate.enter_time)'=>date('m'), 'YEAR(startDate.enter_time)'=>date('Y')])->count();
+        $count = $count.str_pad($count, 5, "0", STR_PAD_LEFT);
         do{
             $rand_str = rand(0, 99999);
             $rand_str = str_pad($rand_str, 5, "0", STR_PAD_LEFT);
@@ -768,7 +769,9 @@ class SdCasesController extends AppController
                     $date_str = $date_str.date("ym");
                 else if($item == "company")
                     $date_str = $date_str.$company_prefix;
-                else $date_str = $date_str.$rand_str;
+                else if($item == "random")
+                    $date_str = $date_str.$rand_str;
+                else $date_str = $date_str.$count;
             }
             // $date_str = "ICSR".date("ym").$rand_str;
         }while($this->SdCases->find()->where(['caseNo LIKE '=>'%'.$date_str.'%'])->first()!=null);
@@ -841,10 +844,148 @@ class SdCasesController extends AppController
             die();
         }
     }
+    public function distribute($caseNo, $version){
+        if($this->request->is('POST')){
+            $this->autoRender = false;
+            $requstData = $this->request->getData();
+            //save new activity into case
+            $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$version])
+                                ->select(['id','SdCases.sd_product_workflow_id','pd.product_name','sd_workflow_activity_id','sd_user_id'])
+                                ->join([
+                                    'pw'=>[
+                                        'table'=>'sd_product_workflows',
+                                        'type'=>'INNER',
+                                        'conditions'=>['pw.id = SdCases.sd_product_workflow_id']
+                                    ],
+                                    'pd'=>[
+                                        'table'=>'sd_products',
+                                        'type'=>'INNER',
+                                        'conditions'=>['pw.sd_product_id = pd.id']
+                                    ]
+                                ])->first();
+            //Save current user sign off history
+            $caseCurrentHistoryTable =TableRegistry::get('SdCaseHistories');
+            $caseCurrentHistory = $caseCurrentHistoryTable->find()
+                                            ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$case['sd_workflow_activity_id'],
+                                            // 'sd_user_id'=>$case['sd_user_id'],
+                                            'close_time IS NULL'])
+                                            ->order(['enter_time'=>'DESC'])->first();
+            $caseCurrentHistory['close_time'] = date("Y-m-d H:i:s");
+            if(!$caseCurrentHistoryTable->save($caseCurrentHistory)){
+                echo "error in saving history";
+                return;
+            };
+
+            if($requstData['activityList'] == ""){
+                //not to destribute, then close this case
+                $case['status'] = 3;
+                if(!$this->SdCases->save($case)){
+                     echo "error in saving new activity";
+                     return;
+                }
+            }
+            else{
+                $case['status'] = 2;
+                if(!$this->SdCases->save($case)){
+                     echo "error in saving new activity";
+                     return;
+                }
+                
+                //distribute to every activity selected
+                $caseDistributionsTable = TableRegistry::get('SdCaseDistributions');
+                $queryTable = TableRegistry::get('SdQueries');
+                $caseNextHistory = TableRegistry::get('SdCaseHistories')->newEntity();
+                $sdFieldValuesTable =TableRegistry::get('SdFieldValues');
+                $sdWorkflowActivitiesTable = TableRegistry::get('SdWorkflowActivities');
+                foreach ($requstData['activityList'] as $key => $activityData) {
+                    $caseDistributionEntity = $caseDistributionsTable -> newEntity();
+                    $caseDistributionEntity['sd_case_id'] = $case['id'];
+                    $caseDistributionEntity['sd_workflow_activity_id'] = $activityData['next-activity-id'];
+                    $caseDistributionEntity['sd_assessment_distribution_link_id'] = $activityData['linkId'];
+                    $savedLink = $caseDistributionsTable->save($caseDistributionEntity);
+                    if(!$savedLink){
+                        echo "error in saving next history";
+                        debug($caseDistributionEntity);
+                        return;
+                    };
+
+                    //change Activity Due Date according case type and its due date
+                    $sdWorkflowActivity = $sdWorkflowActivitiesTable->get($activityData['next-activity-id']);
+                    $casetype = $sdFieldValuesTable->find()->where(['sd_field_id'=>500, 'sd_case_id'=>$case['id']])->first();
+                    $latestReceiveDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>12, 'sd_case_id'=>$case['id']])->first();
+                    $date = date_create_from_format("dmY", $latestReceiveDateEntity['field_value']);
+                    $latestReceiveDateEntity['field_value'] = $date->format('dmY');
+                    $previsouActivity = $sdWorkflowActivitiesTable->find()->where(['sd_workflow_id'=>$sdWorkflowActivity['sd_workflow_id'], 'order_no'=>1])->first();
+                    date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']]+(int)$previsouActivity['due_day'][$casetype['field_value']].' days'));
+                    $activityDueDateEntity = $sdFieldValuesTable->newEntity();            
+                    $dataSet = [
+                        'sd_case_id' => $case->id,
+                        'sd_field_id' => 414,
+                        'set_number' => 1,//TODO SET NUMBER REMOVE
+                        'created_time' =>date("Y-m-d H:i:s"),
+                        'field_value' =>$date->format('dmY'),
+                        'status' =>'1',
+                        'sd_case_distribution_id' =>$savedLink['id']
+                    ];
+                    $activityDueDateEntity = $sdFieldValuesTable->patchEntity($activityDueDateEntity, $dataSet);
+                    if(!$sdFieldValuesTable->save($activityDueDateEntity)){
+                        echo "error in saving date entity";
+                        debug($activityDueDateEntity);
+                        return;
+                    };
+
+                    //save next user enter history
+                    $caseNextHistory['comment'] = $activityData['content'];
+                    $caseNextHistory['sd_case_id'] = $case['id'];
+                    $caseNextHistory['sd_workflow_activity_id'] = $activityData['next-activity-id'];
+                    $caseNextHistory['sd_user_id'] = $activityData['receiverId'];
+                    $caseNextHistory['enter_time'] = date("Y-m-d H:i:s");
+                                   
+                    if(!$caseCurrentHistoryTable->save($caseNextHistory)){
+                        echo "error in saving next history";
+                        return;
+                    };
+
+
+                    //Save Comment To next person
+                    $title = "A new case has been distributed to you";     
+                    $content = $activityData['content']."  Case Number:".$caseNo."    Version:".$version;
+                    $sdQuery = $queryTable->newEntity();
+                    $dataSet = [
+                        'title'=>$title,
+                        'content'=>$content,
+                        'query_type'=>1,
+                        'sender'=>$requstData['senderId'],
+                        'receiver'=>$activityData['receiverId'],
+                        'sender_deleted'=>0,
+                        'query_status'=>0,
+                        'receiver_status'=>1,
+                        'send_date'=>date("Y-m-d H:i:s"),
+                    ];
+                    $patchedQuery = $queryTable->patchEntity($sdQuery, $dataSet);
+                    if(!$queryTable->save($patchedQuery)){
+                        debug($patchedQuery);
+                        echo "error in saving query";
+                        return;
+                    }
+                }
+            }
+            $this->request->getSession()->delete('caseValidate.'.$case['id']);
+            echo "success";
+            $this->Flash->success(__('You\'ve successfully Signed-Off.'));
+        }
+    }
+
+
+
+
+
+
     /**
      *
      *
-     *
+     *Push forward or push backward
+     * $operator 1 backward 0 forward
      *
      */
     public function forward($caseNo, $version, $operator, $distribution_id = null){
@@ -870,8 +1011,13 @@ class SdCasesController extends AppController
                                 ])->first();
             //Save current user sign off history
             $caseCurrentHistoryTable =TableRegistry::get('SdCaseHistories');
+            if($distribution_id == null) $wfaId = $case['sd_workflow_activity_id'];
+            else{
+                $caseDistributionEntity =  TableRegistry::get('SdCaseDistributions')->get($distribution_id);
+                $wfaId = $caseDistributionEntity['sd_workflow_activity_id'];
+            }
             $caseCurrentHistory = $caseCurrentHistoryTable->find()
-                                            ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$case['sd_workflow_activity_id'],
+                                            ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$wfaId,
                                             // 'sd_user_id'=>$case['sd_user_id'],
                                             'close_time IS NULL'])
                                             ->order(['enter_time'=>'DESC'])->first();
@@ -886,12 +1032,11 @@ class SdCasesController extends AppController
             //change Activity Due Date according case type and its due date
             $sdFieldValuesTable =TableRegistry::get('SdFieldValues');
             $sdWorkflowActivity = TableRegistry::get('SdWorkflowActivities')->get($requstData['next-activity-id']);
-            $casetype = $sdFieldValuesTable->find()->where(['sd_field_id'=>500, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
-
-            $latestReceiveDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>12, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
+            $casetype = $sdFieldValuesTable->find()->where(['sd_field_id'=>500, 'sd_case_id'=>$case['id']])->first();
+            $latestReceiveDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>12, 'sd_case_id'=>$case['id']])->first();
             $date = date_create_from_format("dmY", $latestReceiveDateEntity['field_value']);
             $latestReceiveDateEntity['field_value'] = $date->format('dmY');
-            if($sdWorkflowActivity['order_no'] == 2){
+            if($latestReceiveDateEntity == ""){
                 $previsouActivity = TableRegistry::get('SdWorkflowActivities')->find()->where(['sd_workflow_id'=>$sdWorkflowActivity['sd_workflow_id'], 'order_no'=>1])->first();
                 date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']]+(int)$previsouActivity['due_day'][$casetype['field_value']].' days'));
                 $activityDueDateEntity = $sdFieldValuesTable->newEntity();            
@@ -903,7 +1048,10 @@ class SdCasesController extends AppController
                     'field_value' =>$date->format('dmY'),
                     'status' =>'1',
                 ];            
-                if($distribution_id!=null) $dataSet['sd_case_distribution_id'] = $distribution_id;
+                if($distribution_id!=null){
+                    $dataSet['sd_case_distribution_id'] = $distribution_id;
+                    $dataSet['set_number'] = 2;
+                } 
                 $activityDueDateEntity = $sdFieldValuesTable->patchEntity($activityDueDateEntity, $dataSet);
             }else{
                 date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']].' days'));
@@ -915,11 +1063,20 @@ class SdCasesController extends AppController
                 debug($activityDueDateEntity);
                 return;
             };
-            $case['sd_user_id'] = $requstData['receiverId'];
-            $case['sd_workflow_activity_id'] = $requstData['next-activity-id'];
-            if(!$this->SdCases->save($case)){
-                 echo "error in saving new activity";
-                 return;
+            if($distribution_id == null){
+                $case['sd_user_id'] = $requstData['receiverId'];
+                $case['sd_workflow_activity_id'] = $requstData['next-activity-id'];
+                if(!$this->SdCases->save($case)){
+                    echo "error in saving new activity";
+                    return;
+                }
+            }else{
+                $caseDistributionEntity['sd_use_id'] = $requstData['receiverId'];
+                $caseDistributionEntity['sd_workflow_activity_id'] = $requstData['next-activity-id'];
+                if(!TableRegistry::get('SdCaseDistributions')->save($caseDistributionEntity)){
+                    echo "error in saving user";
+                    return;
+                }
             }
             if($operator == false)
                 $title = "A new case has been pushed to you";
