@@ -23,14 +23,16 @@ table {
 size: A4;
 margin: 0;
 }
+
 @media print {
+
 table {
     max-height:100% !important;
     overflow: hidden !important;
     page-break-after: auto;
 }
 .pageOne{
-    zoom:90%; 
+    zoom:95%; 
 }
 }
 
@@ -99,11 +101,58 @@ table {
     font-family: Arial, sans-serif;
 }
 
-.secondheader{
-    font-weight: bold;
-    color:black;
-}
-
 .suspect{
     line-height:13px;
+}
+
+/* print style */
+ 
+.page-footer {
+    display:none;
+}
+  
+.page-header {
+    display:none;
+}
+  
+.page {
+    page-break-after: always;
+}
+  
+@page {
+    margin: 20mm
+}
+  
+@media print {
+    thead {display: table-header-group;} 
+    tfoot {display: table-footer-group;}
+        
+    button {display: none;}
+        
+    body {margin: 0;}
+
+    .page-header, .page-header-space {
+        height: 25px;
+    }
+        
+    .page-footer, .page-footer-space {
+        height: 25px;
+        
+    }
+        
+    .page-footer {
+        display:block;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        border-top: 1px solid black; /* for demo */
+    }
+        
+    .page-header {
+        display:block;
+        position: fixed;
+        top: 0mm;
+        width: 100%;
+        border-bottom: 1px solid black; /* for demo */
+    }
 }

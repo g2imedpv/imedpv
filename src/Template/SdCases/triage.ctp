@@ -331,8 +331,8 @@
                 </thead>
                 <tbody id="newAttachArea">
                 <tr>
-                    <td><input type="text" class="form-control" name="document[0][doc_classification]" id="doc_classification_0"></td>
-                    <td><input type="text" class="form-control" name="document[0][doc_description]" id="doc_description_0"></td>
+                    <td><input type="text" class="form-control" name="document[0][doc_classification]" id="doc_classification_0" placeholder="<?php echo __("Please enter file classification")?>"></td>
+                    <td><input type="text" class="form-control" name="document[0][doc_description]" id="doc_description_0" placeholder="<?php echo __("Please enter file description")?>"></td>
                     <td><select class="custom-select" onchange="fileUrlSwitcher(0)" name="document[0][doc_source]" id="doc_source_0">
                             <option value="File Attachment"><?php echo __("File Attachment")?></option>
                             <option value="URL Reference"><?php echo __("URL Reference")?></option>

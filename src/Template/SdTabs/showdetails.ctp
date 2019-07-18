@@ -610,9 +610,13 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                 }
             }
             $text =$text. "<div id=\"section-".$section->id."-field-".$sd_section_structure_detail->sd_field->id."\" class=\"form-group col-md-".$sd_section_structure_detail->field_length." offset-md-".($sd_section_structure_detail->field_start_at-$length_taken)."\">";
-            $text =$text. "<label id= \"section-".$section->id."-field_label-".$sd_section_structure_detail->sd_field->id."\" >".$sd_section_structure_detail->sd_field->field_label;
-            if($sd_section_structure_detail->sd_field->e2b_code!="") $text =$text." (".$sd_section_structure_detail->sd_field->e2b_code.")";
-            $text =$text."</label>";
+            if($sd_section_structure_detail->sd_field->sd_element_type->type_name=="title"){ 
+                $text =$text. "<h5 class=\"col-md-12 mb-1 pl-0\" id= \"section-".$section->id."-field_label-".$sd_section_structure_detail->sd_field->id."\">".$sd_section_structure_detail->sd_field->field_label."</h5>";
+            }else{
+                $text =$text. "<label id= \"section-".$section->id."-field_label-".$sd_section_structure_detail->sd_field->id."\" >".$sd_section_structure_detail->sd_field->field_label;
+                if($sd_section_structure_detail->sd_field->e2b_code!="") $text =$text." (".$sd_section_structure_detail->sd_field->e2b_code.")";
+                $text =$text."</label>";
+            }
             if(!empty($sd_section_structure_detail->sd_field->comment))
             $text =$text. " <a id=\"field_helper-".$sd_section_structure_detail->sd_field->id."\" tabindex=\"0\" role=\"button\" data-toggle=\"popover\" title=\"".__("Field Helper")."\" data-content=\"<div>".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->comment)."</div>\"><i class=\"qco fas fa-info-circle\"></i></a>";
             // if(!empty($sd_section_structure_detail->sd_section_values)) print_r($section->sd_section_sets[0]->set_no);

@@ -97,20 +97,31 @@ class SdExportController extends AppController
             $dayFormat=substr($informalDate,0,2);
             //debug($dayFormat);die();
             if(($dayFormat=='00')){
-                $dateFormat="DD";
+                $dayFormat="DD-";
             }       
             else{
                 $dayFormat=$dayFormat."-";
             }
             $yearFormat=substr($informalDate,4,4);
             if($yearFormat=='0000'){
-                $yearFormat="YYYY";
+                $yearFormat="-YYYY";
             }       
             else{
                 $yearFormat="-".$yearFormat;
             }
             return $dayFormat.$this->getMonthValue($informalDate).$yearFormat;
         } 
+        //Grab the first/last $num word from the $words string
+        // public function subwords($words,$num,$order){		
+        //     $total_num = str_word_count($words); // get words count
+        //     if($total_num <= $num){ 
+        //         return $words;
+        //     }else{
+        //         $pattern = '/([\S]+?[ ]+){'.$num.'}/';
+        //         preg_match($pattern, $words, $out);
+        //         return $out[$order]; 
+        //     }
+        // }
 
         //get suspect drugs' set number
         public function SuspectRole($caseId){

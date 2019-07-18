@@ -7,7 +7,15 @@
 <?= $this->Html->css('bootstrap/bootstrap.min.css') ?>
 
 <body>
-    <div>
+    <div class="page-header" style="text-align: right">
+        <span></span><span >Mfr.Control Number:<?php echo $fileName?></span><br/>
+    </div>
+    <div class="page-footer">
+        I'm The Footer
+    </div>
+    <!--place holder for the fixed-position header-->
+    <div class="page-header-space"></div>
+    <div  class="pageOne">
         <!-- TITLE -->
         <table class="tg mx-auto" style="table-layout: fixed;  width: 95%; height:120px;">
             <colgroup>
@@ -182,7 +190,7 @@
                 <td class="tg-0lax">
                     <p class="text-left titlesize"> 23. OTHER RELEVANT HISTORY (e.g. diagnostics, allergics, pregnancy with last month of period, etc.) </p>
                     <p class="text-left textsize "> <?PHP echo $relevanttitle?> </p>
-                    <p class="text-left textsize suspect"> <?PHP echo $relevant?> </p>
+                    <p class="text-left textsize suspect"> <?php echo substr($relevant,0,200)?> </p>
                 </td>
             </tr>
         </table>
@@ -241,12 +249,15 @@
         </table>
     </div>
     <!-- Page Two -->
-    <div class="tg m-5 pageBreak" >
-        <span class="pagetwo secondheader">page 2 of 2</span><span class="pagetwo secondheader float-right">Mfr.Control Number:<?php echo $fileName?></span>
-        <hr class="secondheader" size=3 color=#000000 >
-        <h3 class="tg-0pky text-center align-middle title pagetwo" ><b>ADDITIONAL INFORMATION</b></h3>
-        <p class="text-left titlesize pagetwo"> 7 + 13. DESCRIBE REACTION(S) continued </p>
-        <p class="textsize pagetwo"><?php echo substr($describe,1000)?></p>
-    </div>
-
+    <?php if(substr($describe,1000)!=null||substr($relevant,200)!=null){
+        echo "<div class=\"tg m-5 pageBreak\" >";
+        echo " <h3 class=\"tg-0pky text-center align-middle title pagetwo\" ><b>ADDITIONAL INFORMATION</b></h3>";
+        echo "  <p class=\"text-left titlesize pagetwo\"> 7 + 13. DESCRIBE REACTION(S) continued </p>";
+        echo "  <p class=\"textsize pagetwo\">";echo substr($describe,1000); echo "</p>";
+        echo "  <p class=\"text-left titlesize pagetwo\"> 23.OTHER RELEVANT HISTORY continued </p>";
+        echo "  <p class=\"textsize pagetwo\">";echo substr($relevant,200); echo "</p>";
+        echo "</div>";
+        echo "<!--place holder for the fixed-position footer-->";
+        echo "<div class=\"page-footer-space\"></div> ";
+}?>
 </body>

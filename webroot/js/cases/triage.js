@@ -12,7 +12,7 @@ $('[id^=doc_source]').change(function () {
 });
 $(document).ready(function(){
     $('#docTable').DataTable();
-    $('#reporterField_latestreceiveddate_plugin,#reporterField_initialreceiveddate_plugin').datepicker({dateFormat: 'dd/mm/yy'});
+    $('#reporterField_latestreceiveddate_plugin,#reporterField_initialreceiveddate_plugin').datepicker({dateFormat: 'dd/mm/yy',maxDate: new Date});
     $(function(){
         // function fileUrlSwitcher () {
         //     $('[id^=doc_source]').each(function(s,v){
