@@ -15,7 +15,7 @@
     </div>
     <!--place holder for the fixed-position header-->
     <div class="page-header-space"></div>
-    <div class="pageOne">
+    <div  class="pageOne">
         <!-- TITLE -->
         <table class="tg mx-auto" style="table-layout: fixed;  width: 95%; height:120px;">
             <colgroup>
@@ -190,7 +190,7 @@
                 <td class="tg-0lax">
                     <p class="text-left titlesize"> 23. OTHER RELEVANT HISTORY (e.g. diagnostics, allergics, pregnancy with last month of period, etc.) </p>
                     <p class="text-left textsize "> <?PHP echo $relevanttitle?> </p>
-                    <p class="text-left textsize suspect"><?php echo substr($relevant,0,200)?> </p>
+                    <p class="text-left textsize suspect"> <?php echo substr($relevant,0,200)?> </p>
                 </td>
             </tr>
         </table>

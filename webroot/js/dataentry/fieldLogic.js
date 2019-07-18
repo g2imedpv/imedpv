@@ -177,6 +177,8 @@ $(document).ready(function(){
         grayout("#specified-date-section-1-date-10,#specified-date-section-1-date-12,#specified-date-section-1-date-225");
         // For Additional documents (A.1.8.1) select and add document
         selectShowORhide ("#section-1-field-355, #section-1-field-14","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
+        // For Additional documents  (C.1.6.1) select and add document
+        selectShowORhide ("#section-1-field-1000, #section-1-field-1064","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
         //add upload files button
         var uploadDocButton="<button type=\"button\" class=\"btn btn-primary float-left ml-3 mt-3\" data-toggle=\"modal\" data-target=\".uploadDoc\"><i class=\"fas fa-cloud-upload-alt\"></i>"+i18n.gettext("Upload Documents")+"</button>";    
         $("#section-1-field_label-355").append(uploadDocButton);

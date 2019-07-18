@@ -523,7 +523,7 @@ class SdXmlStructuresController extends AppController
         $xml->setIndentString("\t");
         $xml->setIndent(true);
         $xml->startDocument('1.0', 'UTF-8');//FDA supports only the ISO-8859-1 character set for encoding the submission.
-        if($this->XMLvalue($caseId,1140,1)==1){
+        if($this->XMLvalue($caseId,1140,1)==1){//nullification
             $xml->startElement("MCCI_IN200100UV01");
             $xml->writeAttribute('ITSVersion','XML_1.0');
             $xml->writeAttribute('xsi:schemaLocation','urn:hl7-org:v3 MCCI_IN200100UV01.xsd');
@@ -1851,7 +1851,7 @@ class SdXmlStructuresController extends AppController
                 $xml->endElement();//sender
             $xml->endElement();//MCCI_IN200100UV01
         }
-        else if($this->XMLvalue($caseId,1062,1)==1){
+        else if($this->XMLvalue($caseId,1062,1)==1){//initial
             $xml->startElement("MCCI_IN200100UV01");
             $xml->writeAttribute('ITSVersion','XML_1.0');
             $xml->writeAttribute('xsi:schemaLocation','urn:hl7-org:v3 MCCI_IN200100UV01.xsd');
@@ -2797,7 +2797,7 @@ class SdXmlStructuresController extends AppController
                 $xml->endElement();//sender
             $xml->endElement();//MCCI_IN200100UV01
         }
-        else if($this->XMLvalue($caseId,1062,1)==2){
+        else if($this->XMLvalue($caseId,1062,1)==2){//follow-up
             $xml->startElement("MCCI_IN200100UV01");
             $xml->writeAttribute('ITSVersion','XML_1.0');
             $xml->writeAttribute('xsi:schemaLocation','urn:hl7-org:v3 MCCI_IN200100UV01.xsd');
@@ -3857,7 +3857,7 @@ class SdXmlStructuresController extends AppController
                 $xml->endElement();//sender
             $xml->endElement();//MCCI_IN200100UV01
         }
-        else if(substr($this->XMLvalue($caseId,416,1),1,1)==1){
+        else if(substr($this->XMLvalue($caseId,416,1),1,1)==1){//clinical trail
             $xml->startElement("MCCI_IN200100UV01");
             $xml->writeAttribute('ITSVersion','XML_1.0');
             $xml->writeAttribute('xsi:schemaLocation','urn:hl7-org:v3 MCCI_IN200100UV01.xsd');
@@ -5170,7 +5170,7 @@ class SdXmlStructuresController extends AppController
                 $xml->endElement();//sender
             $xml->endElement();//MCCI_IN200100UV01
         }
-        else {//if(substr($this->XMLvalue($caseId,416,1),2,1)==1)
+        else {//if(substr($this->XMLvalue($caseId,416,1),2,1)==1)study
             $xml->startElement("MCCI_IN200100UV01");
             $xml->writeAttribute('ITSVersion','XML_1.0');
             $xml->writeAttribute('xsi:schemaLocation','urn:hl7-org:v3 multicacheschemas/MCCI_IN200100UV01.xsd');
