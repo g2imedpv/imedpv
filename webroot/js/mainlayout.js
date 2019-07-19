@@ -196,8 +196,9 @@ function onQueryClicked(preferrenceId = null){
                 // text += "<td></td>";
                 text += "<td class=\"align-middle\" id=\"version-"+caseDetail.caseNo+"\">"+ caseDetail.versions + "</td>";
                 text += "<td id=\"activity-"+caseDetail.caseNo+"\" class=\"align-middle\">";
-                if(caseDetail.sd_workflow_activity_id!='9999') text += i18n.gettext(caseDetail.wa.activity_name+"");
-                else text += i18n.gettext("Finished Data Assessment")
+                if(caseDetail.status == '1') text += i18n.gettext(caseDetail.wa.activity_name+"");
+                else if(caseDetail.status == '2')text += i18n.gettext("Distributed");
+                else if(caseDetail.status == '3') text += i18n.gettext("Closed");
                 text += "</td>";
                 text += "<td class=\"align-middle\">"+caseDetail.country+"</td>";
                 text += "<td class=\"align-middle\">" + caseDetail.pd.product_name + "</td>";
@@ -224,7 +225,6 @@ function onQueryClicked(preferrenceId = null){
                 text +="</td>";
                 text += "<td class=\"align-middle\">";
                 if(caseDetail.status==0) text+=i18n.gettext("Inactive");
-                
                 else if(caseDetail.status==1) text+=i18n.gettext("Active");
                 else if(caseDetail.status==2) text+=i18n.gettext("Distributed");
                 else text+=i18n.gettext("closed");
@@ -234,7 +234,7 @@ function onQueryClicked(preferrenceId = null){
                     if(caseDetail.wa.activity_name=="Triage")text += "<a href=\"/sd-cases/triage/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">"+i18n.gettext("Continue Triage")+"</div></a>";
                     else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">"+i18n.gettext("Enter")+"</div></a>";
                 else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-info m-1\">"+i18n.gettext("Check Detail")+"</div></a>";
-                if((caseDetail.sd_workflow_activity_id=='9999')&&(previous_case!=caseDetail.caseNo))
+                if((caseDetail.status=='2')&&(previous_case!=caseDetail.caseNo))
                     text += "<button class=\"btn btn-warning m-1\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"versionUp(\'"+caseDetail.caseNo+"\')\">"+i18n.gettext("Version Up")+"</button>";
                 text +="</td>";
                 text += "</tr>";

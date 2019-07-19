@@ -609,7 +609,7 @@ function confirmEndTriage(){
         data:request,
         success:function(response){
             console.log(response);
-            window.location.href = "/sd-cases/caselist";
+            // window.location.href = "/sd-cases/caselist";
         },
         error:function(response){
             console.log(response.responseText);
