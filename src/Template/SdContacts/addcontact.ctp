@@ -7,7 +7,6 @@ use Cake\ORM\TableRegistry;
 ?>
 <title><?php echo __("Add Contact");?></title>
 <head>
-<?= $this->Html->script('dataentry/fieldLogic.js') ?>
 <head>
 <body>
     <div class="mx-auto my-3 formContainer text-center">
@@ -224,6 +223,7 @@ use Cake\ORM\TableRegistry;
                     <th scope="row"><?php echo __("State/Province");?></th>
                     <th scope="row"><?php echo __("Country");?></th>
                     <th scope="row"><?php echo __("Website");?></th>
+                    <th scope="row"><?php echo __("Action");?></th>
                 </tr>
             </thead>
             <tbody>
@@ -244,6 +244,7 @@ use Cake\ORM\TableRegistry;
                         echo"<td>".$contacters->state_province."</td>";
                         echo"<td>".$contacters->country."</td>";
                         echo"<td>".$contacters->website."</td>";
+                        echo"<td><a class=\"btn btn-outline-info btn-sm\"  role=\"button\" href=\"/sd-contacts/edit/$contacters->id\"><i class=\"fas fa-edit\"></i></a></td>";
                         echo"</tr>";
                     }
                 ?>
