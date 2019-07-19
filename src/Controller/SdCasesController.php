@@ -1058,7 +1058,6 @@ class SdCasesController extends AppController
                 date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']].' days'));
                 $activityDueDateEntity['field_value'] = $date->format('dmY');
             }
-            debug($activityDueDateEntity);
             if(!$sdFieldValuesTable->save($activityDueDateEntity)){
                 echo "error in saving date entity";
                 debug($activityDueDateEntity);
