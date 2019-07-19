@@ -242,41 +242,57 @@ class SdUsersController extends AppController
             die();
         }
     }    
-    public function searchNextAvailable($caseNo, $versionNo=1){
+    public function searchNextAvailable($caseNo, $versionNo=1, $caseDistributionId = null){
         if($this->request->is('POST')){
+            if($caseDistributionId == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
+            else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$caseDistributionId."'";
             $this->autoRender = false;
-            $searchKey = $this->request->getData();
+            $LinksTable = TableRegistry::get('SdAssessmentDistributionLinks');
+            $caseDistributionTable = TableRegistry::get('SdCaseDistributions');
             $case = TableRegistry::get('SdCases')->find()->where(['caseNo'=>$caseNo,'version_no'=>$versionNo])->first();
-            if($case['sd_workflow_activity_id'] == '9999'){
-                //already in distribution
-                //search distribution table
-                $distributionCase = TableRegistry::get('SdCaseDistributions');
+            if($caseDistributionId == null) {
+                $currentActivity = TableRegistry::get('SdWorkflowActivities')->get($case['sd_workflow_activity_id']);
+                $newtOrder = $currentActivity['order_no']+1;
+                $nextActivity = TableRegistry::get('SdWorkflowActivities')->find()
+                            ->select(['SdWorkflowActivities.id','SdWorkflowActivities.activity_name','pw.id','SdWorkflowActivities.order_no'])
+                            ->join([
+                                'pw'=>[
+                                    'table'=>'sd_product_workflows',
+                                    'type'=>'INNER',
+                                    'conditions'=>['SdWorkflowActivities.sd_workflow_id = pw.sd_workflow_id','pw.id ='.$case['sd_product_workflow_id']]
+                                ]
+                            ])
+                            ->where(['SdWorkflowActivities.order_no'=>$newtOrder])->toArray();
+                            
+            }else{
+                $caseDistribution = $caseDistributionTable->get($caseDistributionId);
+                $links = $LinksTable->get($caseDistribution['sd_assessment_distribution_link_id']);
+                $currentActivity = TableRegistry::get('SdWorkflowActivities')->get($caseDistribution['sd_workflow_activity_id']);
+                $nextActivity = TableRegistry::get('SdWorkflowActivities')->find()
+                            ->select(['SdWorkflowActivities.id','SdWorkflowActivities.activity_name','SdWorkflowActivities.order_no'])
+                            ->join([
+                                'links'=>[
+                                    'table'=>'sd_assessment_distribution_links',
+                                    'type'=>'INNER',
+                                    'conditions'=>['links.id'=>$links['id'], 'links.distribution = SdWorkflowActivities.sd_workflow_id']
+                                ]
+                            ])
+                            ->where(['SdWorkflowActivities.order_no'=>($currentActivity['order_no']+1)])->toArray();
+                            // debug($nextActivity);debug($currentActivity);
             }
-            $currentActivity = TableRegistry::get('SdWorkflowActivities')->get($case['sd_workflow_activity_id']);
-            $newtOrder = $currentActivity['order_no']+1;
-            $nextActivity = TableRegistry::get('SdWorkflowActivities')->find()
-                        ->select(['SdWorkflowActivities.id','SdWorkflowActivities.activity_name','pw.id','SdWorkflowActivities.order_no'])
-                        ->join([
-                            'pw'=>[
-                                'table'=>'sd_product_workflows',
-                                'type'=>'INNER',
-                                'conditions'=>['SdWorkflowActivities.sd_workflow_id = pw.sd_workflow_id','pw.id ='.$case['sd_product_workflow_id']]
-                            ]
-                        ])
-                        ->where(['SdWorkflowActivities.order_no'=>$newtOrder])->toArray();
             if(count($nextActivity)==0){
                 //TODO
                 $activity = [];
                 $productWorkflow = TableRegistry::get('SdProductWorkflows')->get(['id'=>$case['sd_product_workflow_id']]);
                 $workflow = TableRegistry::get('SdWorkflows')->get($productWorkflow['sd_workflow_id']);
-                if($workflow['classification'] == 1)
+                if($workflow['classification'] == 1) //end of distribution
                     $parceObj['actvity'] = "end";
                 else{
                     $links_activities = TableRegistry::get("SdWorkflowActivities")->find()
-                                    ->select(['SdWorkflowActivities.id','SdWorkflowActivities.order_no','SdWorkflowActivities.activity_name','links.distribution'])
+                                    ->select(['SdWorkflowActivities.id','SdWorkflowActivities.order_no','SdWorkflowActivities.activity_name','links.distribution','links.id'])
                                     ->join([
                                         'links'=>[
-                                            'table'=>'sd_accessment_distribution_links',
+                                            'table'=>'sd_assessment_distribution_links',
                                             'type'=>'INNER',
                                             'conditions'=>['SdWorkflowActivities.sd_workflow_id = links.distribution',
                                                         'links.sd_product_workflow_id'=>$case['sd_product_workflow_id']]
@@ -301,9 +317,8 @@ class SdUsersController extends AppController
                                     ])
                                     ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$activity_detail['id']])
                                     ->order(['close_time'=>'DESC'])->toArray();       
-                        $activity['previousUserOnNextActivity'] = $previousUserOnNextActivity;
-                        $activity['actvity'] = $activity_detail;
-                        // debug($nextActivity);
+                        $activity[$key]['previousUserOnNextActivity'] = $previousUserOnNextActivity;
+                        $activity[$key]['activity'] = $activity_detail;
                         $users = $this->SdUsers->find()
                         ->select(['SdUsers.id','SdUsers.firstname','SdUsers.lastname'])
                         ->contain(['SdCases'=>function($q){
@@ -314,13 +329,13 @@ class SdUsersController extends AppController
                                 'table'=>'sd_user_assignments',
                                 'type'=>'INNER',
                                 'conditions'=>['ua.sd_product_workflow_id ='.$case['sd_product_workflow_id'],
-                                                'ua.sd_workflow_activity_id = '.$nextActivity['0']['id'],'ua.sd_user_id = SdUsers.id']
+                                                'ua.sd_workflow_activity_id = '.$activity_detail['id'],'ua.sd_user_id = SdUsers.id']
                             ]
                         ])->toArray();
-                        $activity['users'] = $users;
-                        $activity['caseValidate'] = $this->request->getSession()->read('caseValidate.'.$case['id']);
+                        $activity[$key]['users'] = $users;
                     }
-                    debug($links_activities->toArray());
+                    $activity['caseValidate'] = $this->request->getSession()->read('caseValidate.'.$case['id']);
+                    $parceObj = $activity;
                 }
             }else{
                 $activity = [];
@@ -342,7 +357,6 @@ class SdUsersController extends AppController
                             ->order(['close_time'=>'DESC'])->toArray();            
                 $activity['previousUserOnNextActivity'] = $previousUserOnNextActivity;
                 $activity['actvity'] = $nextActivity['0'];
-                // debug($nextActivity);
                 $users = $this->SdUsers->find()
                 ->select(['SdUsers.id','SdUsers.firstname','SdUsers.lastname'])
                 ->contain(['SdCases'=>function($q){
@@ -356,6 +370,7 @@ class SdUsersController extends AppController
                                         'ua.sd_workflow_activity_id = '.$nextActivity['0']['id'],'ua.sd_user_id = SdUsers.id']
                     ]
                 ])->toArray();
+                // debug($nextActivity['0']['id']);
                 $activity['users'] = $users;
                 $activity['caseValidate'] = $this->request->getSession()->read('caseValidate.'.$case['id']);
                 $parceObj['one'] = $activity;

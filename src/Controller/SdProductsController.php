@@ -177,17 +177,19 @@ class SdProductsController extends AppController
     {
         $this->viewBuilder()->setLayout('main_layout');
         // $this->set('sdSponsors', $sponsors);
-        $accessment_workflow_structure = $this->loadWorkflowsStructure(0);
-        $this->set('accessment_workflow_structure', $accessment_workflow_structure);
+        $assessment_workflow_structure = $this->loadWorkflowsStructure(0);
+        $this->set('assessment_workflow_structure', $assessment_workflow_structure);
         $distribution_workflow_structure = $this->loadWorkflowsStructure(1);
         $this->set('distribution_workflow_structure', $distribution_workflow_structure);
         //debug($sponsors);
         //debug($product_types);
-        $saved_accessment_workflow = [];
+        $saved_assessment_workflow = [];
         
         if ($this->request->is('post')) {
             debug($this->request->getData());
             die();
+
+            //add product detail 
             $sdProduct = $this->SdProducts->newEntity();
             $sdProduct = $this->SdProducts->patchEntity($sdProduct, $this->request->getData()['product']);
             $sdProduct['sd_company_id'] = $this->request->getSession()->read('Auth.User.sd_company_id');
@@ -198,18 +200,21 @@ class SdProductsController extends AppController
                 return;
             }
             // debug($sdProduct);
-            //accessment workflow saving
+
+
+
+            //assessment workflow saving
             $workflows_table=TableRegistry::get("sd_workflows");
-            foreach($this->request->getData()['accessment_workflow'] as $workflow_k => $workflow_detail){
+            foreach($this->request->getData()['assessment_workflow'] as $workflow_k => $workflow_detail){
                 if(!empty($workflow_detail['id'])) continue;
 
             $sdWorkflowEntity = $workflows_table->newEntity();
                 $patchedsdWorkflowEntity = $workflows_table->patchEntity($sdWorkflowEntity,$workflow_detail);
                 $patchedsdWorkflowEntity['status'] = 1;
-                $saved_accessment_workflow[$workflow_k] = $workflows_table->save($patchedsdWorkflowEntity);
-                if (!($saved_accessment_workflow[$workflow_k])) {
+                $saved_assessment_workflow[$workflow_k] = $workflows_table->save($patchedsdWorkflowEntity);
+                if (!($saved_assessment_workflow[$workflow_k])) {
                     debug($patchedsdWorkflowEntity);
-                    $this->Flash->error(__('error in accessment workflow'));
+                    $this->Flash->error(__('error in assessment workflow'));
                     return;
                 }
             }
@@ -230,24 +235,24 @@ class SdProductsController extends AppController
                 }
             }
 
-            //accessment activity saving
+            //assessment activity saving
             $workflow_activities_table=TableRegistry::get("sd_workflow_activities");
             $permission_table = TableRegistry::get("sd_activity_section_permissions");
-            if(!empty($this->request->getData()['accessment_workflow_activity'])){
-                foreach($this->request->getData()['accessment_workflow_activity'] as $workflow_activity_k => $workflow_activities){
+            if(!empty($this->request->getData()['assessment_workflow_activity'])){
+                foreach($this->request->getData()['assessment_workflow_activity'] as $workflow_activity_k => $workflow_activities){
                     foreach($workflow_activities as $k => $workflow_activity_detail){
-                        $workflow_activity_detail['sd_workflow_id']=$saved_accessment_workflow[$workflow_activity_k]['id'];
+                        $workflow_activity_detail['sd_workflow_id']=$saved_assessment_workflow[$workflow_activity_k]['id'];
                         $sdWorkflowActivityEntity = $workflow_activities_table->newEntity();
                         $patchedsdWorkflowActivityEntity = $workflow_activities_table->patchEntity($sdWorkflowActivityEntity,$workflow_activity_detail);
                         // debug($patchedsdWorkflowActivityEntity);
                         $saved_activity = $workflow_activities_table->save($patchedsdWorkflowActivityEntity);
                         if (!$saved_activity) {
                             debug($patchedsdWorkflowActivityEntity);
-                            $this->Flash->error(__('error in accessment activity'));
+                            $this->Flash->error(__('error in assessment activity'));
                             return;
                         }else{
                             
-                            foreach($this->request->getData()['accessment_permission'][$workflow_activity_k][$k+1] as $section_id => $action){
+                            foreach($this->request->getData()['assessment_permission'][$workflow_activity_k][$k+1] as $section_id => $action){
                                 $dataSet = [
                                     'sd_workflow_activity_id' => $saved_activity['id'],
                                     'action' => $action['action'],
@@ -258,7 +263,7 @@ class SdProductsController extends AppController
                                 $saved_permission = $permission_table->save($patchedpermissionEntity);
                                 if (!$saved_permission) {
                                     debug($patchedpermissionEntity);
-                                    $this->Flash->error(__('error in accessment permissions'));
+                                    $this->Flash->error(__('error in assessment permissions'));
                                     return;
                                 }
                             }
@@ -301,21 +306,21 @@ class SdProductsController extends AppController
                 }
             }
 
-            //accessment product workflow saving
+            //assessment product workflow saving
             $product_workflows_table = TableRegistry::get("sd_product_workflows");
-            foreach($this->request->getData()['accessment_product_workflow'] as $product_workflow_k => $product_workflow_detail)
+            foreach($this->request->getData()['assessment_product_workflow'] as $product_workflow_k => $product_workflow_detail)
             {
                 $product_workflow_detail['sd_product_id'] = $saved_product['id'];
-                if(!empty($this->request->getData()['accessment_workflow'][$product_workflow_k]['id']))
-                $product_workflow_detail['sd_workflow_id'] = $this->request->getData()['accessment_workflow'][$product_workflow_k]['id'];
+                if(!empty($this->request->getData()['assessment_workflow'][$product_workflow_k]['id']))
+                $product_workflow_detail['sd_workflow_id'] = $this->request->getData()['assessment_workflow'][$product_workflow_k]['id'];
                 else{
-                    $product_workflow_detail['sd_workflow_id'] = $saved_accessment_workflow[$product_workflow_k]['id'];
+                    $product_workflow_detail['sd_workflow_id'] = $saved_assessment_workflow[$product_workflow_k]['id'];
                 };
                 $sdProductWorkflowEntity = $product_workflows_table->newEntity();
                 $patchedSdProductWorkflowEntity = $product_workflows_table->patchEntity($sdProductWorkflowEntity,$product_workflow_detail);
-                $savedAccessmentProductWorkflow[$product_workflow_k] = $product_workflows_table->save($patchedSdProductWorkflowEntity);
-                if (!($savedAccessmentProductWorkflow[$product_workflow_k])) {
-                    debug($savedAccessmentProductWorkflow[$product_workflow_k]);
+                $savedAssessmentProductWorkflow[$product_workflow_k] = $product_workflows_table->save($patchedSdProductWorkflowEntity);
+                if (!($savedAssessmentProductWorkflow[$product_workflow_k])) {
+                    debug($savedAssessmentProductWorkflow[$product_workflow_k]);
                     $this->Flash->error(__('error in product_workflow'));
                     return;
                 }
@@ -342,17 +347,17 @@ class SdProductsController extends AppController
                 }
                 // debug($patchedSdProductWorkflowEntity);
             }
-            //accessment user_assignment saving
+            //assessment user_assignment saving
             $user_assignment_table = TableRegistry::get("sd_user_assignments");
-            foreach($this->request->getData()['accessment_user_assignment'] as $user_assignment_k => $workflow_users)
+            foreach($this->request->getData()['assessment_user_assignment'] as $user_assignment_k => $workflow_users)
             {
                 foreach($workflow_users as $user_k => $user_detail)
                 {
-                    $user_detail['sd_product_workflow_id'] = $savedAccessmentProductWorkflow[$user_assignment_k]['id'];
-                    if(!empty($this->request->getData()['accessment_workflow'][$user_assignment_k]['id']))
-                    $user_detail['sd_workflow_id'] = $this->request->getData()['accessment_workflow'][$user_assignment_k]['id'];
+                    $user_detail['sd_product_workflow_id'] = $savedAssessmentProductWorkflow[$user_assignment_k]['id'];
+                    if(!empty($this->request->getData()['assessment_workflow'][$user_assignment_k]['id']))
+                    $user_detail['sd_workflow_id'] = $this->request->getData()['assessment_workflow'][$user_assignment_k]['id'];
                     else{
-                        $user_detail['sd_workflow_id'] = $saved_accessment_workflow[$user_assignment_k]['id'];
+                        $user_detail['sd_workflow_id'] = $saved_assessment_workflow[$user_assignment_k]['id'];
                     };
                     $sd_user_assignmentsEntity = $user_assignment_table->newEntity();
                     $patchedsd_user_assignmentsEntity = $user_assignment_table->patchEntity($sd_user_assignmentsEntity,$user_detail);
@@ -387,16 +392,16 @@ class SdProductsController extends AppController
                     // debug($patchedsd_user_assignmentsEntity);                
                 }
             }
-            //link accessment and distribution
-            $links_table = TableRegistry::get("sd_accessment_distribution_links");
-            foreach($this->request->getData()['accessment_distribution'] as $accessment_key => $accessment_links)
+            //link assessment and distribution
+            $links_table = TableRegistry::get("sd_assessment_distribution_links");
+            foreach($this->request->getData()['assessment_distribution'] as $assessment_key => $assessment_links)
             {
-                foreach($accessment_links as $distribution_key => $status){
+                foreach($assessment_links as $distribution_key => $status){
                     $link_entity = $links_table->newEntity();
-                    if(!empty($this->request->getData()['distribution_workflow'][$accessment_key]['id']))
-                        $link_entity['distribution'] = $this->request->getData()['distribution_workflow'][$accessment_key]['id'];
+                    if(!empty($this->request->getData()['distribution_workflow'][$assessment_key]['id']))
+                        $link_entity['distribution'] = $this->request->getData()['distribution_workflow'][$assessment_key]['id'];
                     else $link_entity['distribution'] = $saved_distribution_workflow[$distribution_key]['id'];
-                    $link_entity['sd_product_workflow_id'] = $savedAccessmentProductWorkflow[$accessment_key]['id'];
+                    $link_entity['sd_product_workflow_id'] = $savedAssessmentProductWorkflow[$assessment_key]['id'];
                     if (!($links_table->save($link_entity))) {
                         debug($link_entity);
                         $this->Flash->error(__('error in links'));

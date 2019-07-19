@@ -384,6 +384,10 @@ class SdSectionsController extends AppController
             $this->autoRender = false;
             $requstData = $this->request->getData();
             $case = TableRegistry::get('SdCases')->get($requstData['caseId']);
+            $userInfo = TableRegistry::get('SdUsers')->get($requstData['userId']);
+            if($userInfo['sd_rold_id'] > 2)
+                $useId = 'ua.sd_user_id ='.$requstData['userId'];
+            else $userId = "";
             $sections = $this->SdSections->find()
             ->select(['tab.id','tab.tab_name','section_name','id','section_level','field.id','field.field_label','asp.sd_workflow_activity_id'])
             ->join([
@@ -410,7 +414,7 @@ class SdSectionsController extends AppController
                 'ua'=>[
                     'table'=>'sd_user_assignments',
                     'type'=>'INNER',
-                    'conditions'=>['ua.sd_workflow_activity_id = asp.sd_workflow_activity_id','ua.sd_product_workflow_id ='.$case['sd_product_workflow_id'],'ua.sd_user_id ='.$requstData['userId']]
+                    'conditions'=>['ua.sd_workflow_activity_id = asp.sd_workflow_activity_id','ua.sd_product_workflow_id ='.$case['sd_product_workflow_id'],$userId]
                 ]
             ])->where([
                 'OR' =>[['field.field_label LIKE \'%'.$requstData['key'].'%\''],['section_name LIKE \'%'.$requstData['key'].'%\''],

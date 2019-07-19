@@ -250,7 +250,7 @@
                         <div>
                             <?php
                             // $meddraCell = $html->cell('Meddra',[$sd_section_structure_detail->sd_field->descriptor, $sd_section_structure_detail->sd_field->id]);
-                            $meddraCell = $this->cell('Meddra',['llt-c:392,llt-n:457,pt-c:394,pt-n:458,ver:150,ver:443','496']);
+                            $meddraCell = $this->cell('Meddra',['llt-c:392,llt-n:457,pt-c:394,pt-n:458,ver:150,ver:443,ver:150','496']);
                             echo $meddraCell;
                             echo "<input type=\"hidden\" id=\"id_eventField_meddraresult_id\" name=\"event[1][496][id]\" value=\"";
                             if($event_set!=null)
@@ -274,8 +274,7 @@
                             echo "\">";?>
                         <input type="text" class="form-control" name="event[1][392][value]" id="eventField_meddrashow-392" value="<?php
                         if($event_set!=null)
-                            echo array_key_exists('392',$event_set[1])?$event_set[1]['392']['field_value']:"";
-                        ?>">
+                            echo array_key_exists('392',$event_set[1])?$event_set[1]['392']['field_value']:"";?>">
 
                     </div>
                     <div class="form-group col-md-3">
@@ -285,8 +284,7 @@
                         echo array_key_exists('457',$event_set[1])?$event_set[1]['457']['id']:"";
                         echo "\">";?>
                         <input type="text" class="form-control" name="event[1][457][value]" id="eventField_meddrashow-457" value="<?php
-                        if($event_set!=null)echo array_key_exists('457',$event_set[1])?$event_set[1]['457']['field_value']:"";?>
-                        ">
+                        if($event_set!=null)echo array_key_exists('457',$event_set[1])?$event_set[1]['457']['field_value']:"";?>">
 
                     </div>
                     <div class="form-group col-md-3">
@@ -296,9 +294,7 @@
                         echo array_key_exists('394',$event_set[1])?$event_set[1]['394']['id']:"";
                         echo "\">";?>
                         <input type="text" class="form-control" name="event[1][394][value]" id="eventField_meddrashow-394" value="<?php
-                        if($event_set!=null)echo array_key_exists('394',$event_set[1])?$event_set[1]['394']['field_value']:"";?>
-                        ">
-
+                        if($event_set!=null)echo array_key_exists('394',$event_set[1])?$event_set[1]['394']['field_value']:"";?>">
                     </div>
                     <div class="form-group col-md-3">
                         <label><?php echo __("PT Name")?></label>
@@ -307,8 +303,23 @@
                             echo array_key_exists('458',$event_set[1])?$event_set[1]['458']['id']:"";
                         echo "\">";?>
                         <input type="text" class="form-control" name="event[1][458][value]" id="eventField_meddrashow-458" value="<?php
-                        if($event_set!=null) echo array_key_exists('458',$event_set[1])?$event_set[1]['458']['field_value']:"";?>
-                        ">
+                        if($event_set!=null) echo array_key_exists('458',$event_set[1])?$event_set[1]['458']['field_value']:"";?>">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <?php echo "<input type=\"hidden\" id=\"id_eventField_meddrashow_id\" name=\"event[1][443][id]\" value=\"";
+                        if($event_set!=null)
+                            echo array_key_exists('443',$event_set[1])?$event_set[1]['443']['id']:"";
+                        echo "\">";?>
+                        <input type="hidden" name="event[1][443][value]" id="eventField_meddrashow-443" value="<?php
+                        if($event_set!=null) echo array_key_exists('443',$event_set[1])?$event_set[1]['443']['field_value']:"";?>">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <?php echo "<input type=\"hidden\" id=\"id_eventField_meddrashow_id\" name=\"event[1][150][id]\" value=\"";
+                        if($event_set!=null)
+                            echo array_key_exists('150',$event_set[1])?$event_set[1]['150']['id']:"";
+                        echo "\">";?>
+                        <input type="hidden" name="event[1][150][value]" id="eventField_meddrashow-150" value="<?php
+                        if($event_set!=null) echo array_key_exists('150',$event_set[1])?$event_set[1]['150']['field_value']:"";?>">
                     </div>
                 </div>
             </div>

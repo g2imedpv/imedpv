@@ -117,9 +117,9 @@ class SdCompaniesFixture extends TestFixture
                 'is_medra' => 1,
                 'is_whodra' => 1,
                 'create_by' => 1,
-                'created_dt' => '2019-07-09 21:02:40',
+                'created_dt' => '2019-07-18 22:54:54',
                 'modify_by' => 1,
-                'modified_dt' => '2019-07-09 21:02:40',
+                'modified_dt' => '2019-07-18 22:54:54',
                 'company_abbreviation' => 'Lor'
             ],
         ];

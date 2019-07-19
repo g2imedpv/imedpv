@@ -184,7 +184,7 @@ function searchWhoDra(){
         text +="</tbody>";
         text +="</table>";
         $("#whodd_result").html(text);
-        $('#whodd_table').DataTable();
+        // $('#whodd_table').DataTable();
         },
         error:function(response){
                 console.log(response.responseText);

@@ -197,7 +197,7 @@ function onQueryClicked(preferrenceId = null){
                 text += "<td class=\"align-middle\" id=\"version-"+caseDetail.caseNo+"\">"+ caseDetail.versions + "</td>";
                 text += "<td id=\"activity-"+caseDetail.caseNo+"\" class=\"align-middle\">";
                 if(caseDetail.sd_workflow_activity_id!='9999') text += i18n.gettext(caseDetail.wa.activity_name+"");
-                else text += i18n.gettext("Finished Data Accessment")
+                else text += i18n.gettext("Finished Data Assessment")
                 text += "</td>";
                 text += "<td class=\"align-middle\">"+caseDetail.country+"</td>";
                 text += "<td class=\"align-middle\">" + caseDetail.pd.product_name + "</td>";
@@ -223,8 +223,11 @@ function onQueryClicked(preferrenceId = null){
                 }
                 text +="</td>";
                 text += "<td class=\"align-middle\">";
-                if(caseDetail.status==1) text+=i18n.gettext("Active");
-                else text+=i18n.gettext("Inactive");
+                if(caseDetail.status==0) text+=i18n.gettext("Inactive");
+                
+                else if(caseDetail.status==1) text+=i18n.gettext("Active");
+                else if(caseDetail.status==2) text+=i18n.gettext("Distributed");
+                else text+=i18n.gettext("closed");
                 text+="</td>";
                 text += "<td class=\"align-middle\">";
                 if(caseDetail.sd_user_id == userId)
