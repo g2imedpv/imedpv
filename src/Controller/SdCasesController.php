@@ -1036,7 +1036,8 @@ class SdCasesController extends AppController
             $latestReceiveDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>12, 'sd_case_id'=>$case['id']])->first();
             $date = date_create_from_format("dmY", $latestReceiveDateEntity['field_value']);
             $latestReceiveDateEntity['field_value'] = $date->format('dmY');
-            if($latestReceiveDateEntity == ""){
+            $activityDueDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>414, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
+            if($activityDueDateEntity == null){
                 $previsouActivity = TableRegistry::get('SdWorkflowActivities')->find()->where(['sd_workflow_id'=>$sdWorkflowActivity['sd_workflow_id'], 'order_no'=>1])->first();
                 date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']]+(int)$previsouActivity['due_day'][$casetype['field_value']].' days'));
                 $activityDueDateEntity = $sdFieldValuesTable->newEntity();            
@@ -1055,7 +1056,6 @@ class SdCasesController extends AppController
                 $activityDueDateEntity = $sdFieldValuesTable->patchEntity($activityDueDateEntity, $dataSet);
             }else{
                 date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']].' days'));
-                $activityDueDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>414, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
                 $activityDueDateEntity['field_value'] = $date->format('dmY');
             }
             if(!$sdFieldValuesTable->save($activityDueDateEntity)){
