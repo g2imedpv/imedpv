@@ -36,13 +36,13 @@
                 <label class="col-form-label"><?php echo __("Activity Due Date")?>:</label>
                 <div class="col-sm-12 row justify-content-center">
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="datepicker1" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                        <input type="text"  class="form-control" id="datepicker1" placeholder="<?php echo __("dd/mm/yyyy")?>">
                     </div>
                     <div class="col-sm-2 arrow">
                         <i class="far fa-window-minimize"></i>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="datepicker2" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                        <input type="text"  class="form-control" id="datepicker2" placeholder="<?php echo __("dd/mm/yyyy")?>">
                     </div>
                 </div>
             </div>
@@ -50,13 +50,13 @@
                 <label class="col-form-label"><?php echo __("Submission Due Date")?>:</label>
                 <div class="col-sm-12 row justify-content-center">
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="datepicker3" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                        <input type="text"  class="form-control" id="datepicker3" placeholder="<?php echo __("dd/mm/yyyy")?>">
                     </div>
                     <div class="col-sm-2 arrow">
                         <i class="far fa-window-minimize"></i>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="datepicker4" placeholder="<?php echo __("mm/dd/yyyy")?>">
+                        <input type="text"  class="form-control" id="datepicker4" placeholder="<?php echo __("dd/mm/yyyy")?>">
                     </div>
                 </div>
             </div>
