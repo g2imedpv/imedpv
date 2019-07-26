@@ -46,13 +46,13 @@
             <?php foreach ($sdContacts as $sdContact): ?>
             <tr>
                 <td><?= $this->Number->format($sdContact->id) ?></td>
-                <td><?= $this->Number->format($sdContact->contact_type) ?></td>
-                <td><?= $this->Number->format($sdContact->authority) ?></td>
+                <td><?= h($sdContact->contact_type) ?></td>
+                <td><?= h($sdContact->authority) ?></td>
                 <td><?= h($sdContact->data_privacy) ?></td>
-                <td><?= $this->Number->format($sdContact->blinded_report) ?></td>
+                <td><?= h($sdContact->blinded_report) ?></td>
                 <td><?= h($sdContact->contactId) ?></td>
-                <td><?= $this->Number->format($sdContact->preferred_route) ?></td>
-                <td><?= $this->Number->format($sdContact->format_type) ?></td>
+                <td><?= h($sdContact->preferred_route) ?></td>
+                <td><?= h($sdContact->format_type) ?></td>
                 <td><?= h($sdContact->title) ?></td>
                 <td><?= h($sdContact->given_name) ?></td>
                 <td><?= h($sdContact->family_name) ?></td>
@@ -62,7 +62,7 @@
                 <td><?= h($sdContact->city) ?></td>
                 <td><?= h($sdContact->state_province) ?></td>
                 <td><?= h($sdContact->zipcode) ?></td>
-                <td><?= $this->Number->format($sdContact->country) ?></td>
+                <td><?= h($sdContact->country) ?></td>
                 <td><?= h($sdContact->phone) ?></td>
                 <td><?= h($sdContact->phone_extension) ?></td>
                 <td><?= h($sdContact->fax) ?></td>

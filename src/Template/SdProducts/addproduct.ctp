@@ -35,14 +35,14 @@
     <div class="form-row justify-content-center">
         <div class="form-group col-md-6">
             <label><?php echo __("Short Description")?> </label>
-            <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Short Description")?> (B.4.k.2.1)" data-content="<div><?php echo __("The name should be that used by the reporter. It is recognized that a single product may have different proprietary names in different countries, even when produced by a single manufacturer.");?></div>" ><i class="qco fas fa-info-circle"></i></a>
+            <a tabindex="0" role="button" data-toggle="popover" ></a>
             <input type="text" class="form-control" id="short_desc" name="product[short_desc]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
         </div>
     </div>
     <div class="form-row justify-content-center">
         <div class="form-group col-md-6">
             <label><?php echo __("Product Abbreviation")?> </label>
-            <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Proprietary Medicinal Product Name")?> (B.4.k.2.1)" data-content="<div><?php echo __("The name should be that used by the reporter. It is recognized that a single product may have different proprietary names in different countries, even when produced by a single manufacturer.");?></div>" ><i class="qco fas fa-info-circle"></i></a>
+            <a tabindex="0" role="button" data-toggle="popover"></a>
             <input type="text" class="form-control" id="short_desc" name="product[product_abbreviation]" placeholder="<?php echo __("Product Abbreviati");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
         </div>
     </div>
@@ -50,7 +50,7 @@
     <div class="form-row justify-content-center">
         <div class="form-group col-md-6">
             <label><?php echo __("Product Description")?></label>
-            <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Proprietary Medicinal Product Name")?> (B.4.k.2.1)" data-content="<div><?php echo __("The name should be that used by the reporter. It is recognized that a single product may have different proprietary names in different countries, even when produced by a single manufacturer.");?></div>" ><i class="qco fas fa-info-circle"></i></a>
+            <a tabindex="0" role="button" data-toggle="popover"></a>
             <input type="text" class="form-control" id="product_desc" name="product[product_desc]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
         </div>
     </div>

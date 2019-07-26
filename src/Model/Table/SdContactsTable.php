@@ -49,22 +49,25 @@ class SdContactsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('contact_type')
+            ->scalar('contact_type')
+            ->maxLength('contact_type', 40)
             ->requirePresence('contact_type', 'create')
             ->notEmpty('contact_type');
 
         $validator
-            ->integer('authority')
+            ->scalar('authority')
+            ->maxLength('authority', 40)
             ->requirePresence('authority', 'create')
             ->notEmpty('authority');
 
         $validator
             ->boolean('data_privacy')
             ->requirePresence('data_privacy', 'create')
-            ->allowEmpty('data_privacy');
+            ->notEmpty('data_privacy');
 
         $validator
-            ->integer('blinded_report')
+            ->scalar('blinded_report')
+            ->maxLength('blinded_report', 40)
             ->requirePresence('blinded_report', 'create')
             ->notEmpty('blinded_report');
 
@@ -75,12 +78,14 @@ class SdContactsTable extends Table
             ->notEmpty('contactId');
 
         $validator
-            ->integer('preferred_route')
+            ->scalar('preferred_route')
+            ->maxLength('preferred_route', 40)
             ->requirePresence('preferred_route', 'create')
             ->notEmpty('preferred_route');
 
         $validator
-            ->integer('format_type')
+            ->scalar('format_type')
+            ->maxLength('format_type', 40)
             ->requirePresence('format_type', 'create')
             ->notEmpty('format_type');
 
@@ -105,8 +110,8 @@ class SdContactsTable extends Table
         $validator
             ->scalar('middle_name')
             ->maxLength('middle_name', 15)
-            ->requirePresence('middle_name', 'false')
-            ->allowEmpty('middle_name');
+            ->requirePresence('middle_name', 'create')
+            ->notEmpty('middle_name');
 
         $validator
             ->scalar('address')
@@ -117,8 +122,8 @@ class SdContactsTable extends Table
         $validator
             ->scalar('address_extension')
             ->maxLength('address_extension', 100)
-            ->requirePresence('address_extension', 'false')
-            ->allowEmpty('address_extension');
+            ->requirePresence('address_extension', 'create')
+            ->notEmpty('address_extension');
 
         $validator
             ->scalar('city')
@@ -139,7 +144,8 @@ class SdContactsTable extends Table
             ->notEmpty('zipcode');
 
         $validator
-            ->integer('country')
+            ->scalar('country')
+            ->maxLength('country', 30)
             ->requirePresence('country', 'create')
             ->notEmpty('country');
 
@@ -152,8 +158,8 @@ class SdContactsTable extends Table
         $validator
             ->scalar('phone_extension')
             ->maxLength('phone_extension', 10)
-            ->requirePresence('phone_extension', 'false')
-            ->allowEmpty('phone_extension');
+            ->requirePresence('phone_extension', 'create')
+            ->notEmpty('phone_extension');
 
         $validator
             ->scalar('fax')
@@ -164,8 +170,8 @@ class SdContactsTable extends Table
         $validator
             ->scalar('fax_extension')
             ->maxLength('fax_extension', 10)
-            ->requirePresence('fax_extension', 'false')
-            ->allowEmpty('fax_extension');
+            ->requirePresence('fax_extension', 'create')
+            ->notEmpty('fax_extension');
 
         $validator
             ->scalar('email_address')
@@ -176,8 +182,8 @@ class SdContactsTable extends Table
         $validator
             ->scalar('website')
             ->maxLength('website', 100)
-            ->requirePresence('website', 'false')
-            ->allowEmpty('website');
+            ->requirePresence('website', 'create')
+            ->notEmpty('website');
 
         return $validator;
     }

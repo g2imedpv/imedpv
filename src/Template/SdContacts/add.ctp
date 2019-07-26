@@ -14,7 +14,6 @@
     <?= $this->Form->create($sdContact) ?>
     <fieldset>
         <legend><?= __('Add Sd Contact') ?></legend>
-        <div class="form-group col-md-6">
         <?php
             echo $this->Form->control('contact_type');
             echo $this->Form->control('authority');

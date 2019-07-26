@@ -153,7 +153,18 @@ use Cake\ORM\TableRegistry;
                         <div class="form-group col-md-3">
                             <div class="input number required">
                                 <label for="country"><?php echo __("Country");?></label>
-                                <input type="number" name="country" required="required" id="country" class="form-control" >
+                                <select name="country" required="required" id="country" class="form-control">
+                                <option value=""></option>
+                                <?php 
+                                $sdLookups = TableRegistry::get('sd_field_value_look_ups');
+                                $coutry = $sdLookups
+                                         ->find('all')
+                                         ->where(['sd_field_id=178'])
+                                         ->order(['id' => 'DESC']);
+                                foreach($coutry as $coutries){
+                                echo "<option value=\"$coutries->value\">".$coutries->caption."</option>"; }
+                                ?>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -231,18 +242,31 @@ use Cake\ORM\TableRegistry;
                     $query = $sdContacts
                             ->find('all')
                             ->order(['id' => 'DESC']);
+                    $study_type=["","E2B", "CIOMS","MedWatch"];
+                    $comtact_type=["","Pharmaceutical Company","Regulatory Authority","Health professional","Regional Pharmacovigilance Center","WHO Collaborating Center for International Drug Monitoring","Other","CRO","Call Center"];
+                    $comtact_route=["","Email","ESTRI Gateway","Manual"];
+                    $sdLookups = TableRegistry::get('sd_field_value_look_ups');
+                    $country = $sdLookups
+                                ->find()
+                                ->select(['value','caption'])
+                                ->where(['sd_field_id=178'])
+                                ->order(['id' => 'ASC']);
+                    foreach($country as $key=>$countries){
+                        $countryarray[$countries['value']]=$countries['caption'];
+                    }
+                    
                     foreach($query as $contacters){
                         echo "<tr id='contacter$contacters->id' onclick='imedpv/sd-contacts/edit/$contacters->id'>";
                         echo"<td>".$contacters->contactId."</td>";
-                        echo"<td>".$contacters->contact_type."</td>";
-                        echo"<td>".$contacters->preferred_route."</td>";
-                        echo"<td>".$contacters->format_type."</td>";
+                        echo"<td>".$comtact_type[$contacters->contact_type]."</td>";
+                        echo"<td>".$comtact_route[$contacters->preferred_route]."</td>";
+                        echo"<td>".$study_type[$contacters->format_type]."</td>";
                         echo"<td>".$contacters->phone."</td>";
                         echo"<td>".$contacters->email_address."</td>";
                         echo"<td>".$contacters->address."</td>";
                         echo"<td>".$contacters->city."</td>";
                         echo"<td>".$contacters->state_province."</td>";
-                        echo"<td>".$contacters->country."</td>";
+                        echo"<td>".$countryarray[$contacters->country]."</td>";
                         echo"<td>".$contacters->website."</td>";
                         echo"<td><a class=\"btn btn-outline-info btn-sm\"  role=\"button\" href=\"/sd-contacts/edit/$contacters->id\"><i class=\"fas fa-edit\"></i></a></td>";
                         echo"</tr>";
