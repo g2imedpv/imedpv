@@ -38,6 +38,7 @@ function searchProd(){
             text +="<th scope=\"col\">"+i18n.gettext("Status")+"</th>";
             text +="<th scope=\"col\">"+i18n.gettext("Workflows")+" / "+i18n.gettext("Country")+"</th>";
             text +="<th scope=\"col\">"+i18n.gettext("Product Detail")+"</th>";
+            text +="<th scope=\"col\">"+i18n.gettext("Action")+"</th>";
             text +="</tr>";
             text +="</thead>";
             text +="<tbody>";
@@ -57,6 +58,7 @@ function searchProd(){
                 text += "</td>";
                 text += "<td><div class=\"btn btn-sm btn-outline-info\" data-toggle=\"modal\" onclick=\"view_product("+caseDetail.id+")\" data-target=\".product_detail\">"+i18n.gettext("View Detail")+"</div></td>";
                 text +="<div id=\"product_"+caseDetail.id+"\" style=\"display:none\">"+JSON.stringify(caseDetail)+"</div>";
+                text +="<td><a class=\"btn btn-outline-info btn-sm\"  role=\"button\" href=\"/sd-products/edit/"+caseDetail.id+"\"><i class=\"fas fa-edit\"></i></a></td>";
                 text += "</tr>";
             });
             text +="</tbody>";

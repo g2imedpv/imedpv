@@ -4,7 +4,6 @@ use Cake\ORM\TableRegistry;
 ?>
 <title><?php echo __("Search Contact");?></title>
 <head>
-    <?= $this->Html->script('dataentry/fieldLogic.js') ?>
 <head>
 
 <body>
@@ -32,7 +31,7 @@ use Cake\ORM\TableRegistry;
                 <input type="text" class="form-control" id="Contact_Type" name="Contact_Type" placeholder="<?php echo __("Search Contact Type");?>">
             </div>
         </div>
-        <button  class="btn btn-primary w-25"><i class="fas fa-search"></i> <?php echo __("Search");?> </button>
+        <button  class="btn btn-primary w-25" onclick="onQueryClicked()"><i class="fas fa-search"></i> <?php echo __("Search");?> </button>
         <!-- <button id="advsearch" class="btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</button> -->
         <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> <?php echo __("Clear");?> </button>
 
@@ -60,18 +59,30 @@ use Cake\ORM\TableRegistry;
             <tbody>
                 <?php $sdContacts = TableRegistry::get('sd_contacts');
                     $query = $sdContacts->find('all');
+                    $study_type=["","E2B", "CIOMS","MedWatch"];
+                    $comtact_type=["","Pharmaceutical Company","Regulatory Authority","Health professional","Regional Pharmacovigilance Center","WHO Collaborating Center for International Drug Monitoring","Other","CRO","Call Center"];
+                    $comtact_route=["","Email","ESTRI Gateway","Manual"];
+                    $sdLookups = TableRegistry::get('sd_field_value_look_ups');
+                    $country = $sdLookups
+                                ->find()
+                                ->select(['value','caption'])
+                                ->where(['sd_field_id=178'])
+                                ->order(['id' => 'ASC']);
+                    foreach($country as $key=>$countries){
+                        $countryarray[$countries['value']]=$countries['caption'];
+                    }
                     foreach($query as $contacters){
                         echo "<tr id='contacter$contacters->id'>";
                         echo"<td>".$contacters->contactId."</td>";
-                        echo"<td>".$contacters->contact_type."</td>";
-                        echo"<td>".$contacters->preferred_route."</td>";
-                        echo"<td>".$contacters->format_type."</td>";
+                        echo"<td>".$comtact_type[$contacters->contact_type]."</td>";
+                        echo"<td>".$comtact_route[$contacters->preferred_route]."</td>";
+                        echo"<td>".$study_type[$contacters->format_type]."</td>";
                         echo"<td>".$contacters->phone."</td>";
                         echo"<td>".$contacters->email_address."</td>";
                         echo"<td>".$contacters->address."</td>";
                         echo"<td>".$contacters->city."</td>";
                         echo"<td>".$contacters->state_province."</td>";
-                        echo"<td>".$contacters->country."</td>";
+                        echo"<td>".$countryarray[$contacters->country]."</td>";
                         echo"<td>".$contacters->website."</td>";
                         echo"</tr>";
                     }

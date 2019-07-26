@@ -17,8 +17,28 @@
     <h3><?= h($sdContact->title) ?></h3>
     <table class="vertical-table">
         <tr>
+            <th scope="row"><?= __('Contact Type') ?></th>
+            <td><?= h($sdContact->contact_type) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Authority') ?></th>
+            <td><?= h($sdContact->authority) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Blinded Report') ?></th>
+            <td><?= h($sdContact->blinded_report) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('ContactId') ?></th>
             <td><?= h($sdContact->contactId) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Preferred Route') ?></th>
+            <td><?= h($sdContact->preferred_route) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Format Type') ?></th>
+            <td><?= h($sdContact->format_type) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Title') ?></th>
@@ -57,6 +77,10 @@
             <td><?= h($sdContact->zipcode) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Country') ?></th>
+            <td><?= h($sdContact->country) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Phone') ?></th>
             <td><?= h($sdContact->phone) ?></td>
         </tr>
@@ -83,30 +107,6 @@
         <tr>
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($sdContact->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Contact Type') ?></th>
-            <td><?= $this->Number->format($sdContact->contact_type) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Authority') ?></th>
-            <td><?= $this->Number->format($sdContact->authority) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Blinded Report') ?></th>
-            <td><?= $this->Number->format($sdContact->blinded_report) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Preferred Route') ?></th>
-            <td><?= $this->Number->format($sdContact->preferred_route) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Format Type') ?></th>
-            <td><?= $this->Number->format($sdContact->format_type) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Country') ?></th>
-            <td><?= $this->Number->format($sdContact->country) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Data Privacy') ?></th>

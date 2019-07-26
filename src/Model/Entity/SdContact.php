@@ -7,13 +7,13 @@ use Cake\ORM\Entity;
  * SdContact Entity
  *
  * @property int $id
- * @property int $contact_type
- * @property int $authority
+ * @property string $contact_type
+ * @property string $authority
  * @property bool $data_privacy
- * @property int $blinded_report
+ * @property string $blinded_report
  * @property string $contactId
- * @property int $preferred_route
- * @property int $format_type
+ * @property string $preferred_route
+ * @property string $format_type
  * @property string $title
  * @property string $given_name
  * @property string $family_name
@@ -23,7 +23,7 @@ use Cake\ORM\Entity;
  * @property string $city
  * @property string $state_province
  * @property string $zipcode
- * @property int $country
+ * @property string $country
  * @property string $phone
  * @property string $phone_extension
  * @property string $fax
