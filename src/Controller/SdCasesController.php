@@ -248,7 +248,7 @@ class SdCasesController extends AppController
                                             'conditions' => ['wf.id = pdw.sd_workflow_id']
                                         ]
                                     ])->group('SdCases.id');
-                if($user['sd_role_id']>=2) {
+                if($user['sd_role_id']>2) {
                     $searchResult = $searchResult->join([
                         'ua'=>[
                             'table' =>'sd_user_assignments',
@@ -577,6 +577,7 @@ class SdCasesController extends AppController
                 // debug($sdCase);
                 $savedCase=$this->SdCases->save($sdCase);
                 if (!$savedCase) {
+                    debug($sdCase);
                     echo"problem in saving sdCase";
                     return null;
                 }
