@@ -28,7 +28,9 @@ class SdCasesTableTest extends TestCase
         'app.sd_product_workflows',
         'app.sd_workflow_activities',
         'app.sd_users',
-        'app.sd_case_general_infos',
+        'app.sd_case_distributions',
+        'app.sd_case_histories',
+        'app.sd_documents',
         'app.sd_field_values'
     ];
 

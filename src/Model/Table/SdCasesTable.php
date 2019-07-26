@@ -12,10 +12,12 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\SdProductWorkflowsTable|\Cake\ORM\Association\BelongsTo $SdProductWorkflows
  * @property \App\Model\Table\SdWorkflowActivitiesTable|\Cake\ORM\Association\BelongsTo $SdWorkflowActivities
  * @property \App\Model\Table\SdUsersTable|\Cake\ORM\Association\BelongsTo $SdUsers
- * @property |\Cake\ORM\Association\HasMany $SdCaseDistributions
- * @property |\Cake\ORM\Association\HasMany $SdCaseHistories
- * @property |\Cake\ORM\Association\HasMany $SdDocuments
+ * @property \App\Model\Table\SdCaseDistributionsTable|\Cake\ORM\Association\HasMany $SdCaseDistributions
+ * @property \App\Model\Table\SdCaseHistoriesTable|\Cake\ORM\Association\HasMany $SdCaseHistories
+ * @property \App\Model\Table\SdDocumentsTable|\Cake\ORM\Association\HasMany $SdDocuments
  * @property \App\Model\Table\SdFieldValuesTable|\Cake\ORM\Association\HasMany $SdFieldValues
+ * @property |\Cake\ORM\Association\HasMany $SdFieldValues05212019
+ * @property |\Cake\ORM\Association\HasMany $SdFieldValues20190516
  *
  * @method \App\Model\Entity\SdCase get($primaryKey, $options = [])
  * @method \App\Model\Entity\SdCase newEntity($data = null, array $options = [])
@@ -88,7 +90,7 @@ class SdCasesTable extends Table
 
         $validator
             ->scalar('caseNo')
-            ->maxLength('caseNo', 22)
+            ->maxLength('caseNo', 50)
             ->requirePresence('caseNo', 'create')
             ->notEmpty('caseNo');
 
@@ -96,10 +98,6 @@ class SdCasesTable extends Table
             ->integer('status')
             ->requirePresence('status', 'create')
             ->notEmpty('status');
-
-        $validator
-            ->integer('case_type')
-            ->allowEmpty('case_type');
 
         return $validator;
     }

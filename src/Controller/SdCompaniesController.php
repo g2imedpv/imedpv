@@ -38,7 +38,7 @@ class SdCompaniesController extends AppController
     public function view($id = null)
     {
         $sdCompany = $this->SdCompanies->get($id, [
-            'contain' => ['SdUserTypes', 'SdProductAssignments', 'SdUsers']
+            'contain' => ['SdUserTypes', 'SdProductWorkflows', 'SdProducts', 'SdUsers']
         ]);
 
         $this->set('sdCompany', $sdCompany);
@@ -108,39 +108,39 @@ class SdCompaniesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
-    }
+    }    
     /**
-     *
-     * After Login, select Company that user work for
-     */
-    public function selectCompany()
-    {
-        $this->viewBuilder()->setLayout('login');
-        $userinfo = $this->request->getSession()->read('Auth.User');
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $company = $this->request->getData();
-            $this->request->getSession()->write('Auth.User.company_id', $company['company_id']);
-            return $this->redirect(['controller'=>'dashboards','action' => 'index']);
-        }
-        $userCompany = $sdCompany = $this->SdCompanies->find()->select(['SdCompanies.id','SdCompanies.company_name'])->where(['id'=>$userinfo['sd_company_id']])->first();
-        $sdCompany = $this->SdCompanies->find()
-        ->select(['SdCompanies.id','SdCompanies.company_name'])->join([
-            'pd'=>[
-                'table'=>'sd_products',
-                'type'=>'INNER',
-                'conditions'=>['pd.sd_company_id = SdCompanies.id']
-            ],
-            'pwf'=>[
-                'table'=>'sd_product_workflows',
-                'type'=>'INNER',
-                'conditions'=>['pwf.sd_product_id = pd.id']
-            ],
-            'ua'=>[
-                'table'=>'sd_user_assignments',
-                'type'=>'INNER',
-                'conditions'=>['ua.sd_user_id ='.$userinfo['id'],'ua.sd_product_workflow_id = pwf.id']
-            ]
-        ])->where(['SdCompanies.id NOT LIKE'=>$userinfo['sd_company_id']])->distinct();
-        $this->set(compact('sdCompany','userCompany'));
-    }
+    *
+    * After Login, select Company that user work for
+    */
+   public function selectCompany()
+   {
+       $this->viewBuilder()->setLayout('login');
+       $userinfo = $this->request->getSession()->read('Auth.User');
+       if ($this->request->is(['patch', 'post', 'put'])) {
+           $company = $this->request->getData();
+           $this->request->getSession()->write('Auth.User.company_id', $company['company_id']);
+           return $this->redirect(['controller'=>'dashboards','action' => 'index']);
+       }
+       $userCompany = $sdCompany = $this->SdCompanies->find()->select(['SdCompanies.id','SdCompanies.company_name'])->where(['id'=>$userinfo['sd_company_id']])->first();
+       $sdCompany = $this->SdCompanies->find()
+       ->select(['SdCompanies.id','SdCompanies.company_name'])->join([
+           'pd'=>[
+               'table'=>'sd_products',
+               'type'=>'INNER',
+               'conditions'=>['pd.sd_company_id = SdCompanies.id']
+           ],
+           'pwf'=>[
+               'table'=>'sd_product_workflows',
+               'type'=>'INNER',
+               'conditions'=>['pwf.sd_product_id = pd.id']
+           ],
+           'ua'=>[
+               'table'=>'sd_user_assignments',
+               'type'=>'INNER',
+               'conditions'=>['ua.sd_user_id ='.$userinfo['id'],'ua.sd_product_workflow_id = pwf.id']
+           ]
+       ])->where(['SdCompanies.id NOT LIKE'=>$userinfo['sd_company_id']])->distinct();
+       $this->set(compact('sdCompany','userCompany'));
+   }
 }
