@@ -55,6 +55,7 @@ function searchProd(){
                 $.each(caseDetail.sd_product_workflows, function(k,product_workflowdetail){
                     text += "<div class=\"btn btn-sm btn-outline-info mx-1\" data-toggle=\"modal\" onclick=\"view_workflow("+product_workflowdetail.id+")\" data-target=\".WFlistView\">"+product_workflowdetail.sd_workflow.name+" / "+i18n.gettext(product_workflowdetail.sd_workflow.country+"")+"</div>";
                 });
+                console.log(caseDetail);
                 text += "</td>";
                 text += "<td><div class=\"btn btn-sm btn-outline-info\" data-toggle=\"modal\" onclick=\"view_product("+caseDetail.id+")\" data-target=\".product_detail\">"+i18n.gettext("View Detail")+"</div></td>";
                 text +="<div id=\"product_"+caseDetail.id+"\" style=\"display:none\">"+JSON.stringify(caseDetail)+"</div>";

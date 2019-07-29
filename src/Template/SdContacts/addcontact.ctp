@@ -7,6 +7,11 @@ use Cake\ORM\TableRegistry;
 ?>
 <title><?php echo __("Add Contact");?></title>
 <head>
+<?= $this->Html->script('contact/contact.js') ?>
+<!-- For local DataTable CSS/JS link -->
+<?= $this->Html->css('datatable/dataTables.bootstrap4.min.css') ?>
+<?= $this->Html->script('datatable/DataTables/js/jquery.dataTables.min.js') ?>
+<?= $this->Html->script('datatable/DataTables/js/dataTables.bootstrap4.min.js') ?>
 <head>
 <body>
     <div class="mx-auto my-3 formContainer text-center">

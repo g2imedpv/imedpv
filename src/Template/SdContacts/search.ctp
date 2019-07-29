@@ -4,7 +4,16 @@ use Cake\ORM\TableRegistry;
 ?>
 <title><?php echo __("Search Contact");?></title>
 <head>
+<?= $this->Html->script('contact/contact.js') ?>
+<!-- For local DataTable CSS/JS link -->
+<?= $this->Html->css('datatable/dataTables.bootstrap4.min.css') ?>
+<?= $this->Html->script('datatable/DataTables/js/jquery.dataTables.min.js') ?>
+<?= $this->Html->script('datatable/DataTables/js/dataTables.bootstrap4.min.js') ?>
 <head>
+<script type="text/javascript">
+    var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
+    var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
+</script>
 
 <body>
     <div class="mx-auto my-3 formContainer text-center">
@@ -23,15 +32,15 @@ use Cake\ORM\TableRegistry;
                 <input type="text" class="form-control" id="Contact_ID" name="Contact_ID" placeholder="<?php echo __("Search Contact ID");?>">
             </div>
             <div class="form-group col-md-3">
-                <label><?php echo __("Contact Person");?></label>
-                <input type="text" class="form-control" id="Contact_person" name="Contact_person" placeholder="<?php echo __("Search Contact Person");?>">
+                <label><?php echo __("Contact Route");?></label>
+                <input type="text" class="form-control" id="Contact_Route" name="Contact_Route" placeholder="<?php echo __("Search Contact Route");?>">
             </div>
             <div class="form-group col-md-3">
                 <label><?php echo __("Contact Type");?></label>
                 <input type="text" class="form-control" id="Contact_Type" name="Contact_Type" placeholder="<?php echo __("Search Contact Type");?>">
             </div>
         </div>
-        <button  class="btn btn-primary w-25" onclick="onQueryClicked()"><i class="fas fa-search"></i> <?php echo __("Search");?> </button>
+        <button  class="btn btn-primary w-25" onclick="searchContact()"><i class="fas fa-search"></i> <?php echo __("Search");?> </button>
         <!-- <button id="advsearch" class="btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</button> -->
         <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> <?php echo __("Clear");?> </button>
 

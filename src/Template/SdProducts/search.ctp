@@ -4,6 +4,10 @@
 <title><?php echo __("Search Product")?></title>
 <head>
 <?= $this->Html->script('product/search.js') ?>
+<!-- For local DataTable CSS/JS link -->
+<?= $this->Html->css('datatable/dataTables.bootstrap4.min.css') ?>
+<?= $this->Html->script('datatable/DataTables/js/jquery.dataTables.min.js') ?>
+<?= $this->Html->script('datatable/DataTables/js/dataTables.bootstrap4.min.js') ?>
 <head>
 <script type="text/javascript">
     var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
