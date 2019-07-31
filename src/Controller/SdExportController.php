@@ -213,12 +213,17 @@ class SdExportController extends AppController
             }else{
                 $reporterComment="Reporter Comments:".$reporterComment;
             }
-            $resultsTestsProcedures=$this->getDirectValue($caseId,$test,1);
+
+            if($term=="1105"){
+                $resultsTestsProcedures="";
+            }else{
+                $resultsTestsProcedures=$this->getDirectValue($caseId,$test,1);
                 if ($resultsTestsProcedures=="null"||$resultsTestsProcedures==null){
                     $resultsTestsProcedures=" ";
                 }else{
                     $resultsTestsProcedures="Relevant Tests/Laboratory Data:".$resultsTestsProcedures;
-                }
+                }  
+            }
             $compamyRemarksFlag=$this->getDirectValue($caseId,560,1);
             if($compamyRemarksFlag==1){
             $compamyRemarks=$this->getDirectValue($caseId,$remark,1);

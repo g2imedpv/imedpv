@@ -8,7 +8,11 @@
     <!-- For local CSS link -->
     <?= $this->Html->css('mainlayout.css') ?>
     <?= $this->Html->script('meddra.js') ?>
-<head>
+    <!-- For local DataTable CSS/JS link -->
+    <?= $this->Html->css('datatable/dataTables.bootstrap4.min.css') ?>
+    <?= $this->Html->script('datatable/DataTables/js/jquery.dataTables.min.js') ?>
+    <?= $this->Html->script('datatable/DataTables/js/dataTables.bootstrap4.min.js') ?>
+    <head>
 
 <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document" style="max-width: 1175px !important;">

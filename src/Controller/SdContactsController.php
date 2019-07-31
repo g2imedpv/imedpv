@@ -70,10 +70,11 @@ class SdContactsController extends AppController
      */
     public function edit($id = null)
     {
+        $this->viewBuilder()->setLayout('main_layout');
         $sdContact = $this->SdContacts->get($id, [
             'contain' => []
         ]);
-    
+        //debug($sdContact);die();
         if ($this->request->is(['patch', 'post', 'put'])) {
             $sdContact = $this->SdContacts->patchEntity($sdContact, $this->request->getData());
             if ($this->SdContacts->save($sdContact)) {
@@ -120,6 +121,42 @@ class SdContactsController extends AppController
     public function search()
     {
         $this->viewBuilder()->setLayout('main_layout');
+        if ($this->request->is('post')) {
+            $this->autoRender = false;
+            $searchKey = $this->request->getData();
+            try{
+                $searchResult =  $this->SdContacts->find();
+                //$user = TableRegistry::get('SdUsers')->get($searchKey['userId']);
+                if(!empty($searchKey['contactID'])) $searchResult = $searchResult->where(['contactId LIKE'=>'%'.$searchKey['contactID'].'%']);
+                if(!empty($searchKey['contactRoute'])) $searchResult = $searchResult->where(['preferred_route  LIKE'=>'%'.$searchKey['contactRoute'].'%']);
+                // if($user['sd_role_id']<=2) {
+                //     $searchResult->contain(['SdProductWorkflows.SdWorkflows'=>function($q){return $q->select(['name','country','id']);},
+                //     'SdCompanies'=>function($q){ return $q->select(['company_name']);}])->all();
+                // }else{
+                //     $searchResult->contain(['SdProductWorkflows'=>function($q)use($searchKey){
+                //         return $q->join([
+                //             'ua'=>[
+                //                 'table' =>'sd_user_assignments',
+                //                 'type'=>'INNER',
+                //                 'conditions'=>['ua.sd_product_workflow_id = SdProductWorkflows.id','ua.sd_user_id = '.$searchKey['userId']]
+                //             ]
+                //         ])->distinct()->contain(['SdWorkflows'=>function($q){return $q->select(['name','country','id']);}]);
+                //     },
+                //     'SdCompanies'=>function($q){ return $q->select(['company_name']);}])->toArray();
+                //     $searchResult = $searchResult->toArray();
+                //     foreach($searchResult as $key => $productDetail){
+                //         if(empty($productDetail['sd_product_workflows'])) 
+                //         unset($searchResult[$key]);
+                //     }
+                //     // print_r($searchResult);
+                // }
+                
+            }catch (\PDOException $e){
+                echo "cannot the case find in database";
+            }
+            echo json_encode($searchResult);
+            die();
+        }
 
     }
     
