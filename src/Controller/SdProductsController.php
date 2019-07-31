@@ -186,8 +186,8 @@ class SdProductsController extends AppController
         $saved_assessment_workflow = [];
         
         if ($this->request->is('post')) {
-            debug($this->request->getData());
-            die();
+            // debug($this->request->getData());
+            // die();
 
             //add product detail 
             $sdProduct = $this->SdProducts->newEntity();

@@ -162,6 +162,14 @@
                 <option value="3"><?php echo __("Other studies");?></option>
             </select>
         </div>
+        <div class="form-group col-md-3">
+            <label><?php echo __("E2B Version");?></label>
+            <select class="form-control" id="sd_e2b-version_id" name="product[e2b_version]" required oninvalid="this.setCustomValidity('Study Type is REQUIRED')" oninput="this.setCustomValidity('')">
+                <option value=""><?php echo __("Select E2B Version");?></option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
     </div>
 
     <div class="form-row justify-content-center">
@@ -236,7 +244,7 @@
                         <option value="sequential"><?php echo __("Sequential")?></option>
                     </select>
                 </div>
-                <input name="product[caseNo_convention]" value="" style="display:none">
+                <input name="product[caseNo_convention]" id="caseNo_convention" value="" style="display:none">
             </div>
             <!-- <button type="button" id="genCaseNum" class="btn btn-sm btn-info">Generate</button>
 

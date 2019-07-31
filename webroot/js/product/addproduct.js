@@ -27,7 +27,7 @@ $(document).ready(function() {
     //generate caseNo format
     $("[id^=casenumber]").change(function(){
         let val = $('#casenumber1').val()+","+$('#casenumber2').val()+","+$('#casenumber3').val()+","+$('#casenumber4').val()+","+$('#casenumber5').val();
-        $("#product\\[caseNo_convention\\]").val(val);
+        $("#caseNo_convention").val(val);
     });
 });
 function selectCro(id, typeFlag){
@@ -286,14 +286,33 @@ jQuery(function($) {  // In case of jQuery conflict
                     var workflowTypeFlag = 0;
                     if(workflowType=="distribution") workflowTypeFlag = 1;
                     var text ="<button type=\"button\" id=\"cust-"+workflowType+"-permission-"+order+"\" onclick=\"sectionPermission("+order+",2,"+workflowTypeFlag+")\" class=\"btn btn-primary btn-sm mx-2\" data-toggle=\"modal\" data-target=\"#selectPermission\">Set Permission</button>";
+                    text +="<div id=\"days_error\"  style=\"display:none\">Total workday has exceeded limit</div>";
                     $(this).append(text);
                     order ++;
                 });
                 $(this).hide();
-                //TODO JUN 24st
-                $('#'+workflowType+'-sortable').find('.card-body').append( '<div class="input-group w-25 mx-auto"><i class="fas fa-arrow-up gobackstep"></i><input type="text" class="step_backward form-control form-control-sm backstep_input" aria-label="Back Steps" aria-describedby="backSteps">Workdays in 7 days case<input type="text" class="due_day-7 form-control form-control-sm backstep_input">Workdays in 15 days case<input type="text" class="due_day-15 form-control form-control-sm backstep_input"> Workdays in 90 days case<input type="text" class="due_day-90 form-control form-control-sm backstep_input"></div>');
+                //TODO
+                $('#'+workflowType+'-sortable').find('.card-body').append( '<div class="input-group w-25 mx-auto"><i class="fas fa-arrow-up gobackstep"></i><input type="text" class="step_backward form-control form-control-sm backstep_input" aria-label="Back Steps" aria-describedby="backSteps">Workdays in 7 days case<input id="due_day-7" type="text" class="due_day-7 form-control form-control-sm backstep_input">Workdays in 15 days case<input type="text" id="due_day-15" class="due_day-15 form-control form-control-sm backstep_input"> Workdays in 90 days case<input type="text" id="due_day-90" class="due_day-90 form-control form-control-sm backstep_input"></div>');
                 $('#custworkflowname').next('#errassessmentWorkflow').remove(); // *** this line have been added ***
                 $("#"+workflowType+"-sortable").sortable({ disabled: true });
+                $("[id^=due_day]").change(function(){
+                    $(this).parent().parent().find("#days_error").hide();
+                    let type = $(this).attr('id').split('-')[1];
+                    if(isNaN(parseInt(type))){
+                        $(this).val("");
+                        $(this).parent().parent().find("#days_error").show();
+                        return false;
+                    }
+                    let remain_day = parseInt(type) + parseInt(1);
+                    $(".due_day-"+type).each(function(){
+                        remain_day = remain_day - $(this).val();
+                    });
+                    console.log(parseInt(type) == 'NaN');
+                    if(remain_day < 0){
+                        $(this).val("");
+                        $(this).parent().parent().find("#days_error").show();
+                    }
+                });
             }
         };
         $('#undocho-'+workflowType+'-con').hide();
@@ -931,7 +950,7 @@ jQuery(function($) {  // In case of jQuery conflict
                 cro_id.team_resources = [];
                 cro_id.workflow_manager = [];
                 if(workflowType=="assessment") assessment_resource_list[workflow_k][cro_id]=cro_info;
-                else distribution_resource_list[workflow_k][cro_id] = cro_info;
+                else distribution_resource_list[distribution_No][cro_id] = cro_info;
             },
             error:function(response){
 

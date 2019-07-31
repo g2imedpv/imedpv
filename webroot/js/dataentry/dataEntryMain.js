@@ -942,6 +942,7 @@ function endDistributionDecision(){
 function action(type){
     text = "";
     if(type==1){
+        console.log(distribution_id);
         $.ajax({
             headers: {
                 'X-CSRF-Token': csrfToken
