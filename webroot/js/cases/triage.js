@@ -11,6 +11,39 @@ $('[id^=doc_source]').change(function () {
     }
 });
 $(document).ready(function(){
+    //date format validation
+    function checkValue(str, max) {
+        if (str.charAt(0) !== '0' || str == '00') {
+          var num = parseInt(str);
+          if (isNaN(num) || num <= 0 || num > max) num = 1;
+          str = num > parseInt(max.toString().charAt(0)) && num.toString().length == 1 ? '0' + num : num.toString();
+        };
+        return str;
+      };
+      function dateListner(target){
+          var date = document.getElementById(target);
+          if(date==null){
+              return;
+          }else{
+              date.addEventListener('input', function(e) {
+              this.type = 'text';
+              var input = this.value;
+              if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
+              var values = input.split('/').map(function(v) {
+                  return v.replace(/\D/g, '')
+                 
+              });
+              if (values[0]) values[0] = checkValue(values[0], 31);
+              if (values[1]) values[1] = checkValue(values[1], 12);
+              var output = values.map(function(v, i) {
+                  return v.length == 2 && i < 2 ? v + ' / ' : v;
+              });
+              this.value = output.join('').substr(0, 14);
+              });
+          }
+      }
+      dateListner('reporterField_latestreceiveddate_plugin');
+      dateListner('reporterField_initialreceiveddate_plugin');
     $('#docTable').DataTable();
     $('#reporterField_latestreceiveddate_plugin,#reporterField_initialreceiveddate_plugin').datepicker({dateFormat: 'dd/mm/yy',maxDate: new Date});
     $(function(){
