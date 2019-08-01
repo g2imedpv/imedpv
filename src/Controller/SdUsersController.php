@@ -250,7 +250,7 @@ class SdUsersController extends AppController
             $LinksTable = TableRegistry::get('SdAssessmentDistributionLinks');
             $caseDistributionTable = TableRegistry::get('SdCaseDistributions');
             $case = TableRegistry::get('SdCases')->find()->where(['caseNo'=>$caseNo,'version_no'=>$versionNo])->first();
-            if($caseDistributionId == null) {
+            if($caseDistributionId == "null"||$caseDistributionId == null) {
                 $currentActivity = TableRegistry::get('SdWorkflowActivities')->get($case['sd_workflow_activity_id']);
                 $newtOrder = $currentActivity['order_no']+1;
                 $nextActivity = TableRegistry::get('SdWorkflowActivities')->find()
