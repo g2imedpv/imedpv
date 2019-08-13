@@ -20,6 +20,7 @@ class SdCompaniesController extends AppController
      */
     public function index()
     {
+        $this->viewBuilder()->setLayout('main_layout');
         $this->paginate = [
             'contain' => ['SdUserTypes']
         ];
@@ -37,6 +38,7 @@ class SdCompaniesController extends AppController
      */
     public function view($id = null)
     {
+        
         $sdCompany = $this->SdCompanies->get($id, [
             'contain' => ['SdUserTypes', 'SdProductWorkflows', 'SdProducts', 'SdUsers']
         ]);

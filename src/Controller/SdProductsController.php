@@ -74,9 +74,11 @@ class SdProductsController extends AppController
      */
     public function edit($id = null)
     {
+        $this->viewBuilder()->setLayout('main_layout');
         $sdProduct = $this->SdProducts->get($id, [
             'contain' => []
         ]);
+        //debug($sdProduct);die();
         if ($this->request->is(['patch', 'post', 'put'])) {
             $sdProduct = $this->SdProducts->patchEntity($sdProduct, $this->request->getData());
             if ($this->SdProducts->save($sdProduct)) {

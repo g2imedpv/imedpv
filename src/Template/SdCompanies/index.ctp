@@ -7,15 +7,15 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Sd Company'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Add Company'), ['action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Sd User Types'), ['controller' => 'SdUserTypes', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Sd User Type'), ['controller' => 'SdUserTypes', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Sd Users'), ['controller' => 'SdUsers', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Sd User'), ['controller' => 'SdUsers', 'action' => 'add']) ?></li>
     </ul>
 </nav>
-<div class="sdCompanies index large-9 medium-8 columns content">
-    <h3><?= __('Sd Companies') ?></h3>
+<div class="sdCompanies index large-9 medium-8 columns content" style="table-layout:fixed; width:220%;">
+    <h3><?= __('Company List') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>

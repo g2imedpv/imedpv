@@ -13,11 +13,10 @@
                 ['confirm' => __('Are you sure you want to delete # {0}?', $sdContact->id)]
             )
         ?></li>
-        <li><?= $this->Html->link(__('Contacts List'), ['action' => 'index']) ?></li>
+        <!-- <li><?= $this->Html->link(__('Contacts List'), ['action' => 'index']) ?></li> -->
     </ul>
 </nav>
-<div class="sdContacts form mx-auto my-3 formContainer text-center" style="
-    width: 60%;">
+<div class="sdContacts form mx-auto my-3 formContainer text-center" style="width: 60%;">
     <?= $this->Form->create($sdContact) ?>
     <fieldset>
         <p class="pageTitle">
@@ -26,7 +25,7 @@
         <div class="form-row">
             <div class="form-group col-md-3">
                 <?php
-                    echo '<div class="input  text required"><label for="contact-type">Contact Type</label><input class="form-control" type="text" name="contact_type" required="required" maxlength="40" id="contact-type" value='.$sdContact['contact_type'].'></div>';
+                    echo '<div class="input  text required"><label for="contact-type">Contact Type</label><input class="form-control" type="text" name="contact_type" required="required" maxlength="40" id="contact-type" value='.$sdContact["contact_type"].'></div>';
                 ?>
             </div>
             <div class="form-group col-md-3">
@@ -87,12 +86,12 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <?php
-                 echo '<div class="input text required"><label for="address">Address</label><input class="form-control" type="text" name="address" required="required" maxlength="100" id="address" value='.$sdContact['address'].'></div>';
+                 echo "<div class=\"input text required\"><label for=\"address\">Address</label><input class=\"form-control\" type=\"text\" name=\"address\" required=\"required\" maxlength=\"100\" id=\"address\" value=\"$sdContact->address\"></div>";
                 ?>
             </div>
             <div class="form-group col-md-3">
                 <?php
-                echo '<div class="input text required"><label for="address-extension">Address Extension</label><input class="form-control" type="text" name="address_extension" required="required" maxlength="100" id="address-extension" value='.$sdContact['address_extension'].'></div>';
+                echo "<div class=\"input text required\"><label for=\"address-extension\">Address Extension</label><input class=\"form-control\" type=\"text\" name=\"address_extension\" required=\"required\" maxlength=\"100\" id=\"address-extension\" value=\"$sdContact->address_extension\"></div>";
                 ?>
             </div>
         </div>
