@@ -53,6 +53,7 @@ class SdCompaniesController extends AppController
      */
     public function add()
     {
+        $this->viewBuilder()->setLayout('main_layout');
         $sdCompany = $this->SdCompanies->newEntity();
         if ($this->request->is('post')) {
             $sdCompany = $this->SdCompanies->patchEntity($sdCompany, $this->request->getData());
