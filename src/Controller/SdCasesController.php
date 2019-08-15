@@ -1010,7 +1010,7 @@ class SdCasesController extends AppController
      * $operator 1 backward 0 forward
      *
      */
-    public function forward($caseNo, $version, $operator, $distribution_id = null){
+    public function forward($caseNo, $version, $operator, $distribution_id = 'null'){
         if($this->request->is('POST')){
             $this->autoRender = false;
             $requstData = $this->request->getData();
