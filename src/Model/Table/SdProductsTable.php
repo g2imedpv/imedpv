@@ -135,6 +135,11 @@ class SdProductsTable extends Table
             ->notEmpty('WHODD_name');
 
         $validator
+            ->integer('e2b_version')
+            ->requirePresence('e2b_version', 'create')
+            ->notEmpty('e2b_version');
+
+        $validator
             ->scalar('mfr_name')
             ->maxLength('mfr_name', 100)
             ->requirePresence('mfr_name', 'create')

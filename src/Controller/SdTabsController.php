@@ -189,7 +189,9 @@
                 if ($readonly != 1) $this->viewBuilder()->setLayout('main_layout'); else $this->viewBuilder()->setLayout('readonly_layout');
                 $case_versions = $sdCasesTable->find()->where(['caseNo'=>$caseNo])->select(['version_no']);
                 $product_name = $sdCases['sd_product_workflow']['sd_product']['product_name'];
-
+                $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
+                $session = $this->getRequest()->getSession();
+                $session->write('version', $e2b_version);
                 //Fetch tab structures
                 //TODO according to model
                 

@@ -424,6 +424,11 @@ class SdCasesController extends AppController
                             'type'=>'LEFT',
                             'conditions' => ['serious_case.sd_field_id = 8','serious_case.sd_case_id = SdCases.id','SUBSTR(serious_case.field_value,1,6) >= 1'],
                         ],
+                        'pt'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['pt.sd_field_id = 394','pt.sd_case_id = SdCases.id']
+                        ],
                         'product_type'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
@@ -453,7 +458,7 @@ class SdCasesController extends AppController
                     else  $searchResult = $searchResult->join([
                         'sv' => [
                             'table' => 'sd_field_values',
-                            'type' => 'INNER            ',
+                            'type' => 'INNER',
                             'conditions' => ['sv.field_value = '.$preferrence_detail['match_value'],'sv.sd_field_id '.$preferrence_detail['sd_field_id'],'sv.sd_case_id = SdCases.id'],
                         ]
                     ])->where(['SdCases.sd_workflow_activity_id !='=>'9999']);
@@ -471,6 +476,22 @@ class SdCasesController extends AppController
                     if($searchKey['caseStatus']=='1') $searchResult = $searchResult->where(['SdCases.status'=>'1']);
                     else if($searchKey['caseStatus']=='2') $searchResult = $searchResult->where(['SdCases.status'=>'0']);
                 }
+                // $searchKey['meddra_smq'] = '20000001';
+                // $searchKey['smq_type'] = 'w';
+                if(!empty($searchKey['meddra_smq'])){
+                    if($searchKey['smq_type']=='n')
+                        $searchResult = $searchResult->where(['pt.field_value' => $searchKey['meddra_smq']]);
+                    else
+                        $searchResult = $searchResult->join([
+                            'smq'=>[
+                                'table' => 'mdr_smq_content',
+                                'type' => 'INNER',
+                                'conditions' => ['smq.smq_code'=>$searchKey['meddra_smq'], 'smq.term_code'=>'pt.field_value', 'pt.field_value' => $searchKey['meddra_smq']]
+                            ]
+                        ]);
+                }
+                // debug($searchResult);
+                // die();
                 if(!empty($searchKey['patient_dob'])) $searchResult = $searchResult->where(['patient_dob.field_value'=>$searchKey['patient_dob']]);
                 if(!empty($searchKey['patient_gender'])) $searchResult = $searchResult->where(['patient_gender.field_value'=>$searchKey['patient_gender']]);
                 if(!empty($searchKey['patient_id'])) $searchResult = $searchResult->where(['patient_id.field_value LIKE'=>'%'.$searchKey['patient_id'].'%']);
@@ -989,11 +1010,11 @@ class SdCasesController extends AppController
      * $operator 1 backward 0 forward
      *
      */
-    public function forward($caseNo, $version, $operator, $distribution_id = "null"){
+    public function forward($caseNo, $version, $operator, $distribution_id = null){
         if($this->request->is('POST')){
             $this->autoRender = false;
             $requstData = $this->request->getData();
-            if($distribution_id == "null") $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
+            if($distribution_id == 'null') $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
             else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";
             //save new activity into case
             $case = $this->SdCases->find()->where(['caseNo'=>$caseNo,'version_no'=>$version])
@@ -1012,7 +1033,7 @@ class SdCasesController extends AppController
                                 ])->first();
             //Save current user sign off history
             $caseCurrentHistoryTable =TableRegistry::get('SdCaseHistories');
-            if($distribution_id == null) $wfaId = $case['sd_workflow_activity_id'];
+            if($distribution_id == 'null') $wfaId = $case['sd_workflow_activity_id'];
             else{
                 $caseDistributionEntity =  TableRegistry::get('SdCaseDistributions')->get($distribution_id);
                 $wfaId = $caseDistributionEntity['sd_workflow_activity_id'];
@@ -1064,7 +1085,7 @@ class SdCasesController extends AppController
                 debug($activityDueDateEntity);
                 return;
             };
-            if($distribution_id == null){
+            if($distribution_id == 'null'){
                 $case['sd_user_id'] = $requstData['receiverId'];
                 $case['sd_workflow_activity_id'] = $requstData['next-activity-id'];
                 if(!$this->SdCases->save($case)){

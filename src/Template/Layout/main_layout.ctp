@@ -75,7 +75,7 @@
     </div>
 
     <!-- E2B Version Switcher -->
-    <div class="btn-group my-auto">
+    <!-- <div class="btn-group my-auto">
       <button type="button" class="btn dropdown-toggle" title="E2B Version Switcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <? __("E2B Version")?> E2B
       </button>
@@ -83,7 +83,7 @@
         <a class="dropdown-item" href="/sd-users/setVersion/2"><? __("version")?> E2B R2</a>
         <a class="dropdown-item" href="/sd-users/setVersion/3"><? __("version")?> E2B R3</a>
       </div>
-    </div>
+    </div> -->
 
     <!-- Mail Notice -->
     <div class="d-flex p-2 mx-2">
