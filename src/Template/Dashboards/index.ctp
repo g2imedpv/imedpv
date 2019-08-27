@@ -120,6 +120,23 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                     </div>
                 </div>
             </div>
+            <div class="form-group col-lg-4">
+                <label><?php echo __("SMQ Query");?></label>
+                <select class="form-control" id="meddra_smq">
+                <option value=""><?php echo __("Select SMQ Query")?></option>
+                <?php
+                    foreach($smq_list as $smq_code => $smq_name)
+                        echo "<option value=\"".$smq_code."\" >".$smq_name."</option>";
+                ?>
+                </select>
+            </div>
+            <div class="form-group col-lg-4">
+                <label><?php echo __("SMQ Query");?></label>
+                <select class="form-control" id="meddra_smq_scope">
+                    <option value="1"><?php echo __("Broad Search")?></option>
+                    <option value="2"><?php echo __("Narrow Search")?></option>
+                </select>
+            </div>
         </div>
 
         <div class="form-row justify-content-center">

@@ -367,6 +367,8 @@ class SdCasesController extends AppController
                     'pd.product_name',
                     'country'=>'wf.country',
                     'wa.activity_name',
+                    'pt.field_value',
+                    'llt.field_Value',
                     'SdCases.sd_user_id',
                     'serious_case.id',
                     'product_type_label'=>'product_type_look_up.caption',
@@ -429,6 +431,11 @@ class SdCasesController extends AppController
                             'type'=>'LEFT',
                             'conditions'=>['pt.sd_field_id = 394','pt.sd_case_id = SdCases.id']
                         ],
+                        'llt'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['llt.sd_field_id = 392','llt.sd_case_id = SdCases.id']
+                        ],
                         'product_type'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
@@ -477,20 +484,26 @@ class SdCasesController extends AppController
                     else if($searchKey['caseStatus']=='2') $searchResult = $searchResult->where(['SdCases.status'=>'0']);
                 }
                 // $searchKey['meddra_smq'] = '20000001';
-                // $searchKey['smq_type'] = 'w';
-                if(!empty($searchKey['meddra_smq'])){
-                    if($searchKey['smq_type']=='n')
-                        $searchResult = $searchResult->where(['pt.field_value' => $searchKey['meddra_smq']]);
-                    else
-                        $searchResult = $searchResult->join([
-                            'smq'=>[
-                                'table' => 'mdr_smq_content',
-                                'type' => 'INNER',
-                                'conditions' => ['smq.smq_code'=>$searchKey['meddra_smq'], 'smq.term_code'=>'pt.field_value', 'pt.field_value' => $searchKey['meddra_smq']]
-                            ]
-                        ]);
+                // $searchKey['meddra_smq_scope'] = '2';
+                if(!empty($searchKey['meddra_smq'])){ 
+                    $SMQsearch = '';
+                    if($searchKey['meddra_smq_scope'] == '2')
+                    $SMQboardSearch = 'smq.term_scope = 2 AND';
+                    $searchResult = $searchResult
+                        ->join([
+                        // 'smq_pt'=>[
+                        //     'table' => 'smq_pt_1',
+                        //     'type' => 'LEFT',
+                        //     'conditions' => ['smq_pt.smq_code'=>$searchKey['meddra_smq'], 'smq_pt.pt_code'=>'pt.field_value']//TODO narrow/broad search
+                        // ],
+                        'smq'=>[
+                            'table' => 'mdr_smq_content',
+                            'type' => 'INNER',
+                            'conditions' => [$SMQsearch.'smq.smq_code = '.$searchKey['meddra_smq'].' AND 
+                                        ((smq.term_level = 4 AND smq.term_code = llt.field_value)OR(smq.term_level = 5 AND smq.term_code = pt.field_value))']//TODO narrow/broad search
+                        ]
+                    ]);
                 }
-                // debug($searchResult);
                 // die();
                 if(!empty($searchKey['patient_dob'])) $searchResult = $searchResult->where(['patient_dob.field_value'=>$searchKey['patient_dob']]);
                 if(!empty($searchKey['patient_gender'])) $searchResult = $searchResult->where(['patient_gender.field_value'=>$searchKey['patient_gender']]);

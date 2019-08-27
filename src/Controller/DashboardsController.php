@@ -102,6 +102,20 @@ class DashboardsController extends AppController {
             $preferrence_list[$k]['sql'] = $userinfo;
             $preferrence_list[$k]['count'] = $searchResult->distinct()->count();
         }
-        $this->set(compact('preferrence_list'));
+        $smq_listTable = TableRegistry::get('mdr_smq_list');
+        $smq_list_d = $smq_listTable->find()->select(['smq_code','smq_name','smq_content.term_scope'])
+        ->join([
+            'smq_content'=>[
+                'table'=>'mdr_smq_content',
+                'type'=>'INNER',
+                'conditions'=>['smq_content.smq_code = mdr_smq_list.smq_code',('smq_content.term_scope != \'0\'')]
+            ]
+        ])
+        // ->where(['smq_content.term_scope IS NOT'=>'0'])
+        ;
+        $smq_list = array();
+        foreach($smq_list_d as $k => $detail)
+            $smq_list[$detail['smq_code']] = $detail['smq_name'];            
+        $this->set(compact('preferrence_list','smq_list'));
     }
 }
