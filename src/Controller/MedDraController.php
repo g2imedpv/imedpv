@@ -1,6 +1,6 @@
 <?php
 namespace App\Controller;
-
+use Cake\ORM\TableRegistry;
 use App\Controller\AppController;
 use Cake\Datasource\ConnectionManager;
 
@@ -105,6 +105,30 @@ class MedDraController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    /**
+     * search SMQ options
+     * 
+     * 
+     * 
+     */
+    public function searchSMQ($keyWord){
+        $smq_listTable = TableRegistry::get('mdr_smq_list');
+        $smq_list_d = $smq_listTable->find()->distinct()->select(['smq_code','smq_name'])
+        ->join([
+            'smq_content'=>[
+                'table'=>'mdr_smq_content',
+                'type'=>'INNER',
+                'conditions'=>['smq_content.smq_code = mdr_smq_list.smq_code',('smq_content.term_scope != \'0\'')]
+            ]
+        ])
+        ->where(['mdr_smq_list.smq_name LIKE \'%'.$keyWord.'%\'']);
+        echo json_encode($smq_list_d);
+        die();
+    }
+
+
+
     /**
      * search Meddra
      * 

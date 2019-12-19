@@ -68,7 +68,7 @@ $(document).ready(function(){
             data:request,
             success:function(response){
                 $('#searchFieldResult').html("");
-                // console.log(response);
+                console.log(response);
                 searchResult = $.parseJSON(response);
                 let text ="<table class=\"table table-hover w-100\">";
                 text +="<tr><th scope=\"col\">"+i18n.gettext("Field Label")+"</th>";

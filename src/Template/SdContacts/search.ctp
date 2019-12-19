@@ -66,20 +66,7 @@ use Cake\ORM\TableRegistry;
                 </tr>
             </thead>
             <tbody>
-                <?php $sdContacts = TableRegistry::get('sd_contacts');
-                    $query = $sdContacts->find('all');
-                    $study_type=["","E2B", "CIOMS","MedWatch"];
-                    $comtact_type=["","Pharmaceutical Company","Regulatory Authority","Health professional","Regional Pharmacovigilance Center","WHO Collaborating Center for International Drug Monitoring","Other","CRO","Call Center"];
-                    $comtact_route=["","Email","ESTRI Gateway","Manual"];
-                    $sdLookups = TableRegistry::get('sd_field_value_look_ups');
-                    $country = $sdLookups
-                                ->find()
-                                ->select(['value','caption'])
-                                ->where(['sd_field_id=178'])
-                                ->order(['id' => 'ASC']);
-                    foreach($country as $key=>$countries){
-                        $countryarray[$countries['value']]=$countries['caption'];
-                    }
+                <?php 
                     foreach($query as $contacters){
                         echo "<tr id='contacter$contacters->id'>";
                         echo"<td>".$contacters->contactId."</td>";
