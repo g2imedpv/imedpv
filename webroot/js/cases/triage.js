@@ -522,7 +522,7 @@ function prioritizeDate(){
     if(dayText<10){dayText="0"+dayText;}
     if(monthText<10){monthText="0"+monthText;}
     text += yearText+'/'+monthText+'/'+dayText;
-    $('#submissionDate_value').val(dayText+monthText+yearText);
+    $('#submissionDate_value').val(dayText+""+monthText+""+yearText);
     $('#prioritizeType').text();
     $('#prioritizeType').text(text);
 }

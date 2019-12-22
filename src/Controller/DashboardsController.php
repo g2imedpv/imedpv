@@ -76,6 +76,16 @@ class DashboardsController extends AppController {
             $searchResult = $sdCases->find()->select(['caseNo','id']);
             if(array_key_exists('value_at',$preferrence_detail))
                 $searchResult = $searchResult->join([
+                    'pw' => [
+                        'table' => 'sd_product_workflows',
+                        'type' => 'LEFT',
+                        'conditions' => ['SdCases.sd_product_workflow_id = pw.id'],
+                    ],
+                    'pd' => [
+                        'table' => 'sd_products',
+                        'type' => 'INNER',
+                        'conditions' => ['pw.sd_product_id = pd.id','pd.sd_company_id ='.$userinfo['company_id']],
+                    ],
                     'sv' => [
                         'table' => 'sd_field_values',
                         'type' => 'INNER',
@@ -83,6 +93,16 @@ class DashboardsController extends AppController {
                     ]
                 ])->where(['SdCases.sd_workflow_activity_id !='=>'9999']);
             else  $searchResult = $searchResult->join([
+                'pw' => [
+                    'table' => 'sd_product_workflows',
+                    'type' => 'LEFT',
+                    'conditions' => ['SdCases.sd_product_workflow_id = pw.id'],
+                ],
+                'pd' => [
+                    'table' => 'sd_products',
+                    'type' => 'INNER',
+                    'conditions' => ['pw.sd_product_id = pd.id','pd.sd_company_id ='.$userinfo['company_id']],
+                ],
                 'sv' => [
                     'table' => 'sd_field_values',
                     'type' => 'INNER            ',
