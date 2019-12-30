@@ -535,7 +535,7 @@ ul.queryBoxLeft > a {
 
 .whoddinput {
     position: absolute !important;
-    top: 16px;
+    top: 26px;
     left: 210px;
 }
 
@@ -573,6 +573,7 @@ ul.queryBoxLeft > a {
     color: #212529;
     background-color: #ffc107 !important;
 }
+
 /* radio button css */
 .custom-radio{
     margin-top:10px;
