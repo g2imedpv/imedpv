@@ -183,13 +183,16 @@
                     if($caseValidation==null)
                     $this->request->getSession()->write('caseValidate.'.$caseId, $this->validateForm($caseId));
                 }
+                $this->validateForm($caseId);
                 $this->set(compact('activitySectionPermissions'));
                 //For readonly status, donot render layout
                 $readonly = $this->request->getQuery('readonly');
                 if ($readonly != 1) $this->viewBuilder()->setLayout('main_layout'); else $this->viewBuilder()->setLayout('readonly_layout');
                 $case_versions = $sdCasesTable->find()->where(['caseNo'=>$caseNo])->select(['version_no']);
                 $product_name = $sdCases['sd_product_workflow']['sd_product']['product_name'];
-
+                $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
+                $session = $this->getRequest()->getSession();
+                $session->write('version', $e2b_version);
                 //Fetch tab structures
                 //TODO according to model
                 
@@ -383,6 +386,7 @@
      */
     public function validateForm($caseId, $sectionId=null, $tabId=null){
         $SdFieldValuesTable = TableRegistry::get('SdFieldValues');
+        //All values in database
         $allRequiredFieldValues = $SdFieldValuesTable->find()
         ->select(['SdFieldValues.id','SdFieldValues.set_number','SdFieldValues.sd_field_id','sections.id','tabs.id'])
         ->join([
@@ -404,6 +408,8 @@
         ])->distinct()->where(['SdFieldValues.status'=>1,'SdFieldValues.sd_case_id'=>$caseId])->order(['sections.id'=>'ASC', 'SdFieldValues.set_number'=>'ASC']);
         if($sectionId!=null) $allRequiredFieldValues->where(['sections.id'=>$sectionId]);
         $SdSectionStructuresTable = TableRegistry::get('SdSectionStructures');
+
+        //All field in strucutures database that is requied
         $allRequiredFields = $SdSectionStructuresTable->find()
         ->select(['sd_field_id','sd_section_id','sf.field_label','fv.field_value','sections.section_name','sections.sd_tab_id','tabs.tab_name'])->join([
             'sf'=>[
@@ -432,6 +438,7 @@
         $required_field_list = [];
         foreach($allRequiredFields as $requiredField){
             if($requiredField['fv']['field_value']==null)
+            //all required but not filled fields strucutrue (not filled within any set)
             $required_field_list[$requiredField['sections']['sd_tab_id']][$requiredField['sd_section_id']][$requiredField['sd_field_id']] = [
                 'sd_field_id'=>$requiredField['sd_field_id'],
                 'set_number'=>'null',
@@ -458,6 +465,12 @@
                     'tab_name'=>$allRequiredField['tabs']['tab_name']
                     ]);
             }
+
+            // debug($required_field_list);
+
+            // //all field value in required field
+            // debug($required_field_set);
+            // debug($allRequiredFieldValue);
             foreach($required_field_set as $required_field){
                 $exist = 0;
                 foreach($allRequiredFieldValues as $researchKey => $relatedSectionField){
@@ -470,7 +483,8 @@
                     }
                 }
                 if($exist == 0){
-                    if(!array_key_exists($required_field['sd_field_id'],$required_field_list[$required_field['tab_id']][$required_field['section_id']]))
+                    if(array_key_exists($required_field['tab_id'],$required_field_list)&&array_key_exists($required_field['section_id'],$required_field_list[$required_field['tab_id']])
+                        &&!array_key_exists($required_field['sd_field_id'],$required_field_list[$required_field['tab_id']][$required_field['section_id']]))
                     $required_field_list[$required_field['tab_id']][$required_field['section_id']][$required_field['sd_field_id']]=[
                         'sd_field_id'=>$required_field['sd_field_id'],
                         'set_number'=>$set_number,

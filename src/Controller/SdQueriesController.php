@@ -207,6 +207,7 @@ class SdQueriesController extends AppController
                             ]);
                 continue;
         }
+        $sdQueries = $sdQueries->order(['send_date'=>'DESC']);
         $this->set(compact('sdQueries'));
     }
 }

@@ -33,6 +33,45 @@ jQuery(function($) {  // In case of jQuery conflict
 //     });
 // });
 
+$("#searchSMQ").keyup(function(){
+    $('#SMQoptions').show();
+    $('#meddra_smq').val("");
+    if($(this).val().length >=3)
+        searchSMQ($(this).val());
+    else $("#SMQoptions").hide();
+});
+
+function searchSMQ(keyword){
+    $.ajax({
+        headers: {
+            'X-CSRF-Token': csrfToken
+        },
+        type:'POST',
+        url:'/med-dra/searchSMQ/'+keyword,
+        success:function(response){
+            console.log(response);
+            var result = $.parseJSON(response);
+            var html = "<ul>";
+            $.each(result, function(k, v){
+                html = html+"<li id=\"smq_options-"+v['smq_code']+"\">"+v['smq_name']+"</li>";
+            });
+            html = html+"</ul>";
+            $('#SMQoptions').html(html);
+            $('[id^=smq_options]').click(function(){
+                console.log("here");
+                var smq_code = $(this).attr('id').split('-')[1];
+                var smq_name = $(this).text();
+                $('#searchSMQ').val(smq_name);
+                $('#meddra_smq').val(smq_code);
+                $("#SMQoptions").hide();
+            });
+        },
+        error:function(response){
+            console.log(response.responseText);
+        $("#textHint").html(i18n.gettext("Sorry, no case matches"));
+        }
+    });
+}
 
 // Control the topNav and leftNav running with the scroll
     $(window).scroll(function() {
@@ -141,6 +180,8 @@ function onQueryClicked(preferrenceId = null){
         'patient_id':$("#patient_id").val(),
         'patient_dob':$('#patient_dob').val(),
         'patient_gender':$('#patient_gender').val(),
+        'meddra_smq':$('#meddra_smq').val(),
+        'meddra_smq_scope':$('#meddra_smq_scope').val()
     };
     if (preferrenceId!=null)
     request['preferrenceId'] = preferrenceId;

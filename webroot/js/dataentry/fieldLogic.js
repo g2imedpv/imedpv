@@ -174,7 +174,7 @@ $(document).ready(function(){
     // General Tab:
         //-> Admin section
         //grayout some date fields
-        grayout("#specified-date-section-1-date-10,#specified-date-section-1-date-12,#specified-date-section-1-date-225");
+        grayout("#specified-date-section-1-date-10,#specified-date-section-1-date-12,#specified-date-section-1-date-415,#specified-date-section-1-date-414,#specified-date-section-1-date-225");
         // For Additional documents (A.1.8.1) select and add document
         selectShowORhide ("#section-1-field-355, #section-1-field-14","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
         // For Additional documents  (C.1.6.1) select and add document

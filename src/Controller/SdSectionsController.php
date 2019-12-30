@@ -389,7 +389,7 @@ class SdSectionsController extends AppController
                 $useId = 'ua.sd_user_id ='.$requstData['userId'];
             else $userId = "";
             $sections = $this->SdSections->find()
-            ->select(['tab.id','tab.tab_name','section_name','id','section_level','field.id','field.field_label','asp.sd_workflow_activity_id'])
+            ->distinct()->select(['tab.id','tab.tab_name','section_name','id','section_level','field.id','field.field_label'])
             ->join([
                 'tab'=>[
                     'table'=>'sd_tabs',

@@ -109,6 +109,11 @@ class SdContactsController extends AppController
     public function addcontact(){
         $this->viewBuilder()->setLayout('main_layout');
         $sdContact = $this->SdContacts->newEntity();
+        $sdLookups = TableRegistry::get('SdFieldValueLookUps');
+        $coutry = $sdLookups
+                 ->find('all')
+                 ->where(['sd_field_id=178'])
+                 ->order(['id' => 'DESC']);
         if ($this->request->is('post')) {
             $sdContact = $this->SdContacts->patchEntity($sdContact, $this->request->getData());
             if ($this->SdContacts->save($sdContact)) {
@@ -116,7 +121,7 @@ class SdContactsController extends AppController
             }else
             {$this->Flash->error(__('The new contact could not be saved. Please, try again.'));}
         }
-        $this->set(compact('sdContact'));
+        $this->set(compact('sdContact','coutry'));
     }
     public function search()
     {
@@ -157,6 +162,20 @@ class SdContactsController extends AppController
             echo json_encode($searchResult);
             die();
         }
+        $query = $this->SdContacts->find('all');
+        $study_type=["","E2B", "CIOMS","MedWatch"];
+        $comtact_type=["","Pharmaceutical Company","Regulatory Authority","Health professional","Regional Pharmacovigilance Center","WHO Collaborating Center for International Drug Monitoring","Other","CRO","Call Center"];
+        $comtact_route=["","Email","ESTRI Gateway","Manual"];
+        $sdLookups = TableRegistry::get('SdFieldValueLookUps');
+        $country = $sdLookups
+                    ->find()
+                    ->select(['value','caption'])
+                    ->where(['sd_field_id=178'])
+                    ->order(['id' => 'ASC']);
+        foreach($country as $key=>$countries){
+            $countryarray[$key]=$countries['caption'];
+        }
+        $this->set(compact('query','countryarray', 'comtact_type', 'comtact_route','study_type'));
 
     }
     

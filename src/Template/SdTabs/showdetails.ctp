@@ -70,7 +70,7 @@ echo $this->element('generatepdf');
                 if(sizeof($case_versions->toList())>1){
                     echo "<div class=\"dropdown-menu\"  aria-labelledby=\"versionSwitch\">";
                     foreach($case_versions as $case_version_detail){
-                        echo "<a class=\"dropdown-item\" href=\"/sd-tabs/showdetails/1?caseNo=".$caseNo."&version=".$case_version_detail['version_no']."\">".$case_version_detail['version_no']."</a>";
+                        echo "<a class=\"dropdown-item\" href=\"/sd-tabs/showdetails/".$caseNo."/".$case_version_detail['version_no']."\">".$case_version_detail['version_no']."</a>";
                     }
                 }
                 // echo "</div>";

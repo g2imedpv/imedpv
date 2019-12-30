@@ -140,7 +140,7 @@ class SdCompaniesController extends AppController
            ],
            'ua'=>[
                'table'=>'sd_user_assignments',
-               'type'=>'INNER',
+               'type'=>'LEFT',
                'conditions'=>['ua.sd_user_id ='.$userinfo['id'],'ua.sd_product_workflow_id = pwf.id']
            ]
        ])->where(['SdCompanies.id NOT LIKE'=>$userinfo['sd_company_id']])->distinct();

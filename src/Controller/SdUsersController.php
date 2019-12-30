@@ -155,11 +155,11 @@ class SdUsersController extends AppController
         $session->write('Language', $language);
         return $this->redirect($this->referer());
     }
-    public function setVersion($version){
-        $session = $this->getRequest()->getSession();
-        $session->write('version', $version);
-        return $this->redirect($this->referer());
-    }
+    // public function setVersion($version){
+    //     $session = $this->getRequest()->getSession();
+    //     $session->write('version', $version);
+    //     return $this->redirect($this->referer());
+    // }
     public function login() {
         $this->viewBuilder()->setLayout('login');
         $session = $this->getRequest()->getSession();

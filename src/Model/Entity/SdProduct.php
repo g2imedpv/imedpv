@@ -21,6 +21,7 @@ use Cake\ORM\Entity;
  * @property string $caseNo_convention
  * @property string $WHODD_code
  * @property string $WHODD_name
+ * @property int $e2b_version
  * @property string $mfr_name
  * @property string $start_date
  * @property string $end_date
@@ -56,6 +57,7 @@ class SdProduct extends Entity
         'caseNo_convention' => true,
         'WHODD_code' => true,
         'WHODD_name' => true,
+        'e2b_version' => true,
         'mfr_name' => true,
         'start_date' => true,
         'end_date' => true,

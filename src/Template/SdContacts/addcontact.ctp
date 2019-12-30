@@ -161,11 +161,6 @@ use Cake\ORM\TableRegistry;
                                 <select name="country" required="required" id="country" class="form-control">
                                 <option value=""></option>
                                 <?php 
-                                $sdLookups = TableRegistry::get('sd_field_value_look_ups');
-                                $coutry = $sdLookups
-                                         ->find('all')
-                                         ->where(['sd_field_id=178'])
-                                         ->order(['id' => 'DESC']);
                                 foreach($coutry as $coutries){
                                 echo "<option value=\"$coutries->value\">".$coutries->caption."</option>"; }
                                 ?>
@@ -220,64 +215,5 @@ use Cake\ORM\TableRegistry;
                 <?= $this->Form->end() ?>
         </form>
 
-        <hr class="my-4">
-
-        <p class="pageTitle">
-            <?php echo __("Contact List");?>
-        </p>
-        <table class="table table-bordered table-hover mb-5" id="contact_list">
-            <thead>
-                <tr>
-                    <th scope="row"><?php echo __("Contact ID");?></th>
-                    <th scope="row"><?php echo __("Contact Type");?></th>
-                    <th scope="row"><?php echo __("Contact Route");?></th>
-                    <th scope="row"><?php echo __("Contact Format");?></th>
-                    <th scope="row"><?php echo __("Phone");?></th>
-                    <th scope="row"><?php echo __("Email");?></th>
-                    <th scope="row"><?php echo __("Address");?></th>
-                    <th scope="row"><?php echo __("City");?></th>
-                    <th scope="row"><?php echo __("State/Province");?></th>
-                    <th scope="row"><?php echo __("Country");?></th>
-                    <th scope="row"><?php echo __("Website");?></th>
-                    <th scope="row"><?php echo __("Action");?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php $sdContacts = TableRegistry::get('sd_contacts');
-                    $query = $sdContacts
-                            ->find('all')
-                            ->order(['id' => 'DESC']);
-                    $study_type=["","E2B", "CIOMS","MedWatch"];
-                    $comtact_type=["","Pharmaceutical Company","Regulatory Authority","Health professional","Regional Pharmacovigilance Center","WHO Collaborating Center for International Drug Monitoring","Other","CRO","Call Center"];
-                    $comtact_route=["","Email","ESTRI Gateway","Manual"];
-                    $sdLookups = TableRegistry::get('sd_field_value_look_ups');
-                    $country = $sdLookups
-                                ->find()
-                                ->select(['value','caption'])
-                                ->where(['sd_field_id=178'])
-                                ->order(['id' => 'ASC']);
-                    foreach($country as $key=>$countries){
-                        $countryarray[$countries['value']]=$countries['caption'];
-                    }
-                    
-                    foreach($query as $contacters){
-                        echo "<tr id='contacter$contacters->id' onclick='imedpv/sd-contacts/edit/$contacters->id'>";
-                        echo"<td>".$contacters->contactId."</td>";
-                        echo"<td>".$comtact_type[$contacters->contact_type]."</td>";
-                        echo"<td>".$comtact_route[$contacters->preferred_route]."</td>";
-                        echo"<td>".$study_type[$contacters->format_type]."</td>";
-                        echo"<td>".$contacters->phone."</td>";
-                        echo"<td>".$contacters->email_address."</td>";
-                        echo"<td>".$contacters->address."</td>";
-                        echo"<td>".$contacters->city."</td>";
-                        echo"<td>".$contacters->state_province."</td>";
-                        echo"<td>".$countryarray[$contacters->country]."</td>";
-                        echo"<td>".$contacters->website."</td>";
-                        echo"<td><a class=\"btn btn-outline-info btn-sm\"  role=\"button\" href=\"/sd-contacts/edit/$contacters->id\"><i class=\"fas fa-edit\"></i></a></td>";
-                        echo"</tr>";
-                    }
-                ?>
-            </tbody>
-        </table>
     </div>
 </body>

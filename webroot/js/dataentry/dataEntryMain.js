@@ -68,7 +68,7 @@ $(document).ready(function(){
             data:request,
             success:function(response){
                 $('#searchFieldResult').html("");
-                // console.log(response);
+                console.log(response);
                 searchResult = $.parseJSON(response);
                 let text ="<table class=\"table table-hover w-100\">";
                 text +="<tr><th scope=\"col\">"+i18n.gettext("Field Label")+"</th>";
@@ -652,8 +652,10 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
                             });
                         }
                         if ((typeof value != "undefined")&&(setMatch)){
+
+                            console.log(thisElement);
                             valueFlag = true;
-                            if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox'&&thisElement.attr('id').split('-')[2]!='unspecifieddate')){
+                            if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox'&&thisElement.attr('id').split('-')[2]!='unspecifieddate'&&thisElement.attr('id').split('-')[2]!='date')){
                                 autoChangeflag = true;
                                 thisElement.val(value.field_value).trigger('change');
                                 autoChangeflag = false;
@@ -667,6 +669,11 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
                                     $("#unspecified-month_section-"+sectionId+"-unspecifieddate-"+fieldId).val(value.field_value.substring(2,4)).trigger('change');
                                     $("#unspecified-year_section-"+sectionId+"-unspecifieddate-"+fieldId).val(value.field_value.substring(4,8)).trigger('change');
                                     autoChangeflag = false;
+                                }else if(thisElement.attr('id').split('-')[2]=='date'){
+                                    let fieldId = thisElement.attr('id').split('-')[3];
+                                    let sectionId = thisElement.attr('id').split('-')[1];
+                                    console.log(value.field_value);//TODO CONVERT TO DATAFORMAT
+                                    $("#specified-date-section-"+sectionId+"-date-"+fieldId).val(value.field_value);
                                 }else if(thisElement.attr('id').split('-')[2]=='radio'){
                                     if(thisElement.val()==value.field_value) {
                                         thisElement.prop('checked',true);
@@ -685,29 +692,33 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
                     if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox'&&thisElement.attr('id').split('-')[2]!='unspecifieddate')){
                         autoChangeflag = true;
                         thisElement.val(null).trigger('change');
-                        autoChangeflag = false;
-                    }else{
-                        if(thisElement.attr('id').split('-')[2]=='unspecifieddate'){
+                        if(thisElement.attr('id').split('-')[2]=='date'){
                             let fieldId = thisElement.attr('id').split('-')[3];
                             let sectionId = thisElement.attr('id').split('-')[1];
-                            autoChangeflag = true;
-                            console.log(valueFlag);
-                            $("#unspecified-day_section-"+sectionId+"-unspecifieddate-"+fieldId).val("00").trigger('change');
-                            $("#unspecified-month_section-"+sectionId+"-unspecifieddate-"+fieldId).val("00").trigger('change');
-                            $("#unspecified-year_section-"+sectionId+"-unspecifieddate-"+fieldId).val("0000").trigger('change');
-                            autoChangeflag = false;
-                        }else{
-                            thisElement.prop('checked',false);
-                            if((typeof thisId[5] != "undefined")&&(thisId[5]=="final")) {
-                                val = "";
-                                for (i = 0; i < thisId[4]; i++){
-                                    val = val+"0";
-                                }
-                                thisElement.val(val);
-                            }
+                            $("#specified-date-section-"+sectionId+"-date-"+fieldId).val("");
                         }
-
+                        autoChangeflag = false;
+                    }else if(thisElement.attr('id').split('-')[2]=='unspecifieddate'){
+                        let fieldId = thisElement.attr('id').split('-')[3];
+                        let sectionId = thisElement.attr('id').split('-')[1];
+                        autoChangeflag = true;
+                        console.log(valueFlag);
+                        $("#unspecified-day_section-"+sectionId+"-unspecifieddate-"+fieldId).val("00").trigger('change');
+                        $("#unspecified-month_section-"+sectionId+"-unspecifieddate-"+fieldId).val("00").trigger('change');
+                        $("#unspecified-year_section-"+sectionId+"-unspecifieddate-"+fieldId).val("0000").trigger('change');
+                        autoChangeflag = false;
+                    }else{
+                        thisElement.prop('checked',false);
+                        if((typeof thisId[5] != "undefined")&&(thisId[5]=="final")) {
+                            val = "";
+                            for (i = 0; i < thisId[4]; i++){
+                                val = val+"0";
+                            }
+                            thisElement.val(val);
+                        }
                     }
+
+                    
                     // if(thisElement.attr('id').split('-')[2]=='unspecifieddate'){
                         
                     //     let fieldId = thisElement.attr('id').split('-')[3];
