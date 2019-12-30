@@ -22,6 +22,7 @@ class SdUsersController extends AppController
      */
     public function index()
     {
+        $this->viewBuilder()->setLayout('main_layout');
         $this->paginate = [
             'contain' => ['SdRoles', 'SdCompanies']
         ];
@@ -39,6 +40,7 @@ class SdUsersController extends AppController
      */
     public function view($id = null)
     {
+       
         $sdUser = $this->SdUsers->get($id, [
             'contain' => ['SdRoles', 'SdCompanies', 'SdActivityLog']
         ]);
@@ -53,6 +55,7 @@ class SdUsersController extends AppController
      */
     public function add()
     {
+        $this->viewBuilder()->setLayout('main_layout');
         $sdUser = $this->SdUsers->newEntity();
         if ($this->request->is('post')) {
             $sdUser = $this->SdUsers->patchEntity($sdUser, $this->request->getData());

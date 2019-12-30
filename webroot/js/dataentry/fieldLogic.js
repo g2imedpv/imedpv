@@ -214,6 +214,68 @@ $(document).ready(function(){
             selectShowORhide('#section-5-field-240,#section-5-field-241,#section-5-field-102',"#section-5-radio-100-option-2,#section-5-radio-100-option-3","#section-5-radio-100-option-1");
             //parent diease therapy date,if choose continue,no end date and duration
             selectShowORhide('#section-8-field-343,#section-8-field-444,#section-8-field-137',"#section-8-radio-135-option-2,#section-8-radio-135-option-3","#section-8-radio-135-option-1");
+        //Patient Medical Record (D.1.1) gray out fields according to selected options
+            function selectedGrayout(option,targetA,targetB,targetC,targetD){
+                var selected=$(option).val();
+                    if (selected==1){ 
+                        $(targetA).prop("disabled", false);
+                        $(targetB).prop("disabled", true);
+                        $(targetC).prop("disabled", true);
+                        $(targetD).prop("disabled", true);
+                    }else if (selected==2){
+                        $(targetA).prop("disabled", true);
+                        $(targetB).prop("disabled", false);
+                        $(targetC).prop("disabled", true);
+                        $(targetD).prop("disabled", true);
+                    }else if (selected==3){
+                        $(targetA).prop("disabled", true);
+                        $(targetB).prop("disabled", true);
+                        $(targetC).prop("disabled", false);
+                        $(targetD).prop("disabled", true);
+                    }else if (selected==4){
+                        $(targetA).prop("disabled", true);
+                        $(targetB).prop("disabled", true);
+                        $(targetC).prop("disabled", true);
+                        $(targetD).prop("disabled", false);
+                    }else {
+                        $(targetA).prop("disabled", true);
+                        $(targetB).prop("disabled", true);
+                        $(targetC).prop("disabled", true);
+                        $(targetD).prop("disabled", true);
+                    }
+                $(option).change(function(){
+                    var selected=$(option).val();
+                    if (selected==1){ 
+                        $(targetA).prop("disabled", false);
+                        $(targetB).prop("disabled", true);
+                        $(targetC).prop("disabled", true);
+                        $(targetD).prop("disabled", true);
+                    }else if (selected==2){
+                        $(targetA).prop("disabled", true);
+                        $(targetB).prop("disabled", false);
+                        $(targetC).prop("disabled", true);
+                        $(targetD).prop("disabled", true);
+                    }else if (selected==3){
+                        $(targetA).prop("disabled", true);
+                        $(targetB).prop("disabled", true);
+                        $(targetC).prop("disabled", false);
+                        $(targetD).prop("disabled", true);
+                    }else if (selected==4){
+                        $(targetA).prop("disabled", true);
+                        $(targetB).prop("disabled", true);
+                        $(targetC).prop("disabled", true);
+                        $(targetD).prop("disabled", false);
+                    }else {
+                        $(targetA).prop("disabled", true);
+                        $(targetB).prop("disabled", true);
+                        $(targetC).prop("disabled", true);
+                        $(targetD).prop("disabled", true);
+                    }
+                })
+            }
+            selectedGrayout("#section-4-select-236","#section-4-text-80","#section-4-text-81","#section-4-text-82","#section-4-text-83");
+
+        
     // Product Tab:
         // If "Ongoing field checked", then Therapy End date (B.4.k.14b) DISABLED
             function optionalGrayout(target,option){
