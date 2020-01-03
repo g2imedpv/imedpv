@@ -6,12 +6,12 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
+        <!-- <li class="heading"><?= __('Actions') ?></li> -->
         <li><?= $this->Html->link(__('Add Company'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Sd User Types'), ['controller' => 'SdUserTypes', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Sd User Type'), ['controller' => 'SdUserTypes', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Sd Users'), ['controller' => 'SdUsers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Sd User'), ['controller' => 'SdUsers', 'action' => 'add']) ?></li>
+        <!-- <li><?= $this->Html->link(__('List Sd User Types'), ['controller' => 'SdUserTypes', 'action' => 'index']) ?></li> -->
+        <!-- <li><?= $this->Html->link(__('New Sd User Type'), ['controller' => 'SdUserTypes', 'action' => 'add']) ?></li> -->
+        <li><?= $this->Html->link(__('User List'), ['controller' => 'SdUsers', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Add User'), ['controller' => 'SdUsers', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="sdCompanies index large-9 medium-8 columns content" style="table-layout:fixed; width:220%;">
