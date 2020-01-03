@@ -35,6 +35,7 @@
              */
             public function showdetails($caseNo, $version = 1,$tabid = 1, $distribution_id = null)
             {
+                $Products = new AppController;
                 if($distribution_id == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
                 else $distribution_condition = ['OR' => [["SdFieldValues.sd_case_distribution_id ='".$distribution_id."'"], ["SdFieldValues.sd_case_distribution_id IS NULL"]]];
                 // = "(SdFieldValues.sd_case_distribution_id ='".$distribution_id."') OR (SdFieldValues.sd_case_distribution_id IS NULL)";                  
@@ -44,11 +45,18 @@
                 $sdFieldValueTable = TableRegistry::get('SdFieldValues');
                 $sdCases = $sdCasesTable->find()->where(['caseNo'=>$caseNo,'version_no'=>$version])->contain(['SdProductWorkflows.SdProducts'])->first();
                 $caseId = $sdCases['id'];
-                // if(empty($caseId)){
-                //     $this->Flash->error(__('Cannot find this case.'));
-                //     $this->redirect($this->referer());
-                //     return;
-                // }
+                $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
+                if($e2b_version == 3) $e2b_version = "_r3";
+                else $e2b_version = "";
+                $Products->configVersion($e2b_version);
+                // $session = $this->getRequest()->getSession();
+                // $session->write('version', $e2b_version);
+                
+                if(empty($caseId)){
+                    $this->Flash->error(__('Cannot find this case.'));
+                    $this->redirect($this->referer());
+                    return;
+                }
                 if ($this->request->is(['patch', 'post', 'put'])) {
                     $error =[];
                     $requstData = $this->request->getData();
@@ -190,9 +198,6 @@
                 if ($readonly != 1) $this->viewBuilder()->setLayout('main_layout'); else $this->viewBuilder()->setLayout('readonly_layout');
                 $case_versions = $sdCasesTable->find()->where(['caseNo'=>$caseNo])->select(['version_no']);
                 $product_name = $sdCases['sd_product_workflow']['sd_product']['product_name'];
-                $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
-                $session = $this->getRequest()->getSession();
-                $session->write('version', $e2b_version);
                 //Fetch tab structures
                 //TODO according to model
                 

@@ -250,7 +250,7 @@ function onQueryClicked(preferrenceId = null){
                 if((caseDetail.activity_due_date!=null)&&(typeof caseDetail.activity_due_date !="undefined")&&(caseDetail.activity_due_date !="")){
                     var datestr = caseDetail.activity_due_date;
                     var year = datestr.substring(4,8);
-                    var month = monthes[Number(datestr.substring(2,4))];
+                    var month = monthes[Number(datestr.substring(2,4)) - 1];
                     var day = datestr.substring(0,2);
                     text+= day+"-"+month+"-"+year;
                 }
@@ -259,7 +259,7 @@ function onQueryClicked(preferrenceId = null){
                 if((caseDetail.submission_due_date!=null)&&(typeof caseDetail.submission_due_date !="undefined")&&(caseDetail.submission_due_date !="")){
                     var datestr = caseDetail.submission_due_date;
                     var year = datestr.substring(4,8);
-                    var month = monthes[Number(datestr.substring(2,4))];
+                    var month = monthes[Number(datestr.substring(2,4)) - 1];
                     var day = datestr.substring(0,2);
                     text+= day+"-"+month+"-"+year;
                 }

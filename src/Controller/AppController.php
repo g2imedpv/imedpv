@@ -41,16 +41,7 @@ class AppController extends Controller
     public function initialize()
     {
         $language = $this->request->getSession()->read('Language');
-        $version = $this->request->getSession()->read('version');
-        if($version == 2||$version ==null) $version = "";
-        if($version == 3) $version = "_r3";
         I18n::setLocale($language);
-        parent::initialize();
-        TableRegistry::config('SdFields', ['table' => 'sd_fields'.$version]);
-        TableRegistry::config('SdSections', ['table' => 'sd_sections'.$version]);
-        TableRegistry::config('SdFieldValueLookUps', ['table' => 'sd_field_value_look_ups'.$version]);
-        TableRegistry::config('SdSectionStructures', ['table' => 'sd_section_structures'.$version]);
-        TableRegistry::config('SdSectionSummaries', ['table' => 'sd_section_summaries'.$version]);
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
@@ -86,6 +77,16 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security');
     }
+    public function configVersion($version){
+        parent::initialize();
+        TableRegistry::config('SdFields', ['table' => 'sd_fields'.$version]);
+        TableRegistry::config('SdSections', ['table' => 'sd_sections'.$version]);
+        TableRegistry::config('SdFieldValueLookUps', ['table' => 'sd_field_value_look_ups'.$version]);
+        TableRegistry::config('SdSectionStructures', ['table' => 'sd_section_structures'.$version]);
+        TableRegistry::config('SdSectionSummaries', ['table' => 'sd_section_summaries'.$version]);
+    }
+
+
     public function isAuthorized($user = null)
     {
         // Any registered user can access public functions

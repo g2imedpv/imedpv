@@ -524,8 +524,6 @@ class SdProductsController extends AppController
      */
     public function loadTabs()
     {
-        $activity_section_permission_table = TableRegistry::get('SdActivitySectionPermissions');
-        $activity_section_permissions = $activity_section_permission_table->find();
         $sd_tabs_table = TableRegistry::get('SdTabs');
         $sd_tabs = $sd_tabs_table->find()
                     ->contain(['SdSections'=>function($q){
