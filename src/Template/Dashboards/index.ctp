@@ -149,6 +149,9 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
             <div class="form-group col-lg-1">
                 <button class="clearsearch form-control btn btn-sm btn-outline-danger w-100"><i class="fas fa-eraser"></i> <?php echo __("Clear");?></button>
             </div>
+            <div class="form-group col-lg-1">
+                <button id="BasicSearchBtn" class="form-control btn btn-sm btn-outline-info"><i class="fas fa-keyboard"></i> <?php echo __("Basic Search")?></button>
+            </div>
         </div>
     </div>
     <hr class="my-3">

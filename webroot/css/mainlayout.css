@@ -129,6 +129,13 @@ tr:nth-child(even) {
     display: block;
 }
 
+.outOfDateCase{
+    color: red;
+}
+
+.emergencyCase{
+    color: yellow;
+}
 
 .caseList{
     width: 410px;

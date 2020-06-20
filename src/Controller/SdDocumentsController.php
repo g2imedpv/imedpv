@@ -152,7 +152,7 @@ class SdDocumentsController extends AppController
                             $fileName = $document_details['doc_attachment']['name'];
                             $fileType = $document_details['doc_attachment']['type'];
                             $fileSize = $document_details['doc_attachment']['size'];
-                            $rootPath = 'documents/';
+                            $rootPath = 'resources/';
                             $uploadPath = $rootPath.'uploads/files/';
                             //save files into webroot
                             $uploadRealPath = $uploadPath.$case_id;

@@ -1126,7 +1126,7 @@ class SdCasesController extends AppController
                 return;
             };
             $queryTable = TableRegistry::get('SdQueries');
-            $content = $requstData['content']."  Case Number:".$caseNo."    Version:".$version;
+            $content = $requstData['content']."  Case Number:".$caseNo."    Version:".$version." dev.g2-mds.com/sd-tabs/showdetails/".$caseNo;
             $sdQuery = $queryTable->newEntity();
             $dataSet = [
                 'title'=>$title,

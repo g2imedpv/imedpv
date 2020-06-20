@@ -224,12 +224,23 @@ function onQueryClicked(preferrenceId = null){
             var previous_case = "";
             var monthes = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
             $.each(result, function(k,caseDetail){
-                if(caseDetail.activity_due_date!=null)
-                var ad_time = new Date(caseDetail.activity_due_date.substring(2,4)+" "+caseDetail.activity_due_date.substring(0,2)+" "+caseDetail.activity_due_date.substring(4,8));
-                text += "<tr>";
+                var ad_type = 0;
+                if(caseDetail.activity_due_date!=null){
+                    var ad_time = new Date(caseDetail.activity_due_date.substring(2,4)+" "+caseDetail.activity_due_date.substring(0,2)+" "+caseDetail.activity_due_date.substring(4,8));
+                    if (ad_time.getTime() < today.getTime() ) ad_type = 1; //out of date
+                    else if (ad_time.getTime()+1000*60*60*24 - today.getTime() < 0) ad_type = 2; // emergency case
+                    else ad_type = 3;
+                }
+                text += "<tr ";
+                if (ad_type == 1) {
+                    text += "class=\"outOfDateCase\"";
+                } else if (ad_type == 2) {
+                    text += "class=\"emergencyCase\""
+                }
+                text += ">";
                 text += "<td class=\"align-middle\">";
-                if((caseDetail.activity_due_date!=null)&&(ad_time.getTime()+1000*60*60*24 - today.getTime() < 0)) text +=" <i class=\"fas fa-flag\" data-toggle=\"tooltip\" title=\"7 Days Report\" style=\"color:red;\"></i>\n";
-                else if((caseDetail.activity_due_date!=null)&&(ad_time.getTime() - today.getTime() < 0)) text +=" <i class=\"fas fa-flag\" data-toggle=\"tooltip\" title=\"15 Days Report\"style=\"color:yellow;\"></i>\n";
+                if(ad_type == 1) text +=" <i class=\"fas fa-flag\" data-toggle=\"tooltip\" title=\"7 Days Report\" style=\"color:red;\"></i>\n";
+                else if(ad_type == 2) text +=" <i class=\"fas fa-flag\" data-toggle=\"tooltip\" title=\"15 Days Report\"style=\"color:yellow;\"></i>\n";
                 if(caseDetail.serious_case.id!=null) text +=" <i class=\"fas fa-exclamation-triangle\"data-toggle=\"tooltip\" title=\"Serious Case\" style=\"color:red;\"></i>\n";
                 if(caseDetail.clinical_trial.id!=null) text +=" <i class=\"fas fa-user-md\" data-toggle=\"tooltip\" title=\"Clinical Trial\" style=\"color:#845ef7;\"></i>\n";
                 text +="</td>";
