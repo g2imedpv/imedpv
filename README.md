@@ -71,3 +71,5 @@ View pages in cakephp was called "Template" which located in `src\Template`. All
 All the pages we make would apply a layout and these files located in `src\Template\Layout`. Then each page we create will use one of the layout. And the js and css etc. files were indicated in layout as well.
 
 Similarly, some components we usually used would also be encapsulated in `'src\Template\Element'`. For example, the 'Go Top' button we often need would sealed into this place.
+
+## Test
