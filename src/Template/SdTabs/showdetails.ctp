@@ -101,7 +101,22 @@ echo $this->element('generatepdf');
                     <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLThree/<?php echo $caseId ?>"><?php echo __("XML-R3")?></a>
                 </div>
             </li>
-           
+
+            <!-- "Export DRAFT" Dropdown Button -->
+            <li class="nav-item dropdown m-1">
+                <a class="btn btn-sm btn-outline-info dropdown-toggle" href="#" id="exportDRAFT" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-drafting-compass"></i> <?php echo __("Export DRAFT")?>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="export">
+                    <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>"><?php echo __("CIOMS-R2")?></a>
+                    <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMSThree/<?php echo $caseId ?>"><?php echo __("CIOMS-R3")?></a>
+                    <a class="dropdown-item" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>"><?php echo __("FDA-R2")?></a>
+                    <a class="dropdown-item" target="_blank" href="/sd-medwatch-positions-r3/genPdfThree/<?php echo $caseId ?>"><?php echo __("FDA-R3")?></a>
+                    <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLTwo/<?php echo $caseId ?>"><?php echo __("XML-R2")?></a>
+                    <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLThree/<?php echo $caseId ?>"><?php echo __("XML-R3")?></a>
+                </div>
+            </li>
+
             <!-- "Print" Dropdown Button -->
             <li class="nav-item m-1">
                 <a class="btn btn-sm btn-outline-info" href="#" title="Print"  role="button" id="printPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -610,7 +625,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                 }
             }
             $text =$text. "<div id=\"section-".$section->id."-field-".$sd_section_structure_detail->sd_field->id."\" class=\"form-group col-md-".$sd_section_structure_detail->field_length." offset-md-".($sd_section_structure_detail->field_start_at-$length_taken)."\">";
-            if($sd_section_structure_detail->sd_field->sd_element_type->type_name=="title"){ 
+            if($sd_section_structure_detail->sd_field->sd_element_type->type_name=="title"){
                 $text =$text. "<h5 class=\"col-md-12 mb-1 pl-0\" id= \"section-".$section->id."-field_label-".$sd_section_structure_detail->sd_field->id."\">".$sd_section_structure_detail->sd_field->field_label."</h5>";
             }else{
                 $text =$text. "<label id= \"section-".$section->id."-field_label-".$sd_section_structure_detail->sd_field->id."\" >".$sd_section_structure_detail->sd_field->field_label;
