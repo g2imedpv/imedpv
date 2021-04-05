@@ -87,6 +87,19 @@ echo $this->element('generatepdf');
                 <a class="btn btn-sm btn-outline-info" href="/sd-documents/add_documents/<?= $caseId ?>" title="Documents Check" target="_blank"><i class="far fa-file-alt"></i> <?php echo __("Documents")?></a>
             </li>
 
+            <!-- "Export DRAFT" Dropdown Button -->
+            <li class="nav-item dropdown m-1">
+                <a class="btn btn-sm btn-outline-info dropdown-toggle" href="#" id="exportDRAFT" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-drafting-compass"></i> <?php echo __("Export DRAFT")?>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="exportDRAFT">
+                    <a class="dropdown-item text-warning" target="_blank" href="/sd-export/genCIOMSDRAFT/<?php echo $caseId ?>"><?php echo __("CIOMS-R2")?></a>
+                    <a class="dropdown-item text-warning" target="_blank" href="/sd-export/genCIOMSThreeDRAFT/<?php echo $caseId ?>"><?php echo __("CIOMS-R3")?></a>
+                    <a class="dropdown-item text-warning" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>"><?php echo __("FDA-R2")?></a>
+                    <a class="dropdown-item text-warning" target="_blank" href="/sd-medwatch-positions-r3/genPdfThree/<?php echo $caseId ?>"><?php echo __("FDA-R3")?></a>
+                </div>
+            </li>
+
             <!-- "Export" Dropdown Button -->
             <li class="nav-item dropdown m-1">
                 <a class="btn btn-sm btn-outline-info dropdown-toggle" href="#" id="export" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -94,21 +107,6 @@ echo $this->element('generatepdf');
                 </a>
                 <div class="dropdown-menu" aria-labelledby="export">
                     <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>"><?php echo __("CIOMS-R2")?></a>
-                    <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMSThree/<?php echo $caseId ?>"><?php echo __("CIOMS-R3")?></a>
-                    <a class="dropdown-item" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>"><?php echo __("FDA-R2")?></a>
-                    <a class="dropdown-item" target="_blank" href="/sd-medwatch-positions-r3/genPdfThree/<?php echo $caseId ?>"><?php echo __("FDA-R3")?></a>
-                    <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLTwo/<?php echo $caseId ?>"><?php echo __("XML-R2")?></a>
-                    <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLThree/<?php echo $caseId ?>"><?php echo __("XML-R3")?></a>
-                </div>
-            </li>
-
-            <!-- "Export DRAFT" Dropdown Button -->
-            <li class="nav-item dropdown m-1">
-                <a class="btn btn-sm btn-outline-info dropdown-toggle" href="#" id="exportDRAFT" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-drafting-compass"></i> <?php echo __("Export DRAFT")?>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="exportDRAFT">
-                    <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMSDRAFT/<?php echo $caseId ?>"><?php echo __("CIOMS-R2")?></a>
                     <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMSThree/<?php echo $caseId ?>"><?php echo __("CIOMS-R3")?></a>
                     <a class="dropdown-item" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>"><?php echo __("FDA-R2")?></a>
                     <a class="dropdown-item" target="_blank" href="/sd-medwatch-positions-r3/genPdfThree/<?php echo $caseId ?>"><?php echo __("FDA-R3")?></a>

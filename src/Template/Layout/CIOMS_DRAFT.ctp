@@ -6,7 +6,7 @@
 <?= $this->Html->css('bootstrap/bootstrap-reboot.min.css') ?>
 <?= $this->Html->css('bootstrap/bootstrap.min.css') ?>
 
-<body style="background-image: url('/webroot/img/avatar-2-256.png');position: fixed; bottom: 0; right: 0;">
+<body style="background-image: url('/webroot/img/draft-watermark.jpg');background-repeat: no-repeat;background-size: cover;">
     <div class="page-header" style="text-align: right">
         <span></span><span >Mfr.Control Number:<?php echo $fileName?></span><br/>
     </div>
