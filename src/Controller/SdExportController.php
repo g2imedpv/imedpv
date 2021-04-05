@@ -5,12 +5,12 @@ use Cake\ORM\TableRegistry;
 
 class SdExportController extends AppController
     {
-        //function for CIOMS and MEDWATCH: 
+        //function for CIOMS and MEDWATCH:
         //get direct value from sd_field_values table
         public function getDirectValue($caseId,$field_id,$set_num=null){
             $more_conditions = "";
             if (!is_null($set_num))
-            { 
+            {
                 $more_conditions = "set_number=".substr($set_num,0,1);
             }
             $sdFieldValues = TableRegistry::get('sdFieldValues');
@@ -85,7 +85,7 @@ class SdExportController extends AppController
                 case '12':
                     $monthFormat="DEC";
                     break;
-                default: 
+                default:
                     $monthFormat="";
                 }
             return $monthFormat;
@@ -98,28 +98,28 @@ class SdExportController extends AppController
             //debug($dayFormat);die();
             if(($dayFormat=='00')){
                 $dayFormat="DD-";
-            }       
+            }
             else{
                 $dayFormat=$dayFormat."-";
             }
             $yearFormat=substr($informalDate,4,4);
             if($yearFormat=='0000'){
                 $yearFormat="-YYYY";
-            }       
+            }
             else{
                 $yearFormat="-".$yearFormat;
             }
             return $dayFormat.$this->getMonthValue($informalDate).$yearFormat;
-        } 
+        }
         //Grab the first/last $num word from the $words string
-        // public function subwords($words,$num,$order){		
+        // public function subwords($words,$num,$order){
         //     $total_num = str_word_count($words); // get words count
-        //     if($total_num <= $num){ 
+        //     if($total_num <= $num){
         //         return $words;
         //     }else{
         //         $pattern = '/([\S]+?[ ]+){'.$num.'}/';
         //         preg_match($pattern, $words, $out);
-        //         return $out[$order]; 
+        //         return $out[$order];
         //     }
         // }
 
@@ -152,13 +152,13 @@ class SdExportController extends AppController
         // *  Generate CIOMS files
         // *
         // */
-        
+
         //function of no.7+13
         public function getDescribeValue($caseId,$term,$llt,$pt,$outcome,$action,$narrative,$repoCom,$test,$remark,$additionCom){
             $sdFieldValues = TableRegistry::get('sdFieldValues');
             $eventQuantity= $sdFieldValues->find()
             ->select(['set_number'])
-            ->where(['sd_case_id='.$caseId,'sd_field_id='.$term,'status=1'])->toArray(); 
+            ->where(['sd_case_id='.$caseId,'sd_field_id='.$term,'status=1'])->toArray();
             $length=count($eventQuantity);
             for($i=0;$i<$length;$i++){
                 $set_num=$eventQuantity[$i]['set_number'];
@@ -222,7 +222,7 @@ class SdExportController extends AppController
                     $resultsTestsProcedures=" ";
                 }else{
                     $resultsTestsProcedures="Relevant Tests/Laboratory Data:".$resultsTestsProcedures;
-                }  
+                }
             }
             $compamyRemarksFlag=$this->getDirectValue($caseId,560,1);
             if($compamyRemarksFlag==1){
@@ -269,7 +269,7 @@ class SdExportController extends AppController
                 $this->set('otherSerious','checked');
             };
         }
-    
+
         //function of no.14
         public function getCiomsSuspectValue($caseId,$product,$substanceName,$botainedCountry,$batchNo){
             $suspect=$this->SuspectRole($caseId);
@@ -296,7 +296,7 @@ class SdExportController extends AppController
                     else{
                         $lotNumber=" ";
                     }
-                    $description=$query1.$substance.$countryObtained.$lotNumber; 
+                    $description=$query1.$substance.$countryObtained.$lotNumber;
                     $j=$i+1;
                     $suspectProducts .= "#".$j.") ".$description."<br>";
                 }
@@ -327,13 +327,13 @@ class SdExportController extends AppController
                         $interval=" ";
                     }
                     $query5=$this->getLookupValue($caseId,$defination,$setNumber);
-                    $description=$query1.$query2."     ".$dosage."     ".$interval." ".$query5; 
+                    $description=$query1.$query2."     ".$dosage."     ".$interval." ".$query5;
                     $j=$i+1;
-                    $dailyDose .= "#".$j.")  ".$description."<br>";  
+                    $dailyDose .= "#".$j.")  ".$description."<br>";
                 }
             return $dailyDose;
         }
-        
+
         //function of no.16
         public function getCiomsRouteValue($caseId,$route){
             $suspect=$this->SuspectRole($caseId);
@@ -343,7 +343,7 @@ class SdExportController extends AppController
                     $setNumber=$suspect[$i];
                     $description=$this->getLookupValue($caseId,$route,$setNumber);
                     $j=$i+1;
-                    $Route .= "#".$j.")  ".$description."<br>";  
+                    $Route .= "#".$j.")  ".$description."<br>";
                 }
             return $Route;
         }
@@ -363,7 +363,7 @@ class SdExportController extends AppController
                         $query2="(".$query2.")";
                     }
                     $j=$i+1;
-                    $Indication .= "#".$j.")  ".$query1.$query2."<br>";  
+                    $Indication .= "#".$j.")  ".$query1.$query2."<br>";
                 }
             return $Indication;
         }
@@ -377,7 +377,7 @@ class SdExportController extends AppController
                     $query1=$this->getDateValue($caseId,$start,$setNumber);
                     $query2=$this->getDateValue($caseId,$end,$setNumber);
                     $j=$i+1;
-                    $therapy .= "#".$j.")  ".$query1."/".$query2."<br>";  
+                    $therapy .= "#".$j.")  ".$query1."/".$query2."<br>";
                 }
             return $therapy;
         }
@@ -392,7 +392,7 @@ class SdExportController extends AppController
                     $query1=$this->getDirectValue($caseId,$duration,$setNumber);
                     $query2=$this->getLookupValue($caseId,$durationUnit,$setNumber);
                     $j=$i+1;
-                    $Duration .= "#".$j.")  ".$query1."  ".$query2."<br>";  
+                    $Duration .= "#".$j.")  ".$query1."  ".$query2."<br>";
                 }
             return $Duration;
         }
@@ -430,14 +430,14 @@ class SdExportController extends AppController
             }
         }
 
-        //function of no.22 
+        //function of no.22
         public function getCiomsConcomitantValue($caseId,$product,$substanceName,$botainedCountry,$start,$end,$dosageNum,$dosageUnit,$indication){
             $concomitant=$this->ConcomitantRole($caseId);
             $sdFieldValues = TableRegistry::get('sdFieldValues');
             $length=count($concomitant);
                 for($i=0;$i<$length;$i++){
                     $setNumber=$concomitant[$i];
-                    $query1=$this->getDirectValue($caseId,$product,$setNumber);        
+                    $query1=$this->getDirectValue($caseId,$product,$setNumber);
                     $query2=$this->getDirectValue($caseId,$substanceName,$setNumber);
                         if($query2!=null){
                             $substance="(".$query2.")";
@@ -454,7 +454,7 @@ class SdExportController extends AppController
                             $query4=$query4." / ";
                         }
                     $query5=$this->getDateValue($caseId,$end,$setNumber);
-                        
+
                         if($query5==null){
                             $query5="unknown";
                         }
@@ -467,10 +467,10 @@ class SdExportController extends AppController
                         if($query8==null){
                             $query8="unknown";
                         }
-                    $description=$query1.$substance.$countryObtained." | ".$query4.$query5." | ".$query6." ".$query7." | ".$query8; 
+                    $description=$query1.$substance.$countryObtained." | ".$query4.$query5." | ".$query6." ".$query7." | ".$query8;
                     $j=$i+1;
                     $concomitantProducts .= "#".$j.")  ".$description."<br>";
-                    
+
                 }
             return $concomitantProducts;
         }
@@ -497,11 +497,11 @@ class SdExportController extends AppController
                         $query4="unknown";
                     }
                     $query=$this->getDirectValue($caseId,$comment,$i);
-                    $relevant .= "#".$i.")  ".$query1."  |  ".$query2."  |  ".$query3."   |   ".$query4."  |  ".$query5."<br>";  
+                    $relevant .= "#".$i.")  ".$query1."  |  ".$query2."  |  ".$query3."   |   ".$query4."  |  ".$query5."<br>";
                 }
             return $relevant;
         }
-        
+
 
         //function of no.24d checkbox
         public function getCiomsReportSourceValue($caseId,$set_num=null){
@@ -531,10 +531,10 @@ class SdExportController extends AppController
                     break;
                 }
         }
-    
+
         // Call the previous function by $caseId,$field_id and $set_num
         public function genCIOMS($caseId) {
-            $this->viewBuilder()->layout('CIOMS'); 
+            $this->viewBuilder()->layout('CIOMS');
             //MFR number
             $sdCases = TableRegistry::get('sdCases');
             $name=$sdCases->find()
@@ -562,8 +562,8 @@ class SdExportController extends AppController
             //8-12
             $this->getCiomsSeriousValue($caseId,354);
             //14
-            $this->set('suspecttitle','     Drug     |     Batch/Lot Number<br>'); 
-            $this->set('suspectProducts', $this->getCiomsSuspectValue($caseId,176,177,178,179));//B.4.K.2.1 Proprietary Medicinal Product Name 
+            $this->set('suspecttitle','     Drug     |     Batch/Lot Number<br>');
+            $this->set('suspectProducts', $this->getCiomsSuspectValue($caseId,176,177,178,179));//B.4.K.2.1 Proprietary Medicinal Product Name
             //15  dailyDose
             $this->set('dailyDose', $this->getCiomsDailyDoseValue($caseId,183,184,185,186,187));//B.4.k.5.1Dose(number)+Dose(unit) (B.4.k.5.2)+Number Of Separate Dosages (B.4.k.5.3)+Interval (B.4.k.5.4)+/Interval Unit (B.4.k.5.5)+ Dosage Text  (B.4.k.6)
             //16
@@ -573,7 +573,7 @@ class SdExportController extends AppController
             //18
             $this->set('therapy', $this->getCiomsTherapyValue($caseId,199,205));//B.4.k.12b   drugstartdate
             //19
-            $this->set('duration', $this->getCiomsDurationValue($caseId,206,207));//B.4.k.15a  drugtreatmentduration 
+            $this->set('duration', $this->getCiomsDurationValue($caseId,206,207));//B.4.k.15a  drugtreatmentduration
             //20.
             $this->getCiomsDechallengeValue($caseId,381,'1,1');//dechallenge
             //21.
@@ -585,11 +585,76 @@ class SdExportController extends AppController
             $this->set('relevanttitle','Disease    |    Start date    |   Continuing   |    End date    |    Comments<br>');
             $this->set('relevant', $this->getCiomsRelevantValue($caseId,239,99,100,102,103));
             //24a
-            $this->set('caseSource', $this->getDirectValue($caseId,19));//A.1.11.1  Source of the case identifier 
+            $this->set('caseSource', $this->getDirectValue($caseId,19));//A.1.11.1  Source of the case identifier
             //24b
             $this->set('otherCaseIndentifier', $this->getDirectValue($caseId,20));//A.1.11 Other case identifiers in previous transmissions
             //24c
-            $this->set('receiptDate', $this->getDateValue($caseId,12));//A.1.7b  Latest received date 
+            $this->set('receiptDate', $this->getDateValue($caseId,12));//A.1.7b  Latest received date
+            //24d
+            $this->getCiomsReportSourceValue($caseId);
+            //25a.
+            $this->getCiomsReportTypeValue($caseId,558);//report type
+
+        }
+
+        // Call the previous function by $caseId,$field_id and $set_num
+        public function genCIOMSDRAFT($caseId) {
+            $this->viewBuilder()->layout('CIOMS_DRAFT');
+            //MFR number
+            $sdCases = TableRegistry::get('sdCases');
+            $name=$sdCases->find()
+                    ->select(['caseNo'])
+                    ->where(['id='.$caseId,'status=1'])->first();
+            $fileName=$name['caseNo'];
+            $this->set('fileName', $fileName);
+            //1.
+            $this->set('patientInitial', $this->getDirectValue($caseId,79));//B.1.1  patientinitial
+            //1a.
+            $this->set('country', $this->getLookupValue($caseId,3));// A.1.2 occurcountry
+            //2.
+            $this->set('birth', $this->getDirectValue($caseId,85));// A.1.2.1b patientbirthdate
+            $this->set('birthMonth', $this->getMonthValue($this->getDirectValue($caseId,85)));// A.1.2.1b patientbirthdate
+            //2a.
+            $this->set('age', $this->getDirectValue($caseId,86));//B.1.2.2a patientonsetage
+            $this->set('ageUnit',$this->getLookupValue($caseId,87));//B.1.2.2b  patientonsetageunit
+            //3
+            $this->set('sex',$this->getLookupValue($caseId,93));//B.1.5  sex
+            //4-6
+            $this->set('reaction', $this->getDirectValue($caseId,156));//B.2.i.4b  reactionstartdate
+            $this->set('reactionMonth', $this->getMonthValue($this->getDirectValue($caseId,156)));//B.2.i.4b  reactionstartdate
+            //7+13
+            $this->set('describe', $this->getDescribeValue($caseId,149,392,394,165,208,218,219,174,222,310));//B.2.i.0  primarysourcereaction
+            //8-12
+            $this->getCiomsSeriousValue($caseId,354);
+            //14
+            $this->set('suspecttitle','     Drug     |     Batch/Lot Number<br>');
+            $this->set('suspectProducts', $this->getCiomsSuspectValue($caseId,176,177,178,179));//B.4.K.2.1 Proprietary Medicinal Product Name
+            //15  dailyDose
+            $this->set('dailyDose', $this->getCiomsDailyDoseValue($caseId,183,184,185,186,187));//B.4.k.5.1Dose(number)+Dose(unit) (B.4.k.5.2)+Number Of Separate Dosages (B.4.k.5.3)+Interval (B.4.k.5.4)+/Interval Unit (B.4.k.5.5)+ Dosage Text  (B.4.k.6)
+            //16
+            $this->set('route', $this->getCiomsRouteValue($caseId,192));//B.4.k.8    drugadministrationroute
+            //17
+            $this->set('indication', $this->getCiomsIndicationValue($caseId,197,299));//B.4.k.11b   drugindication
+            //18
+            $this->set('therapy', $this->getCiomsTherapyValue($caseId,199,205));//B.4.k.12b   drugstartdate
+            //19
+            $this->set('duration', $this->getCiomsDurationValue($caseId,206,207));//B.4.k.15a  drugtreatmentduration
+            //20.
+            $this->getCiomsDechallengeValue($caseId,381,'1,1');//dechallenge
+            //21.
+            $this->getCiomsRechallengeValue($caseId,209,'1,1');//Rechallenge
+            //22. concomitant drugs and dates of administration
+            $this->set('concomitanttitle','Drug    |    Therapy Start and Stop Date    |    Dose    |    Indication<br>');
+            $this->set('concomitantProducts', $this->getCiomsConcomitantValue($caseId,176,177,178,199,205,183,184,197));//B.4.k.2+B.4.k.12+B.4.k.14+dose(unit)+indication
+            //23.other relevant history
+            $this->set('relevanttitle','Disease    |    Start date    |   Continuing   |    End date    |    Comments<br>');
+            $this->set('relevant', $this->getCiomsRelevantValue($caseId,239,99,100,102,103));
+            //24a
+            $this->set('caseSource', $this->getDirectValue($caseId,19));//A.1.11.1  Source of the case identifier
+            //24b
+            $this->set('otherCaseIndentifier', $this->getDirectValue($caseId,20));//A.1.11 Other case identifiers in previous transmissions
+            //24c
+            $this->set('receiptDate', $this->getDateValue($caseId,12));//A.1.7b  Latest received date
             //24d
             $this->getCiomsReportSourceValue($caseId);
             //25a.
@@ -598,7 +663,7 @@ class SdExportController extends AppController
         }
 
         public function genCIOMSThree($caseId) {
-            $this->viewBuilder()->layout('CIOMS_R3'); 
+            $this->viewBuilder()->layout('CIOMS_R3');
             //MFR number
             $sdCases = TableRegistry::get('sdCases');
             $name=$sdCases->find()
@@ -643,7 +708,7 @@ class SdExportController extends AppController
                 $this->set('otherSerious','checked');
             };
             //14
-            $this->set('suspecttitle','     Drug     |     Batch/Lot Number<br>'); 
+            $this->set('suspecttitle','     Drug     |     Batch/Lot Number<br>');
             $this->set('suspectProducts', $this->getCiomsSuspectValue($caseId,1114,1115,178,179));//G.k.2Drug Identification+G.k.4.r.7 Batch / Lot Number
             //15  dailyDose
             $this->set('dailyDose', $this->getCiomsDailyDoseValue($caseId,183,1116,185,1117,1118));//G.k.4.r.8
@@ -666,7 +731,7 @@ class SdExportController extends AppController
             $this->set('relevanttitle','Disease    |    Start date    |   Continuing   |    End date    |    Comments<br>');
             $this->set('relevant', $this->getCiomsRelevantValue($caseId,239,99,100,102,1084));//D.7.2
             //24a
-            $this->set('caseSource', $this->getDirectValue($caseId,1066));//C.1.9.1.r.1  
+            $this->set('caseSource', $this->getDirectValue($caseId,1066));//C.1.9.1.r.1
             //24b
             $this->set('otherCaseIndentifier', $this->getDirectValue($caseId,20));//C.1.9 Other Case Identifiers
             //24c
@@ -678,6 +743,86 @@ class SdExportController extends AppController
 
         }
 
+        public function genCIOMSThreeDRAFT($caseId) {
+            $this->viewBuilder()->layout('CIOMS_R3_DRAFT');
+            //MFR number
+            $sdCases = TableRegistry::get('sdCases');
+            $name=$sdCases->find()
+                    ->select(['caseNo'])
+                    ->where(['id='.$caseId,'status=1'])->first();
+            $fileName=$name['caseNo'];
+            $this->set('fileName', $fileName);
+            //1.
+            $this->set('patientInitial', $this->getDirectValue($caseId,1080));//D.1  patientinitial
+            //1a.
+            $this->set('country', $this->getLookupValue($caseId,1026));// E.i.9 occurcountry
+            //2.
+            $this->set('birth', $this->getDirectValue($caseId,85));// D.2.1 Date of Birth
+            $this->set('birthMonth', $this->getMonthValue($this->getDirectValue($caseId,85)));// D.2.1 Date of Birth
+            //2a.
+            $this->set('age', $this->getDirectValue($caseId,86));//D.2.2a Age at Time of Onset of Reaction / Event
+            $this->set('ageUnit',$this->getLookupValue($caseId,87));//D.2.2b Age at Time of Onset of Reaction / Event Unit
+            //3
+            $this->set('sex',$this->getLookupValue($caseId,93));//D.5 Sex
+            //4-6
+            $this->set('reaction', $this->getDirectValue($caseId,1108));//E.i.4  Date of Start of Reaction / Event
+            $this->set('reactionMonth', $this->getMonthValue($this->getDirectValue($caseId,1108)));//E.i.4  Date of Start of Reaction / Event
+            //7+13
+            $this->set('describe', $this->getDescribeValue($caseId,1105,392,394,1144,1146,1134,1135,174,1138,310));//E.i.1Reaction / Event+E.i.7 Outcome of Reaction / Event+G.k.8 Action(s) Taken with Drug
+            //8-12  E.i.3.2Seriousness Criteria at Event Level
+            if($this->getDirectValue($caseId,1019,1)==1){
+                $this->set('patientDied','checked');
+            };
+            if($this->getDirectValue($caseId,1020,1)==1){
+                $this->set('lifeThreatening','checked');
+            };
+            if($this->getDirectValue($caseId,1021,1)==1){
+                $this->set('disability','checked');
+            };
+            if($this->getDirectValue($caseId,1022,1)==1){
+                $this->set('hospitalization','checked');
+            };
+            if($this->getDirectValue($caseId,1023,1)==1){
+                $this->set('congenital','checked');
+            };
+            if($this->getDirectValue($caseId,1024,1)==1){
+                $this->set('otherSerious','checked');
+            };
+            //14
+            $this->set('suspecttitle','     Drug     |     Batch/Lot Number<br>');
+            $this->set('suspectProducts', $this->getCiomsSuspectValue($caseId,1114,1115,178,179));//G.k.2Drug Identification+G.k.4.r.7 Batch / Lot Number
+            //15  dailyDose
+            $this->set('dailyDose', $this->getCiomsDailyDoseValue($caseId,183,1116,185,1117,1118));//G.k.4.r.8
+            //16
+            $this->set('route', $this->getCiomsRouteValue($caseId,1122));//G.k.4.r.10 Route of Administration
+            //17
+            $this->set('indication', $this->getCiomsIndicationValue($caseId,1126,299));//G.k.7 Indication for Use in Case
+            //18
+            $this->set('therapy', $this->getCiomsTherapyValue($caseId,199,205));//G.k.4.r.4 Date and Time of Start of Drug
+            //19
+            $this->set('duration', $this->getCiomsDurationValue($caseId,206,1129));//G.k.4.r.6 Duration of Drug Administration
+            //20.
+            $this->getCiomsDechallengeValue($caseId,1147,'1,1');//dechallenge
+            //21.
+            $this->getCiomsRechallengeValue($caseId,381,'1,1');//Rechallenge
+            //22. concomitant drugs and dates of administration
+            $this->set('concomitanttitle','Drug    |    Therapy Start and Stop Date    |    Dose    |    Indication<br>');
+            $this->set('concomitantProducts', $this->getCiomsConcomitantValue($caseId,1114,1115,178,199,205,183,1116,1126));//G.k.2 +G.k.4.r.4+G.k.4.r.5+dose(unit)+indication
+            //23.other relevant history
+            $this->set('relevanttitle','Disease    |    Start date    |   Continuing   |    End date    |    Comments<br>');
+            $this->set('relevant', $this->getCiomsRelevantValue($caseId,239,99,100,102,1084));//D.7.2
+            //24a
+            $this->set('caseSource', $this->getDirectValue($caseId,1066));//C.1.9.1.r.1
+            //24b
+            $this->set('otherCaseIndentifier', $this->getDirectValue($caseId,20));//C.1.9 Other Case Identifiers
+            //24c
+            $this->set('receiptDate', $this->getDateValue($caseId,12));//C.1.5Date of Most Recent Information for This Report
+            //24d
+            $this->getCiomsReportSourceValue($caseId);//C.1.3Type of Report+C.4.r.1Literature Reference(s)+ C.2.r.4 Qualification
+            //25a.
+            $this->getCiomsReportTypeValue($caseId,1062);//report type
+
+        }
 
             /**
             *  Generate PDF files
@@ -810,7 +955,7 @@ class SdExportController extends AppController
                         for($i=0;$i<strlen($MedValue);$i++){
                             $checked[]=substr($MedValue,$i,1);
                         }
-                        
+
                         foreach($checked as $key=>$value){
                             if($value=='1'){
                                 $option=$key+1;
@@ -906,7 +1051,7 @@ class SdExportController extends AppController
                 $sdFieldValues = TableRegistry::get('sdFieldValues');
                 $eventQuantity= $sdFieldValues->find()
                 ->select(['set_number'])
-                ->where(['sd_case_id='.$caseId,'sd_field_id='.$term,'status=1'])->toArray(); 
+                ->where(['sd_case_id='.$caseId,'sd_field_id='.$term,'status=1'])->toArray();
                 $length=count($eventQuantity);
                 for($i=0;$i<$length;$i++){
                     $set_num=$eventQuantity[$i]['set_number'];
@@ -947,7 +1092,7 @@ class SdExportController extends AppController
                 }else{
                     $reporterComment="Reporter Comments:".$reporterComment;
                 }
-               
+
                 $compamyRemarksFlag=$this->getDirectValue($caseId,560,1);
                 if($compamyRemarksFlag==1){
                 $compamyRemarks=$this->getDirectValue($caseId,$remark,1);
@@ -968,7 +1113,7 @@ class SdExportController extends AppController
                 }else{$additionalComment=" ";}
                 $result=$description."<br>".$narrativeIncludeClinical."<br>".$reporterComment."<br>".$compamyRemarks."<br>".$additionalComment;
                 return $result;
-    
+
             }
             //b6 relevant tests/laboratory data in page one
             public function labDataOne($caseId){
@@ -996,7 +1141,7 @@ class SdExportController extends AppController
                     if($query3!=null){
                         $query3="Test Result:".$query3." ";
                     }
-                    
+
                     $query4=$this->getLookupValue($caseId,170,$setNumber);
                     if($query4!=null){
                         $query4=$query4."/";
@@ -1013,9 +1158,9 @@ class SdExportController extends AppController
                     if($query7!=null){
                         $query7="Comments:".$query7;
                     }
-                    $description=$query1.$query2.$query3.$query4.$query5.$query6.$query7; 
+                    $description=$query1.$query2.$query3.$query4.$query5.$query6.$query7;
                     $j=$i+1;
-                    $testdata.= "#".$j.")  ".$description."<br>";  
+                    $testdata.= "#".$j.")  ".$description."<br>";
                 }
                 $labdata =$this->getDirectValue($caseId,174,1)."<br>".$testdata;
                 $labDataOne=substr($labdata,0,300);
@@ -1048,7 +1193,7 @@ class SdExportController extends AppController
                     if($query3!=null){
                         $query3="Test Result:".$query3." ";
                     }
-                    
+
                     $query4=$this->getLookupValue($caseId,170,$setNumber);
                     if($query4!=null){
                         $query4=$query4."/";
@@ -1065,9 +1210,9 @@ class SdExportController extends AppController
                     if($query7!=null){
                         $query7="Comments:".$query7;
                     }
-                    $description=$query1.$query2.$query3.$query4.$query5.$query6.$query7; 
+                    $description=$query1.$query2.$query3.$query4.$query5.$query6.$query7;
                     $j=$i+1;
-                    $testdata.= "#".$j.")  ".$description."<br>";  
+                    $testdata.= "#".$j.")  ".$description."<br>";
                 }
                 $labdata =$this->getDirectValue($caseId,174,1)."<br>".$testdata;
                 $labDataThree=substr($labdata,300);
@@ -1083,10 +1228,10 @@ class SdExportController extends AppController
                 $positions= $sdMedwatchPositions ->find()
                     ->select(['id','sd_field_id','position_top','position_left','position_width','position_height'])
                     ->where(['medwatch_no="c2"'])
-                    ->first(); 
+                    ->first();
                 $text = $text."<style> p {position: absolute;font-size:10px;font-family: courier;}  </style>";
                 $pageone=substr($concomitantProducts,0,300);
-                
+
                 $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$pageone.'</p>';
                 return $text;
@@ -1099,31 +1244,31 @@ class SdExportController extends AppController
                 $positions= $sdMedwatchPositions ->find()
                     ->select(['id','sd_field_id','position_top','position_left','position_width','position_height'])
                     ->where(['medwatch_no="c2+"'])
-                    ->first(); 
+                    ->first();
                 $text = $text."<style> p {position: absolute;font-size:10px;font-family: courier;}  </style>";
                 $pageThree=substr($concomitantProducts,300);
-                
+
                 $text =$text.'<p style="top: '.$positions['position_top'].'px; left: '.$positions['position_left']
                         .'px; width: '.$positions['position_width'].'px;  height: '.$positions['position_height'].'px; color:black;">'.$pageThree.'</p>';
                 return $text;
             }
-            
-          
+
+
 
             public function genFDApdf($caseId)
-            {   
-                
+            {
+
                 //a1 patientID field
                $result=$this->getMedPosition($caseId,79,1,1);
-                //a2 age field  
+                //a2 age field
                 $result=$result.$this->getMedPosition($caseId,86,1,1);
-                //a2 age unit 
+                //a2 age unit
                 $result=$result.$this->getMedPosition($caseId,87,1,2);
-                //a2 date of birth 
+                //a2 date of birth
                 $result=$result.$this->getMedPosition($caseId,85,4,4);//day
                 $result=$result.$this->getMedPosition($caseId,85,5,5);//month
                 $result=$result.$this->getMedPosition($caseId,85,6,6);//year
-                //a3 sex 
+                //a3 sex
                 $result=$result.$this->getMedPosition($caseId,93,1,2);
                 //a4 weight
                 $result=$result.$this->getMedPosition($caseId,91,1,1);
@@ -1148,12 +1293,12 @@ class SdExportController extends AppController
                 $result=$result.$this->CurrentTime();
                 // b5 describe event or problem
                 $describeOne=substr($this->getDescribeEventValue($caseId,149,392,394,218,219,222,310),0,600);
-                $result=$result.$this->getPosition($caseId,218,1,$describeOne);   
+                $result=$result.$this->getPosition($caseId,218,1,$describeOne);
                 // b6 relevant tests/laboratory data
-                $result=$result.$this->labDataOne($caseId);   
+                $result=$result.$this->labDataOne($caseId);
                 // b7 other relevant history
                 $historyOne=substr($this->getMedValue($caseId,104,1),0,300);
-                $result=$result.$this->getPosition($caseId,104,1,$historyOne);   
+                $result=$result.$this->getPosition($caseId,104,1,$historyOne);
                 //c2 concomitant medical products and therapy dates
                 $result=$result.$this->concomitantTherapyOne($caseId);
                 $suspect=$this->SuspectRole($caseId);
@@ -1194,7 +1339,7 @@ class SdExportController extends AppController
                     //c10#1 rechallenge?
                     $result=$result.$this->getMedPosition($caseId,209,7,2,$suspect[0]);
                 }
-                
+
                 if(!is_null($suspect[1])){
                 // c1#2 name and strength
                     $result=$result.$this->getMedPosition($caseId,176,1,1,$suspect[1]);
@@ -1226,7 +1371,7 @@ class SdExportController extends AppController
                     // C8#2 expiration date
                     $result=$result.$this->getMedPosition($caseId,298,4,4,$suspect[1]);//day
                     $result=$result.$this->getMedPosition($caseId,298,5,5,$suspect[1]);//month
-                    $result=$result.$this->getMedPosition($caseId,298,6,6,$suspect[1]);//year 
+                    $result=$result.$this->getMedPosition($caseId,298,6,6,$suspect[1]);//year
                     //c9#2 dechallenge?
                     $result=$result.$this->getMedPosition($caseId,381,7,2,$suspect[1]);
                     //c10#2 rechallenge?
@@ -1235,18 +1380,18 @@ class SdExportController extends AppController
                 // e1 last name
                 $result=$result.$this->getMedPosition($caseId,28,1,1);
                 //e1 first name
-                $result=$result.$this->getMedPosition($caseId,26,1,1); 
+                $result=$result.$this->getMedPosition($caseId,26,1,1);
                 //e1 address
-                $result=$result.$this->getMedPosition($caseId,31,1,1); 
+                $result=$result.$this->getMedPosition($caseId,31,1,1);
                 //e1 city
-                $result=$result.$this->getMedPosition($caseId,32,1,1); 
+                $result=$result.$this->getMedPosition($caseId,32,1,1);
                 //e1 state
-                $result=$result.$this->getMedPosition($caseId,33,1,1); 
+                $result=$result.$this->getMedPosition($caseId,33,1,1);
                 //e1 country
-                $result=$result.$this->getMedPosition($caseId,35,2,1); 
+                $result=$result.$this->getMedPosition($caseId,35,2,1);
                 // e1 zip
                 $result=$result.$this->getMedPosition($caseId,34,1,1);
-                //e1 phone 
+                //e1 phone
                 $result=$result.$this->getMedPosition($caseId,229,1,1);
                 //e1 email
                 $result=$result.$this->getMedPosition($caseId,232,1,1);
@@ -1265,7 +1410,7 @@ class SdExportController extends AppController
                 $mpdf->CSSselectMedia='mpdf';
                 $mpdf->SetTitle('FDA-MEDWATCH');
                 $mpdf->SetWatermarkImage('../img/draft-watermark.jpg');
-                $mpdf->showWatermarkImage = true;       
+                $mpdf->showWatermarkImage = true;
                 //$medwatchdata = $this->SdTabs->find();
                 $mpdf->use_kwt = true;
                 $mpdf->SetImportUse();
@@ -1284,7 +1429,7 @@ class SdExportController extends AppController
                 // b6 relevant tests continue
                 $continue=$continue.$this->labDataThree($caseId);
                 $historyThree=substr($this->getMedValue($caseId,104,1),300);//b7 other relevant history continue
-                $continue=$continue.$this->getPosition($caseId,104,2,$historyThree);   
+                $continue=$continue.$this->getPosition($caseId,104,2,$historyThree);
                 $continue=$continue.$this->concomitantTherapyThree($caseId); //c2 concomitant medical continue
                 $mpdf->WriteHTML($continue);
                 $mpdf->Output();
