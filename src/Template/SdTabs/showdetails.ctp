@@ -107,8 +107,8 @@ echo $this->element('generatepdf');
                 <a class="btn btn-sm btn-outline-info dropdown-toggle" href="#" id="exportDRAFT" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-drafting-compass"></i> <?php echo __("Export DRAFT")?>
                 </a>
-                <div class="dropdown-menu" aria-labelledby="export">
-                    <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>"><?php echo __("CIOMS-R2")?></a>
+                <div class="dropdown-menu" aria-labelledby="exportDRAFT">
+                    <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMSDRAFT/<?php echo $caseId ?>"><?php echo __("CIOMS-R2")?></a>
                     <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMSThree/<?php echo $caseId ?>"><?php echo __("CIOMS-R3")?></a>
                     <a class="dropdown-item" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>"><?php echo __("FDA-R2")?></a>
                     <a class="dropdown-item" target="_blank" href="/sd-medwatch-positions-r3/genPdfThree/<?php echo $caseId ?>"><?php echo __("FDA-R3")?></a>
