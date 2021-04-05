@@ -871,6 +871,8 @@ class SdMedwatchPositionsR3Controller extends AppController
         $mpdf = new \Mpdf\Mpdf();
         $mpdf->CSSselectMedia='mpdf';
         $mpdf->SetTitle('FDA-MEDWATCH');
+        $mpdf->SetWatermarkImage('../img/draft-watermark.jpg');
+        $mpdf->showWatermarkImage = true;   
         //$medwatchdata = $this->SdTabs->find();
         $mpdf->use_kwt = true;
         $mpdf->SetImportUse();
