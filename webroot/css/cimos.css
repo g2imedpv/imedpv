@@ -24,7 +24,17 @@ size: A4;
 margin: 0;
 }
 
+.cimosDraft {
+    background-image: url('../img/draft-watermark.jpg') !important;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
 @media print {
+
+.printBTN {
+    display: none;
+}
 
 table {
     max-height:100% !important;
@@ -32,7 +42,7 @@ table {
     page-break-after: auto;
 }
 .pageOne{
-    zoom:95%; 
+    zoom:95%;
 }
 }
 
@@ -106,40 +116,40 @@ table {
 }
 
 /* print style */
- 
+
 .page-footer {
     display:none;
 }
-  
+
 .page-header {
     display:none;
 }
-  
+
 .page {
     page-break-after: always;
 }
-  
+
 @page {
     margin: 20mm
 }
-  
+
 @media print {
-    thead {display: table-header-group;} 
+    thead {display: table-header-group;}
     tfoot {display: table-footer-group;}
-        
+
     button {display: none;}
-        
+
     body {margin: 0;}
 
     .page-header, .page-header-space {
         height: 25px;
     }
-        
+
     .page-footer, .page-footer-space {
         height: 25px;
-        
+
     }
-        
+
     .page-footer {
         display:block;
         position: fixed;
@@ -147,7 +157,7 @@ table {
         width: 100%;
         border-top: 1px solid black; /* for demo */
     }
-        
+
     .page-header {
         display:block;
         position: fixed;

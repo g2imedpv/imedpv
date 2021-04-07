@@ -6,12 +6,17 @@
 <?= $this->Html->css('bootstrap/bootstrap-reboot.min.css') ?>
 <?= $this->Html->css('bootstrap/bootstrap.min.css') ?>
 
-<body style="background-image: url('/webroot/img/draft-watermark.jpg');background-repeat: no-repeat;background-size: cover;">
+<body class="cimosDraft">
+
+    <div class="text-center my-3 printBTN">
+        <input class="btn btn-primary w-25" type="button" value="Print" onClick="window.print()">
+    </div>
+
     <div class="page-header" style="text-align: right">
         <span></span><span >Mfr.Control Number:<?php echo $fileName?></span><br/>
     </div>
     <div class="page-footer">
-        I'm The Footer
+        DRAFT file.
     </div>
     <!--place holder for the fixed-position header-->
     <div class="page-header-space"></div>

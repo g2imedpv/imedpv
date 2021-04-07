@@ -7,11 +7,14 @@
 <?= $this->Html->css('bootstrap/bootstrap.min.css') ?>
 
 <body>
+    <div class="text-center my-3 printBTN">
+        <input class="btn btn-primary w-25" type="button" value="Print" onClick="window.print()">
+    </div>
     <div class="page-header" style="text-align: right">
         <span></span><span >Mfr.Control Number:<?php echo $fileName?></span><br/>
     </div>
     <div class="page-footer">
-        I'm The Footer
+        Copyright &copy; <?php echo date("Y");?> G2-MDS. All rights reserved.
     </div>
     <!--place holder for the fixed-position header-->
     <div class="page-header-space"></div>
@@ -138,7 +141,7 @@
                 <td class="tg-0pky">
                     <p class="text-left titlesize"> 15. DAILY DOSE(S) </p>
                     <p class="text-left textsize suspect"><?php echo $dailyDose?></p>
-                    
+
                 </td>
                 <td class="tg-0pky">
                     <p class=" titlesize"> 16. ROUTE(S) OF ADMINISTRATION </p>
@@ -157,14 +160,14 @@
                 <td class="tg-0lax" colspan="2">
                     <p class=" titlesize"> 17. INDICATION(S) FOR USE </p>
                     <p class="text-left textsize suspect"><?php echo $indication?></p>
-                    
+
                 </td>
             </tr>
             <tr class="SectionTwo">
                 <td class="tg-0lax">
                     <p class=" titlesize"> 18. THERAPY DATES (from/to) </p>
                     <p class="text-left textsize suspect"><?php echo $therapy?></p>
-                    
+
                 </td>
                 <td class="tg-0lax" colspan="2">
                     <p class=" titlesize"> 19. THERAPY  DURATION </p>
