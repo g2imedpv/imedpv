@@ -870,6 +870,194 @@ class SdMedwatchPositionsR3Controller extends AppController
 
         $mpdf = new \Mpdf\Mpdf();
         $mpdf->CSSselectMedia='mpdf';
+        $mpdf->SetTitle('FDA-MEDWATCH'); 
+        //$medwatchdata = $this->SdTabs->find();
+        $mpdf->use_kwt = true;
+        $mpdf->SetImportUse();
+        $mpdf->SetDocTemplate('export_template/MEDWATCH.pdf',true);
+
+        // If needs to link external css file, uncomment the next 2 lines
+        // $stylesheet = file_get_contents('css/genpdf.css');
+        // $mpdf->WriteHTML($stylesheet,1);
+        $mpdf->WriteHTML($result);
+        $mpdf->AddPage();
+        //$test2 = '<img src="img/pdficon.png" />';
+        //$mpdf->WriteHTML("second page");
+        $mpdf->AddPage();
+        $describeThree=substr($this->getDescribeEventValue($caseId,1105,392,394,1134,1135,1138,310),600);//b5 describe event continue
+        $continue=$this->getPosition($caseId,1134,2,$describeThree);
+        // b6 relevant tests continue
+        $continue=$continue.$this->labDataThree($caseId);
+        $historyThree=substr($this->getMedValue($caseId,104,1),300);//b7 other relevant history continue
+        $continue=$continue.$this->getPosition($caseId,104,2,$historyThree);   
+        $continue=$continue.$this->concomitantTherapyThree($caseId); //c2 concomitant medical continue
+        $mpdf->WriteHTML($continue);
+        $mpdf->Output();
+        // Download a PDF file directly to LOCAL, uncomment while in real useage
+        //$mpdf->Output('TEST.pdf', \Mpdf\Output\Destination::DOWNLOAD);
+        $this->set(compact('positions'));
+    }
+
+
+
+    public function genPdfThreeDRAFT($caseId)
+    {   
+        
+        //a1 patientID field
+        $result=$this->getMedPosition($caseId,1080,1,1);
+        //a2 age field  
+        $result=$result.$this->getMedPosition($caseId,86,1,1);
+        //a2 age unit 
+        $result=$result.$this->getMedPosition($caseId,87,1,2);
+        //a2 date of birth 
+        $result=$result.$this->getMedPosition($caseId,85,4,4);//day
+        $result=$result.$this->getMedPosition($caseId,85,5,5);//month
+        $result=$result.$this->getMedPosition($caseId,85,6,6);//year
+        //a3 sex 
+        $result=$result.$this->getMedPosition($caseId,93,1,2);
+        //a4 weight
+        $result=$result.$this->getMedPosition($caseId,91,1,1);
+        $result=$result.'<p style="top: 205px; left: 368px; width: 18px;  height: 18px; color:black;">'.'X'.'</p>';
+        //a5a ethnicity
+        $result=$result.$this->getMedPosition($caseId,1061,1,2);
+        //a5b race
+        $result=$result.$this->getMedPosition($caseId,1060,1,2);
+        //b1 adverse event
+        $result=$result.$this->getMedPosition($caseId,224,1,2);
+        // b2 serious TODO
+        $result=$result.$this->getMedPosition($caseId,1019,1,2);
+        $result=$result.$this->getMedPosition($caseId,1020,1,2);
+        $result=$result.$this->getMedPosition($caseId,1021,1,2);
+        $result=$result.$this->getMedPosition($caseId,1022,1,2);
+        $result=$result.$this->getMedPosition($caseId,1023,1,2);
+        $result=$result.$this->getMedPosition($caseId,1024,1,2);
+        //b2 death date
+        $result=$result.$this->getMedPosition($caseId,115,4,4);//day
+        $result=$result.$this->getMedPosition($caseId,115,5,5);//month
+        $result=$result.$this->getMedPosition($caseId,115,6,6);//year
+        // b3 date of event
+        $result=$result.$this->getMedPosition($caseId,1108,4,4);//day
+        $result=$result.$this->getMedPosition($caseId,1108,5,5);//month
+        $result=$result.$this->getMedPosition($caseId,1108,6,6);//year
+        //b4
+        $result=$result.$this->CurrentTime();
+        // b5 describe event or problem
+        $describeOne=substr($this->getDescribeEventValue($caseId,1105,392,394,1134,1135,1138,310),0,600);
+        $result=$result.$this->getPosition($caseId,1134,1,$describeOne);   
+        // b6 relevant tests/laboratory data
+        $result=$result.$this->labDataOne($caseId);   
+        // b7 other relevant history
+        $historyOne=substr($this->getMedValue($caseId,104,1),0,300);
+        $result=$result.$this->getPosition($caseId,104,1,$historyOne);   
+        //c2 concomitant medical products and therapy dates
+        $result=$result.$this->concomitantTherapyOne($caseId);
+        $suspect=$this->SuspectRole($caseId);
+        if(!is_null($suspect[0])){
+            // c1#1 name and strength
+            $result=$result.$this->getMedPosition($caseId,1114,1,1,$suspect[0]);
+            // c1#1 NDC or unique ID
+            $result=$result.$this->getMedPosition($caseId,345,1,1,$suspect[0]);
+            // c1#1 Manufacturer/compounder
+            $result=$result.$this->getMedPosition($caseId,284,1,1,$suspect[0]);
+            // c1#1 Lot number
+            $result=$result.$this->getMedPosition($caseId,179,1,1,$suspect[0]);
+            //c3#1 dose
+            $dosageOne=$this->getMedValue($caseId,183,1,$suspect[0]).$this->getMedValue($caseId,184,2,$suspect[0]);
+            $result=$result.$this->getPosition($caseId,183,1,$dosageOne);
+            //c3#1 frequency
+            $frequencyOne=$this->getMedValue($caseId,185,1,$suspect[0]);
+            if($frequencyOne!=null){$frequencyOne=$frequencyOne."time(s)".$this->getMedValue($caseId,186,1,$suspect[0]).$this->getMedValue($caseId,187,2,$suspect[0]);}
+            $result=$result.$this->getPosition($caseId,185,1,$frequencyOne);
+            //c3#1 route used
+            $result=$result.$this->getMedPosition($caseId,1122,2,1,$suspect[0]);
+            //c4#1 start day
+            $result=$result.$this->getMedPosition($caseId,199,3,3,$suspect[0]);
+            //c4#1 stop day
+            $result=$result.$this->getMedPosition($caseId,205,3,3,$suspect[0]);
+            //c5#1 diagnosis for use
+            $result=$result.$this->getMedPosition($caseId,1126,1,1,$suspect[0]);
+            //c6#1 is the product compounded?
+            $result=$result.$this->getMedPosition($caseId,425,1,8,$suspect[0]);
+            //c7#1 Is the product over-the-counter?
+            $result=$result.$this->getMedPosition($caseId,425,1,9,$suspect[0]);
+            // c8#1 expiration date
+            $result=$result.$this->getMedPosition($caseId,298,4,4,$suspect[0]);//day
+            $result=$result.$this->getMedPosition($caseId,298,5,5,$suspect[0]);//month
+            $result=$result.$this->getMedPosition($caseId,298,6,6,$suspect[0]);//year
+            //c9#1 dechallenge?
+            $result=$result.$this->getMedPosition($caseId,381,7,2,$suspect[0]);
+            //c10#1 rechallenge?
+            $result=$result.$this->getMedPosition($caseId,1147,7,2,$suspect[0]);
+        }
+        
+        if(!is_null($suspect[1])){
+        // c1#2 name and strength
+            $result=$result.$this->getMedPosition($caseId,1114,1,1,$suspect[1]);
+            // c1#2 NDC or unique ID
+            $result=$result.$this->getMedPosition($caseId,345,1,1,$suspect[1]);
+            // c1#2 Manufacturer/compounder
+            $result=$result.$this->getMedPosition($caseId,284,1,1,$suspect[1]);
+            // c1#2 Lot number
+            $result=$result.$this->getMedPosition($caseId,179,1,1,$suspect[1]);
+            //c3#2 dose
+            $dosageTwo=$this->getMedValue($caseId,183,1,$suspect[1]).$this->getMedValue($caseId,184,2,$suspect[1]);
+            $result=$result.$this->getPosition($caseId,183,2,$dosageTwo);
+            //c3#2 frequency
+            $frequencyTwo=$this->getMedValue($caseId,185,1,$suspect[1]);
+            if($frequencyTwo!=null){$frequencyTwo=$frequencyTwo."time(s)".$this->getMedValue($caseId,186,1,$suspect[1]).$this->getMedValue($caseId,187,2,$suspect[1]);}
+            $result=$result.$this->getPosition($caseId,185,2,$frequencyTwo);
+            //c3#2 route used
+            $result=$result.$this->getMedPosition($caseId,1122,2,1,$suspect[1]);
+            //c4#2 start day
+            $result=$result.$this->getMedPosition($caseId,199,3,3,$suspect[1]);
+            //c4#2 stop day
+            $result=$result.$this->getMedPosition($caseId,205,3,3,$suspect[1]);
+            //c5#2 diagnosis for use
+            $result=$result.$this->getMedPosition($caseId,1126,1,1,$suspect[1]);
+            //c6#2 is the product compounded?
+            $result=$result.$this->getMedPosition($caseId,425,1,8,$suspect[1]);
+            //c7#2 Is the product over-the-counter?
+            $result=$result.$this->getMedPosition($caseId,425,1,9,$suspect[1]);
+            // C8#2 expiration date
+            $result=$result.$this->getMedPosition($caseId,298,4,4,$suspect[1]);//day
+            $result=$result.$this->getMedPosition($caseId,298,5,5,$suspect[1]);//month
+            $result=$result.$this->getMedPosition($caseId,298,6,6,$suspect[1]);//year 
+            //c9#2 dechallenge?
+            $result=$result.$this->getMedPosition($caseId,381,7,2,$suspect[1]);
+            //c10#2 rechallenge?
+            $result=$result.$this->getMedPosition($caseId,1147,7,2,$suspect[1]);
+        }
+        // e1 last name
+        $result=$result.$this->getMedPosition($caseId,1070,1,1);
+        //e1 first name
+        $result=$result.$this->getMedPosition($caseId,1068,1,1); 
+        //e1 address
+        $result=$result.$this->getMedPosition($caseId,31,1,1); 
+        //e1 city
+        $result=$result.$this->getMedPosition($caseId,32,1,1); 
+        //e1 state
+        $result=$result.$this->getMedPosition($caseId,33,1,1); 
+        //e1 country
+        $result=$result.$this->getMedPosition($caseId,35,2,1); 
+        // e1 zip
+        $result=$result.$this->getMedPosition($caseId,34,1,1);
+        //e1 phone 
+        $result=$result.$this->getMedPosition($caseId,229,1,1);
+        //e1 email
+        $result=$result.$this->getMedPosition($caseId,232,1,1);
+        //e2 health professional?
+        $result=$result.$this->getMedPosition($caseId,342,1,2);
+        //e3 occuption
+        $result=$result.$this->getMedPosition($caseId,36,2,1);
+        //e4 Initial reporter also sent report to FDA?
+        $result=$result.$this->getMedPosition($caseId,432,1,2);
+        // Require composer autoload
+        //require_once __DIR__ . '../vendor/autoload.php';
+        // Require composer autoload
+        //require_once __DIR__ . '../vendor/autoload.php';
+
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->CSSselectMedia='mpdf';
         $mpdf->SetTitle('FDA-MEDWATCH');
         $mpdf->SetWatermarkImage('../img/draft-watermark.jpg');
         $mpdf->showWatermarkImage = true;   
@@ -898,7 +1086,6 @@ class SdMedwatchPositionsR3Controller extends AppController
         // Download a PDF file directly to LOCAL, uncomment while in real useage
         //$mpdf->Output('TEST.pdf', \Mpdf\Output\Destination::DOWNLOAD);
         $this->set(compact('positions'));
-
 
     }
 }
