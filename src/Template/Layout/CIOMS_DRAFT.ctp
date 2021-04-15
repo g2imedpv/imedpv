@@ -150,8 +150,8 @@
                     <p class="text-left textsize suspect"><?php echo $dailyDose?></p>
 
                 </td>
-                <td class="tg-0pky">
-                    <p class=" titlesize"> 16. ROUTE(S) OF ADMINISTRATION </p>
+                <td class="tg-0pky ">
+                    <p class="text-left titlesize"> 16. ROUTE(S) OF ADMINISTRATION </p>
                     <p class="text-left textsize suspect"><?php echo $route?></p>
                 </td>
                 <td class="tg-0pky" rowspan="2">

@@ -34,6 +34,14 @@ margin: 0;
 
 @media print {
 
+/* In case print overflow */
+html, body {
+    height:100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+    }
+
 .printBTN {
     display: none;
 }
@@ -101,7 +109,7 @@ table {
     font-size: 13px;
 }
 .SectionTwo{
-    line-height: 0px;
+    line-height: 20px;
 
 }
 
