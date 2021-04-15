@@ -88,7 +88,7 @@ class SdMedwatchPositionsController extends AppController
         }
         $sdFields = $this->SdMedwatchPositions->SdFields->find('list', ['limit' => 200]);
         $this->set(compact('sdMedwatchPosition', 'sdFields'));
-    }
+    } 
 
     /**
      * Delete method

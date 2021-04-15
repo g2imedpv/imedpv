@@ -126,7 +126,7 @@ echo $this->element('generatepdf');
             <li class="nav-item m-1">
                 <?php if($writePermission==1){
                     echo "<button class=\"btn btn-sm btn-outline-warning mx-1\" title=\"Sign Off\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(1)\"><i class=\"fas fa-share-square\"></i> ".__("Next Step")."</button>";
-                    echo "<button class=\"btn btn-sm btn-outline-warning mx-1\" title=\"Push Backward\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(2)\"><i class=\"fab fa-pushed\"></i> ".__("Previous Step")."</button>";
+                    echo "<button class=\"btn btn-sm btn-outline-warning mx-1\" title=\"Push  ward\" role=\"button\" data-toggle=\"modal\" data-target=\".signOff\" onclick=\"action(2)\"><i class=\"fab fa-pushed\"></i> ".__("Previous Step")."</button>";
                 }?>
             </li>
 
