@@ -186,7 +186,7 @@ function onQueryClicked(preferrenceId = null){
     if (preferrenceId!=null)
     request['preferrenceId'] = preferrenceId;
     var today = new Date();
-    console.log(request);
+    //console.log(request);
     $.ajax({
         headers: {
             'X-CSRF-Token': csrfToken
@@ -196,7 +196,7 @@ function onQueryClicked(preferrenceId = null){
         data:request,
         success:function(response){
             $("#textHint").html("");
-            console.log(response);
+            //console.log(response);
             if (response==false) {
                 $("#textHint").html(i18n.gettext("Sorry, no case matches"));
                 return}

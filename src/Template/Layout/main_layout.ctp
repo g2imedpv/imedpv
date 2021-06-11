@@ -56,20 +56,20 @@
 <div class="topNav">
     <div class="navInner mx-auto d-flex bd-highlight">
       <a class="navLogo navbar-brand mr-auto my-auto bd-highlight" href="/Dashboards/index">
-        <img src="/img/logo-mds.png" title="MDS" alt="logo" style="width:200px;">
+        <img src="/img/logo-mds.png" title="MDS" alt="logo" style="width:160px;">
       </a>
 
     <!-- Language Switcher -->
-    <div class="btn-group my-auto">
-      <button type="button" class="btn dropdown-toggle" title="Language Switcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-globe-americas"></i>
+    <div class="btn-group mx-3 my-auto dropdown">
+      <button type="button" class="btn" title="Language Switcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="fas fa-language fa-2x"></i>
       </button>
       <div class="dropdown-menu">
-        <a class="dropdown-item" href="/sd-users/setLanguage/en_US">English
-          <!-- <img class="flag" src="/img/flags/4x3/us.svg" href="/sd-users/setLanguage/en_US" alt="English Version" title="English Version"> -->
+        <a class="dropdown-item" class='flag cn_flag' href="/sd-users/setLanguage/en_US">
+          <img src="/img/flags/4x3/us.svg" alt="us_flag" class='flag' >English
         </a>
-        <a class="dropdown-item" href="/sd-users/setLanguage/zh_CN">Chinese
-          <!-- <img class="flag" src="/img/flags/4x3/cn.svg" href="/sd-users/setLanguage/zh_CN" alt="Chinese Version" title="Chinese Version"> -->
+        <a class="dropdown-item" href="/sd-users/setLanguage/zh_CN">
+          <img src="/img/flags/4x3/cn.svg" alt="cn_flag" class='flag' >Chinese
         </a>
       </div>
     </div>
@@ -86,7 +86,7 @@
     </div> -->
 
     <!-- Mail Notice -->
-    <div class="d-flex p-2 mx-2">
+    <div class="btn-group mx-3 my-auto">
       <?php
       $mailNotice = $this->cell('QueryNotice',[$this->request->getSession()->read('Auth.User.id')]);
       echo $mailNotice;
@@ -94,28 +94,31 @@
     </div>
 
     <!-- Account Info -->
-    <div class="nav-item dropdown p-2 myaccount bg-transparent">
-      <a class="nav-link text-dark bg-light" href="/sd-users/myaccount" id="accountInfo" role="button" aria-haspopup="true" aria-expanded="false">
-        <h5><?php echo   __("Hi!") ?>&nbsp;&nbsp;<span id="roleName"><?php echo $this->request->getSession()->read('Auth.User.firstname'); ?>&nbsp;<?php print $this->request->getSession()->read('Auth.User.lastname'); ?> </span></h5>
-      </a>
-      <div class="dropdown-menu login" aria-labelledby="accountInfo">
-        <h5 class="dropdown-header"><?php echo $this->request->getSession()->read('Auth.User.role_name'); ?></h5>
+    <div class="btn-group mx-3 my-auto dropdown">
+      <button type="button" class="btn" title="Account Info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <h5>
+          <?php echo   __("Hi!") ?>&nbsp;&nbsp;
+          <span id="roleName"><?php echo $this->request->getSession()->read('Auth.User.firstname'); ?>&nbsp;<?php print $this->request->getSession()->read('Auth.User.lastname'); ?> </span>
+        </h5>
+      </button>
+      <div class="dropdown-menu">
+        <h6 class="dropdown-header"><?php echo   __("Role: ") ?><b><?php echo $this->request->getSession()->read('Auth.User.role_name'); ?></b></h6>
+        <a class="dropdown-item" href="/sd-users/myaccount"><i class="far fa-user-circle accountIcon"></i><?php echo __(" My Account");?></a>
+        <a class="dropdown-item" href="/sd-users/logout"><i class="fas fa-sign-out-alt"></i><?php echo __(" Log Out");?></a>
       </div>
     </div>
-
-    <!-- Log Out -->
-    <div class="d-flex p-2 mx-2">
-      <a class="dropdown-item my-1" href="/sd-users/logout"><i class="fas fa-sign-out-alt"></i> <?php echo __("Log Out");?></a>
-    </div>
-
     </div>
 </div>
 
-<nav class="navbar navbar-expand-lg mainNav navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg mainNav">
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="nav navbar-nav mr-auto">
-      <li class="nav-item"><a class="nav-link" href="/Dashboards/index"><?php echo __("Dashboard");?><span class="sr-only">(current)</span></a></li>
-      <!-- <li class="nav-item"><a class="nav-link" href="#">Link</a></li> -->
+    <ul class="nav navbar-nav container d-flex justify-content-between">
+      <li class="nav-item">
+        <a class="nav-link" href="/Dashboards/index">
+          <?php echo __("Dashboard");?>
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
       <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("Product");?> </a>
         <ul class="dropdown-menu">
           <a class="dropdown-item" href="/sd-products/search"><?php echo __("Search Product");?></a>
@@ -145,7 +148,11 @@
 <!-- Disable this when applied Bootstrap Framework    <div class="container clearfix"></div> -->
 <?= $this->fetch('content') ?>
 
-
+<!-- Footer -->
+<hr>
+<div class="text-center text-muted">
+  Copyright &copy; <?php echo date("Y");?> G2-MDS. All rights reserved <br> Designed, Developed and Maintained by G2 Biopharma Services Inc.
+</div>
 <!-- jQuery required these for loading datepicker -->
 <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
 </body>

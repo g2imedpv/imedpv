@@ -10,6 +10,7 @@ body{
     padding: 0;
     margin: 0;
     font-family: arial;
+    background-color: #EAEDED !important;
 }
 
 input,input::placeholder, select {
@@ -40,8 +41,8 @@ ul.topbar > li.nav-item {
 
 .mainNav {
     height: 50px;
-    background-color: #3793f7 !important;
-    padding-left: 255px !important;
+    border-top: 3px solid #3793f7;
+    background-color: #ffffff;
     font-size: 1.5rem;
 }
 
@@ -119,9 +120,10 @@ tr:nth-child(even) {
 }
 
 /* mainNav hover */
-.myaccount:hover > .dropdown-menu {
+.dropdown:hover .dropdown-menu {
     display: block;
-}
+    margin-top: 0;
+ }
 
 
 /* Sidenav Dropdown hover effect */
@@ -430,12 +432,14 @@ ul.queryBoxLeft > a {
     margin-left: 20px;
 }
 #navbarNavDropdown > ul > li > a.nav-link{
-    color:rgba(225,225,225);
+    color:#1e90ff;
     font-weight: bolder;
 }
 #navbarNavDropdown > ul > li > a.nav-link:hover{
-    background-color:#ffc107;
-    color:rgba(0,0,0);
+    background-color:#1e90ff;
+    color:white;
+    border-radius: 5px;
+    padding:6px 8px;
 
 }
 #navbarNavDropdown > ul > li > a.active{
@@ -481,7 +485,7 @@ ul.queryBoxLeft > a {
 }
 
 [id^="quickSearchResult"]:hover{
-    background-color: #ffc107;
+    background-color: #1e90ff;
 }
 
 .lltQuickSearchForCaseReg {
@@ -513,7 +517,7 @@ ul.queryBoxLeft > a {
     line-height:0.8;
 } */
 .topNav{
-    background-color: aliceblue;
+    background-color: #ffffff;
 }
 .tab-content{
     border-left:1px solid rgba(0, 0, 0, 0.1);
@@ -559,13 +563,13 @@ ul.queryBoxLeft > a {
 }
 .table tbody tr:hover {
     color: #212529;
-    background-color: #ffc107 !important;
+    background-color: #1e90ff !important;
 }
 #caseTable tbody tr:nth-child(even){
     background-color: #ddebff;
 }
 .selected-row{
-    background-color: #ffc107!important;
+    background-color: #1e90ff!important;
 }
 /*general tab:upload document button*/
 
@@ -613,13 +617,8 @@ ul.queryBoxLeft > a {
 .flag {
     width: 30px;
     height: 20px;
-    transition: transform .3s;
-}
-
-.flag:hover {
-    -ms-transform: scale(1.2); /* IE 9 */
-    -webkit-transform: scale(1.2); /* Safari 3-8 */
-    transform: scale(1.2);
+    position: relative;
+    right: 5px;
 }
 
 .dataentry {
@@ -637,7 +636,6 @@ ul.queryBoxLeft > a {
 
 .formContainer {
     width: 90%;
-    font-size: 14px;
 }
 
 /* Change layout while Print */
@@ -758,4 +756,36 @@ ul.queryBoxLeft > a {
     to {
         opacity: 1;
     }
+}
+
+.mailIconText {
+    font-size: 15px;
+    position: absolute;
+    left: 18px;
+    height: 23px;
+    width: 23px;
+    color: white;
+    padding-top: 3px;
+}
+
+.btnShadow {
+    transition: transform .1s;
+}
+
+.btnShadow:hover {
+    box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 10px 16px rgba(0,0,0,.06);
+    transform: scale(1.05);
+}
+
+.eventCount:hover{
+    color: white i !important;
+}
+
+.QL-size {
+    font-size:25px;
+}
+
+.QL-icon {
+    width: 30px;
+    height: 30px;
 }

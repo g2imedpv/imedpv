@@ -1,7 +1,7 @@
 <div class="card login w-50 m-auto cardcolor">
     <?= $this->Form->create($sdCompany);?>
     <div class="card-body">
-        <img src="/img/logo-mds.png" class="rounded mx-auto d-block mt-5" alt="G2-MDS">
+        <img src="/img/logo-mds.png" class="rounded d-block mx-auto my-3" style='width:300px' alt="G2-MDS">
         <div class="mt-5">
             <div class="form-group mx-auto w-75">
                 <label class="text-white"><?php echo __("Select Company");?></label>

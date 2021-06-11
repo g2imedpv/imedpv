@@ -19,7 +19,8 @@ class DashboardsController extends AppController {
                 'sd_field_id'=>'8',
                 'value_at'=>'1',
                 'value_length'=>'1',
-                'match_value'=>'= 1'
+                'match_value'=>'= 1',
+                'icon'=>'fas fa-times'
             ],
             '1'=>[
                 'id'=>'2',
@@ -27,7 +28,8 @@ class DashboardsController extends AppController {
                 'sd_field_id'=>'8',
                 'value_at'=>'2',
                 'value_length'=>'1',
-                'match_value'=>'= 1'
+                'match_value'=>'= 1',
+                'icon'=>'fas fa-exclamation'
             ],
             '2'=>[
                 'id'=>'3',
@@ -35,7 +37,8 @@ class DashboardsController extends AppController {
                 'sd_field_id'=>'8',
                 'value_at'=>'3',
                 'value_length'=>'1',
-                'match_value'=>'= 1'
+                'match_value'=>'= 1',
+                'icon'=>'fas fa-user-injured'
             ],
             '3'=>[
                 'id'=>'4',
@@ -43,7 +46,8 @@ class DashboardsController extends AppController {
                 'sd_field_id'=>'8',
                 'value_at'=>'4',
                 'value_length'=>'1',
-                'match_value'=>'= 1'
+                'match_value'=>'= 1',
+                'icon'=>'far fa-hospital'
             ],
             '4'=>[
                 'id'=>'5',
@@ -51,7 +55,8 @@ class DashboardsController extends AppController {
                 'sd_field_id'=>'8',
                 'value_at'=>'5',
                 'value_length'=>'1',
-                'match_value'=>'= 1'
+                'match_value'=>'= 1',
+                'icon'=>'fas fa-stethoscope'
             ],
             '5'=>[
                 'id'=>'6',
@@ -59,7 +64,8 @@ class DashboardsController extends AppController {
                 'sd_field_id'=>'8',
                 'value_at'=>'6',
                 'value_length'=>'1',
-                'match_value'=>'= 1'
+                'match_value'=>'= 1',
+                'icon'=>'fas fa-heartbeat'
             ],
             '6'=>[
                 'id'=>'7',
@@ -67,7 +73,8 @@ class DashboardsController extends AppController {
                 'sd_field_id'=>'8',
                 'value_at'=>'1',
                 'value_length'=>'6',
-                'match_value'=>'>= 1'
+                'match_value'=>'>= 1',
+                'icon'=>'fas fa-skull-crossbones'
             ]
         ];
         $userinfo = $this->request->getSession()->read('Auth.User');
@@ -135,7 +142,7 @@ class DashboardsController extends AppController {
         ;
         $smq_list = array();
         foreach($smq_list_d as $k => $detail)
-            $smq_list[$detail['smq_code']] = $detail['smq_name'];            
+            $smq_list[$detail['smq_code']] = $detail['smq_name'];
         $this->set(compact('preferrence_list','smq_list'));
     }
 }

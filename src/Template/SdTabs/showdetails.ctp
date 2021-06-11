@@ -230,7 +230,7 @@ echo $this->element('generatepdf');
   <div class="modal-dialog modal-lg" role="document" style="max-width: 1175px !important;">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id=""><?php echo __("MedDRA Browser")?> (<?php echo __("Version")?>: MedDRA 18.1)</h5>
+        <h5 class="modal-title" id=""><?php echo __("MedDRA Browser")?> (<?php echo __("Version")?>: MedDRA 24.0)</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

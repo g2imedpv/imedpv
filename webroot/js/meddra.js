@@ -3,7 +3,7 @@ var meddraFieldId = 0;
 var formats = ['llt_name','pt_name','hlt_name','hlgt_name','soc_name'];
 $(document).ready(function(){
     $('[id^=meddraBtn_]').click(function(){
-        
+
         if(meddraFieldId!=$(this).attr('id').split('_')[1]){
             $(formats).each(function(formatK,formatV){
                 $('#field-'+formatV).html("");
@@ -60,7 +60,7 @@ $(document).ready(function(){
         }
     });
     $('[id^=typed]').change(function(){
-        searchMedDra(meddraFieldId,1);//TODO 
+        searchMedDra(meddraFieldId,1);//TODO
     });
     $('[id^=llt-searchbar]').keyup(function(){
         meddraFieldId = $(this).attr('id').split('_')[1];
@@ -129,7 +129,7 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
                 text +="</ul>";
                 $("#meddraQuickSearch_"+meddraFieldId).html(text);
                 $('[id*=quickSearchResult]').click(function(){
-                    let meddraFieldId = $(this).attr('id').split('-')[1]; 
+                    let meddraFieldId = $(this).attr('id').split('-')[1];
                     searchMedDra(meddraFieldId, 4, $(this).text().split('---')[0]);
                     $('#meddraQuickSearch_'+meddraFieldId).hide();
                 });
@@ -141,7 +141,7 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
                     let mappedId = fieldDetail.split(':')[1];
                     let mappedLabel = fieldDetail.split(':')[0].split('-');
                     if(mappedLabel=="ver") {
-                        $('[id$=meddrashow-'+mappedId+']').val('18.1');
+                        $('[id$=meddrashow-'+mappedId+']').val('24.0');
                         return true;
                     }console.log(result);
                     switch(mappedLabel[0]){
@@ -166,7 +166,7 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
                             else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][8][0]).trigger('change');
                             return true;
                     }
-                    
+
                 });
                 return false;
             }
@@ -247,14 +247,14 @@ function meddrabrowser(meddraFieldId){
 function selectMeddraButton(meddraFieldId){
     console.log($('#whodrug-code'+meddraFieldId));
     let descriptor = $('#descriptor_'+meddraFieldId).val().split(',');
-    
+
     $.each(descriptor, function(k,fieldDetail){
         let mappedId = fieldDetail.split(':')[1];
         let mappedLabel = fieldDetail.split(':')[0];
         if(mappedLabel=="ver"){
-            $('[id$=meddrashow-'+mappedId+']').val('18.1');
+            $('[id$=meddrashow-'+mappedId+']').val('24.0');
             return true;
-        } 
+        }
         $('[id$=meddrashow-'+mappedId+']').val($('#select-'+mappedLabel.split('-')[0]+'-'+mappedLabel.split('-')[1]).val()).trigger('change');
     });
     return false;

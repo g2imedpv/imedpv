@@ -15,46 +15,44 @@ var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
 var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
 </script>
 
-<div class="mx-auto my-3 formContainer text-center">
-    <p class="pageTitle">
-        <?php echo __("Dashboard");?>
-    </p>
-    <hr class="my-4">
-    <h4 class="display-8 text-center"><?php echo __("Quick Look");?></h4>
-    <div class="form-row justify-content-center">
-        <?php
-        foreach($preferrence_list as $preferrence_detail){
-            if ($preferrence_detail['id']==7) {
-                echo "<div class=\"form-group col-lg-4\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\"><button class=\"form-control btn btn-danger w-100\">";
-                echo __($preferrence_detail['preferrence_name'])." ";
-                echo "<span class=\"badge badge-light\">".$preferrence_detail['count']."</span>";
-                echo "</button></div>";
+<div class="card text-center formContainer mx-auto my-3">
+  <div class="card-header pageTitle"><?php echo __("Dashboard");?></div>
+  <div class="card-body row justify-content-around">
+    <div class='col-md-5 border border-light rounded'>
+        <h3 class="card-title p-2"><?php echo __("Quick Look");?></h3>
+        <div class='row justify-content-center'>
+            <?php
+            foreach($preferrence_list as $preferrence_detail){
+                if ($preferrence_detail['id']==7) {
+                    echo "<button type=\"button\" class=\"btn btn-outline-danger col-md-10 mx-3 my-1 btnShadow\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\">";
+                    echo "<div class=\"row justify-content-around d-flex h-100\">";
+                    echo "<div class=\"font-weight-bold QL-size\">";
+                    echo "<span>".__($preferrence_detail['preferrence_name'])."</span>" ;
+                    echo "<span class=\"badge badge-warning ml-3\">".$preferrence_detail['count']."</span></div>";
+                    echo "<div class=\"badge badge-danger\"><i class=\"".$preferrence_detail['icon']." fa-3x\"></i></div>";
+                    echo "</div></button>";
+                }
+                else {
+                    echo "<button type=\"button\" class=\"btn btn-outline-primary col-md-5 m-1 btnShadow\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\">";
+                    echo "<div class=\"row justify-content-around d-flex h-100\">";
+                    echo "<div class=\"font-weight-bold QL-size\" >";
+                    echo "<span>".__($preferrence_detail['preferrence_name'])."</span>" ;
+                    echo "<span class=\"badge badge-warning ml-3\">".$preferrence_detail['count']."</span></div>";
+                    echo"<div class=\"badge badge-primary\"><i class=\"".$preferrence_detail['icon']." QL-icon fa-3x\"></i></div>";
+                    echo "</div></button>";
+                }
             }
-            else {
-                echo "<div class=\"form-group col-lg-2\" onclick=\"onQueryClicked(".$preferrence_detail['id'].")\"><button class=\"form-control btn btn-outline-primary w-100\">";
-                echo __($preferrence_detail['preferrence_name'])." ";
-                echo "<span class=\"badge badge-danger\">".$preferrence_detail['count']."</span>";
-                echo "</button></div>";
-            }
-        }
-        ?>
+            ?>
+        </div>
+
     </div>
-    <hr class="my-4">
-    <h4 class="display-8 text-center"><?php echo __("Search")?></h4>
-    <div class="form-row  justify-content-center" id="basicSearch">
-        <div class="form-group col-lg-3">
-            <input type="text" class="form-control" id="searchProductNameMin"placeholder="<?php echo __("Search by Product Name")?>">
-        </div>
-        <div class="form-group col-lg-2">
-            <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-sm btn-primary"><i class="fas fa-search"></i> <?php echo __("Search")?></button>
-        </div>
-        <div class="form-group col-lg-2">
-            <button id="fullSearchBtn" class="form-control btn btn-sm btn-outline-info"><i class="fas fa-keyboard"></i> <?php echo __("Advanced Search")?></button>
-        </div>
-    </div>
-    <div id="fullSearch" style="display:none;">
+
+    <!-- Search -->
+    <div class='col-md-7 border border-light rounded'>
+        <h3 class="card-title p-2"><?php echo __("Search")?></h3>
+
         <div class="form-row">
-            <div class="form-group col-lg-4">
+            <div class="form-group col-lg-5">
                 <label><?php echo __("Product Name")?></label>
                 <input type="text" class="form-control" id="searchProductName" placeholder="<?php echo  __("Search by Product Name")?>">
             </div>
@@ -62,7 +60,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 <label><?php echo __("Case No.")?></label>
                 <input type="text" class="form-control"  id="caseNo" placeholder="<?php echo __("Search by Case No.")?>">
             </div>
-            <div class="form-group col-lg-4">
+            <div class="form-group col-lg-3">
                 <label><?php echo __("Case Status")?></label>
                 <select class="form-control" id="caseStatus" >
                     <option value=""><?php echo __("Search by Case Status");?></option>
@@ -72,8 +70,9 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 </select>
             </div>
         </div>
+
         <div class="form-row">
-            <div class="form-group col-lg-4">
+            <div class="form-group col-lg-5">
                 <label><?php echo __("Patient ID");?></label>
                 <input type="text" class="form-control" id="patient_id" placeholder="<?php echo  __("Search Patient ID")?>">
             </div>
@@ -81,7 +80,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 <label><?php echo __("Date of Birth");?></label>
                 <input type="text" class="form-control" id="patient_dob" placeholder="<?php echo  __("Search Birthday")?>">
             </div>
-            <div class="form-group col-lg-4">
+            <div class="form-group col-lg-3">
                 <label><?php echo __("Gender");?></label>
                 <select id="patient_gender" class="form-control">
                     <option value=""><?php echo __("Search Gender");?></option>
@@ -91,8 +90,9 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 </select>
             </div>
         </div>
-        <div class="form-row justify-content-start">
-            <div class="form-group col-lg-3">
+
+        <div class="form-row">
+            <div class="form-group col-lg-6">
                 <label class="col-form-label"><?php echo __("Activity Due Date")?>:</label>
                 <div class="col-sm-12 row justify-content-start">
                     <div class="col-sm-5">
@@ -106,7 +106,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                     </div>
                 </div>
             </div>
-            <div class="form-group col-lg-3">
+            <div class="form-group col-lg-6">
                 <label class="col-form-label"><?php echo __("Submission Due Date")?>:</label>
                 <div class="col-sm-12 row justify-content-start">
                     <div class="col-sm-5">
@@ -120,6 +120,10 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                     </div>
                 </div>
             </div>
+
+        </div>
+
+        <div class='form-row justify-content-between'>
             <div class="form-group col-lg-4">
                 <label><?php echo __("SMQ Query");?></label>
                 <!-- <select class="form-control" id="meddra_smq">
@@ -140,20 +144,12 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                     <option value="2"><?php echo __("Narrow Search")?></option>
                 </select>
             </div>
-        </div>
-
-        <div class="form-row justify-content-center">
-            <div class="form-group col-lg-3">
-                <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-sm btn-primary w-100"><i class="fas fa-search"></i> <?php echo __("Search");?></button>
-            </div>
-            <div class="form-group col-lg-1">
-                <button class="clearsearch form-control btn btn-sm btn-outline-danger w-100"><i class="fas fa-eraser"></i> <?php echo __("Clear");?></button>
-            </div>
-            <div class="form-group col-lg-1">
-                <button id="BasicSearchBtn" class="form-control btn btn-sm btn-outline-info"><i class="fas fa-keyboard"></i> <?php echo __("Basic Search")?></button>
+            <div class='form-group col-lg-4 d-flex align-items-end'>
+                <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary"><i class="fas fa-search"></i> <?php echo __("Search");?></button>
             </div>
         </div>
     </div>
+  </div>
     <hr class="my-3">
-    <div id="textHint" class="text-center align-middle"></div>
+    <div id="textHint" class="formContainer mx-auto my-3 text-center align-middle"></div>
 </div>

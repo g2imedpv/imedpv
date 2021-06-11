@@ -53,13 +53,13 @@ function searchProd(){
                 text += "<td>"+i18n.gettext("new")+"</td>";
                 text += "<td>";
                 $.each(caseDetail.sd_product_workflows, function(k,product_workflowdetail){
-                    text += "<div class=\"btn btn-sm btn-outline-info mx-1\" data-toggle=\"modal\" onclick=\"view_workflow("+product_workflowdetail.id+")\" data-target=\".WFlistView\">"+product_workflowdetail.sd_workflow.name+" / "+i18n.gettext(product_workflowdetail.sd_workflow.country+"")+"</div>";
+                    text += "<div class=\"btn btn-sm btn-info mx-1\" data-toggle=\"modal\" onclick=\"view_workflow("+product_workflowdetail.id+")\" data-target=\".WFlistView\">"+product_workflowdetail.sd_workflow.name+" / "+i18n.gettext(product_workflowdetail.sd_workflow.country+"")+"</div>";
                 });
                 console.log(caseDetail);
                 text += "</td>";
-                text += "<td><div class=\"btn btn-sm btn-outline-info\" data-toggle=\"modal\" onclick=\"view_product("+caseDetail.id+")\" data-target=\".product_detail\">"+i18n.gettext("View Detail")+"</div></td>";
+                text += "<td><div class=\"btn btn-sm btn-info\" data-toggle=\"modal\" onclick=\"view_product("+caseDetail.id+")\" data-target=\".product_detail\">"+i18n.gettext("View Detail")+"</div></td>";
                 text +="<div id=\"product_"+caseDetail.id+"\" style=\"display:none\">"+JSON.stringify(caseDetail)+"</div>";
-                text +="<td><a class=\"btn btn-outline-info btn-sm\"  role=\"button\" href=\"/sd-products/edit/"+caseDetail.id+"\"><i class=\"fas fa-edit\"></i></a></td>";
+                text +="<td><a class=\"btn btn-info btn-sm\"  role=\"button\" href=\"/sd-products/edit/"+caseDetail.id+"\"><i class=\"fas fa-edit\"></i></a></td>";
                 text += "</tr>";
             });
             text +="</tbody>";

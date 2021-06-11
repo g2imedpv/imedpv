@@ -57,7 +57,7 @@
             </div>
             -->
             <!-- Tab panes -->
-            <div class="tab-content" style="background-color: aliceblue;">
+            <div class="tab-content my-1" style="background-color: aliceblue;">
                 <table class="table table-hover table-borderless table-striped">
                     <thead>
                         <tr>
