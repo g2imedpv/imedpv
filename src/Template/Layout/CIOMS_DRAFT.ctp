@@ -16,7 +16,7 @@
         <input class="btn btn-primary w-25" type="button" value="Print" onClick="window.print()">
     </div>
 
-    <!-- <div class="bgpic" style="background-image: url('/webroot/img/draft-watermark.jpg');background-repeat: no-repeat;background-size: cover;"> -->
+    <!--<div class="bgpic" style="background-image: url('/webroot/img/draft-watermark.jpg');background-repeat: no-repeat;background-size: cover;"> -->
     <div class="page-header" style="text-align: right">
         <span></span><span >Mfr.Control Number:<?php echo $fileName?></span><br/>
     </div>
@@ -74,7 +74,7 @@
 
         <!-- I. REACTION INFORMATION -->
         <h3 class="text-center mt-3">I. REACTION INFORMATION</h3>
-        <table class="tg mx-auto" style="width: 95%;">
+        <table class="tg mx-auto" style="width: 95%;"> 
         <colgroup>
         <col style="width: 150px">
         <col style="width: 150px">
@@ -138,9 +138,9 @@
                 <th class="tg-0pky">
                     <p class="text-center titlesize" style="padding:5px;line-height: 20px;"> 20. DID REACTION ABATE AFTER STOPPING DRUG?</p>
                     <div class="d-flex justify-content-around" style="font-size:12px;">
-                        <input type="checkbox" name="vehicle1" value="Bike" <?php echo $DeYes?> >Yes<br>
-                        <input type="checkbox" name="vehicle2" value="Car" <?php echo $DeNo?>>No<br>
-                        <input type="checkbox" name="vehicle3" value="Boat" <?php echo $DeUnkown?>>N/A<br>
+                        <input type="checkbox" name="vehicle1" value="Yes" <?php echo $DeYes?> >Yes<br>
+                        <input type="checkbox" name="vehicle2" value="No" <?php echo $DeNo?>>No<br>
+                        <input type="checkbox" name="vehicle3" value="N/A" <?php echo $DeUnkown?>>N/A<br>
                     </div>
                 </th>
             </tr>

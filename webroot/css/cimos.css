@@ -25,10 +25,12 @@ margin: 0;
 }
 
 .cimosDraft {
-    background-image: url('../img/draft-watermark.jpg') !important;
+    background-image: url('../img/watermark[opacity15].png') !important;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: contain; 
 }
+
+
 
 @media print {
 
