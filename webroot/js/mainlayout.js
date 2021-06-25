@@ -8,6 +8,27 @@ $popover(document).ready(function(){
     });
 });
 
+// refresh function
+
+// var refreshSn = function ()
+// {
+//     var time = 100; // 10 mins
+//     setTimeout(
+//         function ()
+//         {
+//         $.ajax({
+//            url: '/sd-tabs/refresh_session',
+//            cache: false,
+//            complete: function () {refreshSn();}
+//         });
+//     },
+//     time
+// );
+// };
+
+// // Call in page
+// refreshSn()
+
 jQuery(function($) {  // In case of jQuery conflict
   // TO DO: This line should have deleted, BUT will not work if delete directly
 // Date Input Validation ("Latest received date (A.1.7.b)" MUST Greater than "Initial Received date (A.1.6.b)")

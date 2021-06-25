@@ -15,6 +15,13 @@
          */
         class SdTabsController extends AppController
         {
+            public function refresh_session(){
+                session_start();
+
+                // store session data
+                if (isset($_SESSION['id']))
+                $_SESSION['id'] = $_SESSION['id'];
+            }
 
             /**
              * Index method
@@ -43,6 +50,7 @@
                 $userinfo = $this->request->getSession()->read('Auth.User');
                 $sdCasesTable = TableRegistry::get('SdCases');
                 $sdFieldValueTable = TableRegistry::get('SdFieldValues');
+                $sdInputHistoryTable = TableRegistry::get('SdInputHistories');
                 $sdCases = $sdCasesTable->find()->where(['caseNo'=>$caseNo,'version_no'=>$version])->contain(['SdProductWorkflows.SdProducts'])->first();
                 $caseId = $sdCases['id'];
                 $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
@@ -57,6 +65,7 @@
                     $this->redirect($this->referer());
                     return;
                 }
+                $currentActivityId = $sdCases['sd_workflow_activity_id'];
                 if ($this->request->is(['patch', 'post', 'put'])) {
                     $error =[];
                     $requstData = $this->request->getData();
@@ -76,8 +85,12 @@
                             $set_number = substr($set_number, 0, -1);
                         }
                         foreach($sectionValue as $sectionFieldK =>$sectionFieldValue){
+                            // adding values
                             if($sectionFieldValue['id']!=''){
                                 $sdFieldValueEntity = $sdFieldValueTable->get($sectionFieldValue['id']);/**add last-updated time */
+                                if($sectionFieldValue['field_value'] == $sdFieldValueEntity['field_value']) {
+                                    continue;
+                                }
                                 $sdFieldValueTable->patchEntity($sdFieldValueEntity,$sectionFieldValue);
                                 if(!$sdFieldValueTable->save($sdFieldValueEntity)) {
                                     echo "error in updating!" ;
@@ -103,50 +116,69 @@
                                 if(!$savedFieldValue){
                                     echo "error in adding values!" ;
                                     debug($sdFieldValueEntity);
-                                } 
-                                // $sdSectionSetsEntity = $sdSectionSetsTable->newEntity(); 
-                                // if(empty($requestSectionArray)) continue;
-                                // $sectionArray = explode(',',$requestSectionArray[$section_id]);
-                                // for($i = 0;$i<sizeof($sectionArray);$i++){
-                                //     $sdSectionSetsEntity['set_array'] = $sdSectionSetsEntity['set_array'].explode(':',$sectionArray[$i])[1].","; 
-                                // }
-                                // $sdSectionSetsEntity['set_array'] = substr($sdSectionSetsEntity['set_array'], 0, -1);
-                                // $sdSectionSetsEntity['sd_section_id'] = $section_id;
-                                // $setDataSet = [
-                                //     'set_array' =>$sdSectionSetsEntity['set_array'],
-                                //     'sd_field_value_id'=>$savedFieldValue['id'],
-                                // ];
-                                // $sdSectionSetsEntity['sd_field_value_id'] = $savedFieldValue['id'];
-                                // if(!$sdSectionSetsTable->save($sdSectionSetsEntity)){
-                                //     echo "error in adding sets!" ; 
-                                //     debug($sdSectionSetsEntity);
-                                // }                
-                                // $sections = $SdSectionStructuresTable->find()->select(['sd_section_id'])
-                                //     ->join(['sections' =>[
-                                //         'table' =>'sd_sections',
-                                //         'type'=>'INNER',
-                                //         'conditions'=>['sections.id = SdSectionStructures.sd_section_id'],
-                                //         ]])            
-                                //     ->where(['sd_field_id'=>$sectionFieldValue['sd_field_id'],'sd_section_id !='=>$section_id,'sections.status'=>true]);
-                                // foreach($sections as $sectionDetail){
-                                //     $sdSectionSetsEntityNew = $sdSectionSetsTable->newEntity();
-                                //     $sdSectionSetsEntityNew = $sdSectionSetsTable->patchEntity($sdSectionSetsEntityNew, $setDataSet);
-                                //     $sdSectionSetsEntityNew['sd_section_id'] = $sectionDetail['sd_section_id'];
-                                //     if($sectionFieldValue['sd_field_id'] == '149'){
-                                //         $sdSectionSetsEntityNew['set_array'] = $sdSectionSetsEntityNew['set_array'].',*';
-                                //     }
-                                //     $sdSectionSetsEntityNew['sd_field_value_id'] = $savedFieldValue['id'];                           
-                                //     if(!$sdSectionSetsTable->save($sdSectionSetsEntityNew)){
-                                //         echo "error in adding NEW sets!" ;// ADD INTO ANOTHER SET
-                                //         debug($sdSectionSetsEntityNew);
-                                //     } 
-                                // }
+                                }
+                            }else continue;
+                            
+                            //TODO ADD Section set
+                            // $sdSectionSetsEntity = $sdSectionSetsTable->newEntity(); 
+                            // if(empty($requestSectionArray)) continue;
+                            // $sectionArray = explode(',',$requestSectionArray[$section_id]);
+                            // for($i = 0;$i<sizeof($sectionArray);$i++){
+                            //     $sdSectionSetsEntity['set_array'] = $sdSectionSetsEntity['set_array'].explode(':',$sectionArray[$i])[1].","; 
+                            // }
+                            // $sdSectionSetsEntity['set_array'] = substr($sdSectionSetsEntity['set_array'], 0, -1);
+                            // $sdSectionSetsEntity['sd_section_id'] = $section_id;
+                            // $setDataSet = [
+                            //     'set_array' =>$sdSectionSetsEntity['set_array'],
+                            //     'sd_field_value_id'=>$savedFieldValue['id'],
+                            // ];
+                            // $sdSectionSetsEntity['sd_field_value_id'] = $savedFieldValue['id'];
+                            // if(!$sdSectionSetsTable->save($sdSectionSetsEntity)){
+                            //     echo "error in adding sets!" ; 
+                            //     debug($sdSectionSetsEntity);
+                            // }                
+                            // $sections = $SdSectionStructuresTable->find()->select(['sd_section_id'])
+                            //     ->join(['sections' =>[
+                            //         'table' =>'sd_sections',
+                            //         'type'=>'INNER',
+                            //         'conditions'=>['sections.id = SdSectionStructures.sd_section_id'],
+                            //         ]])            
+                            //     ->where(['sd_field_id'=>$sectionFieldValue['sd_field_id'],'sd_section_id !='=>$section_id,'sections.status'=>true]);
+                            // foreach($sections as $sectionDetail){
+                            //     $sdSectionSetsEntityNew = $sdSectionSetsTable->newEntity();
+                            //     $sdSectionSetsEntityNew = $sdSectionSetsTable->patchEntity($sdSectionSetsEntityNew, $setDataSet);
+                            //     $sdSectionSetsEntityNew['sd_section_id'] = $sectionDetail['sd_section_id'];
+                            //     if($sectionFieldValue['sd_field_id'] == '149'){
+                            //         $sdSectionSetsEntityNew['set_array'] = $sdSectionSetsEntityNew['set_array'].',*';
+                            //     }
+                            //     $sdSectionSetsEntityNew['sd_field_value_id'] = $savedFieldValue['id'];                           
+                            //     if(!$sdSectionSetsTable->save($sdSectionSetsEntityNew)){
+                            //         echo "error in adding NEW sets!" ;// ADD INTO ANOTHER SET
+                            //         debug($sdSectionSetsEntityNew);
+                            //     } 
+                            // }
 
+                            // store input hisotry
+                            $dataSet2 = [
+                                'sd_field_value_id' => $sdFieldValueEntity['id'],
+                                'sd_user_id' => $userinfo['id'],//TODO SET NUMBER REMOVE
+                                'time_changed' =>date("Y-m-d H:i:s"),
+                                'input' =>$sectionFieldValue['field_value'],
+                                'sd_workflow_activity_id' =>$currentActivityId
+                            ];
+                            $sdInputHistoryEntity = $sdInputHistoryTable->newEntity();
+                            $sdInputHistoryEntity = $sdInputHistoryTable->patchEntity($sdInputHistoryEntity, $dataSet2);
+                            // debug($sdFieldValueEntity);
+                            debug($sdInputHistoryEntity);
+                            $savedHistoryValue = $sdInputHistoryTable->save($sdInputHistoryEntity);
+                            if(!$savedHistoryValue){
+                                echo "error in adding values!" ;
+                                debug($sdInputHistoryEntity);
                             }
                         }
                     };
                 }
-                $currentActivityId = $sdCases['sd_workflow_activity_id'];
+                // $currentActivityId = $sdCases['sd_workflow_activity_id'];
 
                 //User not allow to this activity
                 if($userinfo['sd_role_id']>2){

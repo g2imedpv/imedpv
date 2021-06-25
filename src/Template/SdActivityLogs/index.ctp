@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\SdActivityLog[]|\Cake\Collection\CollectionInterface $sdActivityLog
+ * @var \App\Model\Entity\SdActivityLog[]|\Cake\Collection\CollectionInterface $sdActivityLogs
  */
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
@@ -10,12 +10,10 @@
         <li><?= $this->Html->link(__('New Sd Activity Log'), ['action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Sd Users'), ['controller' => 'SdUsers', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Sd User'), ['controller' => 'SdUsers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Sd Section Values'), ['controller' => 'SdSectionValues', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Sd Section Value'), ['controller' => 'SdSectionValues', 'action' => 'add']) ?></li>
     </ul>
 </nav>
-<div class="sdActivityLog index large-9 medium-8 columns content">
-    <h3><?= __('Sd Activity Log') ?></h3>
+<div class="sdActivityLogs index large-9 medium-8 columns content">
+    <h3><?= __('Sd Activity Logs') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
@@ -25,18 +23,20 @@
                 <th scope="col"><?= $this->Paginator->sort('action') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('sd_section_value_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('updated_time') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('sd_actvity_id') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($sdActivityLog as $sdActivityLog): ?>
+            <?php foreach ($sdActivityLogs as $sdActivityLog): ?>
             <tr>
                 <td><?= $this->Number->format($sdActivityLog->id) ?></td>
                 <td><?= $sdActivityLog->has('sd_user') ? $this->Html->link($sdActivityLog->sd_user->title, ['controller' => 'SdUsers', 'action' => 'view', $sdActivityLog->sd_user->id]) : '' ?></td>
                 <td><?= h($sdActivityLog->controller) ?></td>
                 <td><?= h($sdActivityLog->action) ?></td>
-                <td><?= $sdActivityLog->has('sd_section_value') ? $this->Html->link($sdActivityLog->sd_section_value->id, ['controller' => 'SdSectionValues', 'action' => 'view', $sdActivityLog->sd_section_value->id]) : '' ?></td>
+                <td><?= $this->Number->format($sdActivityLog->sd_section_value_id) ?></td>
                 <td><?= h($sdActivityLog->updated_time) ?></td>
+                <td><?= $this->Number->format($sdActivityLog->sd_actvity_id) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $sdActivityLog->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $sdActivityLog->id]) ?>
