@@ -169,7 +169,7 @@
                             $sdInputHistoryEntity = $sdInputHistoryTable->newEntity();
                             $sdInputHistoryEntity = $sdInputHistoryTable->patchEntity($sdInputHistoryEntity, $dataSet2);
                             // debug($sdFieldValueEntity);
-                            debug($sdInputHistoryEntity);
+                            // debug($sdInputHistoryEntity);
                             $savedHistoryValue = $sdInputHistoryTable->save($sdInputHistoryEntity);
                             if(!$savedHistoryValue){
                                 echo "error in adding values!" ;
