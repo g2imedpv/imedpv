@@ -53,7 +53,11 @@ echo $this->element('generatepdf');
 
     <div class="collapse navbar-collapse justify-content-end" id="DEtopBar">
         <ul class="nav navbar-nav">
-
+            <!-- "Input History Button -->
+            <li class="nav-item m-1">
+                <a class="btn btn-sm btn-outline-info" href="/sd-input-histories/search/<?= $caseId ?>" title="Input History" target="_blank"><i class="far fa-file-alt"></i> <?php echo __("Input History")?></a>
+            </li>
+            
             <!-- "Search" Button -->
             <li class="nav-item m-1">
                 <button class="btn btn-sm btn-outline-info" title="Search" role="button" id="DeSearch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -11,7 +11,11 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\SdWorkflowsTable|\Cake\ORM\Association\BelongsTo $SdWorkflows
  * @property \App\Model\Table\SdActivitySectionPermissionsTable|\Cake\ORM\Association\HasMany $SdActivitySectionPermissions
+ * @property |\Cake\ORM\Association\HasMany $SdCaseDistributions
+ * @property |\Cake\ORM\Association\HasMany $SdCaseHistories
  * @property \App\Model\Table\SdCasesTable|\Cake\ORM\Association\HasMany $SdCases
+ * @property |\Cake\ORM\Association\HasMany $SdCases20190516
+ * @property |\Cake\ORM\Association\HasMany $SdInputHistories
  * @property \App\Model\Table\SdUserAssignmentsTable|\Cake\ORM\Association\HasMany $SdUserAssignments
  *
  * @method \App\Model\Entity\SdWorkflowActivity get($primaryKey, $options = [])
@@ -47,7 +51,19 @@ class SdWorkflowActivitiesTable extends Table
         $this->hasMany('SdActivitySectionPermissions', [
             'foreignKey' => 'sd_workflow_activity_id'
         ]);
+        $this->hasMany('SdCaseDistributions', [
+            'foreignKey' => 'sd_workflow_activity_id'
+        ]);
+        $this->hasMany('SdCaseHistories', [
+            'foreignKey' => 'sd_workflow_activity_id'
+        ]);
         $this->hasMany('SdCases', [
+            'foreignKey' => 'sd_workflow_activity_id'
+        ]);
+        $this->hasMany('SdCases20190516', [
+            'foreignKey' => 'sd_workflow_activity_id'
+        ]);
+        $this->hasMany('SdInputHistories', [
             'foreignKey' => 'sd_workflow_activity_id'
         ]);
         $this->hasMany('SdUserAssignments', [
@@ -78,6 +94,11 @@ class SdWorkflowActivitiesTable extends Table
             ->notEmpty('step_backward');
 
         $validator
+            ->scalar('due_day')
+            ->maxLength('due_day', 50)
+            ->allowEmpty('due_day');
+
+        $validator
             ->scalar('activity_name')
             ->requirePresence('activity_name', 'create')
             ->notEmpty('activity_name');
@@ -86,7 +107,7 @@ class SdWorkflowActivitiesTable extends Table
             ->scalar('description')
             ->maxLength('description', 100)
             ->requirePresence('description', 'create')
-            ->allowEmpty('description');
+            ->notEmpty('description');
 
         return $validator;
     }

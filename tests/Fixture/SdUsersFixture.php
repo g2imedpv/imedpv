@@ -48,8 +48,6 @@ class SdUsersFixture extends TestFixture
         'assign_protocol' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => '1', 'comment' => '1- Can work on all Protocols,2 - Can not work on any Protocols,3 - Assign Selected Protocols only', 'precision' => null, 'autoIncrement' => null],
         'status' => ['type' => 'integer', 'length' => 1, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '0 - Inactive,1-Active, 2-Blocked', 'precision' => null, 'autoIncrement' => null],
         'default_language' => ['type' => 'string', 'length' => 10, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'is_imedsae_tracking' => ['type' => 'smallinteger', 'length' => 1, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
-        'is_imed_safety_database' => ['type' => 'smallinteger', 'length' => 1, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'created_by' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'created_dt' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'modified_by' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
@@ -98,9 +96,9 @@ class SdUsersFixture extends TestFixture
                 'phone_alert' => 1,
                 'email_alert' => 1,
                 'is_never' => 1,
-                'account_expire_date' => '2019-01-29',
+                'account_expire_date' => '2020-06-22',
                 'is_email_verified' => 1,
-                'reset_password_expire_time' => '2019-01-29 20:32:21',
+                'reset_password_expire_time' => '2020-06-22 13:28:58',
                 'is_import_user' => 1,
                 'is_medra' => 1,
                 'is_whodra' => 1,
@@ -108,12 +106,10 @@ class SdUsersFixture extends TestFixture
                 'assign_protocol' => 1,
                 'status' => 1,
                 'default_language' => 'Lorem ip',
-                'is_imedsae_tracking' => 1,
-                'is_imed_safety_database' => 1,
                 'created_by' => 1,
-                'created_dt' => '2019-01-29 20:32:21',
+                'created_dt' => '2020-06-22 13:28:58',
                 'modified_by' => 1,
-                'modified_dt' => '2019-01-29 20:32:21'
+                'modified_dt' => '2020-06-22 13:28:58'
             ],
         ];
         parent::init();

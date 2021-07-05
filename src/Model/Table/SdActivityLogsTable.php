@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\SdUsersTable|\Cake\ORM\Association\BelongsTo $SdUsers
  * @property \App\Model\Table\SdSectionValuesTable|\Cake\ORM\Association\BelongsTo $SdSectionValues
+ * @property \App\Model\Table\SdActvitiesTable|\Cake\ORM\Association\BelongsTo $SdActvities
  *
  * @method \App\Model\Entity\SdActivityLog get($primaryKey, $options = [])
  * @method \App\Model\Entity\SdActivityLog newEntity($data = null, array $options = [])
@@ -44,6 +45,10 @@ class SdActivityLogsTable extends Table
         ]);
         $this->belongsTo('SdSectionValues', [
             'foreignKey' => 'sd_section_value_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('SdActvities', [
+            'foreignKey' => 'sd_actvity_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -96,6 +101,7 @@ class SdActivityLogsTable extends Table
     {
         $rules->add($rules->existsIn(['sd_user_id'], 'SdUsers'));
         $rules->add($rules->existsIn(['sd_section_value_id'], 'SdSectionValues'));
+        $rules->add($rules->existsIn(['sd_actvity_id'], 'SdActvities'));
 
         return $rules;
     }

@@ -13,9 +13,11 @@ use Cake\ORM\Entity;
  * @property int $sd_section_value_id
  * @property string $data_changed
  * @property \Cake\I18n\FrozenTime $updated_time
+ * @property int $sd_actvity_id
  *
  * @property \App\Model\Entity\SdUser $sd_user
  * @property \App\Model\Entity\SdSectionValue $sd_section_value
+ * @property \App\Model\Entity\SdActvity $sd_actvity
  */
 class SdActivityLog extends Entity
 {
@@ -36,7 +38,9 @@ class SdActivityLog extends Entity
         'sd_section_value_id' => true,
         'data_changed' => true,
         'updated_time' => true,
+        'sd_actvity_id' => true,
         'sd_user' => true,
-        'sd_section_value' => true
+        'sd_section_value' => true,
+        'sd_actvity' => true
     ];
 }

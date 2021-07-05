@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  * @property int $sd_workflow_id
  * @property int $order_no
  * @property int $step_backward
+ * @property string $due_day
  * @property string $activity_name
  * @property string $description
  *
@@ -34,6 +35,7 @@ class SdWorkflowActivity extends Entity
         'sd_workflow_id' => true,
         'order_no' => true,
         'step_backward' => true,
+        'due_day' => true,
         'activity_name' => true,
         'description' => true,
         'sd_workflow' => true,

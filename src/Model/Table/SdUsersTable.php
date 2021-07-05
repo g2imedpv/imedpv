@@ -12,9 +12,14 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\SdRolesTable|\Cake\ORM\Association\BelongsTo $SdRoles
  * @property \App\Model\Table\SdCompaniesTable|\Cake\ORM\Association\BelongsTo $SdCompanies
  * @property \App\Model\Table\SdActivityLogsTable|\Cake\ORM\Association\HasMany $SdActivityLogs
+ * @property |\Cake\ORM\Association\HasMany $SdCaseDistributions
+ * @property |\Cake\ORM\Association\HasMany $SdCaseHistories
  * @property \App\Model\Table\SdCasesTable|\Cake\ORM\Association\HasMany $SdCases
+ * @property |\Cake\ORM\Association\HasMany $SdCases20190516
+ * @property |\Cake\ORM\Association\HasMany $SdInputHistories
  * @property \App\Model\Table\SdProductWorkflowsTable|\Cake\ORM\Association\HasMany $SdProductWorkflows
  * @property \App\Model\Table\SdUserAssignmentsTable|\Cake\ORM\Association\HasMany $SdUserAssignments
+ * @property |\Cake\ORM\Association\HasMany $SdUserPreferrences
  *
  * @method \App\Model\Entity\SdUser get($primaryKey, $options = [])
  * @method \App\Model\Entity\SdUser newEntity($data = null, array $options = [])
@@ -52,13 +57,28 @@ class SdUsersTable extends Table
         $this->hasMany('SdActivityLogs', [
             'foreignKey' => 'sd_user_id'
         ]);
+        $this->hasMany('SdCaseDistributions', [
+            'foreignKey' => 'sd_user_id'
+        ]);
+        $this->hasMany('SdCaseHistories', [
+            'foreignKey' => 'sd_user_id'
+        ]);
         $this->hasMany('SdCases', [
+            'foreignKey' => 'sd_user_id'
+        ]);
+        $this->hasMany('SdCases20190516', [
+            'foreignKey' => 'sd_user_id'
+        ]);
+        $this->hasMany('SdInputHistories', [
             'foreignKey' => 'sd_user_id'
         ]);
         $this->hasMany('SdProductWorkflows', [
             'foreignKey' => 'sd_user_id'
         ]);
         $this->hasMany('SdUserAssignments', [
+            'foreignKey' => 'sd_user_id'
+        ]);
+        $this->hasMany('SdUserPreferrences', [
             'foreignKey' => 'sd_user_id'
         ]);
     }
@@ -200,12 +220,6 @@ class SdUsersTable extends Table
             ->scalar('default_language')
             ->maxLength('default_language', 10)
             ->allowEmpty('default_language');
-
-        $validator
-            ->allowEmpty('is_imedsae_tracking');
-
-        $validator
-            ->allowEmpty('is_imed_safety_database');
 
         $validator
             ->integer('created_by')

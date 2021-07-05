@@ -119,7 +119,10 @@ class SdSectionsController extends AppController
         $writePermission= 0;
         $userinfo = $this->request->getSession()->read('Auth.User');
         $sdCasesTable = TableRegistry::get('SdCases');
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        if ($this->request->is(['patch', 'post', 'put'])) {            
+            $sdCases = $sdCasesTable->find()->where(['SdCases.id'=>$caseId])->contain(['SdProductWorkflows.SdProducts'])->first();
+            $currentActivityId = $sdCases['sd_workflow_activity_id'];
+            $sdInputHistoryTable = TableRegistry::get('SdInputHistories');
             $error =[];
             $requstData = $this->request->getData()['sd_field_values'];
             $SdSectionStructuresTable = TableRegistry::get('SdSectionStructures');
@@ -141,6 +144,9 @@ class SdSectionsController extends AppController
                 foreach($sectionValue as $sectionFieldK =>$sectionFieldValue){
                     if($sectionFieldValue['id']!=''){
                         $sdFieldValueEntity = $sdFieldValueTable->get($sectionFieldValue['id']);/**add last-updated time */
+                        if($sectionFieldValue['field_value'] == $sdFieldValueEntity['field_value']) {
+                            continue;
+                        }
                         $sdFieldValueTable->patchEntity($sdFieldValueEntity,$sectionFieldValue);
                         if(!$sdFieldValueTable->save($sdFieldValueEntity)) {
                             echo "error in updating!" ;
@@ -168,6 +174,22 @@ class SdSectionsController extends AppController
                         } 
                         // $sdSectionSetsEntity = $sdSectionSetsTable->newEntity(); 
 
+                    }else continue;   
+                    //store input history             
+                    $dataSet2 = [
+                        'sd_field_value_id' => $sdFieldValueEntity['id'],
+                        'sd_user_id' => $userinfo['id'],//TODO SET NUMBER REMOVE
+                        'time_changed' =>date("Y-m-d H:i:s"),
+                        'input' =>$sectionFieldValue['field_value'],
+                        'sd_workflow_activity_id' =>$currentActivityId
+                    ];
+                    $sdInputHistoryEntity = $sdInputHistoryTable->newEntity();
+                    $sdInputHistoryEntity = $sdInputHistoryTable->patchEntity($sdInputHistoryEntity, $dataSet2);
+                    // debug($sdFieldValueEntity);
+                    $savedHistoryValue = $sdInputHistoryTable->save($sdInputHistoryEntity);
+                    if(!$savedHistoryValue){
+                        echo "error in adding values!" ;
+                        debug($sdInputHistoryEntity);
                     }
                 }
             };

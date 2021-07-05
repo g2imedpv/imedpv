@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\SdActivityLogsTable;
+use App\Model\Table\SdInputHistoriesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\SdActivityLogsTable Test Case
+ * App\Model\Table\SdInputHistoriesTable Test Case
  */
-class SdActivityLogsTableTest extends TestCase
+class SdInputHistoriesTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\SdActivityLogsTable
+     * @var \App\Model\Table\SdInputHistoriesTable
      */
-    public $SdActivityLogs;
+    public $SdInputHistories;
 
     /**
      * Fixtures
@@ -24,10 +24,9 @@ class SdActivityLogsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.sd_activity_logs',
-        'app.sd_users',
-        'app.sd_section_values',
-        'app.sd_actvities'
+        'app.sd_input_histories',
+        'app.sd_field_values',
+        'app.sd_users'
     ];
 
     /**
@@ -38,8 +37,8 @@ class SdActivityLogsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('SdActivityLogs') ? [] : ['className' => SdActivityLogsTable::class];
-        $this->SdActivityLogs = TableRegistry::getTableLocator()->get('SdActivityLogs', $config);
+        $config = TableRegistry::getTableLocator()->exists('SdInputHistories') ? [] : ['className' => SdInputHistoriesTable::class];
+        $this->SdInputHistories = TableRegistry::getTableLocator()->get('SdInputHistories', $config);
     }
 
     /**
@@ -49,7 +48,7 @@ class SdActivityLogsTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->SdActivityLogs);
+        unset($this->SdInputHistories);
 
         parent::tearDown();
     }
