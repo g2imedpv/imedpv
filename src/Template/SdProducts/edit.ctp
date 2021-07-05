@@ -4,7 +4,7 @@
  * @var \App\Model\Entity\SdProduct $sdProduct
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
+<!-- <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Form->postLink(
@@ -13,14 +13,51 @@
                 ['confirm' => __('Are you sure you want to delete # {0}?', $sdProduct->id)]
             )
         ?></li>
-        <!-- <li><?= $this->Html->link(__('List Sd Products'), ['action' => 'index']) ?></li> -->
+        <li><?= $this->Html->link(__('List Sd Products'), ['action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('Companies'), ['controller' => 'SdCompanies', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('Add Company'), ['controller' => 'SdCompanies', 'action' => 'add']) ?></li>
-        <!-- <li><?= $this->Html->link(__('List Sd Product Workflows'), ['controller' => 'SdProductWorkflows', 'action' => 'index']) ?></li> -->
-        <!-- <li><?= $this->Html->link(__('New Sd Product Workflow'), ['controller' => 'SdProductWorkflows', 'action' => 'add']) ?></li> -->
+        <li><?= $this->Html->link(__('List Sd Product Workflows'), ['controller' => 'SdProductWorkflows', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Sd Product Workflow'), ['controller' => 'SdProductWorkflows', 'action' => 'add']) ?></li>
     </ul>
-</nav>
-<div class="sdProducts form mx-auto my-3 formContainer text-center" style="width:60%;">
+</nav> -->
+<div class="sdProducts form mx-auto my-3 formContainer w-50">
+
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <?= $this->Html->link(__('Companies List'),
+            [
+                'controller' => 'SdCompanies',
+                'action' => 'index'
+            ],
+            [
+                'type' => 'button',
+                'class'=>'btn btn-outline-primary'
+            ])
+        ?>
+
+        <?= $this->Html->link(__('Add Company'),
+            [
+                'controller' => 'SdCompanies',
+                'action' => 'add'
+            ],
+            [
+                'type' => 'button',
+                'class'=>'btn btn-outline-primary'
+            ])
+        ?>
+
+        <?= $this->Form->postLink(__('Delete'),
+                ['action' => 'delete', $sdProduct->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $sdProduct->id)],
+                //['block' => 'true'],
+                [
+                    'type' => 'button',
+                    'class'=>'btn btn-danger'
+                ]
+            )
+        ?>
+    </div>
+
+
     <?= $this->Form->create($sdProduct) ?>
     <fieldset>
         <p class="pageTitle">
@@ -34,7 +71,7 @@
                 ?>
             </div>
             <div class="form-group col-md-4">
-                <?php 
+                <?php
                     echo "<div class=\"input text required\"><label for=\"study-no\">Study No</label><input class=\"form-control\" type=\"text\" name=\"study_no\" required=\"required\" id=\"study-no\" value=\"$sdProduct->study_no\"></input></div>";
                 ?>
             </div>
@@ -82,7 +119,7 @@
                 ?>
             </div>
             <div class="form-group col-md-3">
-                <?php 
+                <?php
                     echo "<div class=\"input text required\"><label for=\"whodd-code\">W H O D D Code</label><input class=\"form-control\" type=\"text\" name=\"WHODD_code\" required=\"required\" maxlength=\"50\" id=\"whodd-code\" value=\"$sdProduct->WHODD_code\"></div>";
                 ?>
             </div>
@@ -104,7 +141,7 @@
                 ?>
             </div>
             <div class="form-group col-md-3">
-                <?php 
+                <?php
                     echo "<div class=\"input text required\"><label for=\"end-date\">End Date</label><input class=\"form-control\" type=\"text\" name=\"end_date\" required=\"required\" maxlength=\"10\" id=\"end-date\" value=\"$sdProduct->end_date\"></div>";
                 ?>
             </div>

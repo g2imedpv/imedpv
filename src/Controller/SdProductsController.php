@@ -160,12 +160,12 @@ class SdProductsController extends AppController
                     'SdCompanies'=>function($q){ return $q->select(['company_name']);}])->toArray();
                     $searchResult = $searchResult->toArray();
                     foreach($searchResult as $key => $productDetail){
-                        if(empty($productDetail['sd_product_workflows'])) 
+                        if(empty($productDetail['sd_product_workflows']))
                         unset($searchResult[$key]);
                     }
                     // print_r($searchResult);
                 }
-                
+
             }catch (\PDOException $e){
                 echo "cannot the case find in database";
             }
@@ -186,12 +186,12 @@ class SdProductsController extends AppController
         //debug($sponsors);
         //debug($product_types);
         $saved_assessment_workflow = [];
-        
+
         if ($this->request->is('post')) {
             // debug($this->request->getData());
             // die();
 
-            //add product detail 
+            //add product detail
             $sdProduct = $this->SdProducts->newEntity();
             $sdProduct = $this->SdProducts->patchEntity($sdProduct, $this->request->getData()['product']);
             $sdProduct['sd_company_id'] = $this->request->getSession()->read('Auth.User.sd_company_id');
@@ -253,7 +253,7 @@ class SdProductsController extends AppController
                             $this->Flash->error(__('error in assessment activity'));
                             return;
                         }else{
-                            
+
                             foreach($this->request->getData()['assessment_permission'][$workflow_activity_k][$k+1] as $section_id => $action){
                                 $dataSet = [
                                     'sd_workflow_activity_id' => $saved_activity['id'],
@@ -269,7 +269,7 @@ class SdProductsController extends AppController
                                     return;
                                 }
                             }
-                            
+
                         }
                     }
                 }
@@ -328,7 +328,7 @@ class SdProductsController extends AppController
                 }
                 // debug($patchedSdProductWorkflowEntity);
             }
-           
+
             //distribution product workflow saving
             $product_workflows_table = TableRegistry::get("sd_product_workflows");
             foreach($this->request->getData()['distribution_product_workflow'] as $product_workflow_k => $product_workflow_detail)
@@ -367,11 +367,11 @@ class SdProductsController extends AppController
                         debug($patchedsd_user_assignmentsEntity);
                         $this->Flash->error(__('error in user assignments'));
                         return;
-                    }    
-                    // debug($patchedsd_user_assignmentsEntity);                
+                    }
+                    // debug($patchedsd_user_assignmentsEntity);
                 }
             }
-            
+
             //distribution user_assignment saving
             $user_assignment_table = TableRegistry::get("sd_user_assignments");
             foreach($this->request->getData()['distribution_user_assignment'] as $user_assignment_k => $workflow_users)
@@ -390,8 +390,8 @@ class SdProductsController extends AppController
                         debug($patchedsd_user_assignmentsEntity);
                         $this->Flash->error(__('error in user assignments'));
                         return;
-                    }    
-                    // debug($patchedsd_user_assignmentsEntity);                
+                    }
+                    // debug($patchedsd_user_assignmentsEntity);
                 }
             }
             //link assessment and distribution
@@ -427,7 +427,7 @@ class SdProductsController extends AppController
         foreach ($query as $company_info){
             $result[$company_info->SdCompanies['id']] = $company_info->SdCompanies['company_name'];
         }
-        
+
         $this->set('cro_companies', $result);
         $call_ctr_companies = TableRegistry::get("SdSponsorCallcenters");
         $query = $call_ctr_companies->find()
@@ -459,7 +459,7 @@ class SdProductsController extends AppController
 
         return $result;
     }
-    
+
     /**
      *
      *
@@ -509,7 +509,7 @@ class SdProductsController extends AppController
                             return $q->select(['SdWorkflowActivities.id','SdWorkflowActivities.step_backward','SdWorkflowActivities.sd_workflow_id','SdWorkflowActivities.activity_name','SdWorkflowActivities.description'])->order(['SdWorkflowActivities.id'=>'ASC']);
                         })
                         ->order(['sd_workflows.id' => 'ASC']);
-                        
+
         foreach ($query as $workflow_info){
             $result[$workflow_info->country] = $workflow_info;
         }
@@ -518,9 +518,9 @@ class SdProductsController extends AppController
 
 
     /**
-     * 
-     * In addproduct page 
-     * 
+     *
+     * In addproduct page
+     *
      */
     public function loadTabs()
     {

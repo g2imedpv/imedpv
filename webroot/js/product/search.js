@@ -23,8 +23,9 @@ function searchProd(){
         url:'/sd-products/search',
         data:request,
         success:function(response){
-            console.log(response);
-            var result = $.parseJSON(response);
+            //console.log('response',response);
+            var result = JSON.parse(response);
+            console.log('result :>> ', result);
             var text = "";
             text +="<p class=\"pageTitle\">"+i18n.gettext("Product List")+"</p>";
             text +="<table class=\"table table-hover table-bordered\" id=\"search_result\">";
@@ -55,7 +56,7 @@ function searchProd(){
                 $.each(caseDetail.sd_product_workflows, function(k,product_workflowdetail){
                     text += "<div class=\"btn btn-sm btn-info mx-1\" data-toggle=\"modal\" onclick=\"view_workflow("+product_workflowdetail.id+")\" data-target=\".WFlistView\">"+product_workflowdetail.sd_workflow.name+" / "+i18n.gettext(product_workflowdetail.sd_workflow.country+"")+"</div>";
                 });
-                console.log(caseDetail);
+                //console.log('caseDetail',caseDetail);
                 text += "</td>";
                 text += "<td><div class=\"btn btn-sm btn-info\" data-toggle=\"modal\" onclick=\"view_product("+caseDetail.id+")\" data-target=\".product_detail\">"+i18n.gettext("View Detail")+"</div></td>";
                 text +="<div id=\"product_"+caseDetail.id+"\" style=\"display:none\">"+JSON.stringify(caseDetail)+"</div>";
@@ -65,7 +66,13 @@ function searchProd(){
             text +="</tbody>";
             text +="</table>";
             $("#searchProductlist").html(text);
-            $('#search_result').DataTable();
+            $('#search_result').DataTable({
+                "processing":  true,
+                'language': {
+                    'loadingRecords': '&nbsp;',
+                    'processing': "<div class='spinner-border' role='status'> <span class='sr-only'>Loading...</span> </div>",
+                }
+            });
         },
         error:function(response){
                 console.log(response.responseText);

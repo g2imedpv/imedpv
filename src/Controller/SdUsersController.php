@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\Auth\DefaultPasswordHasher;
 
 
 /**
@@ -40,7 +41,7 @@ class SdUsersController extends AppController
      */
     public function view($id = null)
     {
-       
+
         $sdUser = $this->SdUsers->get($id, [
             'contain' => ['SdRoles', 'SdCompanies', 'SdActivityLog']
         ]);
@@ -168,7 +169,14 @@ class SdUsersController extends AppController
                 if ($sdUser) {
                     $this->Auth->setUser($sdUser);
                     $SdRoles = TableRegistry::get('SdRoles')->get($sdUser['sd_role_id']);
-                    $session->write('Auth.User.role_name', $SdRoles['description']);
+
+                    $request = $this->request->getData();
+                    $sdUser['password'] = $request['password'];
+
+                    $session->write([
+                        'Auth.User.role_name' => $SdRoles['description'],
+                        'Auth.User.password' => $sdUser['password']
+                    ]);
                     // $session->write('Language', 'en_US');
                     if($session->read('Language')== null) $session->write('Language', 'en_US');;
                     return $this->redirect($this->Auth->redirectUrl(
@@ -182,7 +190,7 @@ class SdUsersController extends AppController
             }
             if($session->read('Language')== null) $session->write('Language', 'en_US');;
     }
-    
+
     public function searchPreviousAvailable($caseNo, $version=1){
         if($this->request->is('POST')){
             $this->autoRender = false;
@@ -217,11 +225,11 @@ class SdUsersController extends AppController
                                 'company'=>[
                                     'table'=>'sd_companies',
                                     'type'=>'INNER',
-                                    'conditions'=>['company.id = user.sd_company_id']                                
+                                    'conditions'=>['company.id = user.sd_company_id']
                                 ]
                             ])
                             ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$previousActivity['id']])
-                            ->order(['close_time'=>'DESC'])->toArray();            
+                            ->order(['close_time'=>'DESC'])->toArray();
                 $parceObj[$previousActivity['id']] = $previousActivity;
                 $parceObj[$previousActivity['id']]['previousUserOnPreviousActivity'] = $previousUserOnPreviousActivity;
                 $users = $this->SdUsers->find()
@@ -237,14 +245,14 @@ class SdUsersController extends AppController
                                         'ua.sd_workflow_activity_id = '.$previousActivity['id'],'ua.sd_user_id = SdUsers.id']
                     ]
                 ])->toArray();
-                
+
                 $parceObj[$previousActivity['id']]['users'] = $users;
             }
             echo json_encode($parceObj);
-            
+
             die();
         }
-    }    
+    }
     public function searchNextAvailable($caseNo, $versionNo=1, $caseDistributionId = null){
         if($this->request->is('POST')){
             if($caseDistributionId == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
@@ -266,7 +274,7 @@ class SdUsersController extends AppController
                                 ]
                             ])
                             ->where(['SdWorkflowActivities.order_no'=>$newtOrder])->toArray();
-                            
+
             }else{
                 $caseDistribution = $caseDistributionTable->get($caseDistributionId);
                 $links = $LinksTable->get($caseDistribution['sd_assessment_distribution_link_id']);
@@ -315,11 +323,11 @@ class SdUsersController extends AppController
                                         'company'=>[
                                             'table'=>'sd_companies',
                                             'type'=>'INNER',
-                                            'conditions'=>['company.id = user.sd_company_id']                                
+                                            'conditions'=>['company.id = user.sd_company_id']
                                         ]
                                     ])
                                     ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$activity_detail['id']])
-                                    ->order(['close_time'=>'DESC'])->toArray();       
+                                    ->order(['close_time'=>'DESC'])->toArray();
                         $activity[$key]['previousUserOnNextActivity'] = $previousUserOnNextActivity;
                         $activity[$key]['activity'] = $activity_detail;
                         $users = $this->SdUsers->find()
@@ -353,11 +361,11 @@ class SdUsersController extends AppController
                                 'company'=>[
                                     'table'=>'sd_companies',
                                     'type'=>'INNER',
-                                    'conditions'=>['company.id = user.sd_company_id']                                
+                                    'conditions'=>['company.id = user.sd_company_id']
                                 ]
                             ])
                             ->where(['sd_case_id'=>$case['id'],'sd_workflow_activity_id'=>$nextActivity['0']['id']])
-                            ->order(['close_time'=>'DESC'])->toArray();            
+                            ->order(['close_time'=>'DESC'])->toArray();
                 $activity['previousUserOnNextActivity'] = $previousUserOnNextActivity;
                 $activity['actvity'] = $nextActivity['0'];
                 $users = $this->SdUsers->find()
@@ -384,8 +392,32 @@ class SdUsersController extends AppController
     }
     public function myaccount() {
         $this->viewBuilder()->setLayout('main_layout');
-
         $userID = $this->request->getSession()->read('Auth.User.id');
+        if($this->request->is('POST')){
+            $request = $this->request->getData();
+            $sdUser = $this->SdUsers->get($userID);
+
+            $sdUser['email'] = $request['email'];
+            $sdUser['firstname'] = $request['fName'];
+            $sdUser['lastname'] = $request['lName'];
+            $sdUser['password'] = $request['pw'];
+
+            $sdUser['password'] = (new DefaultPasswordHasher)->hash($request['pw']);
+            //debug($sdUser['password']);
+
+            if ($this->SdUsers->save($sdUser)) {
+                $this->Flash->success(__('Your info has been saved.'));
+                $session = $this->getRequest()->getSession()->write([
+                    'Auth.User.email' => $request['email'],
+                    'Auth.User.firstname' => $request['fName'],
+                    'Auth.User.lastname' => $request['lName'],
+                    'Auth.User.password' => $request['pw'],
+                ]);
+                return $this->redirect(['action' => 'myaccount']);
+            }
+            $this->Flash->error(__('Your info could not be saved. Please, try again.'));
+        }
+
         $this->set(compact('userID'));
     }
 }
