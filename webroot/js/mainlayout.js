@@ -303,12 +303,14 @@ function onQueryClicked(preferrenceId = null){
                 else text+=i18n.gettext("closed");
                 text+="</td>";
                 text += "<td class=\"align-middle\">";
-                if(caseDetail.sd_user_id == userId)
+                if(caseDetail.sd_user_id == userId && caseDetail.status != '3') {
                     if(caseDetail.wa.activity_name=="Triage")text += "<a href=\"/sd-cases/triage/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">"+i18n.gettext("Continue Triage")+"</div></a>";
                     else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">"+i18n.gettext("Enter")+"</div></a>";
-                else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-info m-1\">"+i18n.gettext("Check Detail")+"</div></a>";
-                if((caseDetail.status=='2')&&(previous_case!=caseDetail.caseNo))
+                }else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-info m-1\">"+i18n.gettext("Check Detail")+"</div></a>";
+                if((caseDetail.status!='1')&&(previous_case!=caseDetail.caseNo))
                     text += "<button class=\"btn btn-warning m-1\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"versionUp(\'"+caseDetail.caseNo+"\')\">"+i18n.gettext("Version Up")+"</button>";
+                else if(caseDetail.status != '3')
+                    text += "<button class=\"btn btn-warning m-1\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"closeCase(\'"+caseDetail.caseNo+"\')\">"+i18n.gettext("Close Case")+"</button>";
                 text +="</td>";
                 text += "</tr>";
                 previous_case = caseDetail.caseNo;
@@ -344,6 +346,31 @@ function versionUp(caseNo){
         },
         error:function(response){
             console.log(response.responseText);
+        }
+    });
+}
+
+function closeCase(caseNo){
+    var versionNo = $('#version-'+caseNo).text();
+    var request={
+        "caseNo":caseNo,
+        "version_no":versionNo,
+        "userId":userId
+    };
+    $.ajax({
+        headers: {
+            'X-CSRF-Token': csrfToken
+        },
+        type:'POST',
+        url:'/sd-cases/closeCase',
+        data:request,
+        success:function(response){
+            console.log(response);
+            location.reload();
+        },
+        error:function(response){
+            console.log(response.responseText);
+            location.reload();
         }
     });
 }

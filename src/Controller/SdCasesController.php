@@ -1013,7 +1013,37 @@ class SdCasesController extends AppController
 
 
 
-
+    private function updateActivityHistory($caseId, $wfaId, $nextActivityId = null, $content = null, $receiverId = null){
+        $caseCurrentHistoryTable =TableRegistry::get('SdCaseHistories');
+        try{
+            $caseCurrentHistory = $caseCurrentHistoryTable->find()
+                ->where(['sd_case_id'=>$caseId,'sd_workflow_activity_id'=>$wfaId,
+                // 'sd_user_id'=>$case['sd_user_id'],
+                'close_time IS NULL'])
+                ->order(['enter_time'=>'DESC'])->first();
+            $caseCurrentHistory['comment'] = $content;
+            $caseCurrentHistory['close_time'] = date("Y-m-d H:i:s");
+            if(!$caseCurrentHistoryTable->save($caseCurrentHistory)){
+                echo "error in saving history";
+                return;
+            };
+            //save next user enter history
+            if($nextActivityId != null){
+                $caseNextHistory = TableRegistry::get('SdCaseHistories')->newEntity();
+                $caseNextHistory['sd_case_id'] = $caseId;
+                $caseNextHistory['sd_workflow_activity_id'] = $nextActivityId;
+                $caseNextHistory['sd_user_id'] = $receiverId;
+                $caseNextHistory['enter_time'] = date("Y-m-d H:i:s");
+                if(!$caseCurrentHistoryTable->save($caseNextHistory)){
+                    echo "error in saving next history";
+                    return;
+                };
+            }
+        }
+        finally{
+            return;
+        }
+    }
 
 
     /**
@@ -1071,6 +1101,7 @@ class SdCasesController extends AppController
             $latestReceiveDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>12, 'sd_case_id'=>$case['id']])->first();
             $date = date_create_from_format("dmY", $latestReceiveDateEntity['field_value']);
             $latestReceiveDateEntity['field_value'] = $date->format('dmY');
+            // filed 414 activity due_Date
             $activityDueDateEntity = $sdFieldValuesTable->find()->where(['sd_field_id'=>414, 'sd_case_id'=>$case['id'],$distribution_condition])->first();
             if($activityDueDateEntity == null){
                 $previsouActivity = TableRegistry::get('SdWorkflowActivities')->find()->where(['sd_workflow_id'=>$sdWorkflowActivity['sd_workflow_id'], 'order_no'=>1])->first();
@@ -1099,6 +1130,7 @@ class SdCasesController extends AppController
                 return;
             };
             if($distribution_id == 'null'){
+                //update sd_Case with the next activity id
                 $case['sd_user_id'] = $requstData['receiverId'];
                 $case['sd_workflow_activity_id'] = $requstData['next-activity-id'];
                 if(!$this->SdCases->save($case)){
@@ -1161,7 +1193,10 @@ class SdCasesController extends AppController
            $this->autoRender = false;
            $requstData = $this->request->getData();
            $case = $this->SdCases->find()->where(['caseNo'=>$requstData['caseNo'],'version_no'=>$requstData['version_no']])->first();
+           $this->updateActivityHistory($case['id'], $case['sd_workflow_activity_id']);
            $case['sd_workflow_activity_id'] = 9999;
+           $case['status'] = 3;
+           //TODO add into acitvity history
            if ($this->SdCases->save($case)) echo "success"; else echo "error";
            print_r($case);
            die();
