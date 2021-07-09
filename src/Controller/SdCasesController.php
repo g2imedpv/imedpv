@@ -1188,13 +1188,12 @@ class SdCasesController extends AppController
     *
     *
     */
-   public function closeCase(){
+   public function closeCase($comment = null){
        if($this->request->is('POST')){
            $this->autoRender = false;
            $requstData = $this->request->getData();
            $case = $this->SdCases->find()->where(['caseNo'=>$requstData['caseNo'],'version_no'=>$requstData['version_no']])->first();
-           $this->updateActivityHistory($case['id'], $case['sd_workflow_activity_id']);
-           $case['sd_workflow_activity_id'] = 9999;
+           $this->updateActivityHistory($case['id'], $case['sd_workflow_activity_id'], $comment);
            $case['status'] = 3;
            //TODO add into acitvity history
            if ($this->SdCases->save($case)) echo "success"; else echo "error";
