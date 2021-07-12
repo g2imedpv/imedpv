@@ -57,7 +57,7 @@ echo $this->element('generatepdf');
             <li class="nav-item m-1">
                 <a class="btn btn-sm btn-outline-info" href="/sd-input-histories/search/<?= $caseId ?>" title="Input History" target="_blank"><i class="far fa-file-alt"></i> <?php echo __("Input History")?></a>
             </li>
-            
+
             <!-- "Search" Button -->
             <li class="nav-item m-1">
                 <button class="btn btn-sm btn-outline-info" title="Search" role="button" id="DeSearch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -172,33 +172,33 @@ echo $this->element('generatepdf');
 
     <div class="subtabtitle"><?= $sdSections[0]['section_name']?></div>
     <?= $this->Form->create($sdSections,['id'=> 'dataEntry']);?>
-    <?php
-        $setNo = "1";
-        $exsitSectionNo = [];
-        foreach($sdSections as $key => $sdSection){
-            $exsitSectionNo[$key] = $sdSection['id'];
-        }
-        // for($i = 0; $i < sizeof($sdSections); $i++){
-        //     $exsitSectionNo[$i] = $sdSections->id;
-        //     next($sdSections);
-        // }
-        $result = displaySection($sdSections[0],$sdSections,[],$exsitSectionNo, $this, $activitySectionPermissions, $dynamic_options);
-        print_r($result['field_Text']);
-        print_r($result['child_Field_Text']);
-        print_r($result['child_Div_Text']);
-        // displaySectionInTabList($result['nav_Text']);
-        // echo "<div class=\"tab-content\" id=\"nav-tabContent\">";
-        // foreach($sdSections as $sdSection_detail){
-        //     $exsitSectionNo = displaySectionOld($sdSection_detail, $exsitSectionNo, $sdSections, $setNo, $this, $activitySectionPermissions);
-        // }
-        // echo "</div>";
+        <?php
+            $setNo = "1";
+            $exsitSectionNo = [];
+            foreach($sdSections as $key => $sdSection){
+                $exsitSectionNo[$key] = $sdSection['id'];
+            }
+            // for($i = 0; $i < sizeof($sdSections); $i++){
+            //     $exsitSectionNo[$i] = $sdSections->id;
+            //     next($sdSections);
+            // }
+            $result = displaySection($sdSections[0],$sdSections,[],$exsitSectionNo, $this, $activitySectionPermissions, $dynamic_options);
+            print_r($result['field_Text']);
+            print_r($result['child_Field_Text']);
+            print_r($result['child_Div_Text']);
+            // displaySectionInTabList($result['nav_Text']);
+            // echo "<div class=\"tab-content\" id=\"nav-tabContent\">";
+            // foreach($sdSections as $sdSection_detail){
+            //     $exsitSectionNo = displaySectionOld($sdSection_detail, $exsitSectionNo, $sdSections, $setNo, $this, $activitySectionPermissions);
+            // }
+            // echo "</div>";
 
-    ?>
-    <?php if(($writePermission)&&($this->request->getQuery('readonly')!=1)):?>
-    <div class="text-center">
-    <button type="submit" class="completeBtn w-25 btn btn-success mb-5"><?php echo __("Complete")?></button>
-    </div>
-    <?php endif;?>
+        ?>
+        <?php if(($writePermission)&&($this->request->getQuery('readonly')!=1)):?>
+            <div class="text-center">
+                <button type="submit" class="completeBtn w-25 btn btn-success mb-5"><?php echo __("Complete")?></button>
+            </div>
+        <?php endif;?>
     <?= $this->Form->end() ?>
     <?php
     //add document button form

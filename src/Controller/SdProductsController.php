@@ -188,22 +188,20 @@ class SdProductsController extends AppController
         $saved_assessment_workflow = [];
 
         if ($this->request->is('post')) {
-            // debug($this->request->getData());
-            // die();
+            //debug($this->request->getData());
 
             //add product detail
             $sdProduct = $this->SdProducts->newEntity();
             $sdProduct = $this->SdProducts->patchEntity($sdProduct, $this->request->getData()['product']);
             $sdProduct['sd_company_id'] = $this->request->getSession()->read('Auth.User.sd_company_id');
+            //debug($sdProduct);die();
             $saved_product = $this->SdProducts->save($sdProduct);
             if (!$saved_product) {
-                debug($sdProduct);
-                $this->Flash->error(__('erro in product'));
+                //debug($sdProduct);
+                $this->Flash->error(__('error in product'));
                 return;
             }
             // debug($sdProduct);
-
-
 
             //assessment workflow saving
             $workflows_table=TableRegistry::get("sd_workflows");

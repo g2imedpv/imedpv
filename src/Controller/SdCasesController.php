@@ -256,7 +256,7 @@ class SdCasesController extends AppController
                             'conditions'=>['ua.sd_product_workflow_id = SdCases.sd_product_workflow_id','ua.sd_user_id = '.$user['id']]
                         ]
                     ]);}
-                
+
                 if(!empty($searchKey['product_id'])) $searchResult = $searchResult->where(['pd.id '=>$searchKey['product_id']]);
                 if(!empty($searchKey['country'])) $searchResult = $searchResult->where(['wf.country'=>$searchKey['country']]);
                 if(!empty($searchKey['patient_initial'])) $searchResult = $searchResult->where(['pi.field_value LIKE'=>'%'.trim($searchKey['patient_initial']).'%']);
@@ -485,7 +485,7 @@ class SdCasesController extends AppController
                 }
                 // $searchKey['meddra_smq'] = '20000001';
                 // $searchKey['meddra_smq_scope'] = '2';
-                if(!empty($searchKey['meddra_smq'])){ 
+                if(!empty($searchKey['meddra_smq'])){
                     $SMQsearch = '';
                     if($searchKey['meddra_smq_scope'] == '2')
                     $SMQboardSearch = 'smq.term_scope = 2 AND';
@@ -499,7 +499,7 @@ class SdCasesController extends AppController
                         'smq'=>[
                             'table' => 'mdr_smq_content',
                             'type' => 'INNER',
-                            'conditions' => [$SMQsearch.'smq.smq_code = '.$searchKey['meddra_smq'].' AND 
+                            'conditions' => [$SMQsearch.'smq.smq_code = '.$searchKey['meddra_smq'].' AND
                                         ((smq.term_level = 4 AND smq.term_code = llt.field_value)OR(smq.term_level = 5 AND smq.term_code = pt.field_value))']//TODO narrow/broad search
                         ]
                     ]);
@@ -509,7 +509,7 @@ class SdCasesController extends AppController
                 if(!empty($searchKey['patient_gender'])) $searchResult = $searchResult->where(['patient_gender.field_value'=>$searchKey['patient_gender']]);
                 if(!empty($searchKey['patient_id'])) $searchResult = $searchResult->where(['patient_id.field_value LIKE'=>'%'.$searchKey['patient_id'].'%']);
                 if(!empty($searchKey['searchProductName'])) $searchResult = $searchResult->where(['product_name  LIKE'=>'%'.$searchKey['searchProductName'].'%']);
-                $output = $searchResult->all()->toArray();  
+                $output = $searchResult->all()->toArray();
                 foreach($output as $key => $caseDetail){
                     if($caseDetail['submission_due_date']==null&&$caseDetail['activity_due_date']==null) continue;
                     $scaseTime = Intval(substr($caseDetail['submission_due_date'],4))*10000+Intval(substr($caseDetail['submission_due_date'],2,2))*100+Intval(substr($caseDetail['submission_due_date'],0,2));
@@ -519,24 +519,24 @@ class SdCasesController extends AppController
                         if($scaseTime > Intval(substr($searchKey['submission_due_date_end'],4))*10000+Intval(substr($searchKey['submission_due_date_end'],2,2))*100+Intval(substr($searchKey['submission_due_date_end'],0,2))){
                             unset($output[$key]);
                             continue;
-                        }         
+                        }
                     if(!empty($searchKey['submission_due_date_start']))
                         if($scaseTime < Intval(substr($searchKey['submission_due_date_start'],4))*10000+Intval(substr($searchKey['submission_due_date_start'],2,2))+Intval(substr($searchKey['submission_due_date_start'],0,2))){
                             unset($output[$key]);
                             continue;
-                        }    
+                        }
                     if(!empty($searchKey['activity_due_date_end']))
                         if($acaseTime > Intval(substr($searchKey['activity_due_date_end'],4))*10000+Intval(substr($searchKey['activity_due_date_end'],2,2))*100+Intval(substr($searchKey['activity_due_date_end'],0,2))){
                             unset($output[$key]);
                             continue;
-                        }         
+                        }
                     if(!empty($searchKey['activity_due_date_start']))
                         if($acaseTime < Intval(substr($searchKey['activity_due_date_start'],4))*10000+Intval(substr($searchKey['activity_due_date_start'],2,2))*100+Intval(substr($searchKey['activity_due_date_start'],0,2))){
                             unset($output[$key]);
                             continue;
-                        }    
-                    // debug($acaseTime);                        
-                }              
+                        }
+                    // debug($acaseTime);
+                }
             }catch (\PDOException $e){
                 echo "Internal Error";
             }
@@ -564,8 +564,9 @@ class SdCasesController extends AppController
             ->contain(['SdProductWorkflows.SdWorkflows'=>['fields'=>['SdWorkflows.country']]])
             ->where(['sd_company_id '=>$userinfo['company_id']])
             ->group(['SdProducts.id']);
-        // debug($userinfo);
+        // debug($productInfo);
         if ($this->request->is(['patch', 'post', 'put'])) {
+
             $requestData = $this->request->getData();
             $product_data = TableRegistry::get('SdProducts')->get($requestData['product_id']);
             $sdFieldValueTable = TableRegistry::get('SdFieldValues');
@@ -625,7 +626,7 @@ class SdCasesController extends AppController
                     '39'=>'study_no',
                     '367'=>'product_name',
                     '368'=>'short_desc',
-                    '176'=>'product_desc', 
+                    '176'=>'product_desc',
                     '40'=>'study_type',
                     '175'=>'sd_product_flag',
                     '283'=>'WHODD_decode',
@@ -925,7 +926,7 @@ class SdCasesController extends AppController
                      echo "error in saving new activity";
                      return;
                 }
-                
+
                 //distribute to every activity selected
                 $caseDistributionsTable = TableRegistry::get('SdCaseDistributions');
                 $queryTable = TableRegistry::get('SdQueries');
@@ -952,7 +953,7 @@ class SdCasesController extends AppController
                     $latestReceiveDateEntity['field_value'] = $date->format('dmY');
                     $previsouActivity = $sdWorkflowActivitiesTable->find()->where(['sd_workflow_id'=>$sdWorkflowActivity['sd_workflow_id'], 'order_no'=>1])->first();
                     date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']]+(int)$previsouActivity['due_day'][$casetype['field_value']].' days'));
-                    $activityDueDateEntity = $sdFieldValuesTable->newEntity();            
+                    $activityDueDateEntity = $sdFieldValuesTable->newEntity();
                     $dataSet = [
                         'sd_case_id' => $case->id,
                         'sd_field_id' => 414,
@@ -975,7 +976,7 @@ class SdCasesController extends AppController
                     $caseNextHistory['sd_workflow_activity_id'] = $activityData['next-activity-id'];
                     $caseNextHistory['sd_user_id'] = $activityData['receiverId'];
                     $caseNextHistory['enter_time'] = date("Y-m-d H:i:s");
-                                   
+
                     if(!$caseCurrentHistoryTable->save($caseNextHistory)){
                         echo "error in saving next history";
                         return;
@@ -983,7 +984,7 @@ class SdCasesController extends AppController
 
 
                     //Save Comment To next person
-                    $title = "A new case has been distributed to you";     
+                    $title = "A new case has been distributed to you";
                     $content = $activityData['content']."  Case Number:".$caseNo."    Version:".$version;
                     $sdQuery = $queryTable->newEntity();
                     $dataSet = [
@@ -1075,7 +1076,7 @@ class SdCasesController extends AppController
             if($activityDueDateEntity == null){
                 $previsouActivity = TableRegistry::get('SdWorkflowActivities')->find()->where(['sd_workflow_id'=>$sdWorkflowActivity['sd_workflow_id'], 'order_no'=>1])->first();
                 date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']]+(int)$previsouActivity['due_day'][$casetype['field_value']].' days'));
-                $activityDueDateEntity = $sdFieldValuesTable->newEntity();            
+                $activityDueDateEntity = $sdFieldValuesTable->newEntity();
                 $dataSet = [
                     'sd_case_id' => $case->id,
                     'sd_field_id' => 414,
@@ -1083,11 +1084,11 @@ class SdCasesController extends AppController
                     'created_time' =>date("Y-m-d H:i:s"),
                     'field_value' =>$date->format('dmY'),
                     'status' =>'1',
-                ];            
+                ];
                 if($distribution_id!=null){
                     $dataSet['sd_case_distribution_id'] = $distribution_id;
                     $dataSet['set_number'] = 2;
-                } 
+                }
                 $activityDueDateEntity = $sdFieldValuesTable->patchEntity($activityDueDateEntity, $dataSet);
             }else{
                 date_add($date, date_interval_create_from_date_string(explode(',',$sdWorkflowActivity['due_day'])[$casetype['field_value']].' days'));
@@ -1185,7 +1186,7 @@ class SdCasesController extends AppController
                         echo "problem in saving".$field_id."sdfields";
                         debug($savedFieldValueEntity);
                         return null;
-                    }            
+                    }
                 }
                 $largerset_field_values = $sdFieldValueTable->find()->where(['sd_case_id'=>$case['id'],'sd_field_id'=>$field_id,'status'=>'1', 'set_number >'=>(int)$setNo]);
                 // debug($largerset_field_values->toArray());
@@ -1198,10 +1199,10 @@ class SdCasesController extends AppController
                         debug($savedFieldValueEntity);
                         return null;
                     }
-                }  
+                }
             }
         }
-        $event_set = [];    
+        $event_set = [];
         $event_ids = ['149','496','392','457','394','458'];
         foreach($event_ids as $field_id){
             try{
@@ -1213,7 +1214,7 @@ class SdCasesController extends AppController
             }catch (\PDOException $e){
                 $event_set = null;
             }
-        } 
+        }
         echo json_encode($event_set);
         die();
    }
@@ -1281,7 +1282,7 @@ class SdCasesController extends AppController
                         ];
                         $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
                     }
-                    
+
                     $savedFieldValue = $sdFieldValueTable->save($savedFieldValueEntity);
                     if(!$savedFieldValue) {
                         echo "problem in saving".$field_id."sdfields";
@@ -1334,8 +1335,8 @@ class SdCasesController extends AppController
         }
         $field_ids = ['10','176','85','79','93','86','87','12','26','28','395','417','420','421','422','423','223','415','500', '225'];
         $versionup_fields = [''];
-        
-        
+
+
         $field_value_set = [];
         foreach($field_ids as $field_id){
             try{
@@ -1346,7 +1347,7 @@ class SdCasesController extends AppController
                 $field_value_set[$field_id] = null;
             }
         }
-        if($versionNo>1) 
+        if($versionNo>1)
         {
             $version_up_set =[''];
             foreach($versionup_fields as $field_id){
@@ -1372,7 +1373,7 @@ class SdCasesController extends AppController
             die();
         }else $this->Flash->success(__('This page has been saved.'));
         $this->viewBuilder()->setLayout('main_layout');
-        // Load document list if there is any. 
+        // Load document list if there is any.
         // Chloe Wang @ Mar 31, 2019
         $this->loadModel("SdDocuments");
         $docList = $this->SdDocuments->find()->where(['sd_case_id'=>$case['id']]);
@@ -1383,7 +1384,7 @@ class SdCasesController extends AppController
     }
 
     /**
-     * 
+     *
      * Deactivate Case While triage
      */
     public function deactivate($caseNo, $versionNo=1){
@@ -1420,7 +1421,7 @@ class SdCasesController extends AppController
                     return null;
                 }
             }
-            
+
             if (!$this->saveDocuments($requestData['document'], $case->id))
             {
                 echo "problem in saving document!";
@@ -1436,7 +1437,7 @@ class SdCasesController extends AppController
         foreach ($data_arr as $key => $value)
         {
             if ($key == 'field_value')
-                continue; 
+                continue;
             preg_match("/^(doc_\S+)_(\d+)$/", $key, $matches);
 
             $field = $matches[1];
@@ -1445,7 +1446,7 @@ class SdCasesController extends AppController
             {
                 $document_data[$index][$field] = $value;
             }
-                
+
         }
         //debug($document_data);
         return $document_data;
@@ -1458,7 +1459,7 @@ class SdCasesController extends AppController
         {
             if ($doc_details['doc_source'] == 'File Attachment' && $doc_details['doc_attachment']['tmp_name'] != ''
             || $doc_details['doc_source'] == 'URL Reference' && $doc_details['doc_path'] != '')
-            { 
+            {
                 return false;
             }
         }
@@ -1478,7 +1479,7 @@ class SdCasesController extends AppController
             {
                 $file_uploaded = false;
                 if ($document_details['doc_source'] == 'File Attachment')
-                {                       
+                {
                     if(!empty($document_details['doc_attachment']['name'])){
                         $fileName = $document_details['doc_attachment']['name'];
                         $fileType = $document_details['doc_attachment']['type'];
@@ -1497,7 +1498,7 @@ class SdCasesController extends AppController
                                 return false;
                             }
                         }
-                        
+
                         $uploadFile = $uploadRealPath."/".$fileName;
 
                         if (file_exists($uploadFile))
@@ -1550,7 +1551,7 @@ class SdCasesController extends AppController
                     }
                 }
             }
-            
+
         }
         if ($file_saved)
             return true;

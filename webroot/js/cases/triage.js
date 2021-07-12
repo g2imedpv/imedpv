@@ -31,7 +31,7 @@ $(document).ready(function(){
               if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
               var values = input.split('/').map(function(v) {
                   return v.replace(/\D/g, '')
-                 
+
               });
               if (values[0]) values[0] = checkValue(values[0], 31);
               if (values[1]) values[1] = checkValue(values[1], 12);
@@ -265,7 +265,7 @@ $(document).ready(function(){
     function dateConvert(target){
         var date=$(target).val();
         if(date!=''){
-            var fieldId=$(target).attr('id'); 
+            var fieldId=$(target).attr('id');
             var dateInformat=date.substring(0,2)+'/'+date.substring(2,4)+'/'+date.substring(4,8);
             $("#"+fieldId+"_plugin").val(dateInformat);
         }else{
@@ -390,10 +390,10 @@ function saveEvent(){
     let eventDetail = {};
     $("input[name^=event][name$=\\[id\\]]").each(function(){
         eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]= {};
-        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]['id'] = $(this).val(); 
+        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]['id'] = $(this).val();
     });
     $("input[name^=event][name$=\\[value\\]]").each(function(){
-        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]['value'] = $(this).val(); 
+        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]['value'] = $(this).val();
     });
     request['saveEvent'] = true;
     eventrequest[$("[id^=eventDiv]").attr('id').split('-')[1]] = eventDetail;
@@ -408,7 +408,7 @@ function saveEvent(){
         data:request,
         success:function(response){
             console.log(response);
-            event_set = $.parseJSON(response);
+            event_set = JSON.parse(response);
             renderTable($("[id^=eventDiv]").attr('id').split('-')[1]);
             mapfieldId($("[id^=eventDiv]").attr('id').split('-')[1]);
         },
@@ -422,13 +422,13 @@ function deleteEvent(){
     let eventDetail = {};
     $("input[name^=event][name$=\\[id\\]]").each(function(){
         eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]= {};
-        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]['id'] = $(this).val(); 
+        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]['id'] = $(this).val();
     });
     $("input[name^=event][name$=\\[value\\]]").each(function(){
-        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]['value'] = $(this).val(); 
+        eventDetail[$(this).attr('name').split(/[\[\]]/)[3]]['value'] = $(this).val();
     });
     eventrequest[$("[id^=eventDiv]").attr('id').split('-')[1]] = eventDetail;
-    console.log(eventrequest);
+    console.log('eventrequest :>> ', eventrequest);
     // return false;
     $.ajax({
         headers: {
@@ -438,8 +438,8 @@ function deleteEvent(){
         url:'/sd-cases/deleteTriageEvent/'+caseNo+'/'+versionNo,
         data:eventrequest,
         success:function(response){
-            console.log(response);
-            event_set = $.parseJSON(response);
+            console.log('deleteEvent response :>> ', response);
+            event_set = JSON.parse(response);
             renderTable(1);
             mapfieldId(1);
         },
@@ -447,7 +447,7 @@ function deleteEvent(){
             console.log(response);
         },
     });
-    
+
 }
 function renderTable(selectedNo){
     let tbodyText = "";
@@ -479,7 +479,7 @@ function renderTable(selectedNo){
     });
     $("#eventSummary").find("tbody").html(tbodyText);
     $("#eventSet-"+selectedNo).addClass("selected-row");
-    console.log(tbodyText);
+    console.log('tbodyText :>> ', tbodyText);
 }
 function addEvent(){
     let setNo = 1;
@@ -534,10 +534,10 @@ function endTriage(){
     //         console.log($(this).attr('name'));
     //         request[$(this).attr('name')] = $(this).val();
     //     }
-    // });      
+    // });
     $("select").each(function(){
         $(this).prop("disabled", false);
-    });                  
+    });
     $('[name=endTriage]').prop('disabled',false);
     var form = new FormData(document.getElementById("triageForm"));
     $('[name=endTriage]').prop('disabled',true);
@@ -560,7 +560,7 @@ function endTriage(){
             //     if(response[field_id][id] != null)
             //         $(this).val = response[field_id][id];
             // });
-            
+
         },
         error:function(response){
             console.log(response);
@@ -609,7 +609,7 @@ function endTriage(){
                     var num = Number(v['sd_cases']['0']['casesCount']);
                     text +="("+i18n.translate("currently working on  %d case").ifPlural(num, "currently working on %d cases").fetch(num)+")";
                 }
-                    
+
                 else text +="(currently working on 0 case)";
                 text +="</option>";
             });

@@ -17,7 +17,7 @@ class SdInputHistoriesController extends AppController
     {
         $this->viewBuilder()->setLayout('main_layout');
 
-            if($this->request->is('POST')){        
+            if($this->request->is('POST')){
                 $inputHistoryData = $this->SdInputHistories->find()
                     ->select(['SdInputHistories.time_changed','SdInputHistories.input','user.firstname','user.lastname','user.email','activity.activity_name','field.field_label'])
                     ->join([
@@ -27,7 +27,7 @@ class SdInputHistoriesController extends AppController
                         'conditions'=>['field_value.id = SdInputHistories.sd_field_value_id','field_value.sd_case_id ='.$caseId]
                     ],
                     'field'=>[
-                        'table' => 'sd_fields', 
+                        'table' => 'sd_fields',
                         'type' => 'INNER',
                         'conditions' =>['field_value.sd_field_id = field.id']
                     ],

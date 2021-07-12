@@ -23,11 +23,11 @@
     var field_value_set = <?= json_encode($field_value_set)?>;
     var event_set = <?= json_encode($event_set)?>;
 </script>
-<div class="mx-auto my-3 formContainer text-center">
-    <p style="font-size: 2rem;">
-        <?php echo __("Create New Case")?>
-    </p>
-  <div class="">
+<div class="card mx-auto my-3 w-75 text-center">
+    <div class="card-header pageTitle">
+        <?php echo __("Create New Case");?>
+    </div>
+  <div class="card-body">
     <div class="alert alert-primary w-50 mx-auto" role="alert"><h4><?php echo __("New Case Number")?>: <?= $caseNo ?></h4></div>
     <hr class="my-3">
     <?= $this->Form->create($caseNo,['id'=>"triageForm", 'enctype'=>"multipart/form-data"]) ?>
@@ -52,114 +52,115 @@
         echo "</div></div>";
     }
     ?>
-    <div id="basicInfo" class="form-group mx-3">
-        <div class="form-row text-left">
-            <h4><?php echo __("Product")?></h4>
-            <div class="form-group col-md-12">
+    <div id="basicInfo" class="form-group mx-3 text-left">
+
+        <!-- Product Info -->
+        <h4><?php echo __("Product")?></h4>
+        <div class="form-row bg-light px-4 py-2 mb-3">
+            <div class="form-group col-md-6">
                 <label><?php echo __("Product Name")?> (B.4.k.2.1)<i class="fas fa-asterisk reqField"></i></label>
-                <p><b><?= $field_value_set['176']['field_value'] ?></b><p>
+                <input class="form-control" type="text" value="<?= $field_value_set['176']['field_value'] ?>" disabled readonly>
             </div>
         </div>
 
         <!-- Patient Info -->
         <h4 class="text-left"><?php echo __("Patient")?></h4>
-        <div id="patientInfo" class="form-row bg-light">
-            <div class="form-group col-md-3">
-                <label><?php echo __("Patient ID")?> (B.1.1)</label>
-                <?php echo "<input type=\"hidden\" id=\"id_patientField_id_id\" name=\"field_value[79][id]\" value=\"".$field_value_set['79']['id']."\">";?>
-                <input type="text" class="form-control" id="patientField_id" name="field_value[79][value]" value="<?= $field_value_set['79']['field_value']?>">
-            </div>
-            <div class="form-group col-md-3">
-                <label><?php echo __("Sex")?> (B.1.5)</label>
-                <?php echo "<input type=\"hidden\" id=\"id_patientField_sex_id\" name=\"field_value[93][id]\" value=\"".$field_value_set['93']['id']."\">";?>
-                <select class="custom-select" id="patientField_sex" name="field_value[93][value]">
-                    <option value=""><?php echo __("Select Sex")?></option>
-                    <option value="1" <?php echo ($field_value_set['93']['field_value']=='1')?"selected":null?>><?php echo __("Male")?></option>
-                    <option value="2" <?php echo ($field_value_set['93']['field_value']=='2')?"selected":null?>><?php echo __("Female")?></option>
-                    <option value="3" <?php echo ($field_value_set['93']['field_value']=='3')?"selected":null?>><?php echo __("Unknown")?></option>
-                    <option value="4" <?php echo ($field_value_set['93']['field_value']=='4')?"selected":null?>><?php echo __("Not Specified")?></option>
-                </select>
-            </div>
+        <div id="patientInfo" class="form-row bg-light px-4 py-2 mb-3">
+            <form class='row'>
+
+                <div class="form-group col-md-3">
+                    <label><?php echo __("Patient ID")?> (B.1.1)</label>
+                    <?php echo "<input type=\"hidden\" id=\"id_patientField_id_id\" name=\"field_value[79][id]\" value=\"".$field_value_set['79']['id']."\">";?>
+                    <input type="text" class="form-control" id="patientField_id" name="field_value[79][value]" value="<?= $field_value_set['79']['field_value']?>">
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label><?php echo __("Sex")?> (B.1.5)</label>
+                    <?php echo "<input type=\"hidden\" id=\"id_patientField_sex_id\" name=\"field_value[93][id]\" value=\"".$field_value_set['93']['id']."\">";?>
+                    <select class="custom-select" id="patientField_sex" name="field_value[93][value]">
+                        <option value=""><?php echo __("Select Sex")?></option>
+                        <option value="1" <?php echo ($field_value_set['93']['field_value']=='1')?"selected":null?>><?php echo __("Male")?></option>
+                        <option value="2" <?php echo ($field_value_set['93']['field_value']=='2')?"selected":null?>><?php echo __("Female")?></option>
+                        <option value="3" <?php echo ($field_value_set['93']['field_value']=='3')?"selected":null?>><?php echo __("Unknown")?></option>
+                        <option value="4" <?php echo ($field_value_set['93']['field_value']=='4')?"selected":null?>><?php echo __("Not Specified")?></option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label><?php echo __("Date of Birth")?> (B.1.2.1b)</label>
+                    <?php echo "<input type=\"hidden\" id=\"id_patientField_dob_id\" name=\"field_value[85][id]\" value=\"".$field_value_set['85']['id']."\">";?>
+                    <div class="d-flex">
+                        <div class="col-md-4">
+                            <select class="custom-select js-example-basic-single" placeholder="Day" id="patientField_dob_day" name="field_value[85][value]">
+                            <?php
+                            echo "<option value=\"00\">".__("Day")."</option>";
+                            for($i=1;$i<32;$i++){
+                                echo "<option value=\"".sprintf("%02d",$i)."\"";
+                                if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],0,2)==sprintf("%02d",$i))) echo "selected";
+                                echo ">".$i."</option>";
+                            }
+                            ?>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="custom-select js-example-basic-single"  name="field_value[85][value]" placeholder="Month" id="patientField_dob_month">
+                            <?php
+                            $month_str = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                            echo "<option value=\"00\">".__("Month")."</option>";
+                            foreach($month_str as $i => $month){
+                                echo "<option value=\"".sprintf("%02d",$i+1)."\"";
+                                if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],2,2)==sprintf("%02d",$i+1))) echo "selected";
+                                $j=$i+1;
+                                echo ">".__($month.-$j)."</option>";
+                            }
+                            ?>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="custom-select js-example-basic-single yearSelect" placeholder="Year" id="patientField_dob_year" name="field_value[85][value]">
+                            <option value="0000"><?php echo __("Year")?></option>
+                            <?php
+                            for($i=1900;$i<=2050;$i++){
+                                echo "<option value=\"".sprintf("%04d",$i)."\"";
+                                if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],4,4)==sprintf("%02d",$i))) echo "selected";
+                                echo ">".$i."</option>";
+                            }
+                            ?>
+                            </select>
+                        </div>
+                        <?php
+                        echo "<input id=\"patientField_dob\" name=\"field_value[85][value]\"";
+                        if($field_value_set['85']['field_value']!=null) echo "value=\"".$field_value_set['85']['field_value']."\"";
+                        echo " type=\"hidden\">";
+                        ?>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label><?php echo __("Age")?> (B.1.2.2a)</label>
+                    <?php echo "<input type=\"hidden\" id=\"id_patientField_age_id\" name=\"field_value[86][id]\" value=\"".$field_value_set['86']['id']."\">";?>
+                    <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<?php echo __("Field Helper")?>" data-content="<?php echo __("Age at Time of Onset of Reaction/event (B.1.2.2a)")?>"><i class="qco fas fa-info-circle"></i></a>
+                    <input type="text" class="form-control" id="patientField_age" name="field_value[86][value]" value="<?= $field_value_set['86']['field_value']?>">
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label><?php echo __("Age Unit")?> (B.1.2.2b)</label>
+                    <?php echo "<input type=\"hidden\" id=\"id_patientField_sex_id\" name=\"field_value[87][id]\" value=\"".$field_value_set['87']['id']."\">";?>
+                    <select class="custom-select" name="field_value[87][value]" id="patientField_ageunit">
+                        <option value=""><?php echo __("Select Age Unit")?></option>
+                        <option value="800" <?php echo ($field_value_set['87']['field_value']=='800')?"selected":null?>><?php echo __("Decade")?></option>
+                        <option value="801" <?php echo ($field_value_set['87']['field_value']=='801')?"selected":null?>><?php echo __("Year")?></option>
+                        <option value="802" <?php echo ($field_value_set['87']['field_value']=='802')?"selected":null?>><?php echo __("Month")?></option>
+                        <option value="803" <?php echo ($field_value_set['87']['field_value']=='803')?"selected":null?>><?php echo __("Week")?></option>
+                        <option value="804" <?php echo ($field_value_set['87']['field_value']=='804')?"selected":null?>><?php echo __("Day")?></option>
+                        <option value="805" <?php echo ($field_value_set['87']['field_value']=='805')?"selected":null?>><?php echo __("Hour")?></option>
+                    </select>
+                </div>
+            </form>
         </div>
 
-        <div id="patientInfo" class="form-row bg-light justify-content-between">
-            <div class="form-group col-md-4">
-                <label><?php echo __("Date of Birth")?> (B.1.2.1b)</label>
-                <?php echo "<input type=\"hidden\" id=\"id_patientField_dob_id\" name=\"field_value[85][id]\" value=\"".$field_value_set['85']['id']."\">";?>
-                <div class="d-flex">
-                    <div class="col-md-4">
-                        <select class="custom-select js-example-basic-single" placeholder="Day" id="patientField_dob_day" name="field_value[85][value]">
-                        <?php
-                        echo "<option value=\"00\">".__("Day")."</option>";
-                        for($i=1;$i<32;$i++){
-                            echo "<option value=\"".sprintf("%02d",$i)."\"";
-                            if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],0,2)==sprintf("%02d",$i))) echo "selected";
-                            echo ">".$i."</option>";
-                        }
-                        ?>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <select class="custom-select js-example-basic-single"  name="field_value[85][value]" placeholder="Month" id="patientField_dob_month">
-                        <?php
-                        $month_str = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-                        echo "<option value=\"00\">".__("Month")."</option>";
-                        foreach($month_str as $i => $month){
-                            echo "<option value=\"".sprintf("%02d",$i+1)."\"";
-                            if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],2,2)==sprintf("%02d",$i+1))) echo "selected";
-                            $j=$i+1;
-                            echo ">".__($month.-$j)."</option>";
-                        }
-                        ?>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <select class="custom-select js-example-basic-single yearSelect" placeholder="Year" id="patientField_dob_year" name="field_value[85][value]">
-                        <option value="0000"><?php echo __("Year")?></option>
-                        <?php
-                        for($i=1900;$i<=2050;$i++){
-                            echo "<option value=\"".sprintf("%04d",$i)."\"";
-                            if (array_key_exists('85',$field_value_set)&&(substr($field_value_set['85']['field_value'],4,4)==sprintf("%02d",$i))) echo "selected";
-                            echo ">".$i."</option>";
-                        }
-                        ?>
-                        </select>
-                    </div>
-                    <?php
-                    echo "<input id=\"patientField_dob\" name=\"field_value[85][value]\"";
-                    if($field_value_set['85']['field_value']!=null) echo "value=\"".$field_value_set['85']['field_value']."\"";
-                    echo " type=\"hidden\">";
-                    ?>
-                </div>
-                <!-- <div class="form-row">
-                </div> -->
-            </div>
-            <div class="form-group col-md-3">
-                <label><?php echo __("Age")?> (B.1.2.2a)</label>
-                <?php echo "<input type=\"hidden\" id=\"id_patientField_age_id\" name=\"field_value[86][id]\" value=\"".$field_value_set['86']['id']."\">";?>
-                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<?php echo __("Field Helper")?>" data-content="<?php echo __("Age at Time of Onset of Reaction/event (B.1.2.2a)")?>"><i class="qco fas fa-info-circle"></i></a>
-                <input type="text" class="form-control" id="patientField_age" name="field_value[86][value]" value="<?= $field_value_set['86']['field_value']?>">
-            </div>
-            <!-- <div class="form-group col-md-3">
-                <label>Age at the time of event (B.1.2.2a)</label>
-                <input type="text" class="form-control" id="">
-            </div> -->
-            <div class="form-group col-md-3">
-                <label><?php echo __("Age Unit")?> (B.1.2.2b)</label>
-                <?php echo "<input type=\"hidden\" id=\"id_patientField_sex_id\" name=\"field_value[87][id]\" value=\"".$field_value_set['87']['id']."\">";?>
-                <select class="custom-select" name="field_value[87][value]" id="patientField_ageunit">
-                    <option value=""><?php echo __("Select Age Unit")?></option>
-                    <option value="800" <?php echo ($field_value_set['87']['field_value']=='800')?"selected":null?>><?php echo __("Decade")?></option>
-                    <option value="801" <?php echo ($field_value_set['87']['field_value']=='801')?"selected":null?>><?php echo __("Year")?></option>
-                    <option value="802" <?php echo ($field_value_set['87']['field_value']=='802')?"selected":null?>><?php echo __("Month")?></option>
-                    <option value="803" <?php echo ($field_value_set['87']['field_value']=='803')?"selected":null?>><?php echo __("Week")?></option>
-                    <option value="804" <?php echo ($field_value_set['87']['field_value']=='804')?"selected":null?>><?php echo __("Day")?></option>
-                    <option value="805" <?php echo ($field_value_set['87']['field_value']=='805')?"selected":null?>><?php echo __("Hour")?></option>
-                </select>
-            </div>
-        </div>
-        <h4 class="text-left mt-3"><?php echo __("Reporter")?></h4>
-        <div id="reporterInfo" class="form-row">
+        <h4 class="text-left"><?php echo __("Reporter")?></h4>
+        <div id="reporterInfo" class="form-row bg-light px-4 py-2 mb-3">
             <div class="form-group col-md-3">
                 <label><?php echo __("First Name")?> (A.2.1.1b)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[26][id]\" value=\"".$field_value_set['26']['id']."\">";?>

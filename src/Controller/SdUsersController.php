@@ -164,6 +164,7 @@ class SdUsersController extends AppController
     public function login() {
         $this->viewBuilder()->setLayout('login');
         $session = $this->getRequest()->getSession();
+        // debug ($this->request->getData() ); die();
             if ($this->request->is('post')) {
                 $sdUser = $this->Auth->identify();
                 if ($sdUser) {
@@ -171,11 +172,11 @@ class SdUsersController extends AppController
                     $SdRoles = TableRegistry::get('SdRoles')->get($sdUser['sd_role_id']);
 
                     $request = $this->request->getData();
-                    $sdUser['password'] = $request['password'];
+                    //$sdUser['password'] = $request['password'];
 
                     $session->write([
                         'Auth.User.role_name' => $SdRoles['description'],
-                        'Auth.User.password' => $sdUser['password']
+                        //'Auth.User.password' => $sdUser['password']
                     ]);
                     // $session->write('Language', 'en_US');
                     if($session->read('Language')== null) $session->write('Language', 'en_US');;
@@ -390,9 +391,15 @@ class SdUsersController extends AppController
             die();
         }
     }
+
     public function myaccount() {
         $this->viewBuilder()->setLayout('main_layout');
         $userID = $this->request->getSession()->read('Auth.User.id');
+
+        $companyID = $this->request->getSession()->read('Auth.User.company_id');
+        $company = TableRegistry::get('SdCompanies')->find()->where(['id'=>$companyID])->select(['company_name'])->first();
+        $company = $company['company_name'];
+
         if($this->request->is('POST')){
             $request = $this->request->getData();
             $sdUser = $this->SdUsers->get($userID);
@@ -400,10 +407,6 @@ class SdUsersController extends AppController
             $sdUser['email'] = $request['email'];
             $sdUser['firstname'] = $request['fName'];
             $sdUser['lastname'] = $request['lName'];
-            $sdUser['password'] = $request['pw'];
-
-            $sdUser['password'] = (new DefaultPasswordHasher)->hash($request['pw']);
-            //debug($sdUser['password']);
 
             if ($this->SdUsers->save($sdUser)) {
                 $this->Flash->success(__('Your info has been saved.'));
@@ -411,13 +414,38 @@ class SdUsersController extends AppController
                     'Auth.User.email' => $request['email'],
                     'Auth.User.firstname' => $request['fName'],
                     'Auth.User.lastname' => $request['lName'],
-                    'Auth.User.password' => $request['pw'],
                 ]);
                 return $this->redirect(['action' => 'myaccount']);
             }
             $this->Flash->error(__('Your info could not be saved. Please, try again.'));
         }
 
-        $this->set(compact('userID'));
+        $this->set(compact('userID','company'));
+    }
+
+    public function changePassword () {
+        $this->viewBuilder()->setLayout('main_layout');
+        $userID = $this->request->getSession()->read('Auth.User.id');
+
+        if($this->request->is('POST')){
+            $request = $this->request->getData();
+            $sdUser = $this->SdUsers->get($userID);
+
+            $passwordHasher = new DefaultPasswordHasher;
+            $currenntPassword = $passwordHasher->check($request['curPw'],$sdUser['password']);
+
+            if(!$currenntPassword) {
+                return $this->Flash->error(__('Your current password is incorrect. Please, try again.'));
+            }
+
+            $sdUser['password'] = $passwordHasher->hash($request['newPw']);
+            //debug($sdUser['password']);die();
+
+            if ($this->SdUsers->save($sdUser)) {
+                $this->Flash->success(__('Your new password has been saved.'));
+                return $this->redirect(['action' => 'myaccount']);
+            }
+            $this->Flash->error(__('Your password could not be saved. Please, try again.'));
+        }
     }
 }

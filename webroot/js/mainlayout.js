@@ -215,6 +215,9 @@ function onQueryClicked(preferrenceId = null){
         type:'POST',
         url:'/sd-cases/search',
         data:request,
+        beforeSend:function () {
+            $('.loadingSpinner').show();
+        },
         success:function(response){
             $("#textHint").html("");
             //console.log(response);
@@ -317,6 +320,9 @@ function onQueryClicked(preferrenceId = null){
             text +="</table>";
             $("#textHint").html(text);
             $('#caseTable').DataTable();
+        },
+        complete: function () {
+            $('.loadingSpinner').hide();
         },
         error:function(response){
                 console.log(response.responseText);
