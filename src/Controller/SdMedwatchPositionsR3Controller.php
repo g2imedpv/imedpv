@@ -748,14 +748,14 @@ class SdMedwatchPositionsR3Controller extends AppController
         $result=$result.$this->getMedPosition($caseId,115,5,5);//month
         $result=$result.$this->getMedPosition($caseId,115,6,6);//year
         // b3 date of event
-        $result=$result.$this->getMedPosition($caseId,1108,4,4);//day
-        $result=$result.$this->getMedPosition($caseId,1108,5,5);//month
-        $result=$result.$this->getMedPosition($caseId,1108,6,6);//year
+        $result=$result.$this->getMedPosition($caseId,156,4,4);//day
+        $result=$result.$this->getMedPosition($caseId,156,5,5);//month
+        $result=$result.$this->getMedPosition($caseId,156,6,6);//year
         //b4
         $result=$result.$this->CurrentTime();
         // b5 describe event or problem
-        $describeOne=substr($this->getDescribeEventValue($caseId,1105,392,394,1134,1135,1138,310),0,600);
-        $result=$result.$this->getPosition($caseId,1134,1,$describeOne);   
+        $describeOne=substr($this->getDescribeEventValue($caseId,149,392,394,218,219,222,310),0,600);
+        $result=$result.$this->getPosition($caseId,218,1,$describeOne);   
         // b6 relevant tests/laboratory data
         $result=$result.$this->labDataOne($caseId);   
         // b7 other relevant history
@@ -766,7 +766,7 @@ class SdMedwatchPositionsR3Controller extends AppController
         $suspect=$this->SuspectRole($caseId);
         if(!is_null($suspect[0])){
             // c1#1 name and strength
-            $result=$result.$this->getMedPosition($caseId,1114,1,1,$suspect[0]);
+            $result=$result.$this->getMedPosition($caseId,176,1,1,$suspect[0]);
             // c1#1 NDC or unique ID
             $result=$result.$this->getMedPosition($caseId,345,1,1,$suspect[0]);
             // c1#1 Manufacturer/compounder
@@ -781,13 +781,13 @@ class SdMedwatchPositionsR3Controller extends AppController
             if($frequencyOne!=null){$frequencyOne=$frequencyOne."time(s)".$this->getMedValue($caseId,186,1,$suspect[0]).$this->getMedValue($caseId,187,2,$suspect[0]);}
             $result=$result.$this->getPosition($caseId,185,1,$frequencyOne);
             //c3#1 route used
-            $result=$result.$this->getMedPosition($caseId,1122,2,1,$suspect[0]);
+            $result=$result.$this->getMedPosition($caseId,192,2,1,$suspect[0]);
             //c4#1 start day
             $result=$result.$this->getMedPosition($caseId,199,3,3,$suspect[0]);
             //c4#1 stop day
             $result=$result.$this->getMedPosition($caseId,205,3,3,$suspect[0]);
             //c5#1 diagnosis for use
-            $result=$result.$this->getMedPosition($caseId,1126,1,1,$suspect[0]);
+            $result=$result.$this->getMedPosition($caseId,197,1,1,$suspect[0]);
             //c6#1 is the product compounded?
             $result=$result.$this->getMedPosition($caseId,425,1,8,$suspect[0]);
             //c7#1 Is the product over-the-counter?
@@ -799,12 +799,12 @@ class SdMedwatchPositionsR3Controller extends AppController
             //c9#1 dechallenge?
             $result=$result.$this->getMedPosition($caseId,381,7,2,$suspect[0]);
             //c10#1 rechallenge?
-            $result=$result.$this->getMedPosition($caseId,1147,7,2,$suspect[0]);
+            $result=$result.$this->getMedPosition($caseId,209,7,2,$suspect[0]);
         }
         
         if(!is_null($suspect[1])){
         // c1#2 name and strength
-            $result=$result.$this->getMedPosition($caseId,1114,1,1,$suspect[1]);
+            $result=$result.$this->getMedPosition($caseId,176,1,1,$suspect[1]);
             // c1#2 NDC or unique ID
             $result=$result.$this->getMedPosition($caseId,345,1,1,$suspect[1]);
             // c1#2 Manufacturer/compounder
@@ -819,13 +819,13 @@ class SdMedwatchPositionsR3Controller extends AppController
             if($frequencyTwo!=null){$frequencyTwo=$frequencyTwo."time(s)".$this->getMedValue($caseId,186,1,$suspect[1]).$this->getMedValue($caseId,187,2,$suspect[1]);}
             $result=$result.$this->getPosition($caseId,185,2,$frequencyTwo);
             //c3#2 route used
-            $result=$result.$this->getMedPosition($caseId,1122,2,1,$suspect[1]);
+            $result=$result.$this->getMedPosition($caseId,192,2,1,$suspect[1]);
             //c4#2 start day
             $result=$result.$this->getMedPosition($caseId,199,3,3,$suspect[1]);
             //c4#2 stop day
             $result=$result.$this->getMedPosition($caseId,205,3,3,$suspect[1]);
             //c5#2 diagnosis for use
-            $result=$result.$this->getMedPosition($caseId,1126,1,1,$suspect[1]);
+            $result=$result.$this->getMedPosition($caseId,197,1,1,$suspect[1]);
             //c6#2 is the product compounded?
             $result=$result.$this->getMedPosition($caseId,425,1,8,$suspect[1]);
             //c7#2 Is the product over-the-counter?
@@ -837,12 +837,12 @@ class SdMedwatchPositionsR3Controller extends AppController
             //c9#2 dechallenge?
             $result=$result.$this->getMedPosition($caseId,381,7,2,$suspect[1]);
             //c10#2 rechallenge?
-            $result=$result.$this->getMedPosition($caseId,1147,7,2,$suspect[1]);
+            $result=$result.$this->getMedPosition($caseId,209,7,2,$suspect[1]);
         }
         // e1 last name
-        $result=$result.$this->getMedPosition($caseId,1070,1,1);
+        $result=$result.$this->getMedPosition($caseId,209,1,1);
         //e1 first name
-        $result=$result.$this->getMedPosition($caseId,1068,1,1); 
+        $result=$result.$this->getMedPosition($caseId,26,1,1); 
         //e1 address
         $result=$result.$this->getMedPosition($caseId,31,1,1); 
         //e1 city
@@ -884,8 +884,8 @@ class SdMedwatchPositionsR3Controller extends AppController
         //$test2 = '<img src="img/pdficon.png" />';
         //$mpdf->WriteHTML("second page");
         $mpdf->AddPage();
-        $describeThree=substr($this->getDescribeEventValue($caseId,1105,392,394,1134,1135,1138,310),600);//b5 describe event continue
-        $continue=$this->getPosition($caseId,1134,2,$describeThree);
+        $describeThree=substr($this->getDescribeEventValue($caseId,149,392,394,218,219,222,310),600);//b5 describe event continue
+        $continue=$this->getPosition($caseId,218,2,$describeThree);
         // b6 relevant tests continue
         $continue=$continue.$this->labDataThree($caseId);
         $historyThree=substr($this->getMedValue($caseId,104,1),300);//b7 other relevant history continue
@@ -936,14 +936,14 @@ class SdMedwatchPositionsR3Controller extends AppController
         $result=$result.$this->getMedPosition($caseId,115,5,5);//month
         $result=$result.$this->getMedPosition($caseId,115,6,6);//year
         // b3 date of event
-        $result=$result.$this->getMedPosition($caseId,1108,4,4);//day
-        $result=$result.$this->getMedPosition($caseId,1108,5,5);//month
-        $result=$result.$this->getMedPosition($caseId,1108,6,6);//year
+        $result=$result.$this->getMedPosition($caseId,156,4,4);//day
+        $result=$result.$this->getMedPosition($caseId,156,5,5);//month
+        $result=$result.$this->getMedPosition($caseId,156,6,6);//year
         //b4
         $result=$result.$this->CurrentTime();
         // b5 describe event or problem
-        $describeOne=substr($this->getDescribeEventValue($caseId,1105,392,394,1134,1135,1138,310),0,600);
-        $result=$result.$this->getPosition($caseId,1134,1,$describeOne);   
+        $describeOne=substr($this->getDescribeEventValue($caseId,149,392,394,218,219,222,310),0,600);
+        $result=$result.$this->getPosition($caseId,218,1,$describeOne);   
         // b6 relevant tests/laboratory data
         $result=$result.$this->labDataOne($caseId);   
         // b7 other relevant history
@@ -954,7 +954,7 @@ class SdMedwatchPositionsR3Controller extends AppController
         $suspect=$this->SuspectRole($caseId);
         if(!is_null($suspect[0])){
             // c1#1 name and strength
-            $result=$result.$this->getMedPosition($caseId,1114,1,1,$suspect[0]);
+            $result=$result.$this->getMedPosition($caseId,176,1,1,$suspect[0]);
             // c1#1 NDC or unique ID
             $result=$result.$this->getMedPosition($caseId,345,1,1,$suspect[0]);
             // c1#1 Manufacturer/compounder
@@ -969,13 +969,13 @@ class SdMedwatchPositionsR3Controller extends AppController
             if($frequencyOne!=null){$frequencyOne=$frequencyOne."time(s)".$this->getMedValue($caseId,186,1,$suspect[0]).$this->getMedValue($caseId,187,2,$suspect[0]);}
             $result=$result.$this->getPosition($caseId,185,1,$frequencyOne);
             //c3#1 route used
-            $result=$result.$this->getMedPosition($caseId,1122,2,1,$suspect[0]);
+            $result=$result.$this->getMedPosition($caseId,192,2,1,$suspect[0]);
             //c4#1 start day
             $result=$result.$this->getMedPosition($caseId,199,3,3,$suspect[0]);
             //c4#1 stop day
             $result=$result.$this->getMedPosition($caseId,205,3,3,$suspect[0]);
             //c5#1 diagnosis for use
-            $result=$result.$this->getMedPosition($caseId,1126,1,1,$suspect[0]);
+            $result=$result.$this->getMedPosition($caseId,197,1,1,$suspect[0]);
             //c6#1 is the product compounded?
             $result=$result.$this->getMedPosition($caseId,425,1,8,$suspect[0]);
             //c7#1 Is the product over-the-counter?
@@ -987,12 +987,12 @@ class SdMedwatchPositionsR3Controller extends AppController
             //c9#1 dechallenge?
             $result=$result.$this->getMedPosition($caseId,381,7,2,$suspect[0]);
             //c10#1 rechallenge?
-            $result=$result.$this->getMedPosition($caseId,1147,7,2,$suspect[0]);
+            $result=$result.$this->getMedPosition($caseId,209,7,2,$suspect[0]);
         }
         
         if(!is_null($suspect[1])){
         // c1#2 name and strength
-            $result=$result.$this->getMedPosition($caseId,1114,1,1,$suspect[1]);
+            $result=$result.$this->getMedPosition($caseId,176,1,1,$suspect[1]);
             // c1#2 NDC or unique ID
             $result=$result.$this->getMedPosition($caseId,345,1,1,$suspect[1]);
             // c1#2 Manufacturer/compounder
@@ -1007,13 +1007,13 @@ class SdMedwatchPositionsR3Controller extends AppController
             if($frequencyTwo!=null){$frequencyTwo=$frequencyTwo."time(s)".$this->getMedValue($caseId,186,1,$suspect[1]).$this->getMedValue($caseId,187,2,$suspect[1]);}
             $result=$result.$this->getPosition($caseId,185,2,$frequencyTwo);
             //c3#2 route used
-            $result=$result.$this->getMedPosition($caseId,1122,2,1,$suspect[1]);
+            $result=$result.$this->getMedPosition($caseId,192,2,1,$suspect[1]);
             //c4#2 start day
             $result=$result.$this->getMedPosition($caseId,199,3,3,$suspect[1]);
             //c4#2 stop day
             $result=$result.$this->getMedPosition($caseId,205,3,3,$suspect[1]);
             //c5#2 diagnosis for use
-            $result=$result.$this->getMedPosition($caseId,1126,1,1,$suspect[1]);
+            $result=$result.$this->getMedPosition($caseId,197,1,1,$suspect[1]);
             //c6#2 is the product compounded?
             $result=$result.$this->getMedPosition($caseId,425,1,8,$suspect[1]);
             //c7#2 Is the product over-the-counter?
@@ -1025,12 +1025,12 @@ class SdMedwatchPositionsR3Controller extends AppController
             //c9#2 dechallenge?
             $result=$result.$this->getMedPosition($caseId,381,7,2,$suspect[1]);
             //c10#2 rechallenge?
-            $result=$result.$this->getMedPosition($caseId,1147,7,2,$suspect[1]);
+            $result=$result.$this->getMedPosition($caseId,209,7,2,$suspect[1]);
         }
         // e1 last name
-        $result=$result.$this->getMedPosition($caseId,1070,1,1);
+        $result=$result.$this->getMedPosition($caseId,209,1,1);
         //e1 first name
-        $result=$result.$this->getMedPosition($caseId,1068,1,1); 
+        $result=$result.$this->getMedPosition($caseId,26,1,1); 
         //e1 address
         $result=$result.$this->getMedPosition($caseId,31,1,1); 
         //e1 city
@@ -1074,8 +1074,8 @@ class SdMedwatchPositionsR3Controller extends AppController
         //$test2 = '<img src="img/pdficon.png" />';
         //$mpdf->WriteHTML("second page");
         $mpdf->AddPage();
-        $describeThree=substr($this->getDescribeEventValue($caseId,1105,392,394,1134,1135,1138,310),600);//b5 describe event continue
-        $continue=$this->getPosition($caseId,1134,2,$describeThree);
+        $describeThree=substr($this->getDescribeEventValue($caseId,149,392,394,218,219,222,310),600);//b5 describe event continue
+        $continue=$this->getPosition($caseId,218,2,$describeThree);
         // b6 relevant tests continue
         $continue=$continue.$this->labDataThree($caseId);
         $historyThree=substr($this->getMedValue($caseId,104,1),300);//b7 other relevant history continue
