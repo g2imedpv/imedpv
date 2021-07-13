@@ -12,6 +12,7 @@
 //     };
 // });
 
+
 $(document).ready(function(){
     //real dob change according to date selected
     $("#patientField_dob_day").change(function(){
@@ -23,7 +24,7 @@ $(document).ready(function(){
     $("#patientField_dob_year").change(function(){
         $("#patient_dob").val($("#patientField_dob_day").val()+$("#patientField_dob_month").val()+$("#patientField_dob_year").val());
     });
-
+    $('.js-example-basic-single').select2();
     /**
      *
      * change Workflow Name according to Product selection
@@ -119,9 +120,13 @@ function checkDuplicate(){
         'userId':userId
     };
     $.each(fields,function(k,field_label){
-        if(!(($('#'+field_label).val()=="")||($('#'+field_label).val()=="null"))) request[field_label] = $('#'+field_label).val();
+        if(
+            !(
+                ($('#'+field_label).val()=="") || ( $('#'+field_label).val() == "null" )
+            )
+        ) request[field_label] = $('#'+field_label).val();
     });
-    console.log(request);
+    console.log('request from userId :>> ', request);
     $.ajax({
         headers: {
             'X-CSRF-Token': csrfToken
@@ -129,9 +134,12 @@ function checkDuplicate(){
         type:'POST',
         url:'/sd-cases/duplicate-detection',
         data:request,
+        beforeSend:function () {
+            $('.loadingSpinner').show();
+        },
         success:function(response){
-            console.log(response);
-            var result = $.parseJSON(response);
+            console.log('duplicate-detection response :>> ', response);
+            var result = JSON.parse(response);
             var text = "";
             if(response!="[]"){
                 text +="<h3 class=\"text-center my-3\">"+i18n.gettext("Search Results")+"</h3>";
@@ -153,7 +161,7 @@ function checkDuplicate(){
                 var gender=["","Male","Female","Unknown","Not Specified"];
                 $.each(result, function(k,caseDetail){
                     text += "<tr>";
-                    text += "<td><button type=\"button\" class=\"btn btn-outline-info\" onclick=\"caseDetail(\'"+caseDetail.caseNo+"\')\" data-toggle=\"modal\" data-target=\".CaseDetail\">" + caseDetail.caseNo;
+                    text += "<td><button type=\"button\" class=\"btn btn-light\" onclick=\"caseDetail(\'"+caseDetail.caseNo+"\')\" data-toggle=\"modal\" data-target=\".CaseDetail\">" + caseDetail.caseNo;
                     text += "<div id=\"version-"+ caseDetail.caseNo+"\"></b>(ver:"+caseDetail.versions+")";
                     text +="</button></td>";
                     text += "<td>";
@@ -191,8 +199,11 @@ function checkDuplicate(){
                 text +="</table>";
             }else text+="<div class=\"my-3 text-center\"><h3>"+i18n.gettext("No Duplicate AER(s) Found")+"</h3></div>"
             //text +="<div class=\"text-center\"> <button onclick=\"clearResult()\" class=\"btn btn-outline-warning mx-2 w-25\">Search Again</button>";
-            text +="<div onclick=\"createCase()\" class=\"btn btn-primary float-right w-25 my-3\" style=\"cursor:pointer;\">"+i18n.gettext("Create This Case")+"</div> </div>";
+            text +="<button type=\"button\" onclick=\"createCase()\" class=\"btn btn-primary w-25 mb-3\">"+i18n.gettext("Create This Case")+"</button> </div>";
             $("#caseTable").html(text);
+        },
+        complete: function () {
+            $('.loadingSpinner').hide();
         },
         error:function(response){
                 console.log(response.responseText);
@@ -239,16 +250,13 @@ function clearResult(){
     });
     $("[id=checkbutton]").show();
 }
-function caseDetail(caseNo)
-{
+function caseDetail(caseNo){
     $('#caseLabel').text("Case Detail:"+caseNo);
     $('#iframeDiv').attr('src','/sd-tabs/showdetails/'+caseNo+'/'+$('#version-'+caseNo).val()+'/1?readonly=1');
 }
-/**  
+/**
  * Case Registration / Duplicate Detection:Reaction Onset Date (B.2.i.4b):date format
  */
 $(document).ready(function () {
     $('#event_onset_date_plugin,#datepicker1,#datepicker2,#datepicker3,#datepicker4,#datepicker5').datepicker({dateFormat: 'dd/mm/yy'});
 });
-
-

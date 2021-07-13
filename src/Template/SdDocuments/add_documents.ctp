@@ -79,11 +79,12 @@
                 <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Source: activate to sort column ascending"><?php echo __("Source");?></th>
                 <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Doc Name: activate to sort column ascending"><?php echo __("Doc Name");?></th>
                 <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Doc Size: activate to sort column ascending"><?php echo __("Doc Size");?></th>
-                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Created User: activate to sort column ascending"><?php echo __("Uploaded By");?></th></tr>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Created User: activate to sort column ascending"><?php echo __("Uploaded By");?></th>
+                <th class="align-middle sorting" scope="col" tabindex="0" aria-controls="docTable" rowspan="1" colspan="1" aria-label="Case Version: activate to sort column ascending"><?php echo __("Case Version");?></th></tr>
                 </thead>
                 <tbody>
                 <?php
-                    foreach ($sdDocList as $key=>$sdDoc)
+                    foreach ($docList as $key=>$sdDoc)
                     {
                         if ($key/2 == 0)
                             $odd_even = "even";
@@ -103,6 +104,7 @@
 
                         print '<td class="align-middle">'.$sdDoc['doc_size'].'</td>';
                         print '<td class="align-middle">'.$sdDoc['created_by'].'</td>';
+                        print '<td class="align-middle">'.$sdDoc['sd_case']['version_no'].'</td>';
                         print "</tr>";
 
                     }

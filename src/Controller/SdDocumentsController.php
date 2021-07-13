@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use Cake\ORM\TableRegistry;
 use App\Controller\AppController;
 use Cake\Routing\Router;
 
@@ -113,11 +114,13 @@ class SdDocumentsController extends AppController
 
     public function addDocuments($case_id)
     {
-            $this->viewBuilder()->setLayout('main_layout');
-            $docList = $this->SdDocuments->find()->where(['sd_case_id'=>$case_id]);
-            $this->loadModel("SdUsers");
-            $sdDocList = $docList->toArray();
-            $this->set(compact('sdDocList', 'case_id'));
+        $this->viewBuilder()->setLayout('main_layout');
+        $caseTable = TableRegistry::get('SdCases');
+        $caseNo =$caseTable -> get($case_id)['caseNo'];
+        $docList = $this->SdDocuments->find()
+            ->contain(['SdCases'=>function($q)use($caseNo){return $q->select('SdCases.version_no','SdCases.caseNo')->where(['SdCases.caseNo'=>$caseNo]);}]);
+        $this->loadModel("SdUsers");
+        $this->set(compact('docList', 'case_id'));
     }
 
     public function save($case_id)

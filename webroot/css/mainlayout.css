@@ -789,3 +789,15 @@ ul.queryBoxLeft > a {
     width: 30px;
     height: 30px;
 }
+
+.loadingSpinner{
+    height: 100vh;
+    background-color: #ddd;
+    opacity:0.6;
+    display:none;
+}
+
+.loadingSpinner div {
+    width:10rem;
+    height:10rem;
+}

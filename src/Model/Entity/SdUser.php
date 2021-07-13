@@ -37,8 +37,6 @@ use Cake\ORM\Entity;
  * @property int $assign_protocol
  * @property int $status
  * @property string $default_language
- * @property int $is_imedsae_tracking
- * @property int $is_imed_safety_database
  * @property int $created_by
  * @property \Cake\I18n\FrozenTime $created_dt
  * @property int $modified_by
@@ -94,8 +92,6 @@ class SdUser extends Entity
         'assign_protocol' => true,
         'status' => true,
         'default_language' => true,
-        'is_imedsae_tracking' => true,
-        'is_imed_safety_database' => true,
         'created_by' => true,
         'created_dt' => true,
         'modified_by' => true,

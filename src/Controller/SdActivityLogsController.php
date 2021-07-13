@@ -4,13 +4,13 @@ namespace App\Controller;
 use App\Controller\AppController;
 
 /**
- * SdActivityLog Controller
+ * SdActivityLogs Controller
  *
- * @property \App\Model\Table\SdActivityLogTable $SdActivityLog
+ * @property \App\Model\Table\SdActivityLogsTable $SdActivityLogs
  *
  * @method \App\Model\Entity\SdActivityLog[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class SdActivityLogController extends AppController
+class SdActivityLogsController extends AppController
 {
 
     /**
@@ -21,11 +21,11 @@ class SdActivityLogController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['SdUsers', 'SdSectionValues']
+            'contain' => ['SdUsers', 'SdSectionValues', 'SdActvities']
         ];
-        $sdActivityLog = $this->paginate($this->SdActivityLog);
+        $sdActivityLogs = $this->paginate($this->SdActivityLogs);
 
-        $this->set(compact('sdActivityLog'));
+        $this->set(compact('sdActivityLogs'));
     }
 
     /**
@@ -37,8 +37,8 @@ class SdActivityLogController extends AppController
      */
     public function view($id = null)
     {
-        $sdActivityLog = $this->SdActivityLog->get($id, [
-            'contain' => ['SdUsers', 'SdSectionValues']
+        $sdActivityLog = $this->SdActivityLogs->get($id, [
+            'contain' => ['SdUsers', 'SdSectionValues', 'SdActvities']
         ]);
 
         $this->set('sdActivityLog', $sdActivityLog);
@@ -51,19 +51,20 @@ class SdActivityLogController extends AppController
      */
     public function add()
     {
-        $sdActivityLog = $this->SdActivityLog->newEntity();
+        $sdActivityLog = $this->SdActivityLogs->newEntity();
         if ($this->request->is('post')) {
-            $sdActivityLog = $this->SdActivityLog->patchEntity($sdActivityLog, $this->request->getData());
-            if ($this->SdActivityLog->save($sdActivityLog)) {
+            $sdActivityLog = $this->SdActivityLogs->patchEntity($sdActivityLog, $this->request->getData());
+            if ($this->SdActivityLogs->save($sdActivityLog)) {
                 $this->Flash->success(__('The sd activity log has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The sd activity log could not be saved. Please, try again.'));
         }
-        $sdUsers = $this->SdActivityLog->SdUsers->find('list', ['limit' => 200]);
-        $sdSectionValues = $this->SdActivityLog->SdSectionValues->find('list', ['limit' => 200]);
-        $this->set(compact('sdActivityLog', 'sdUsers', 'sdSectionValues'));
+        $sdUsers = $this->SdActivityLogs->SdUsers->find('list', ['limit' => 200]);
+        $sdSectionValues = $this->SdActivityLogs->SdSectionValues->find('list', ['limit' => 200]);
+        $sdActvities = $this->SdActivityLogs->SdActvities->find('list', ['limit' => 200]);
+        $this->set(compact('sdActivityLog', 'sdUsers', 'sdSectionValues', 'sdActvities'));
     }
 
     /**
@@ -75,21 +76,22 @@ class SdActivityLogController extends AppController
      */
     public function edit($id = null)
     {
-        $sdActivityLog = $this->SdActivityLog->get($id, [
+        $sdActivityLog = $this->SdActivityLogs->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $sdActivityLog = $this->SdActivityLog->patchEntity($sdActivityLog, $this->request->getData());
-            if ($this->SdActivityLog->save($sdActivityLog)) {
+            $sdActivityLog = $this->SdActivityLogs->patchEntity($sdActivityLog, $this->request->getData());
+            if ($this->SdActivityLogs->save($sdActivityLog)) {
                 $this->Flash->success(__('The sd activity log has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The sd activity log could not be saved. Please, try again.'));
         }
-        $sdUsers = $this->SdActivityLog->SdUsers->find('list', ['limit' => 200]);
-        $sdSectionValues = $this->SdActivityLog->SdSectionValues->find('list', ['limit' => 200]);
-        $this->set(compact('sdActivityLog', 'sdUsers', 'sdSectionValues'));
+        $sdUsers = $this->SdActivityLogs->SdUsers->find('list', ['limit' => 200]);
+        $sdSectionValues = $this->SdActivityLogs->SdSectionValues->find('list', ['limit' => 200]);
+        $sdActvities = $this->SdActivityLogs->SdActvities->find('list', ['limit' => 200]);
+        $this->set(compact('sdActivityLog', 'sdUsers', 'sdSectionValues', 'sdActvities'));
     }
 
     /**
@@ -102,8 +104,8 @@ class SdActivityLogController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $sdActivityLog = $this->SdActivityLog->get($id);
-        if ($this->SdActivityLog->delete($sdActivityLog)) {
+        $sdActivityLog = $this->SdActivityLogs->get($id);
+        if ($this->SdActivityLogs->delete($sdActivityLog)) {
             $this->Flash->success(__('The sd activity log has been deleted.'));
         } else {
             $this->Flash->error(__('The sd activity log could not be deleted. Please, try again.'));

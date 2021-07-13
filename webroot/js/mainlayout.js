@@ -8,6 +8,27 @@ $popover(document).ready(function(){
     });
 });
 
+// refresh function
+
+// var refreshSn = function ()
+// {
+//     var time = 100; // 10 mins
+//     setTimeout(
+//         function ()
+//         {
+//         $.ajax({
+//            url: '/sd-tabs/refresh_session',
+//            cache: false,
+//            complete: function () {refreshSn();}
+//         });
+//     },
+//     time
+// );
+// };
+
+// // Call in page
+// refreshSn()
+
 jQuery(function($) {  // In case of jQuery conflict
   // TO DO: This line should have deleted, BUT will not work if delete directly
 // Date Input Validation ("Latest received date (A.1.7.b)" MUST Greater than "Initial Received date (A.1.6.b)")
@@ -194,6 +215,9 @@ function onQueryClicked(preferrenceId = null){
         type:'POST',
         url:'/sd-cases/search',
         data:request,
+        beforeSend:function () {
+            $('.loadingSpinner').show();
+        },
         success:function(response){
             $("#textHint").html("");
             //console.log(response);
@@ -282,12 +306,14 @@ function onQueryClicked(preferrenceId = null){
                 else text+=i18n.gettext("closed");
                 text+="</td>";
                 text += "<td class=\"align-middle\">";
-                if(caseDetail.sd_user_id == userId)
+                if(caseDetail.sd_user_id == userId && caseDetail.status != '3') {
                     if(caseDetail.wa.activity_name=="Triage")text += "<a href=\"/sd-cases/triage/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">"+i18n.gettext("Continue Triage")+"</div></a>";
                     else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">"+i18n.gettext("Enter")+"</div></a>";
-                else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-info m-1\">"+i18n.gettext("Check Detail")+"</div></a>";
-                if((caseDetail.status=='2')&&(previous_case!=caseDetail.caseNo))
+                }else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-info m-1\">"+i18n.gettext("Check Detail")+"</div></a>";
+                if((caseDetail.status!='1')&&(previous_case!=caseDetail.caseNo))
                     text += "<button class=\"btn btn-warning m-1\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"versionUp(\'"+caseDetail.caseNo+"\')\">"+i18n.gettext("Version Up")+"</button>";
+                else if(caseDetail.status != '3')
+                    text += "<button class=\"btn btn-warning m-1\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"closeCase(\'"+caseDetail.caseNo+"\')\">"+i18n.gettext("Close Case")+"</button>";
                 text +="</td>";
                 text += "</tr>";
                 previous_case = caseDetail.caseNo;
@@ -296,6 +322,9 @@ function onQueryClicked(preferrenceId = null){
             text +="</table>";
             $("#textHint").html(text);
             $('#caseTable').DataTable();
+        },
+        complete: function () {
+            $('.loadingSpinner').hide();
         },
         error:function(response){
                 console.log(response.responseText);
@@ -323,6 +352,31 @@ function versionUp(caseNo){
         },
         error:function(response){
             console.log(response.responseText);
+        }
+    });
+}
+
+function closeCase(caseNo){
+    var versionNo = $('#version-'+caseNo).text();
+    var request={
+        "caseNo":caseNo,
+        "version_no":versionNo,
+        "userId":userId
+    };
+    $.ajax({
+        headers: {
+            'X-CSRF-Token': csrfToken
+        },
+        type:'POST',
+        url:'/sd-cases/closeCase',
+        data:request,
+        success:function(response){
+            console.log(response);
+            location.reload();
+        },
+        error:function(response){
+            console.log(response.responseText);
+            location.reload();
         }
     });
 }
