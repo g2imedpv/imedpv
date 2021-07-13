@@ -716,7 +716,7 @@ class SdMedwatchPositionsR3Controller extends AppController
     {   
         
         //a1 patientID field
-        $result=$this->getMedPosition($caseId,1080,1,1);
+        $result=$this->getMedPosition($caseId,79,1,1);
         //a2 age field  
         $result=$result.$this->getMedPosition($caseId,86,1,1);
         //a2 age unit 
@@ -904,7 +904,7 @@ class SdMedwatchPositionsR3Controller extends AppController
     {   
         
         //a1 patientID field
-        $result=$this->getMedPosition($caseId,1080,1,1);
+        $result=$this->getMedPosition($caseId,79,1,1);
         //a2 age field  
         $result=$result.$this->getMedPosition($caseId,86,1,1);
         //a2 age unit 

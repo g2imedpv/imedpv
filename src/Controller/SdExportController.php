@@ -672,7 +672,7 @@ class SdExportController extends AppController
             $fileName=$name['caseNo'];
             $this->set('fileName', $fileName);
             //1.
-            $this->set('patientInitial', $this->getDirectValue($caseId,1080));//D.1  patientinitial
+            $this->set('patientInitial', $this->getDirectValue($caseId,79));//D.1  patientinitial
             //1a.
             $this->set('country', $this->getLookupValue($caseId,1026));// E.i.9 occurcountry
             //2.
@@ -753,7 +753,7 @@ class SdExportController extends AppController
             $fileName=$name['caseNo'];
             $this->set('fileName', $fileName);
             //1.
-            $this->set('patientInitial', $this->getDirectValue($caseId,1080));//D.1  patientinitial
+            $this->set('patientInitial', $this->getDirectValue($caseId,79));//D.1  patientinitial
             //1a.
             $this->set('country', $this->getLookupValue($caseId,1026));// E.i.9 occurcountry
             //2.
