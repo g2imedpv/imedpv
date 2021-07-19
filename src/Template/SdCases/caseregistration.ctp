@@ -8,6 +8,9 @@
     <!-- For local CSS link -->
     <?= $this->Html->css('mainlayout.css') ?>
     <?= $this->Html->script('meddra.js') ?>
+    <!-- For local Select2 (External library for quick selecting) CSS/JS link -->
+    <?= $this->Html->css('select2/select2.min.css') ?>
+    <?= $this->Html->script('select2/select2.min.js') ?>
     <!-- For local DataTable CSS/JS link -->
     <?= $this->Html->css('datatable/dataTables.bootstrap4.min.css') ?>
     <?= $this->Html->script('datatable/DataTables/js/jquery.dataTables.min.js') ?>
@@ -148,17 +151,15 @@
   </div>
 </div>
 
-<div class="mx-auto my-3 formContainer">
-
-    <div class="text-center">
-        <p class="pageTitle">
-            <?php echo __("Case Registration / Duplicate Detection")?>
-        </p>
-
+<div class="card mx-auto my-3 w-75">
+    <div class="card-header pageTitle text-center">
+        <?php echo __("Case Registration / Duplicate Detection");?>
+    </div>
+    <div class="card-body">
         <?= $this->Form->create($productInfo,['id'=>'caseRegistrationForm']);?>
             <!-- Add Product -->
-            <div class="form-row justify-content-center">
-                <div class="form-group col-md-2">
+            <div class="form-row">
+                <div class="form-group col-md-3">
                     <label><?php echo __("Product Name")?> <i class="fas fa-asterisk reqField"></i></label>
                     <select type="text" class="form-control" id="product_id">
                         <option value=""><?php echo __("Select Project No.")?></option>
@@ -170,7 +171,7 @@
                     </select>
                     <input name="product_id" type="hidden" id="input_product_id">
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                     <label><?php echo __("Country")?> <i class="fas fa-asterisk reqField"></i></label>
                     <select type="text" class="form-control" id="sd_product_workflow_id">
                         <option value=""><?php echo __("Select Country")?></option>
@@ -178,18 +179,18 @@
                     </select>
                     <input name="sd_product_workflow_id" id="input_product_workflow_id" type="hidden">
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                     <label><?php echo __("Event Report Term")?></label>
                     <input type="text" class="form-control" name="field_value[149]" id="event_report_term">
-                    </div>
-                    <div class="form-group col-md-2">
+                </div>
+                <div class="form-group col-md-3">
                     <label><?php echo __("Reaction Onset Date (B.2.i.4b)")?></label>
                     <input type="hidden" class="form-control" name="field_value[156]" id="event_onset_date">
                     <input type="text" class="form-control"  id="event_onset_date_plugin" placeholder="<?php echo __("dd/mm/yyyy")?>">
-                    </div>
-            </div>
-            <div class="form-row justify-content-center">
-                    <div class="form-group col-md-2">
+                </div>
+
+                <!-- Second Line -->
+                <div class="form-group col-md-3">
                     <label><?php echo __("Patient Gender")?></label>
                     <select type="text" class="form-control" name="field_value[93]" id="patient_gender">
                         <option value=""><?php echo __("Select Patient Gender")?></option>
@@ -198,13 +199,13 @@
                         <option value="3"><?php echo __("Unknown")?></option>
                         <option value="4"><?php echo __("Not Specified")?></option>
                     </select>
-                    </div>
+                </div>
                 <div class="form-group col-md-4">
                     <label><?php echo __("Age at Time of Onset of Reaction/event (B.1.2.2a)")?></label>
                     <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<?php echo __("Field Helper")?>" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
                     <input type="text" class="form-control" name="field_value[86]" id="patient_age">
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                     <label><?php echo __("Age Unit")?></label>
                     <select class="form-control" name="field_value[87]" id="patient_age_unit">
                         <option value=""><?php echo __("Select Unit")?></option>
@@ -221,20 +222,20 @@
             <!-- Advance Search -->
             <div id="caseRegAdvFields" style="display:none;">
                 <hr class="my-3 w-75">
-                <div class="form-row justify-content-center">
-                    <div class="form-group col-md-2">
+                <div class="form-row">
+                    <div class="form-group col-md-3">
                         <label><?php echo __("Reporter First Name")?></label>
                         <input type="text" class="form-control" name="field_value[26]" id="reporter_firstname">
                     </div>
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <label><?php echo __("Reporter Last name")?></label>
                         <input type="text" class="form-control" name="field_value[28]" id="reporter_lastname">
                     </div>
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <label><?php echo __("Subject No.")?></label>
                         <input type="text" class="form-control" name="" id="">
                     </div>
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <label><?php echo __("Patient Ethnic origin")?></label>
                         <select class="form-control" id="patient_ethnic_origin" name="field_value[235]">
                             <option value=""></option>
@@ -250,7 +251,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-row justify-content-center">
+                <div class="form-row">
                     <div class="form-group col-md-3">
                         <label><?php echo __("Patient Initial")?></label>
                         <input type="text" class="form-control" name="field_value[79]" id="patient_initial">
@@ -292,7 +293,7 @@
                         </div>
                         <input type="hidden" class="form-control" name="field_value[85]" id="patient_dob">
                     </div>
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <label><?php echo __("Patient Age Group")?></label>
                         <select class="form-control" name="field_value[90]" id="patient_age_group">
                             <option value=""></option>
@@ -305,9 +306,10 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="my-3">
                     <div class="form-row justify-content-center">
-                        <div class="form-group col-md-8">
+                        <div class="form-group col-md-12">
                             <!-- <label><?php echo __("Meddra Browser")?></label> -->
                             <?php
                             $meddraCell = $this->cell('Meddra',['llt-c:392,llt-n:457,pt-c:394,pt-n:458,ver:150,ver:443','496']);
@@ -316,34 +318,43 @@
                         </div>
                     </div>
                     <div class="form-row justify-content-center">
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-3">
                             <label><?php echo __("LLT Code")?></label>
                             <input type="text" class="form-control" name="field_value[392]" id="meddrashow-392">
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-3">
                             <label><?php echo __("LLT Name")?></label>
                             <input type="text" class="form-control" name="field_value[457]" id="meddrashow-457">
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-3">
                             <label><?php echo __("PT Code")?></label>
                             <input type="text" class="form-control" name="field_value[394]" id="meddrashow-394">
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-3">
                             <label><?php echo __("PT Name")?></label>
                             <input type="text" class="form-control" name="field_value[458]" id="meddrashow-458">
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
         <?= $this->Form->end()?>
-        <div id="checkbutton" class="d-flex justify-content-center">
+
+        <div id="checkbutton" class="text-center mb-4">
             <button class="btn btn-sm btn-outline-info w-25 mx-1" id="caseRegAdvBtn"><i class="fas fa-search"></i> <?php echo __("Advanced Search")?></button>
             <button class="btn btn-sm btn-success mx-1 w-25" onclick="checkDuplicate()" id="checkbtn"><i class="far fa-copy"></i> <?php echo __("Search Duplicate")?></button>
-            <button class="btn btn-sm btn-outline-warning mx-2 w-25"  onclick="clearResult()" id="clear" style="display:none;"><i class="fab fa-searchengin"></i> <?php echo __("Search Again")?></button>
-            <!-- <a role="button" onclick="checkDuplicate()" id="checkbtn" class="completeBtn btn btn-success d-block m-auto w-25">Seach Duplicate</a> -->
         </div>
 
+        <div class='text-center'>
+            <button class="btn btn-sm btn-outline-primary w-25"  onclick="clearResult()" id="clear" style="display:none;"><i class="fab fa-searchengin"></i> <?php echo __("Search Again")?></button>
+        </div>
+
+        <!-- Search Results -->
+        <div id="caseTable" class='text-center'>
+        </div>
+
+        <!-- CaseDetail Modal -->
         <div class="modal fade CaseDetail" tabindex="-1" role="dialog" aria-labelledby="CaseDetail" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content modalStyle">
@@ -365,13 +376,18 @@
                 </div>
             </div>
         </div>
-        <div id="caseTable"></div>
-
-
+    </div>
+    <!-- Loading Animation -->
+    <div class="text-center w-75 mx-auto loadingSpinner">
+        <div class="spinner-border text-primary m-5" role="status">
+            <span class="visually-hidden"></span>
+        </div>
+    </div>
 </div>
+
 <script type="text/javascript">
     var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
     var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
-var productInfo = <?php $productInfo =$productInfo->toList();
-echo json_encode($productInfo);?>;
+    var productInfo = <?php $productInfo = $productInfo->toList();
+    echo json_encode($productInfo);?>;
 </script>

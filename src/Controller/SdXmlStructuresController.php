@@ -205,7 +205,7 @@ class SdXmlStructuresController extends AppController
         $xml->setIndent(true);
         // create xml Document start
         $xml->startDocument('1.0', 'ISO-8859-1');//FDA supports only the ISO-8859-1 character set for encoding the submission.
-            $xml->writeDtd('ichicsr','','https://www.accessdata.fda.gov/xml/icsr-xml-v2.1.dtd');
+            $xml->writeDtd('ichicsr','','https://www.accessdata.fda.gov/xml/icsr-xml-v2.2.dtd');
             //A first element ichicsr
                 $xml->startElement("ichicsr");
                     // Attribute lang="en"
@@ -523,14 +523,14 @@ class SdXmlStructuresController extends AppController
         $xml->setIndentString("\t");
         $xml->setIndent(true);
         $xml->startDocument('1.0', 'UTF-8');//FDA supports only the ISO-8859-1 character set for encoding the submission.
-        if($this->XMLvalue($caseId,1140,1)==1){//nullification
+        if($this->XMLvalue($caseId,22,1)==1){//nullification
             $xml->startElement("MCCI_IN200100UV01");
             $xml->writeAttribute('ITSVersion','XML_1.0');
             $xml->writeAttribute('xsi:schemaLocation','urn:hl7-org:v3 MCCI_IN200100UV01.xsd');
             $xml->writeAttribute('xmlns','urn:hl7-org:v3');
             $xml->writeAttributeNS('xmlns','xsi', null,'http://www.w3.org/2001/XMLSchema-instance');
                 $xml->startElement("id");
-                    $xml->writeAttribute('extension',$this->XMLvalue($caseId,1052,1));
+                    $xml->writeAttribute('extension',$this->XMLvalue($caseId,553,1));
                     $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.22');
                 $xml->endElement();  
                 $xml->writeComment(" N.1.2: Batch Number ");
@@ -607,7 +607,7 @@ class SdXmlStructuresController extends AppController
                         $xml->endElement();
                         $xml->writeComment(" HL7 Trigger Event ID ");
                         $xml->startElement("effectiveTime");
-                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1063,1));
+                        $xml->writeAttribute('value',$this->XMLvalue($caseId,5,1));
                         $xml->endElement();
                         $xml->writeComment(" C.1.2: Date of Creation ");
                         $xml->startElement("subject");
@@ -629,7 +629,7 @@ class SdXmlStructuresController extends AppController
                                 $xml->writeAttribute('code','PAT_ADV_EVNT');
                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.5.4');
                                 $xml->endElement();
-                                $xml->writeElement("text",$this->XMLvalue($caseId,1134,1));
+                                $xml->writeElement("text",$this->XMLvalue($caseId,218,1));
                                 $xml->writeComment(" H.1: Case Narrative Including Clinical Course, Therapeutic Measures, Outcome and Additional Relevant Information ");
                                 $xml->startElement("statusCode");
                                 $xml->writeAttribute('code','active');
@@ -772,7 +772,7 @@ class SdXmlStructuresController extends AppController
                                                             $xml->writeAttribute('classCode','OBS');
                                                             $xml->writeAttribute('moodCode','EVN');
                                                                 $xml->startElement("code");
-                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1083,1));
+                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,97,1));
                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                                 $xml->writeAttribute('codeSystemVersion','15.0');
                                                                 $xml->endElement();
@@ -796,7 +796,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','BL');
-                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1141,1));
+                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,100,1));
                                                                         $xml->endElement();
                                                                         $xml->writeComment(" D.7.1.r.3: Continuing ");
                                                                     $xml->endElement();//observation
@@ -822,11 +822,11 @@ class SdXmlStructuresController extends AppController
                                                             $xml->startElement("comp");
                                                             $xml->writeAttribute('xsi:type','IVL_TS');
                                                                 $xml->startElement("low");
-                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1108,1));
+                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,156,1));
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.4: Date of Start of Reaction / Event "); 
                                                                 $xml->startElement("high");
-                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1109,1));
+                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,158,1));
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.5: Date of End of Reaction / Event "); 
                                                             $xml->endElement();//comp
@@ -835,7 +835,7 @@ class SdXmlStructuresController extends AppController
                                                             $xml->writeAttribute('operator','A');
                                                                 $xml->startElement("width");
                                                                 $xml->writeAttribute('value',$this->XMLvalue($caseId,159,1));
-                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,1110,1));
+                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,160,1));
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.6a: Duration of Reaction / Event (number) "); 
                                                                 $xml->writeComment(" E.i.6b: Duration of Reaction / Event (unit) "); 
@@ -843,7 +843,7 @@ class SdXmlStructuresController extends AppController
                                                         $xml->endElement();//effectiveTime
                                                         $xml->startElement("value");
                                                         $xml->writeAttribute('xsi:type','CE');
-                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1107,1));
+                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,151,1));
                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                         $xml->writeAttribute('codeSystemVersion','15.0');
                                                         $xml->writeComment(" E.i.2.1a: MedDRA Version for Reaction / Event ");
@@ -1010,7 +1010,7 @@ class SdXmlStructuresController extends AppController
                                                                 $xml->endElement();
                                                                 $xml->startElement("value");
                                                                 $xml->writeAttribute('xsi:type','CE');
-                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1144,1));
+                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,165,1));
                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.11');
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.7: Outcome of Reaction / Event at the Time of Last Observation ");
@@ -1038,7 +1038,7 @@ class SdXmlStructuresController extends AppController
                                                                 $xml->writeAttribute('codeSystemVersion','15.0');
                                                                 $xml->writeComment(" F.r.2.2a: MedDRA Version for Test Name #1 ");
                                                                 $xml->writeComment(" F.r.2.2b: Test Name (MedDRA code) #1 ");
-                                                                    $xml->writeElement('originalText',$this->XMLvalue($caseId,1111,1));
+                                                                    $xml->writeElement('originalText',$this->XMLvalue($caseId,168,1));
                                                                     $xml->writeComment(" F.r.2.1: Test Name (free text) #1 ");
                                                                 $xml->endElement();//code
                                                                 $xml->startElement("effectiveTime");
@@ -1049,7 +1049,7 @@ class SdXmlStructuresController extends AppController
                                                                 $xml->writeAttribute('xsi:type','IVL_PQ');
                                                                     $xml->startElement("center");
                                                                     $xml->writeAttribute('value',$this->XMLvalue($caseId,1030,1));
-                                                                    $xml->writeAttribute('unit',$this->XMLvalue($caseId,1113,1));
+                                                                    $xml->writeAttribute('unit',$this->XMLvalue($caseId,170,1));
                                                                     $xml->writeComment(" F.r.3.2: Test Result (value / qualifier) #1 ");
                                                                     $xml->writeComment(" F.r.3.3: Test Result (unit) #1 ");
                                                                     $xml->endElement();
@@ -1082,7 +1082,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','BL');
-                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1145,1));
+                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,173,1));
                                                                         $xml->endElement();
                                                                         $xml->writeComment(" F.r.7: More Information Available #1 ");
                                                                     $xml->endElement();//observation
@@ -1096,7 +1096,7 @@ class SdXmlStructuresController extends AppController
                                                             $xml->writeAttribute('moodCode','EVN');
                                                                 $xml->startElement("code");
                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
-                                                                    $xml->writeElement('originalText',$this->XMLvalue($caseId,1111,2));
+                                                                    $xml->writeElement('originalText',$this->XMLvalue($caseId,168,2));
                                                                     $xml->writeComment(" F.r.2.1: Test Name (free text) #2 ");
                                                                 $xml->endElement();
                                                                 $xml->startElement("effectiveTime");
@@ -1105,7 +1105,7 @@ class SdXmlStructuresController extends AppController
                                                                 $xml->writeComment(" F.r.1: Test Date #2 ");
                                                                 $xml->startElement("value");
                                                                 $xml->writeAttribute('xsi:type','ED');
-                                                                $xml->text($this->XMLvalue($caseId,1112,1));
+                                                                $xml->text($this->XMLvalue($caseId,169,1));
                                                                 $xml->endElement();//value
                                                                 $xml->writeComment(" F.r.3.4: Result Unstructured Data (free text) #2 ");
                                                             $xml->endElement();//observation
@@ -1145,7 +1145,7 @@ class SdXmlStructuresController extends AppController
                                                                             $xml->writeComment(" Example MPID and Version ");
                                                                             $xml->writeComment(" G.k.2.1.1a: MPID Version Date / Number ");
                                                                             $xml->writeComment(" G.k.2.1.1b: Medicinal Product Identifier (MPID) ");
-                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,1114,1));
+                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,176,1));
                                                                             $xml->writeComment(" G.k.2.2: Medicinal Product Name as Reported by the Primary Source ");
                                                                             $xml->startElement("asManufacturedProduct");
                                                                             $xml->writeAttribute('classCode','MANU');
@@ -1213,7 +1213,7 @@ class SdXmlStructuresController extends AppController
                                                                                     $xml->writeComment(" Example Substance ID and Version ");
                                                                                     $xml->writeComment(" G.k.2.3.r.2a Substance / Specified Substance TermID Version Date/Number ");
                                                                                     $xml->writeComment(" G.k.2.3.r.2b: Substance / Specified Substance TermID ");
-                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,1115,1));
+                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,177,1));
                                                                                     $xml->writeComment(" G.k.2.3.r.1: Substance / Specified Substance Name ");
                                                                                 $xml->endElement();//ingredientSubstance
                                                                             $xml->endElement();//ingredient
@@ -1256,8 +1256,8 @@ class SdXmlStructuresController extends AppController
                                                                             $xml->startElement("comp");
                                                                             $xml->writeAttribute('xsi:type','PIVL_TS');
                                                                                 $xml->startElement("period");
-                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1117,1));
-                                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,1118,1));
+                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,186,1));
+                                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,187,1));
                                                                                 $xml->endElement();
                                                                                 $xml->writeComment(" G.k.4.r.2: Number of Units in the Interval ");
                                                                                 $xml->writeComment(" G.k.4.r.3: Definition of the Time Interval Unit ");
@@ -1283,7 +1283,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();//routeCode
                                                                         $xml->startElement("doesQuantity");
                                                                         $xml->writeAttribute('value',$this->XMLvalue($caseId,183,1));
-                                                                            $xml->writeAttribute('unit',$this->XMLvalue($caseId,1116,1));
+                                                                            $xml->writeAttribute('unit',$this->XMLvalue($caseId,184,1));
                                                                         $xml->endElement();//doesQuantity
                                                                         $xml->writeComment(" G.k.4.r.1a Dose (number) ");
                                                                         $xml->writeComment(" G.k.4.r.1b: Dose (unit) ");
@@ -1295,7 +1295,7 @@ class SdXmlStructuresController extends AppController
                                                                                 $xml->writeAttribute('classCode','MMAT');
                                                                                 $xml->writeAttribute('determinerCode','KIND');
                                                                                     $xml->startElement("formCode");
-                                                                                        $xml->writeElement('originalText',$this->XMLvalue($caseId,1121,1));
+                                                                                        $xml->writeElement('originalText',$this->XMLvalue($caseId,191,1));
                                                                                         $xml->writeComment(" G.k.4.r.9.1: Pharmaceutical Dose Form (free text) ");
                                                                                     $xml->endElement();//formCode
                                                                                 $xml->endElement();//kindOfProduct
@@ -1314,7 +1314,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','CE');
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1147,1));
+                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,209,1));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.16');
                                                                         $xml->endElement();
                                                                         $xml->writeComment(" G.k.9.i.4: Did Reaction Recur on Re-administration? ");
@@ -1341,7 +1341,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','CE');
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1125,1));
+                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,196,1));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                                         $xml->writeAttribute('codeSystemVersion','15.0');
                                                                         $xml->writeComment(" G.k.7.r.2a: MedDRA Version for Indication ");
@@ -1367,7 +1367,7 @@ class SdXmlStructuresController extends AppController
                                                                     $xml->writeAttribute('classCode','ACT');
                                                                     $xml->writeAttribute('moodCode','EVN');
                                                                         $xml->startElement("code");
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1146,1));
+                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,208,1));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.15');
                                                                         $xml->endElement();
                                                                         $xml->writeComment(" G.k.8: Action(s) Taken with Drug ");
@@ -1417,11 +1417,11 @@ class SdXmlStructuresController extends AppController
                                                 $xml->endElement();
                                                 $xml->startElement("value");
                                                 $xml->writeAttribute('xsi:type','ST');
-                                                $xml->text($this->XMLvalue($caseId,1132,2));
+                                                $xml->text($this->XMLvalue($caseId,216,2));
                                                 $xml->endElement();
                                                 $xml->writeComment(" G.k.9.i.2.r.3: Result of Assessment ");
                                                 $xml->startElement("methodCode");
-                                                $xml->writeElement('originalText',$this->XMLvalue($caseId,1131,2));
+                                                $xml->writeElement('originalText',$this->XMLvalue($caseId,215,2));
                                                 $xml->writeComment(" G.k.9.i.2.r.2: Method of Assessment ");
                                                 $xml->endElement();//methodCode
                                                 $xml->startElement("author");
@@ -1467,7 +1467,7 @@ class SdXmlStructuresController extends AppController
                                                 $xml->endElement();
                                                 $xml->startElement("value");
                                                 $xml->writeAttribute('xsi:type','ED');
-                                                $xml->text($this->XMLvalue($caseId,1135,2));
+                                                $xml->text($this->XMLvalue($caseId,219,2));
                                                 $xml->endElement();
                                                 $xml->writeComment("  H.2: Reporter's Comments ");
                                                 $xml->startElement("author");
@@ -1493,7 +1493,7 @@ class SdXmlStructuresController extends AppController
                                                 $xml->endElement();
                                                 $xml->startElement("value");
                                                 $xml->writeAttribute('xsi:type','ED');
-                                                $xml->text($this->XMLvalue($caseId,1138,2));
+                                                $xml->text($this->XMLvalue($caseId,222,2));
                                                 $xml->endElement();
                                                 $xml->writeComment("  H.4: Sender's Comments ");
                                                 $xml->startElement("author");
@@ -1589,7 +1589,7 @@ class SdXmlStructuresController extends AppController
                                                     $xml->startElement("assignedEntity");
                                                     $xml->writeAttribute('classCode','ASSIGNED');
                                                         $xml->startElement("code");
-                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1065,1));
+                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,17,1));
                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.3');
                                                         $xml->endElement();//code
                                                         $xml->writeComment(" C.1.8.2: First Sender of This Case ");
@@ -1641,9 +1641,9 @@ class SdXmlStructuresController extends AppController
                                                             $xml->startElement("name");
                                                                 $xml->writeElement("prefix",$this->XMLvalue($caseId,25,1));
                                                                 $xml->writeComment(" C.2.r.1.1: Reporter's Title #1 ");
-                                                                $xml->writeElement("given",$this->XMLvalue($caseId,1068,1));
+                                                                $xml->writeElement("given",$this->XMLvalue($caseId,26,1));
                                                                 $xml->writeComment(" C.2.r.1.2: Reporter's Given Name #1 ");
-                                                                $xml->writeElement("family",$this->XMLvalue($caseId,1070,1));
+                                                                $xml->writeElement("family",$this->XMLvalue($caseId,28,1));
                                                                 $xml->writeComment(" C.2.r.1.4: Reporter's Family Name #1 ");
                                                             $xml->endElement();//name
                                                             $xml->startElement("asQualifiedEntity");
@@ -1713,11 +1713,11 @@ class SdXmlStructuresController extends AppController
                                                     $xml->writeComment(" C.3.4.4: Sender's Postcode ");
                                                 $xml->endElement();//addr
                                                 $xml->startElement("telecom");
-                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,1078,1));
+                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,53,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" C.3.4.6: Sender's Telephone ");
                                                 $xml->startElement("telecom");
-                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,1079,1));
+                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,56,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" C.3.4.7: Sender's Fax ");
                                                 $xml->startElement("telecom");
@@ -1728,7 +1728,7 @@ class SdXmlStructuresController extends AppController
                                                 $xml->writeAttribute('classCode','PSN');
                                                 $xml->writeAttribute('determinerCode','INSTANCE');
                                                     $xml->startElement("name");
-                                                        $xml->writeElement("prefix",$this->XMLvalue($caseId,1074,1));
+                                                        $xml->writeElement("prefix",$this->XMLvalue($caseId,44,1));
                                                         $xml->writeComment(" C.3.3.2: Sender's Title ");
                                                         $xml->startElement("given");
                                                         $xml->writeAttribute('nullFlavor','MSK');//$this->XMLvalue($caseId,1075,1)
@@ -1762,7 +1762,7 @@ class SdXmlStructuresController extends AppController
                                                         $xml->startElement("representedOrganization");
                                                         $xml->writeAttribute('classCode','ORG');
                                                         $xml->writeAttribute('determinerCode','INSTANCE');
-                                                            $xml->writeElement("name",$this->XMLvalue($caseId,1073,1));
+                                                            $xml->writeElement("name",$this->XMLvalue($caseId,42,1));
                                                             $xml->writeComment(" C.3.2: Sender's Organisation ");
                                                         $xml->endElement();//representedOrganization
                                                     $xml->endElement();//assignedEntity
@@ -1815,7 +1815,7 @@ class SdXmlStructuresController extends AppController
                                         $xml->endElement();
                                         $xml->startElement("value");
                                         $xml->writeAttribute('xsi:type','CE');
-                                            $xml->writeElement('originalText',$this->XMLvalue($caseId,1067,1));
+                                            $xml->writeElement('originalText',$this->XMLvalue($caseId,23,1));
                                         $xml->endElement();
                                         $xml->writeComment(" C.1.11.2: Reason for Nullification / Amendment ");
                                     $xml->endElement();//investigationCharacteristic
@@ -1831,7 +1831,7 @@ class SdXmlStructuresController extends AppController
                     $xml->writeAttribute('classCode','DEV');
                     $xml->writeAttribute('determinerCode','INSTANCE');
                         $xml->startElement("id");
-                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,1054,1));
+                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,555,1));
                         $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.14');
                         $xml->endElement();
                         $xml->writeComment(" Message #1 ");
@@ -1843,7 +1843,7 @@ class SdXmlStructuresController extends AppController
                     $xml->writeAttribute('classCode','DEV');
                     $xml->writeAttribute('determinerCode','INSTANCE');
                         $xml->startElement("id");
-                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,1053,1));
+                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,554,1));
                         $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.13');
                         $xml->endElement();
                         $xml->writeComment(" N.1.3: Batch Sender Identifier ");
@@ -1858,7 +1858,7 @@ class SdXmlStructuresController extends AppController
             $xml->writeAttribute('xmlns','urn:hl7-org:v3');
             $xml->writeAttributeNS('xmlns','xsi', null,'http://www.w3.org/2001/XMLSchema-instance');
                 $xml->startElement("id");
-                    $xml->writeAttribute('extension',$this->XMLvalue($caseId,1052,1));
+                    $xml->writeAttribute('extension',$this->XMLvalue($caseId,553,1));
                     $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.22');
                 $xml->endElement();  
                 $xml->writeComment(" N.1.2: Batch Number ");
@@ -1935,7 +1935,7 @@ class SdXmlStructuresController extends AppController
                         $xml->endElement();
                         $xml->writeComment(" HL7 Trigger Event ID ");
                         $xml->startElement("effectiveTime");
-                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1063,1));
+                        $xml->writeAttribute('value',$this->XMLvalue($caseId,5,1));
                         $xml->endElement();
                         $xml->writeComment(" C.1.2: Date of Creation ");
                         $xml->startElement("subject");
@@ -1957,7 +1957,7 @@ class SdXmlStructuresController extends AppController
                                 $xml->writeAttribute('code','PAT_ADV_EVNT');
                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.5.4');
                                 $xml->endElement();
-                                $xml->writeElement("text",$this->XMLvalue($caseId,1134,1));
+                                $xml->writeElement("text",$this->XMLvalue($caseId,218,1));
                                 $xml->writeComment(" H.1: Case Narrative Including Clinical Course, Therapeutic Measures, Outcome and Additional Relevant Information ");
                                 $xml->startElement("statusCode");
                                 $xml->writeAttribute('code','active');
@@ -2081,7 +2081,7 @@ class SdXmlStructuresController extends AppController
                                                             $xml->writeAttribute('classCode','OBS');
                                                             $xml->writeAttribute('moodCode','EVN');
                                                                 $xml->startElement("code");
-                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1083,1));
+                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,97,1));
                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                                 $xml->writeAttribute('codeSystemVersion','15.0');
                                                                 $xml->endElement();
@@ -2105,7 +2105,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','BL');
-                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1141,1));
+                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,100,1));
                                                                         $xml->endElement();
                                                                         $xml->writeComment(" D.7.1.r.3: Continuing ");
                                                                     $xml->endElement();//observation
@@ -2129,13 +2129,13 @@ class SdXmlStructuresController extends AppController
                                                         $xml->startElement("effectiveTime");
                                                         $xml->writeAttribute('xsi:type','IVL_TS');
                                                             $xml->startElement("low");
-                                                            $xml->writeAttribute('value',$this->XMLvalue($caseId,1108,1));
+                                                            $xml->writeAttribute('value',$this->XMLvalue($caseId,156,1));
                                                             $xml->endElement();
                                                             $xml->writeComment(" E.i.4: Date of Start of Reaction / Event "); 
                                                         $xml->endElement();//effectiveTime
                                                         $xml->startElement("value");
                                                         $xml->writeAttribute('xsi:type','CE');
-                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1107,1));
+                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,151,1));
                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                         $xml->writeAttribute('codeSystemVersion','15.0');
                                                         $xml->writeComment(" E.i.2.1a: MedDRA Version for Reaction / Event ");
@@ -2296,7 +2296,7 @@ class SdXmlStructuresController extends AppController
                                                                 $xml->endElement();
                                                                 $xml->startElement("value");
                                                                 $xml->writeAttribute('xsi:type','CE');
-                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1144,3));
+                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,165,3));
                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.11');
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.7: Outcome of Reaction / Event at the Time of Last Observation ");
@@ -2329,14 +2329,14 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->startElement("kindOfProduct");
                                                                         $xml->writeAttribute('classCode','MMAT');
                                                                         $xml->writeAttribute('determinerCode','KIND');
-                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,1114,1));
+                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,176,1));
                                                                             $xml->writeComment(" G.k.2.2: Medicinal Product Name as Reported by the Primary Source ");
                                                                             $xml->startElement("ingredient");
                                                                             $xml->writeAttribute('classCode','ACTI');
                                                                                 $xml->startElement("ingredientSubstance");
                                                                                 $xml->writeAttribute('classCode','MMAT');
                                                                                 $xml->writeAttribute('determinerCode','KIND');
-                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,1115,1));
+                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,177,1));
                                                                                     $xml->writeComment(" G.k.2.3.r.1: Substance / Specified Substance Name ");
                                                                                 $xml->endElement();
                                                                             $xml->endElement();
@@ -2379,8 +2379,8 @@ class SdXmlStructuresController extends AppController
                                                                             $xml->startElement("comp");
                                                                             $xml->writeAttribute('xsi:type','PIVL_TS');
                                                                                 $xml->startElement("period");
-                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1117,1));
-                                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,1118,1));
+                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,186,1));
+                                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,187,1));
                                                                                 $xml->endElement();
                                                                                 $xml->writeComment(" G.k.4.r.2: Number of Units in the Interval ");
                                                                                 $xml->writeComment(" G.k.4.r.3: Definition of the Time Interval Unit ");
@@ -2414,7 +2414,7 @@ class SdXmlStructuresController extends AppController
                                                                                 $xml->writeAttribute('classCode','MMAT');
                                                                                 $xml->writeAttribute('determinerCode','KIND');
                                                                                     $xml->startElement("formCode");
-                                                                                        $xml->writeElement('originalText',$this->XMLvalue($caseId,1121,1));
+                                                                                        $xml->writeElement('originalText',$this->XMLvalue($caseId,191,1));
                                                                                         $xml->writeComment(" G.k.4.r.9.1: Pharmaceutical Dose Form (free text) ");
                                                                                     $xml->endElement();//formCode
                                                                                 $xml->endElement();//kindOfProduct
@@ -2433,7 +2433,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','CE');
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1125,1));
+                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,196,1));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                                         $xml->writeAttribute('codeSystemVersion','15.0');
                                                                         $xml->writeComment(" G.k.7.r.2a: MedDRA Version for Indication ");
@@ -2551,7 +2551,7 @@ class SdXmlStructuresController extends AppController
                                                     $xml->startElement("assignedEntity");
                                                     $xml->writeAttribute('classCode','ASSIGNED');
                                                         $xml->startElement("code");
-                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1065,1));
+                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,17,1));
                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.3');
                                                         $xml->endElement();//code
                                                         $xml->writeComment(" C.1.8.2: First Sender of This Case ");
@@ -2603,9 +2603,9 @@ class SdXmlStructuresController extends AppController
                                                             $xml->startElement("name");
                                                                 $xml->writeElement("prefix",$this->XMLvalue($caseId,25,1));
                                                                 $xml->writeComment(" C.2.r.1.1: Reporter's Title #1 ");
-                                                                $xml->writeElement("given",$this->XMLvalue($caseId,1068,1));
+                                                                $xml->writeElement("given",$this->XMLvalue($caseId,26,1));
                                                                 $xml->writeComment(" C.2.r.1.2: Reporter's Given Name #1 ");
-                                                                $xml->writeElement("family",$this->XMLvalue($caseId,1070,1));
+                                                                $xml->writeElement("family",$this->XMLvalue($caseId,28,1));
                                                                 $xml->writeComment(" C.2.r.1.4: Reporter's Family Name #1 ");
                                                             $xml->endElement();//name
                                                             $xml->startElement("asQualifiedEntity");
@@ -2675,11 +2675,11 @@ class SdXmlStructuresController extends AppController
                                                     $xml->writeComment(" C.3.4.4: Sender's Postcode ");
                                                 $xml->endElement();//addr
                                                 $xml->startElement("telecom");
-                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,1078,1));
+                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,53,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" C.3.4.6: Sender's Telephone ");
                                                 $xml->startElement("telecom");
-                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,1079,1));
+                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,56,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" C.3.4.7: Sender's Fax ");
                                                 $xml->startElement("telecom");
@@ -2690,7 +2690,7 @@ class SdXmlStructuresController extends AppController
                                                 $xml->writeAttribute('classCode','PSN');
                                                 $xml->writeAttribute('determinerCode','INSTANCE');
                                                     $xml->startElement("name");
-                                                        $xml->writeElement("prefix",$this->XMLvalue($caseId,1074,1));
+                                                        $xml->writeElement("prefix",$this->XMLvalue($caseId,44,1));
                                                         $xml->writeComment(" C.3.3.2: Sender's Title ");
                                                         $xml->startElement("given");
                                                         $xml->writeAttribute('nullFlavor','MSK');//$this->XMLvalue($caseId,1075,1)
@@ -2724,7 +2724,7 @@ class SdXmlStructuresController extends AppController
                                                         $xml->startElement("representedOrganization");
                                                         $xml->writeAttribute('classCode','ORG');
                                                         $xml->writeAttribute('determinerCode','INSTANCE');
-                                                            $xml->writeElement("name",$this->XMLvalue($caseId,1073,1));
+                                                            $xml->writeElement("name",$this->XMLvalue($caseId,42,1));
                                                             $xml->writeComment(" C.3.2: Sender's Organisation ");
                                                         $xml->endElement();//representedOrganization
                                                     $xml->endElement();//assignedEntity
@@ -2777,7 +2777,7 @@ class SdXmlStructuresController extends AppController
                     $xml->writeAttribute('classCode','DEV');
                     $xml->writeAttribute('determinerCode','INSTANCE');
                         $xml->startElement("id");
-                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,1054,1));
+                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,555,1));
                         $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.14');
                         $xml->endElement();
                         $xml->writeComment(" Message #1 ");
@@ -2789,7 +2789,7 @@ class SdXmlStructuresController extends AppController
                     $xml->writeAttribute('classCode','DEV');
                     $xml->writeAttribute('determinerCode','INSTANCE');
                         $xml->startElement("id");
-                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,1053,1));
+                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,554,1));
                         $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.13');
                         $xml->endElement();
                         $xml->writeComment(" N.1.3: Batch Sender Identifier ");
@@ -2804,7 +2804,7 @@ class SdXmlStructuresController extends AppController
             $xml->writeAttribute('xmlns','urn:hl7-org:v3');
             $xml->writeAttributeNS('xmlns','xsi', null,'http://www.w3.org/2001/XMLSchema-instance');
                 $xml->startElement("id");
-                    $xml->writeAttribute('extension',$this->XMLvalue($caseId,1052,1));
+                    $xml->writeAttribute('extension',$this->XMLvalue($caseId,553,1));
                     $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.22');
                 $xml->endElement();  
                 $xml->writeComment(" N.1.2: Batch Number ");
@@ -2881,7 +2881,7 @@ class SdXmlStructuresController extends AppController
                         $xml->endElement();
                         $xml->writeComment(" HL7 Trigger Event ID ");
                         $xml->startElement("effectiveTime");
-                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1063,1));
+                        $xml->writeAttribute('value',$this->XMLvalue($caseId,5,1));
                         $xml->endElement();
                         $xml->writeComment(" C.1.2: Date of Creation ");
                         $xml->startElement("subject");
@@ -2903,7 +2903,7 @@ class SdXmlStructuresController extends AppController
                                 $xml->writeAttribute('code','PAT_ADV_EVNT');
                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.5.4');
                                 $xml->endElement();
-                                $xml->writeElement("text",$this->XMLvalue($caseId,1134,1));
+                                $xml->writeElement("text",$this->XMLvalue($caseId,218,1));
                                 $xml->writeComment(" H.1: Case Narrative Including Clinical Course, Therapeutic Measures, Outcome and Additional Relevant Information ");
                                 $xml->startElement("statusCode");
                                 $xml->writeAttribute('code','active');
@@ -2928,7 +2928,7 @@ class SdXmlStructuresController extends AppController
                                         $xml->writeAttribute('code','1');
                                         $xml->endElement();
                                         $xml->writeComment(" documentsHeldBySender ");
-                                        $xml->writeElement("title",$this->XMLvalue($caseId,1064,1));
+                                        $xml->writeElement("title",$this->XMLvalue($caseId,14,1));
                                         $xml->writeComment(" C.1.6.1.r.1: Documents Held by Sender (repeat as necessary) #1 ");
                                     $xml->endElement();//DOCUMENT
                                 $xml->endElement();//reference
@@ -2966,7 +2966,7 @@ class SdXmlStructuresController extends AppController
                                                         $xml->startElement("associatedPerson");
                                                         $xml->writeAttribute('classCode','PSN');
                                                         $xml->writeAttribute('determinerCode','INSTANCE');
-                                                            $xml->writeElement('name',$this->XMLvalue($caseId,1094,1));
+                                                            $xml->writeElement('name',$this->XMLvalue($caseId,121,1));
                                                             $xml->writeComment(" D.10.1: Parent Identification ");
                                                             $xml->startElement("administrativeGenderCode");
                                                             $xml->writeAttribute('code',$this->XMLvalue($caseId,130,1));
@@ -2989,7 +2989,7 @@ class SdXmlStructuresController extends AppController
                                                                     $xml->writeAttribute('classCode','OBS');
                                                                     $xml->writeAttribute('moodCode','EVN');
                                                                         $xml->startElement("code");
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1098,1));
+                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,132,1));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                                         $xml->writeAttribute('codeSystemVersion','15.0');
                                                                         $xml->endElement();
@@ -3006,7 +3006,7 @@ class SdXmlStructuresController extends AppController
                                                                                 $xml->endElement();
                                                                                 $xml->startElement("value");
                                                                                 $xml->writeAttribute('xsi:type','BL');
-                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1143,1));
+                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,135,1));
                                                                                 $xml->endElement();
                                                                                 $xml->writeComment(" D.10.7.1.r.3: Continuing ");
                                                                             $xml->endElement();
@@ -3084,7 +3084,7 @@ class SdXmlStructuresController extends AppController
                                                             $xml->writeAttribute('classCode','OBS');
                                                             $xml->writeAttribute('moodCode','EVN');
                                                                 $xml->startElement("code");
-                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1083,1));
+                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,97,1));
                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                                 $xml->writeAttribute('codeSystemVersion','15.0');
                                                                 $xml->endElement();
@@ -3108,7 +3108,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','BL');
-                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1141,1));
+                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,100,1));
                                                                         $xml->endElement();
                                                                         $xml->writeComment(" D.7.1.r.3: Continuing ");
                                                                     $xml->endElement();//observation
@@ -3132,13 +3132,13 @@ class SdXmlStructuresController extends AppController
                                                         $xml->startElement("effectiveTime");
                                                         $xml->writeAttribute('xsi:type','IVL_TS');
                                                                 $xml->startElement("low");
-                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1108,1));
+                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,156,1));
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.4: Date of Start of Reaction / Event ");
                                                         $xml->endElement();//effectiveTime
                                                         $xml->startElement("value");
                                                         $xml->writeAttribute('xsi:type','CE');
-                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1107,1));
+                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,151,1));
                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                         $xml->writeAttribute('codeSystemVersion','15.0');
                                                         $xml->writeComment(" E.i.2.1a: MedDRA Version for Reaction / Event ");
@@ -3299,7 +3299,7 @@ class SdXmlStructuresController extends AppController
                                                                 $xml->endElement();
                                                                 $xml->startElement("value");
                                                                 $xml->writeAttribute('xsi:type','CE');
-                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1144,3));
+                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,165,3));
                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.11');
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.7: Outcome of Reaction / Event at the Time of Last Observation ");
@@ -3348,14 +3348,14 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->startElement("kindOfProduct");
                                                                         $xml->writeAttribute('classCode','MMAT');
                                                                         $xml->writeAttribute('determinerCode','KIND');
-                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,1114,1));
+                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,176,1));
                                                                             $xml->writeComment(" G.k.2.2: Medicinal Product Name as Reported by the Primary Source ");
                                                                             $xml->startElement("ingredient");
                                                                             $xml->writeAttribute('classCode','ACTI');
                                                                                 $xml->startElement("ingredientSubstance");
                                                                                 $xml->writeAttribute('classCode','MMAT');
                                                                                 $xml->writeAttribute('determinerCode','KIND');
-                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,1115,1));
+                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,177,1));
                                                                                     $xml->writeComment(" G.k.2.3.r.1: Substance / Specified Substance Name ");
                                                                                 $xml->endElement();
                                                                             $xml->endElement();
@@ -3398,8 +3398,8 @@ class SdXmlStructuresController extends AppController
                                                                             $xml->startElement("comp");
                                                                             $xml->writeAttribute('xsi:type','PIVL_TS');
                                                                                 $xml->startElement("period");
-                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1117,1));
-                                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,1118,1));
+                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,186,1));
+                                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,187,1));
                                                                                 $xml->endElement();
                                                                                 $xml->writeComment(" G.k.4.r.2: Number of Units in the Interval ");
                                                                                 $xml->writeComment(" G.k.4.r.3: Definition of the Time Interval Unit ");
@@ -3417,12 +3417,12 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->writeAttribute('code',$this->XMLvalue($caseId,1044,1));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.14');
                                                                         $xml->writeComment(" G.k.4.r.10.2b: Route of Administration TermID ");
-                                                                            $xml->writeElement('originalText',$this->XMLvalue($caseId,1122,1));
+                                                                            $xml->writeElement('originalText',$this->XMLvalue($caseId,192,1));
                                                                             $xml->writeComment(" G.k.4.r.10.1: Route of Administration (free text) ");
                                                                         $xml->endElement();//routeCode
                                                                         $xml->startElement("doseQuantity");
-                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1117,1));
-                                                                        $xml->writeAttribute('unit',$this->XMLvalue($caseId,1118,1));
+                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,186,1));
+                                                                        $xml->writeAttribute('unit',$this->XMLvalue($caseId,187,1));
                                                                         $xml->endElement();//doseQuantity
                                                                         $xml->writeComment(" G.k.4.r.1a Dose (number) ");
                                                                         $xml->writeComment(" G.k.4.r.1b: Dose (unit) ");
@@ -3434,7 +3434,7 @@ class SdXmlStructuresController extends AppController
                                                                                 $xml->writeAttribute('classCode','MMAT');
                                                                                 $xml->writeAttribute('determinerCode','KIND');
                                                                                     $xml->startElement("formCode");
-                                                                                        $xml->writeElement('originalText',$this->XMLvalue($caseId,1121,1));
+                                                                                        $xml->writeElement('originalText',$this->XMLvalue($caseId,191,1));
                                                                                         $xml->writeComment(" G.k.4.r.9.1: Pharmaceutical Dose Form (free text) #1-1 ");
                                                                                     $xml->endElement();//formCode
                                                                                 $xml->endElement();//kindOfProduct
@@ -3454,7 +3454,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','CE');
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1125,1));
+                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,196,1));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                                         $xml->writeAttribute('codeSystemVersion','15.0');
                                                                         $xml->writeComment(" G.k.7.r.2a: MedDRA Version for Indication ");
@@ -3480,7 +3480,7 @@ class SdXmlStructuresController extends AppController
                                                                     $xml->writeAttribute('classCode','ACT');
                                                                     $xml->writeAttribute('moodCode','EVN');
                                                                         $xml->startElement("code");
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1146,1));
+                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,208,1));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.15');
                                                                         $xml->endElement();
                                                                         $xml->writeComment(" G.k.8: Action(s) Taken with Drug ");
@@ -3601,7 +3601,7 @@ class SdXmlStructuresController extends AppController
                                                     $xml->startElement("assignedEntity");
                                                     $xml->writeAttribute('classCode','ASSIGNED');
                                                         $xml->startElement("code");
-                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1065,1));
+                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,17,1));
                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.3');
                                                         $xml->endElement();//code
                                                         $xml->writeComment(" C.1.8.2: First Sender of This Case ");
@@ -3649,9 +3649,9 @@ class SdXmlStructuresController extends AppController
                                                             $xml->startElement("name");
                                                                 $xml->writeElement("prefix",$this->XMLvalue($caseId,25,1));
                                                                 $xml->writeComment(" C.2.r.1.1: Reporter's Title ");
-                                                                $xml->writeElement("given",$this->XMLvalue($caseId,1068,1));
+                                                                $xml->writeElement("given",$this->XMLvalue($caseId,26,1));
                                                                 $xml->writeComment(" C.2.r.1.2: Reporter's Given Name ");
-                                                                $xml->writeElement("family",$this->XMLvalue($caseId,1070,1));
+                                                                $xml->writeElement("family",$this->XMLvalue($caseId,28,1));
                                                                 $xml->writeComment(" C.2.r.1.4: Reporter's Family Name ");
                                                             $xml->endElement();//name
                                                             $xml->startElement("asQualifiedEntity");
@@ -3721,11 +3721,11 @@ class SdXmlStructuresController extends AppController
                                                     $xml->writeComment(" C.3.4.4: Sender's Postcode ");
                                                 $xml->endElement();//addr
                                                 $xml->startElement("telecom");
-                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,1078,1));
+                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,53,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" C.3.4.6: Sender's Telephone ");
                                                 $xml->startElement("telecom");
-                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,1079,1));
+                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,56,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" C.3.4.7: Sender's Fax ");
                                                 $xml->startElement("telecom");
@@ -3736,7 +3736,7 @@ class SdXmlStructuresController extends AppController
                                                 $xml->writeAttribute('classCode','PSN');
                                                 $xml->writeAttribute('determinerCode','INSTANCE');
                                                     $xml->startElement("name");
-                                                        $xml->writeElement("prefix",$this->XMLvalue($caseId,1074,1));
+                                                        $xml->writeElement("prefix",$this->XMLvalue($caseId,44,1));
                                                         $xml->writeComment(" C.3.3.2: Sender's Title ");
                                                         $xml->startElement("given");
                                                         $xml->writeAttribute('nullFlavor','MSK');//$this->XMLvalue($caseId,1075,1)
@@ -3770,7 +3770,7 @@ class SdXmlStructuresController extends AppController
                                                         $xml->startElement("representedOrganization");
                                                         $xml->writeAttribute('classCode','ORG');
                                                         $xml->writeAttribute('determinerCode','INSTANCE');
-                                                            $xml->writeElement("name",$this->XMLvalue($caseId,1073,1));
+                                                            $xml->writeElement("name",$this->XMLvalue($caseId,42,1));
                                                             $xml->writeComment(" C.3.2: Sender's Organisation ");
                                                         $xml->endElement();//representedOrganization
                                                     $xml->endElement();//assignedEntity
@@ -3837,7 +3837,7 @@ class SdXmlStructuresController extends AppController
                     $xml->writeAttribute('classCode','DEV');
                     $xml->writeAttribute('determinerCode','INSTANCE');
                         $xml->startElement("id");
-                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,1054,1));
+                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,555,1));
                         $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.14');
                         $xml->endElement();
                         $xml->writeComment(" N.1.4: Batch Receiver Identifier ");
@@ -3849,7 +3849,7 @@ class SdXmlStructuresController extends AppController
                     $xml->writeAttribute('classCode','DEV');
                     $xml->writeAttribute('determinerCode','INSTANCE');
                         $xml->startElement("id");
-                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,1053,1));
+                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,554,1));
                         $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.13');
                         $xml->endElement();
                         $xml->writeComment(" N.1.3: Batch Sender Identifier ");
@@ -3864,7 +3864,7 @@ class SdXmlStructuresController extends AppController
             $xml->writeAttribute('xmlns','urn:hl7-org:v3');
             $xml->writeAttributeNS('xmlns','xsi', null,'http://www.w3.org/2001/XMLSchema-instance');
                 $xml->startElement("id");
-                    $xml->writeAttribute('extension',$this->XMLvalue($caseId,1052,1));
+                    $xml->writeAttribute('extension',$this->XMLvalue($caseId,553,1));
                     $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.22');
                 $xml->endElement();  
                 $xml->writeComment(" N.1.2: Batch Number ");
@@ -3941,7 +3941,7 @@ class SdXmlStructuresController extends AppController
                         $xml->endElement();
                         $xml->writeComment(" HL7 Trigger Event ID ");
                         $xml->startElement("effectiveTime");
-                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1063,1));
+                        $xml->writeAttribute('value',$this->XMLvalue($caseId,5,1));
                         $xml->endElement();
                         $xml->writeComment(" C.1.2: Date of Creation ");
                         $xml->startElement("subject");
@@ -3963,7 +3963,7 @@ class SdXmlStructuresController extends AppController
                                 $xml->writeAttribute('code','PAT_ADV_EVNT');
                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.5.4');
                                 $xml->endElement();
-                                $xml->writeElement("text",$this->XMLvalue($caseId,1134,1));
+                                $xml->writeElement("text",$this->XMLvalue($caseId,218,1));
                                 $xml->writeComment(" H.1: Case Narrative Including Clinical Course, Therapeutic Measures, Outcome and Additional Relevant Information ");
                                 $xml->startElement("statusCode");
                                 $xml->writeAttribute('code','active');
@@ -4106,7 +4106,7 @@ class SdXmlStructuresController extends AppController
                                                             $xml->writeAttribute('classCode','OBS');
                                                             $xml->writeAttribute('moodCode','EVN');
                                                                 $xml->startElement("code");
-                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1083,1));
+                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,97,1));
                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                                 $xml->writeAttribute('codeSystemVersion','15.0');
                                                                 $xml->endElement();
@@ -4130,7 +4130,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','BL');
-                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1141,1));
+                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,100,1));
                                                                         $xml->endElement();
                                                                         $xml->writeComment(" D.7.1.r.3: Continuing #1 ");
                                                                     $xml->endElement();//observation
@@ -4156,7 +4156,7 @@ class SdXmlStructuresController extends AppController
                                                             $xml->startElement("comp");
                                                             $xml->writeAttribute('xsi:type','IVL_TS');
                                                                 $xml->startElement("low");
-                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1108,1));
+                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,156,1));
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.4: Date of Start of Reaction / Event ");
                                                                 $xml->startElement("high");
@@ -4177,7 +4177,7 @@ class SdXmlStructuresController extends AppController
                                                         $xml->endElement();//effectiveTime
                                                         $xml->startElement("value");
                                                         $xml->writeAttribute('xsi:type','CE');
-                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1107,1));
+                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,151,1));
                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                         $xml->writeAttribute('codeSystemVersion','15.0');
                                                         $xml->writeComment(" E.i.2.1a: MedDRA Version for Reaction / Event ");
@@ -4344,7 +4344,7 @@ class SdXmlStructuresController extends AppController
                                                                 $xml->endElement();
                                                                 $xml->startElement("value");
                                                                 $xml->writeAttribute('xsi:type','CE');
-                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1144,1));
+                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,165,1));
                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.11');
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.7: Outcome of Reaction / Event at the Time of Last Observation ");
@@ -4479,7 +4479,7 @@ class SdXmlStructuresController extends AppController
                                                                             $xml->writeComment(" Example MPID and Version ");
                                                                             $xml->writeComment(" G.k.2.1.1a: MPID Version Date / Number ");
                                                                             $xml->writeComment(" G.k.2.1.1b: Medicinal Product Identifier (MPID) ");
-                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,1114,1));
+                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,176,1));
                                                                             $xml->writeComment(" G.k.2.2: Medicinal Product Name as Reported by the Primary Source ");
                                                                             $xml->startElement("asManufacturedProduct");
                                                                             $xml->writeAttribute('classCode','MANU');
@@ -4547,7 +4547,7 @@ class SdXmlStructuresController extends AppController
                                                                                     $xml->writeComment(" Example Substance ID and Version ");
                                                                                     $xml->writeComment(" G.k.2.3.r.2a Substance / Specified Substance TermID Version Date/Number ");
                                                                                     $xml->writeComment(" G.k.2.3.r.2b: Substance / Specified Substance TermID ");
-                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,1115,1));
+                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,177,1));
                                                                                     $xml->writeComment(" G.k.2.3.r.1: Substance / Specified Substance Name ");
                                                                                 $xml->endElement();
                                                                             $xml->endElement();
@@ -4590,8 +4590,8 @@ class SdXmlStructuresController extends AppController
                                                                             $xml->startElement("comp");
                                                                             $xml->writeAttribute('xsi:type','PIVL_TS');
                                                                                 $xml->startElement("period");
-                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1117,1));
-                                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,1118,1));
+                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,186,1));
+                                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,187,1));
                                                                                 $xml->endElement();
                                                                                 $xml->writeComment(" G.k.4.r.2: Number of Units in the Interval ");
                                                                                 $xml->writeComment(" G.k.4.r.3: Definition of the Time Interval Unit ");
@@ -4629,7 +4629,7 @@ class SdXmlStructuresController extends AppController
                                                                                 $xml->writeAttribute('classCode','MMAT');
                                                                                 $xml->writeAttribute('determinerCode','KIND');
                                                                                     $xml->startElement("formCode");
-                                                                                        $xml->writeElement('originalText',$this->XMLvalue($caseId,1121,1));
+                                                                                        $xml->writeElement('originalText',$this->XMLvalue($caseId,191,1));
                                                                                         $xml->writeComment(" G.k.4.r.9.1: Pharmaceutical Dose Form (free text) ");
                                                                                     $xml->endElement();//formCode
                                                                                 $xml->endElement();//kindOfProduct
@@ -4675,7 +4675,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','CE');
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1125,1));
+                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,196,1));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                                         $xml->writeAttribute('codeSystemVersion','15.0');
                                                                         $xml->writeComment(" G.k.7.r.2a: MedDRA Version for Indication ");
@@ -4751,11 +4751,11 @@ class SdXmlStructuresController extends AppController
                                                 $xml->endElement();
                                                 $xml->startElement("value");
                                                 $xml->writeAttribute('xsi:type','CE');
-                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1132,"1"));
+                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,216,"1"));
                                                 $xml->endElement();
                                                 $xml->writeComment(" G.k.9.i.2.r.3: Result of Assessment ");
                                                 $xml->startElement("methodCode");
-                                                    $xml->writeElement("originalText",$this->XMLvalue($caseId,1131,"1"));
+                                                    $xml->writeElement("originalText",$this->XMLvalue($caseId,215,"1"));
                                                     $xml->writeComment(" G.k.9.i.2.r.2: Method of Assessment ");
                                                 $xml->endElement();//methodCode
                                                 $xml->startElement("author");
@@ -4801,7 +4801,7 @@ class SdXmlStructuresController extends AppController
                                                 $xml->endElement();
                                                 $xml->startElement("value");
                                                 $xml->writeAttribute('xsi:type','ED');
-                                                $xml->text($this->XMLvalue($caseId,1135,1));
+                                                $xml->text($this->XMLvalue($caseId,219,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" H.2: Reporter's Comments ");
                                                 $xml->startElement("author");
@@ -4827,7 +4827,7 @@ class SdXmlStructuresController extends AppController
                                                 $xml->endElement();
                                                 $xml->startElement("value");
                                                 $xml->writeAttribute('xsi:type','ED');
-                                                $xml->text($this->XMLvalue($caseId,1138,1));
+                                                $xml->text($this->XMLvalue($caseId,222,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" H.4: Sender's Comments ");
                                                 $xml->startElement("author");
@@ -4925,7 +4925,7 @@ class SdXmlStructuresController extends AppController
                                                     $xml->startElement("assignedEntity");
                                                     $xml->writeAttribute('classCode','ASSIGNED');
                                                         $xml->startElement("code");
-                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1065,1));
+                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,17,1));
                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.3');
                                                         $xml->endElement();//code
                                                         $xml->writeComment(" C.1.8.2: First Sender of This Case ");
@@ -4977,9 +4977,9 @@ class SdXmlStructuresController extends AppController
                                                             $xml->startElement("name");
                                                                 $xml->writeElement("prefix",$this->XMLvalue($caseId,25,1));
                                                                 $xml->writeComment(" C.2.r.1.1: Reporter's Title #1 ");
-                                                                $xml->writeElement("given",$this->XMLvalue($caseId,1068,1));
+                                                                $xml->writeElement("given",$this->XMLvalue($caseId,26,1));
                                                                 $xml->writeComment(" C.2.r.1.2: Reporter's Given Name #1 ");
-                                                                $xml->writeElement("family",$this->XMLvalue($caseId,1070,1));
+                                                                $xml->writeElement("family",$this->XMLvalue($caseId,28,1));
                                                                 $xml->writeComment(" C.2.r.1.4: Reporter's Family Name #1 ");
                                                             $xml->endElement();//name
                                                             $xml->startElement("asQualifiedEntity");
@@ -5047,11 +5047,11 @@ class SdXmlStructuresController extends AppController
                                                     $xml->writeComment(" C.3.4.4: Sender's Postcode ");
                                                 $xml->endElement();//addr
                                                 $xml->startElement("telecom");
-                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,1078,1));
+                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,53,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" C.3.4.6: Sender's Telephone ");
                                                 $xml->startElement("telecom");
-                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,1079,1));
+                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,56,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" C.3.4.7: Sender's Fax ");
                                                 $xml->startElement("telecom");
@@ -5062,7 +5062,7 @@ class SdXmlStructuresController extends AppController
                                                 $xml->writeAttribute('classCode','PSN');
                                                 $xml->writeAttribute('determinerCode','INSTANCE');
                                                     $xml->startElement("name");
-                                                        $xml->writeElement("prefix",$this->XMLvalue($caseId,1074,1));
+                                                        $xml->writeElement("prefix",$this->XMLvalue($caseId,44,1));
                                                         $xml->writeComment(" C.3.3.2: Sender's Title ");
                                                         $xml->startElement("given");
                                                         $xml->writeAttribute('nullFlavor','MSK');//$this->XMLvalue($caseId,1075,1)
@@ -5096,7 +5096,7 @@ class SdXmlStructuresController extends AppController
                                                         $xml->startElement("representedOrganization");
                                                         $xml->writeAttribute('classCode','ORG');
                                                         $xml->writeAttribute('determinerCode','INSTANCE');
-                                                            $xml->writeElement("name",$this->XMLvalue($caseId,1073,1));
+                                                            $xml->writeElement("name",$this->XMLvalue($caseId,42,1));
                                                             $xml->writeComment(" C.3.2: Sender's Organisation ");
                                                         $xml->endElement();//representedOrganization
                                                     $xml->endElement();//assignedEntity
@@ -5150,7 +5150,7 @@ class SdXmlStructuresController extends AppController
                     $xml->writeAttribute('classCode','DEV');
                     $xml->writeAttribute('determinerCode','INSTANCE');
                         $xml->startElement("id");
-                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,1054,1));
+                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,555,1));
                         $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.14');
                         $xml->endElement();
                         $xml->writeComment(" N.1.4: Batch Receiver Identifier ");
@@ -5162,7 +5162,7 @@ class SdXmlStructuresController extends AppController
                     $xml->writeAttribute('classCode','DEV');
                     $xml->writeAttribute('determinerCode','INSTANCE');
                         $xml->startElement("id");
-                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,1053,1));
+                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,554,1));
                         $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.13');
                         $xml->endElement();
                         $xml->writeComment(" N.1.3: Batch Sender Identifier ");
@@ -5177,7 +5177,7 @@ class SdXmlStructuresController extends AppController
             $xml->writeAttribute('xmlns','urn:hl7-org:v3');
             $xml->writeAttributeNS('xmlns','xsi', null,'http://www.w3.org/2001/XMLSchema-instance');
                 $xml->startElement("id");
-                    $xml->writeAttribute('extension',$this->XMLvalue($caseId,1052,1));
+                    $xml->writeAttribute('extension',$this->XMLvalue($caseId,553,1));
                     $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.22');
                 $xml->endElement();  
                 $xml->writeComment(" N.1.2: Batch Number ");
@@ -5254,7 +5254,7 @@ class SdXmlStructuresController extends AppController
                         $xml->endElement();
                         $xml->writeComment(" HL7 Trigger Event ID ");
                         $xml->startElement("effectiveTime");
-                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1063,1));
+                        $xml->writeAttribute('value',$this->XMLvalue($caseId,5,1));
                         $xml->endElement();
                         $xml->writeComment(" C.1.2: Date of Creation ");
                         $xml->startElement("subject");
@@ -5276,7 +5276,7 @@ class SdXmlStructuresController extends AppController
                                 $xml->writeAttribute('code','PAT_ADV_EVNT');
                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.5.4');
                                 $xml->endElement();
-                                $xml->writeElement("text",$this->XMLvalue($caseId,1134,1));
+                                $xml->writeElement("text",$this->XMLvalue($caseId,218,1));
                                 $xml->writeComment(" H.1: Case Narrative Including Clinical Course, Therapeutic Measures, Outcome and Additional Relevant Information ");
                                 $xml->startElement("statusCode");
                                 $xml->writeAttribute('code','active');
@@ -5301,7 +5301,7 @@ class SdXmlStructuresController extends AppController
                                         $xml->writeAttribute('code','1');
                                         $xml->endElement();
                                         $xml->writeComment(" documentsHeldBySender ");
-                                        $xml->writeElement("title",$this->XMLvalue($caseId,1064,1));
+                                        $xml->writeElement("title",$this->XMLvalue($caseId,14,1));
                                         $xml->writeComment(" C.1.6.1.r.1: Documents Held by Sender (repeat as necessary) #1 ");
                                     $xml->endElement();//DOCUMENT
                                 $xml->endElement();//reference
@@ -5528,7 +5528,7 @@ class SdXmlStructuresController extends AppController
                                                             $xml->writeAttribute('classCode','OBS');
                                                             $xml->writeAttribute('moodCode','EVN');
                                                                 $xml->startElement("code");
-                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1083,1));
+                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,97,1));
                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                                 $xml->writeAttribute('codeSystemVersion','15.0');
                                                                 $xml->endElement();
@@ -5553,7 +5553,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->writeComment(" continuing ");
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','BL');
-                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1141,1));
+                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,100,1));
                                                                         $xml->endElement();
                                                                         $xml->writeComment(" D.7.1.r.3: Continuing #1 ");
                                                                     $xml->endElement();//observation
@@ -5580,7 +5580,7 @@ class SdXmlStructuresController extends AppController
                                                             $xml->startElement("comp");
                                                             $xml->writeAttribute('xsi:type','IVL_TS');
                                                                 $xml->startElement("low");
-                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1108,1));
+                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,156,1));
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.4: Date of Start of Reaction / Event #1 ");
                                                                 $xml->startElement("width");
@@ -5601,7 +5601,7 @@ class SdXmlStructuresController extends AppController
                                                         $xml->endElement();//effectiveTime
                                                         $xml->startElement("value");
                                                         $xml->writeAttribute('xsi:type','CE');
-                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1107,1));
+                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,151,1));
                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                         $xml->writeAttribute('codeSystemVersion','15.0');
                                                         $xml->writeComment(" E.i.2.1a: MedDRA Version for Reaction / Event #1 ");
@@ -5657,7 +5657,7 @@ class SdXmlStructuresController extends AppController
                                                                 $xml->writeComment(" outcome ");
                                                                 $xml->startElement("value");
                                                                 $xml->writeAttribute('xsi:type','CE');
-                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1144,1));
+                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,165,1));
                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.11');
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.7: Outcome of Reaction / Event at the Time of Last Observation #1 ");
@@ -5700,7 +5700,7 @@ class SdXmlStructuresController extends AppController
                                                             $xml->startElement("comp");
                                                             $xml->writeAttribute('xsi:type','IVL_TS');
                                                                 $xml->startElement("low");
-                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1108,2));
+                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,156,2));
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.4: Date of Start of Reaction / Event #2 ");
                                                                 $xml->startElement("width");
@@ -5721,7 +5721,7 @@ class SdXmlStructuresController extends AppController
                                                         $xml->endElement();//effectiveTime
                                                         $xml->startElement("value");
                                                         $xml->writeAttribute('xsi:type','CE');
-                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1107,2));
+                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,151,2));
                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                         $xml->writeAttribute('codeSystemVersion','15.0');
                                                         $xml->writeComment(" E.i.2.1a: MedDRA Version for Reaction / Event #2 ");
@@ -5777,7 +5777,7 @@ class SdXmlStructuresController extends AppController
                                                                 $xml->writeComment(" outcome ");
                                                                 $xml->startElement("value");
                                                                 $xml->writeAttribute('xsi:type','CE');
-                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1144,2));
+                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,165,2));
                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.11');
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.7: Outcome of Reaction / Event at the Time of Last Observation #2 ");
@@ -5820,7 +5820,7 @@ class SdXmlStructuresController extends AppController
                                                             $xml->startElement("comp");
                                                             $xml->writeAttribute('xsi:type','IVL_TS');
                                                                 $xml->startElement("low");
-                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1108,3));
+                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,156,3));
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.4: Date of Start of Reaction / Event #3 ");
                                                                 $xml->startElement("width");
@@ -5841,7 +5841,7 @@ class SdXmlStructuresController extends AppController
                                                         $xml->endElement();//effectiveTime
                                                         $xml->startElement("value");
                                                         $xml->writeAttribute('xsi:type','CE');
-                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1107,3));
+                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,151,3));
                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                         $xml->writeAttribute('codeSystemVersion','15.0');
                                                         $xml->writeComment(" E.i.2.1a: MedDRA Version for Reaction / Event #3 ");
@@ -5914,7 +5914,7 @@ class SdXmlStructuresController extends AppController
                                                                 $xml->writeComment(" outcome ");
                                                                 $xml->startElement("value");
                                                                 $xml->writeAttribute('xsi:type','CE');
-                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1144,3));
+                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,165,3));
                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.11');
                                                                 $xml->endElement();
                                                                 $xml->writeComment(" E.i.7: Outcome of Reaction / Event at the Time of Last Observation #3 ");
@@ -5965,7 +5965,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->startElement("kindOfProduct");
                                                                         $xml->writeAttribute('classCode','MMAT');
                                                                         $xml->writeAttribute('determinerCode','KIND');
-                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,1114,1));
+                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,176,1));
                                                                             $xml->writeComment(" G.k.2.2: Medicinal Product Name as Reported by the Primary Source #1 ");
                                                                             $xml->startElement("ingredient");
                                                                             $xml->writeAttribute('classCode','ACTI');
@@ -5983,7 +5983,7 @@ class SdXmlStructuresController extends AppController
                                                                                 $xml->startElement("ingredientSubstance");
                                                                                 $xml->writeAttribute('classCode','MMAT');
                                                                                 $xml->writeAttribute('determinerCode','KIND');
-                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,1115,1));
+                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,177,1));
                                                                                     $xml->writeComment(" G.k.2.3.r.1: Substance / Specified Substance Name #1-1 ");
                                                                                 $xml->endElement();
                                                                             $xml->endElement();
@@ -6027,8 +6027,8 @@ class SdXmlStructuresController extends AppController
                                                                             $xml->startElement("comp");
                                                                             $xml->writeAttribute('xsi:type','PIVL_TS');
                                                                                 $xml->startElement("period");
-                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1117,1));
-                                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,1118,1));
+                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,186,1));
+                                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,187,1));
                                                                                 $xml->endElement();
                                                                                 $xml->writeComment(" G.k.4.r.2: Number of Units in the Interval #1-1 ");
                                                                                 $xml->writeComment(" G.k.4.r.3: Definition of the Time Interval Unit #1-1 ");
@@ -6063,7 +6063,7 @@ class SdXmlStructuresController extends AppController
                                                                                     $xml->writeAttribute('codeSystem',$this->XMLvalue($caseId,1041,1));
                                                                                     $xml->writeAttribute('codeSystemVersion','124');
                                                                                     $xml->writeComment(" G.k.4.r.9.2a: Pharmaceutical Dose Form TermID Version Date / Number #1-1 ");
-                                                                                        $xml->writeElement('originalText',$this->XMLvalue($caseId,1121,1));
+                                                                                        $xml->writeElement('originalText',$this->XMLvalue($caseId,191,1));
                                                                                         $xml->writeComment(" G.k.4.r.9.1: Pharmaceutical Dose Form (free text) #1-1 ");
                                                                                     $xml->endElement();//formCode
                                                                                 $xml->endElement();//kindOfProduct
@@ -6139,7 +6139,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->writeComment(" indication ");
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','CE');
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1125,1));
+                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,196,1));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
                                                                         $xml->writeAttribute('codeSystemVersion','15.0');
                                                                         $xml->writeComment(" G.k.7.r.2a: MedDRA Version for Indication #1-1 ");
@@ -6190,14 +6190,14 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->startElement("kindOfProduct");
                                                                         $xml->writeAttribute('classCode','MMAT');
                                                                         $xml->writeAttribute('determinerCode','KIND');
-                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,1114,2));
+                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,176,2));
                                                                             $xml->writeComment(" G.k.2.2: Medicinal Product Name as Reported by the Primary Source #2 ");
                                                                             $xml->startElement("ingredient");
                                                                             $xml->writeAttribute('classCode','ACTI');
                                                                                 $xml->startElement("ingredientSubstance");
                                                                                 $xml->writeAttribute('classCode','MMAT');
                                                                                 $xml->writeAttribute('determinerCode','KIND');
-                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,1115,2));
+                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,177,2));
                                                                                     $xml->writeComment(" G.k.2.3.r.1: Substance / Specified Substance Name #2-1 ");
                                                                                 $xml->endElement();
                                                                             $xml->endElement();
@@ -6306,11 +6306,11 @@ class SdXmlStructuresController extends AppController
                                                 $xml->writeComment(" causality ");
                                                 $xml->startElement("value");
                                                 $xml->writeAttribute('xsi:type','CE');
-                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1132,"1,1"));
+                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,216,"1,1"));
                                                 $xml->endElement();
                                                 $xml->writeComment(" G.k.9.i.2.r.3: Result of Assessment #1-1 ");
                                                 $xml->startElement("methodCode");
-                                                    $xml->writeElement("originalText",$this->XMLvalue($caseId,1131,"1,1"));
+                                                    $xml->writeElement("originalText",$this->XMLvalue($caseId,215,"1,1"));
                                                     $xml->writeComment(" G.k.9.i.2.r.2: Method of Assessment #1-1 ");
                                                 $xml->endElement();//methodCode
                                                 $xml->startElement("author");
@@ -6357,11 +6357,11 @@ class SdXmlStructuresController extends AppController
                                                 $xml->writeComment(" causality ");
                                                 $xml->startElement("value");
                                                 $xml->writeAttribute('xsi:type','CE');
-                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1132,"2,1"));
+                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,216,"2,1"));
                                                 $xml->endElement();
                                                 $xml->writeComment(" G.k.9.i.2.r.3: Result of Assessment #1-2 ");
                                                 $xml->startElement("methodCode");
-                                                    $xml->writeElement("originalText",$this->XMLvalue($caseId,1131,"2,1"));
+                                                    $xml->writeElement("originalText",$this->XMLvalue($caseId,215,"2,1"));
                                                     $xml->writeComment(" G.k.9.i.2.r.2: Method of Assessment #1-2 ");
                                                 $xml->endElement();//methodCode
                                                 $xml->startElement("author");
@@ -6408,11 +6408,11 @@ class SdXmlStructuresController extends AppController
                                                 $xml->writeComment(" causality ");
                                                 $xml->startElement("value");
                                                 $xml->writeAttribute('xsi:type','CE');
-                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1132,"1,2"));
+                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,216,"1,2"));
                                                 $xml->endElement();
                                                 $xml->writeComment(" G.k.9.i.2.r.3: Result of Assessment #2-1 ");
                                                 $xml->startElement("methodCode");
-                                                    $xml->writeElement("originalText",$this->XMLvalue($caseId,1131,"1,2"));
+                                                    $xml->writeElement("originalText",$this->XMLvalue($caseId,215,"1,2"));
                                                     $xml->writeComment(" G.k.9.i.2.r.2: Method of Assessment #2-1 ");
                                                 $xml->endElement();//methodCode
                                                 $xml->startElement("author");
@@ -6459,7 +6459,7 @@ class SdXmlStructuresController extends AppController
                                                 $xml->writeComment(" comment ");
                                                 $xml->startElement("value");
                                                 $xml->writeAttribute('xsi:type','ED');
-                                                $xml->text($this->XMLvalue($caseId,1135,1));
+                                                $xml->text($this->XMLvalue($caseId,219,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" H.2: Reporter's Comments ");
                                                 $xml->startElement("author");
@@ -6487,7 +6487,7 @@ class SdXmlStructuresController extends AppController
                                                 $xml->writeComment(" comment ");
                                                 $xml->startElement("value");
                                                 $xml->writeAttribute('xsi:type','ED');
-                                                $xml->text($this->XMLvalue($caseId,1138,1));
+                                                $xml->text($this->XMLvalue($caseId,222,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" H.4: Sender's Comments ");
                                                 $xml->startElement("author");
@@ -6589,7 +6589,7 @@ class SdXmlStructuresController extends AppController
                                                     $xml->startElement("assignedEntity");
                                                     $xml->writeAttribute('classCode','ASSIGNED');
                                                         $xml->startElement("code");
-                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1065,1));
+                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,17,1));
                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.3');
                                                         $xml->endElement();//code
                                                         $xml->writeComment(" C.1.8.2: First Sender of This Case ");
@@ -6664,9 +6664,9 @@ class SdXmlStructuresController extends AppController
                                                             $xml->startElement("name");
                                                                 $xml->writeElement("prefix",$this->XMLvalue($caseId,25,1));
                                                                 $xml->writeComment(" C.2.r.1.1: Reporter's Title #1 ");
-                                                                $xml->writeElement("given",$this->XMLvalue($caseId,1068,1));
+                                                                $xml->writeElement("given",$this->XMLvalue($caseId,26,1));
                                                                 $xml->writeComment(" C.2.r.1.2: Reporter's Given Name #1 ");
-                                                                $xml->writeElement("family",$this->XMLvalue($caseId,1070,1));
+                                                                $xml->writeElement("family",$this->XMLvalue($caseId,28,1));
                                                                 $xml->writeComment(" C.2.r.1.4: Reporter's Family Name #1 ");
                                                             $xml->endElement();//name
                                                             $xml->startElement("asQualifiedEntity");
@@ -6734,11 +6734,11 @@ class SdXmlStructuresController extends AppController
                                                     $xml->writeComment(" C.3.4.4: Sender's Postcode ");
                                                 $xml->endElement();//addr
                                                 $xml->startElement("telecom");
-                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,1078,1));
+                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,53,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" C.3.4.6: Sender's Telephone ");
                                                 $xml->startElement("telecom");
-                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,1079,1));
+                                                $xml->writeAttribute('vlaue',$this->XMLvalue($caseId,56,1));
                                                 $xml->endElement();
                                                 $xml->writeComment(" C.3.4.7: Sender's Fax ");
                                                 $xml->startElement("telecom");
@@ -6749,7 +6749,7 @@ class SdXmlStructuresController extends AppController
                                                 $xml->writeAttribute('classCode','PSN');
                                                 $xml->writeAttribute('determinerCode','INSTANCE');
                                                     $xml->startElement("name");
-                                                        $xml->writeElement("prefix",$this->XMLvalue($caseId,1074,1));
+                                                        $xml->writeElement("prefix",$this->XMLvalue($caseId,44,1));
                                                         $xml->writeComment(" C.3.3.2: Sender's Title ");
                                                         $xml->startElement("given");
                                                         $xml->writeAttribute('nullFlavor','MSK');//$this->XMLvalue($caseId,1075,1)
@@ -6783,7 +6783,7 @@ class SdXmlStructuresController extends AppController
                                                         $xml->startElement("representedOrganization");
                                                         $xml->writeAttribute('classCode','ORG');
                                                         $xml->writeAttribute('determinerCode','INSTANCE');
-                                                            $xml->writeElement("name",$this->XMLvalue($caseId,1073,1));
+                                                            $xml->writeElement("name",$this->XMLvalue($caseId,42,1));
                                                             $xml->writeComment(" C.3.2: Sender's Organisation ");
                                                         $xml->endElement();//representedOrganization
                                                     $xml->endElement();//assignedEntity
@@ -6837,7 +6837,7 @@ class SdXmlStructuresController extends AppController
                     $xml->writeAttribute('classCode','DEV');
                     $xml->writeAttribute('determinerCode','INSTANCE');
                         $xml->startElement("id");
-                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,1054,1));
+                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,555,1));
                         $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.14');
                         $xml->endElement();
                         $xml->writeComment(" N.1.4: Batch Receiver Identifier ");
@@ -6849,7 +6849,7 @@ class SdXmlStructuresController extends AppController
                     $xml->writeAttribute('classCode','DEV');
                     $xml->writeAttribute('determinerCode','INSTANCE');
                         $xml->startElement("id");
-                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,1053,1));
+                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,554,1));
                         $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.13');
                         $xml->endElement();
                         $xml->writeComment(" N.1.3: Batch Sender Identifier ");

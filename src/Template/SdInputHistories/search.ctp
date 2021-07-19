@@ -54,6 +54,9 @@
         <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> <?php echo __("Clear");?> </button>
 
         <hr class="my-4">
+        <p class="pageTitle">
+            <?php echo __("Input Histories List");?>
+        </p>
         <div id="searchInputHistoryList"></div>
     </div>
 </body>

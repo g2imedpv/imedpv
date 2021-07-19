@@ -5,6 +5,9 @@
 <?= $this->Html->css('datepicker/jquery-ui.css') ?>
 <?= $this->Html->script('datepicker/jquery-1.10.2.js') ?>
 <?= $this->Html->script('datepicker/jquery-ui-1.10.4.js') ?>
+<!-- For local Select2 (External library for quick selecting) CSS/JS link -->
+<?= $this->Html->css('select2/select2.min.css') ?>
+<?= $this->Html->script('select2/select2.min.js') ?>
 <!-- For local DataTable CSS/JS link -->
 <?= $this->Html->css('datatable/dataTables.bootstrap4.min.css') ?>
 <?= $this->Html->script('datatable/DataTables/js/jquery.dataTables.min.js') ?>
@@ -151,5 +154,12 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
     </div>
   </div>
     <hr class="my-3">
-    <div id="textHint" class="formContainer mx-auto my-3 text-center align-middle"></div>
+    <div id="textHint" class="formContainer mx-auto my-3 text-center align-middle">
+        <!-- Loading Animation -->
+        <div class="text-center w-75 mx-auto loadingSpinner">
+            <div class="spinner-border text-primary m-5" role="status">
+                <span class="visually-hidden"></span>
+            </div>
+        </div>
+    </div>
 </div>
