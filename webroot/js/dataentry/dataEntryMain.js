@@ -599,6 +599,7 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
                 if(!relateFlag) return true;
             };
             $(this).find("[id^=section-"+orignalId+"][name$=\\[id\\]]").each(function(){
+                //<input id="section-2-sd_section_structures-9-sd_field_values-0-id" name="sd_field_values[2][9][id]" value="" type="hidden">
                 let sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
                 let valueFlag = false;
                 let thisElement = $(this);

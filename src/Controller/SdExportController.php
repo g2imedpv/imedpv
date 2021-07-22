@@ -672,7 +672,7 @@ class SdExportController extends AppController
             $fileName=$name['caseNo'];
             $this->set('fileName', $fileName);
             //1.
-            $this->set('patientInitial', $this->getDirectValue($caseId,1080));//D.1  patientinitial
+            $this->set('patientInitial', $this->getDirectValue($caseId,79));//D.1  patientinitial
             //1a.
             $this->set('country', $this->getLookupValue($caseId,1026));// E.i.9 occurcountry
             //2.
@@ -684,10 +684,10 @@ class SdExportController extends AppController
             //3
             $this->set('sex',$this->getLookupValue($caseId,93));//D.5 Sex
             //4-6
-            $this->set('reaction', $this->getDirectValue($caseId,1108));//E.i.4  Date of Start of Reaction / Event
-            $this->set('reactionMonth', $this->getMonthValue($this->getDirectValue($caseId,1108)));//E.i.4  Date of Start of Reaction / Event
+            $this->set('reaction', $this->getDirectValue($caseId,156));//E.i.4  Date of Start of Reaction / Event
+            $this->set('reactionMonth', $this->getMonthValue($this->getDirectValue($caseId,156)));//E.i.4  Date of Start of Reaction / Event
             //7+13
-            $this->set('describe', $this->getDescribeValue($caseId,1105,392,394,1144,1146,1134,1135,174,1138,310));//E.i.1Reaction / Event+E.i.7 Outcome of Reaction / Event+G.k.8 Action(s) Taken with Drug
+            $this->set('describe', $this->getDescribeValue($caseId,149,392,394,165,208,218,219,174,222,310));//E.i.1Reaction / Event+E.i.7 Outcome of Reaction / Event+G.k.8 Action(s) Taken with Drug
             //8-12  E.i.3.2Seriousness Criteria at Event Level
             if($this->getDirectValue($caseId,1019,1)==1){
                 $this->set('patientDied','checked');
@@ -709,29 +709,29 @@ class SdExportController extends AppController
             };
             //14
             $this->set('suspecttitle','     Drug     |     Batch/Lot Number<br>');
-            $this->set('suspectProducts', $this->getCiomsSuspectValue($caseId,1114,1115,178,179));//G.k.2Drug Identification+G.k.4.r.7 Batch / Lot Number
+            $this->set('suspectProducts', $this->getCiomsSuspectValue($caseId,176,177,178,179));//G.k.2Drug Identification+G.k.4.r.7 Batch / Lot Number
             //15  dailyDose
-            $this->set('dailyDose', $this->getCiomsDailyDoseValue($caseId,183,1116,185,1117,1118));//G.k.4.r.8
+            $this->set('dailyDose', $this->getCiomsDailyDoseValue($caseId,183,184,185,186,187));//G.k.4.r.8
             //16
-            $this->set('route', $this->getCiomsRouteValue($caseId,1122));//G.k.4.r.10 Route of Administration
+            $this->set('route', $this->getCiomsRouteValue($caseId,192));//G.k.4.r.10 Route of Administration
             //17
-            $this->set('indication', $this->getCiomsIndicationValue($caseId,1126,299));//G.k.7 Indication for Use in Case
+            $this->set('indication', $this->getCiomsIndicationValue($caseId,197,299));//G.k.7 Indication for Use in Case
             //18
             $this->set('therapy', $this->getCiomsTherapyValue($caseId,199,205));//G.k.4.r.4 Date and Time of Start of Drug
             //19
-            $this->set('duration', $this->getCiomsDurationValue($caseId,206,1129));//G.k.4.r.6 Duration of Drug Administration
+            $this->set('duration', $this->getCiomsDurationValue($caseId,206,207));//G.k.4.r.6 Duration of Drug Administration
             //20.
-            $this->getCiomsDechallengeValue($caseId,1147,'1,1');//dechallenge
+            $this->getCiomsDechallengeValue($caseId,209,'1,1');//dechallenge
             //21.
             $this->getCiomsRechallengeValue($caseId,381,'1,1');//Rechallenge
             //22. concomitant drugs and dates of administration
             $this->set('concomitanttitle','Drug    |    Therapy Start and Stop Date    |    Dose    |    Indication<br>');
-            $this->set('concomitantProducts', $this->getCiomsConcomitantValue($caseId,1114,1115,178,199,205,183,1116,1126));//G.k.2 +G.k.4.r.4+G.k.4.r.5+dose(unit)+indication
+            $this->set('concomitantProducts', $this->getCiomsConcomitantValue($caseId,176,177,178,199,205,183,184,197));//G.k.2 +G.k.4.r.4+G.k.4.r.5+dose(unit)+indication
             //23.other relevant history
             $this->set('relevanttitle','Disease    |    Start date    |   Continuing   |    End date    |    Comments<br>');
-            $this->set('relevant', $this->getCiomsRelevantValue($caseId,239,99,100,102,1084));//D.7.2
+            $this->set('relevant', $this->getCiomsRelevantValue($caseId,239,99,100,102,103));//D.7.2
             //24a
-            $this->set('caseSource', $this->getDirectValue($caseId,1066));//C.1.9.1.r.1
+            $this->set('caseSource', $this->getDirectValue($caseId,19));//C.1.9.1.r.1
             //24b
             $this->set('otherCaseIndentifier', $this->getDirectValue($caseId,20));//C.1.9 Other Case Identifiers
             //24c
@@ -739,7 +739,7 @@ class SdExportController extends AppController
             //24d
             $this->getCiomsReportSourceValue($caseId);//C.1.3Type of Report+C.4.r.1Literature Reference(s)+ C.2.r.4 Qualification
             //25a.
-            $this->getCiomsReportTypeValue($caseId,1062);//report type
+            $this->getCiomsReportTypeValue($caseId,6);//report type
 
         }
 
@@ -753,7 +753,7 @@ class SdExportController extends AppController
             $fileName=$name['caseNo'];
             $this->set('fileName', $fileName);
             //1.
-            $this->set('patientInitial', $this->getDirectValue($caseId,1080));//D.1  patientinitial
+            $this->set('patientInitial', $this->getDirectValue($caseId,79));//D.1  patientinitial
             //1a.
             $this->set('country', $this->getLookupValue($caseId,1026));// E.i.9 occurcountry
             //2.
@@ -765,10 +765,10 @@ class SdExportController extends AppController
             //3
             $this->set('sex',$this->getLookupValue($caseId,93));//D.5 Sex
             //4-6
-            $this->set('reaction', $this->getDirectValue($caseId,1108));//E.i.4  Date of Start of Reaction / Event
-            $this->set('reactionMonth', $this->getMonthValue($this->getDirectValue($caseId,1108)));//E.i.4  Date of Start of Reaction / Event
+            $this->set('reaction', $this->getDirectValue($caseId,156));//E.i.4  Date of Start of Reaction / Event
+            $this->set('reactionMonth', $this->getMonthValue($this->getDirectValue($caseId,156)));//E.i.4  Date of Start of Reaction / Event
             //7+13
-            $this->set('describe', $this->getDescribeValue($caseId,1105,392,394,1144,1146,1134,1135,174,1138,310));//E.i.1Reaction / Event+E.i.7 Outcome of Reaction / Event+G.k.8 Action(s) Taken with Drug
+            $this->set('describe', $this->getDescribeValue($caseId,149,392,394,165,208,218,219,174,222,310));//E.i.1Reaction / Event+E.i.7 Outcome of Reaction / Event+G.k.8 Action(s) Taken with Drug
             //8-12  E.i.3.2Seriousness Criteria at Event Level
             if($this->getDirectValue($caseId,1019,1)==1){
                 $this->set('patientDied','checked');
@@ -790,29 +790,29 @@ class SdExportController extends AppController
             };
             //14
             $this->set('suspecttitle','     Drug     |     Batch/Lot Number<br>');
-            $this->set('suspectProducts', $this->getCiomsSuspectValue($caseId,1114,1115,178,179));//G.k.2Drug Identification+G.k.4.r.7 Batch / Lot Number
+            $this->set('suspectProducts', $this->getCiomsSuspectValue($caseId,176,177,178,179));//G.k.2Drug Identification+G.k.4.r.7 Batch / Lot Number
             //15  dailyDose
-            $this->set('dailyDose', $this->getCiomsDailyDoseValue($caseId,183,1116,185,1117,1118));//G.k.4.r.8
+            $this->set('dailyDose', $this->getCiomsDailyDoseValue($caseId,183,184,185,186,187));//G.k.4.r.8
             //16
-            $this->set('route', $this->getCiomsRouteValue($caseId,1122));//G.k.4.r.10 Route of Administration
+            $this->set('route', $this->getCiomsRouteValue($caseId,192));//G.k.4.r.10 Route of Administration
             //17
-            $this->set('indication', $this->getCiomsIndicationValue($caseId,1126,299));//G.k.7 Indication for Use in Case
+            $this->set('indication', $this->getCiomsIndicationValue($caseId,197,299));//G.k.7 Indication for Use in Case
             //18
             $this->set('therapy', $this->getCiomsTherapyValue($caseId,199,205));//G.k.4.r.4 Date and Time of Start of Drug
             //19
-            $this->set('duration', $this->getCiomsDurationValue($caseId,206,1129));//G.k.4.r.6 Duration of Drug Administration
+            $this->set('duration', $this->getCiomsDurationValue($caseId,206,207));//G.k.4.r.6 Duration of Drug Administration
             //20.
-            $this->getCiomsDechallengeValue($caseId,1147,'1,1');//dechallenge
+            $this->getCiomsDechallengeValue($caseId,209,'1,1');//dechallenge
             //21.
             $this->getCiomsRechallengeValue($caseId,381,'1,1');//Rechallenge
             //22. concomitant drugs and dates of administration
             $this->set('concomitanttitle','Drug    |    Therapy Start and Stop Date    |    Dose    |    Indication<br>');
-            $this->set('concomitantProducts', $this->getCiomsConcomitantValue($caseId,1114,1115,178,199,205,183,1116,1126));//G.k.2 +G.k.4.r.4+G.k.4.r.5+dose(unit)+indication
+            $this->set('concomitantProducts', $this->getCiomsConcomitantValue($caseId,176,177,178,199,205,183,184,197));//G.k.2 +G.k.4.r.4+G.k.4.r.5+dose(unit)+indication
             //23.other relevant history
             $this->set('relevanttitle','Disease    |    Start date    |   Continuing   |    End date    |    Comments<br>');
-            $this->set('relevant', $this->getCiomsRelevantValue($caseId,239,99,100,102,1084));//D.7.2
+            $this->set('relevant', $this->getCiomsRelevantValue($caseId,239,99,100,102,103));//D.7.2
             //24a
-            $this->set('caseSource', $this->getDirectValue($caseId,1066));//C.1.9.1.r.1
+            $this->set('caseSource', $this->getDirectValue($caseId,19));//C.1.9.1.r.1
             //24b
             $this->set('otherCaseIndentifier', $this->getDirectValue($caseId,20));//C.1.9 Other Case Identifiers
             //24c
@@ -820,7 +820,7 @@ class SdExportController extends AppController
             //24d
             $this->getCiomsReportSourceValue($caseId);//C.1.3Type of Report+C.4.r.1Literature Reference(s)+ C.2.r.4 Qualification
             //25a.
-            $this->getCiomsReportTypeValue($caseId,1062);//report type
+            $this->getCiomsReportTypeValue($caseId,6);//report type
 
         }
 

@@ -119,8 +119,14 @@ class SdSectionsController extends AppController
         $writePermission= 0;
         $userinfo = $this->request->getSession()->read('Auth.User');
         $sdCasesTable = TableRegistry::get('SdCases');
-        if ($this->request->is(['patch', 'post', 'put'])) {            
+        if ($this->request->is(['patch', 'post', 'put'])) {           
+            //integrate R3/R2 
             $sdCases = $sdCasesTable->find()->where(['SdCases.id'=>$caseId])->contain(['SdProductWorkflows.SdProducts'])->first();
+            $Products = new AppController;
+            $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
+            if($e2b_version == 3) $e2b_version = "_r3";
+            else $e2b_version = "";
+            $Products->configVersion($e2b_version);
             $currentActivityId = $sdCases['sd_workflow_activity_id'];
             $sdInputHistoryTable = TableRegistry::get('SdInputHistories');
             $error =[];
@@ -259,6 +265,12 @@ class SdSectionsController extends AppController
         if($distribution_id == "null") $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
         else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";     
         if($this->request->is('POST')){
+            $sdCasesTable = TableRegistry::get('SdCases');
+            $sdCases = $sdCasesTable->find()->where(['SdCases.id'=>$caseId])->contain(['SdProductWorkflows.SdProducts'])->first();
+            $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
+            if($e2b_version == 3) $e2b_version = "_r3";
+            else $e2b_version = "";
+            $Products->configVersion($e2b_version);
             $this->autoRender = false;
             $sdFieldValuesTable = TableRegistry::get('SdFieldValues');
             $sdSectionSetsTable = TableRegistry::get('SdSectionSets');
@@ -295,8 +307,6 @@ class SdSectionsController extends AppController
                     }
                 }
             }
-            $sdCasesTable = TableRegistry::get('SdCases');
-            $sdCases = $sdCasesTable->find()->where(['SdCases.id'=>$caseId])->contain(['SdProductWorkflows.SdProducts'])->first();
             $currentActivityId = $sdCases['sd_workflow_activity_id'];
 
             //User not allow to this activity
@@ -403,6 +413,7 @@ class SdSectionsController extends AppController
      */
     public function search(){
         if($this->request->is('POST')){
+            //TODO integrate R3
             $this->autoRender = false;
             $requstData = $this->request->getData();
             $case = TableRegistry::get('SdCases')->get($requstData['caseId']);

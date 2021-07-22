@@ -79,6 +79,14 @@ class AppController extends Controller
     }
     public function configVersion($version){
         parent::initialize();
+
+        TableRegistry::remove('SdFields');
+        TableRegistry::remove('SdSections');
+        TableRegistry::remove('SdFieldValueLookUps');
+        TableRegistry::remove('SdSectionStructures');
+        TableRegistry::remove('SdSectionSummaries');
+
+
         TableRegistry::config('SdFields', ['table' => 'sd_fields'.$version]);
         TableRegistry::config('SdSections', ['table' => 'sd_sections'.$version]);
         TableRegistry::config('SdFieldValueLookUps', ['table' => 'sd_field_value_look_ups'.$version]);
