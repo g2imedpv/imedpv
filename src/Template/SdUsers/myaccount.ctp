@@ -37,7 +37,18 @@
         <a class="btn btn-danger mx-2" href="/sd-users/logout" role="button"><?php echo __("Log Out")?></a>
     </div>
     <?= $this->Form->end() ?>
-
-
   </div>
+
+    <!-- Admin Permission ONLY -->
+    <?php if($roleID == 2) {
+        echo "<div class=\"card-footer\">";
+            echo    "<h4>Admin Panel</h4>";
+            echo "<div class=\"d-flex justify-content-center\">";
+            echo    "<a class=\"btn btn-outline-primary mx-3\" href=\"/sd-users/adduser\" role=\"button\">". __("Create Account")."</a>";
+            echo    "<a class=\"btn btn-outline-primary mx-3\" href=\"/sd-users/userlist\" role=\"button\">". __("View Users List")."</a>";
+            echo "</div>";
+        echo "</div>";
+    }
+    ?>
+
 </div>

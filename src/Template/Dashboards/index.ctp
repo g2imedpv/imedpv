@@ -129,7 +129,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
         <div class='form-row justify-content-between'>
             <div class="form-group col-lg-4">
                 <label><?php echo __("SMQ Query");?></label>
-                <select class="form-control" id="meddra_smq">
+                <select class="form-control custom-select js-example-basic-single" id="meddra_smq">
                 <option value=""><?php echo __("Select SMQ Query")?></option>
                 <?php
                     foreach($smq_list as $smq_code => $smq_name)

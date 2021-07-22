@@ -801,3 +801,7 @@ ul.queryBoxLeft > a {
     width:10rem;
     height:10rem;
 }
+
+.error-message {
+    color:red !important;
+}

@@ -28,7 +28,8 @@ $(document).ready(function(){
             onQueryClicked();
         }
     });
-    /**  
+    $('.js-example-basic-single').select2();
+    /**
      * dashboard advanced search:activity due date and submission due date calendar
      */
     $('#activity_due_date_start,#activity_due_date_end,#submission_due_date_start,#submission_due_date_end,#patient_dob').datepicker({dateFormat: 'dd/mm/yy'});
