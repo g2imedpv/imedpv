@@ -12,6 +12,8 @@
 <?= $this->Html->css('datatable/dataTables.bootstrap4.min.css') ?>
 <?= $this->Html->script('datatable/DataTables/js/jquery.dataTables.min.js') ?>
 <?= $this->Html->script('datatable/DataTables/js/dataTables.bootstrap4.min.js') ?>
+<!-- For local MedDRA link -->
+<?= $this->Html->script('meddra.js') ?>
 <head>
 <script>
 var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
@@ -96,8 +98,8 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
 
         <div class="form-row">
             <div class="form-group col-lg-6">
-                <label class="col-form-label"><?php echo __("Activity Due Date")?>:</label>
-                <div class="col-sm-12 row justify-content-start">
+                <label class="col-form-label"><?php echo __("Activity Due Date")?></label>
+                <div class="col-sm-12 row justify-content-center">
                     <div class="col-sm-5">
                         <input type="text"  class="form-control" id="activity_due_date_start" placeholder="<?php echo __("dd/mm/yyyy")?>">
                     </div>
@@ -110,8 +112,8 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 </div>
             </div>
             <div class="form-group col-lg-6">
-                <label class="col-form-label"><?php echo __("Submission Due Date")?>:</label>
-                <div class="col-sm-12 row justify-content-start">
+                <label class="col-form-label"><?php echo __("Submission Due Date")?></label>
+                <div class="col-sm-12 row justify-content-center">
                     <div class="col-sm-5">
                         <input type="text"  class="form-control" id="submission_due_date_start" placeholder="<?php echo __("dd/mm/yyyy")?>">
                     </div>
@@ -123,11 +125,25 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <div class='form-row justify-content-between'>
-            <div class="form-group col-lg-4">
+        <div class="form-row">
+            <div class="form-group col-lg-6">
+                <label class="col-form-label"><?php echo __("Case Received Date")?></label>
+                <div class="col-sm-12 row justify-content-center">
+                    <div class="col-sm-5">
+                        <input type="text"  class="form-control" id="case_received_date_start" placeholder="<?php echo __("dd/mm/yyyy")?>">
+                    </div>
+                    <div class="col-sm-2 arrow">
+                        <i class="far fa-window-minimize"></i>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text"  class="form-control" id="case_received_date_end" placeholder="<?php echo __("dd/mm/yyyy")?>">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-lg-6">
                 <label><?php echo __("SMQ Query");?></label>
                 <select class="form-control custom-select js-example-basic-single" id="meddra_smq">
                 <option value=""><?php echo __("Select SMQ Query")?></option>
@@ -140,17 +156,54 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                 <div id="SMQoptions"  style="display:none;"></div>
                 <input type="hidden" id="meddra_smq">
             </div>
-            <div class="form-group col-lg-4">
+
+            <!-- <div class="form-group col-lg-4">
                 <label><?php echo __("SMQ Query");?></label>
                 <select class="form-control" id="meddra_smq_scope">
                     <option value="1"><?php echo __("Broad Search")?></option>
                     <option value="2"><?php echo __("Narrow Search")?></option>
                 </select>
-            </div>
-            <div class='form-group col-lg-4 d-flex align-items-end'>
-                <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary"><i class="fas fa-search"></i> <?php echo __("Search");?></button>
+            </div> -->
+        </div>
+
+        <div class="form-row mt-3">
+            <div class="form-group col-md-12">
+                <?php
+                $meddraCell = $this->cell('Meddra',['llt-c:392,llt-n:457,pt-c:394,pt-n:458,ver:150,ver:443','496']);
+                echo $meddraCell;?>
+                <input type="hidden" id="meddraResult-496" name="field_value[496]" value="">
             </div>
         </div>
+
+        <div class="form-row justify-content-center">
+            <div class="form-group col-md-3">
+                <label><?php echo __("LLT Code")?></label>
+                <input type="text" class="form-control" name="field_value[392]" id="meddrashow-392">
+            </div>
+            <div class="form-group col-md-3">
+                <label><?php echo __("LLT Name")?></label>
+                <input type="text" class="form-control" name="field_value[457]" id="meddrashow-457">
+            </div>
+            <div class="form-group col-md-3">
+                <label><?php echo __("PT Code")?></label>
+                <input type="text" class="form-control" name="field_value[394]" id="meddrashow-394">
+            </div>
+            <div class="form-group col-md-3">
+                <label><?php echo __("PT Name")?></label>
+                <input type="text" class="form-control" name="field_value[458]" id="meddrashow-458">
+            </div>
+        </div>
+
+        <div class='form-row'>
+            <div class="form-group col-md-2">
+                <a href='https://tools.meddra.org/wbb/login.aspx' role="button" target="_blank" class="form-control btn btn-sm btn-outline-secondary"><?php echo __("MedDRA Dictionary");?></a>
+            </div>
+        </div>
+
+        <div class='form-row'>
+            <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary"><i class="fas fa-search"></i> <?php echo __("Search");?></button>
+        </div>
+
     </div>
   </div>
     <hr class="my-3">

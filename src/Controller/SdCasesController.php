@@ -357,6 +357,7 @@ class SdCasesController extends AppController
                     'versions'=>'SdCases.version_no',
                     'pw.sd_product_id',
                     'submission_due_date'=>'submission_due_date.field_value',
+                    'case_received_date'=>'case_received_date.field_value',
                     'activity_due_date'=>'activity_due_date.field_value',
                     'caseNo',
                     'patient_id_v'=>'patient_id.field_value',
@@ -399,7 +400,20 @@ class SdCasesController extends AppController
                         'submission_due_date'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['submission_due_date.sd_field_id = 415','submission_due_date.sd_case_id = SdCases.id','submission_due_date.status = 1']
+                            'conditions'=>[
+                                'submission_due_date.sd_field_id = 415',
+                                'submission_due_date.sd_case_id = SdCases.id',
+                                'submission_due_date.status = 1'
+                            ]
+                        ],
+                        'case_received_date'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>[
+                                'case_received_date.sd_field_id = 10',
+                                'case_received_date.sd_case_id = SdCases.id',
+                                'case_received_date.status = 1'
+                            ]
                         ],
                         'patient_id'=>[
                             'table'=>'sd_field_values',
@@ -419,7 +433,11 @@ class SdCasesController extends AppController
                         'activity_due_date'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['activity_due_date.sd_field_id = 414','activity_due_date.sd_case_id = SdCases.id','activity_due_date.status = 1']
+                            'conditions'=>[
+                                'activity_due_date.sd_field_id = 414',
+                                'activity_due_date.sd_case_id = SdCases.id',
+                                'activity_due_date.status = 1'
+                            ]
                         ],
                         'serious_case'=>[
                             'table'=>'sd_field_values',
@@ -506,6 +524,7 @@ class SdCasesController extends AppController
                 }
                 // die();
                 if(!empty($searchKey['patient_dob'])) $searchResult = $searchResult->where(['patient_dob.field_value'=>$searchKey['patient_dob']]);
+                //if(!empty($searchKey['case_receivedDate'])) $searchResult = $searchResult->where(['case_received_date.field_value'=>$searchKey['case_receivedDate']]);
                 if(!empty($searchKey['patient_gender'])) $searchResult = $searchResult->where(['patient_gender.field_value'=>$searchKey['patient_gender']]);
                 if(!empty($searchKey['patient_id'])) $searchResult = $searchResult->where(['patient_id.field_value LIKE'=>'%'.$searchKey['patient_id'].'%']);
                 if(!empty($searchKey['searchProductName'])) $searchResult = $searchResult->where(['product_name  LIKE'=>'%'.$searchKey['searchProductName'].'%']);

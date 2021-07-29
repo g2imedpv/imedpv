@@ -194,6 +194,8 @@ function onQueryClicked(preferrenceId = null){
         'activity_due_date_end':$("#activity_due_date_end").val(),
         'submission_due_date_start':$("#submission_due_date_start").val(),
         'submission_due_date_end':$("#submission_due_date_end").val(),
+        'case_received_date_start':$("#case_received_date_start").val(),
+        'case_received_date_end':$("#case_received_date_end").val(),
         'caseNo': $("#caseNo").val(),
         'searchProductName':$searchProductName,
         'userId':userId,
@@ -207,7 +209,7 @@ function onQueryClicked(preferrenceId = null){
     if (preferrenceId!=null)
     request['preferrenceId'] = preferrenceId;
     var today = new Date();
-    //console.log(request);
+    console.log('request :>> ', request);
     $.ajax({
         headers: {
             'X-CSRF-Token': csrfToken
