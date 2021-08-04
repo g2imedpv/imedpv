@@ -815,9 +815,230 @@ class SdCasesController extends AppController
         return (String)$date_str;
     }
 
-    public function caselist(){
+    public function checkfieldsdetail(){
         $this->viewBuilder()->setLayout('main_layout');
+        if($this->request->is('POST')){
+            $requstData = $this->request->getData()['cases'];
+            $cimosFieldsIds = array("1026", "36", "95", "190");
+            $extraFieldsIds = array("423");
+            $cimosFields = array();;
+            $extraFields = array();
+            //Set r3
+            $Products = new AppController;
+            $Products->configVersion("_r3");
+            $fieldTable = TableRegistry::get('SdFields');
+            $fieldValueTable = TableRegistry::get('SdFieldValues');
+            foreach($cimosFieldsIds as $feildsId){
+                $cimosFields[$feildsId] = $fieldTable->get($feildsId)['field_label'];
+            }
+            // debug($cimosFields);
+            foreach($extraFieldsIds as $feildsId){
+                $extraFields[$feildsId] = $fieldTable->get($feildsId)['field_label'];
+            }
+            // debug($extraFields);
+            $caseFields = array();
+            //R3 version
+            foreach($requstData as $caseIdentifier) {
+                $caseDetail = $this->SdCases->find()
+                    ->select([
+                        'SdCases.caseNO',
+                        'SdCases.version_no',
+                        'SdCases.id',
+                        'country' => 'country_3.field_value', 
+                        'suspectDrug' => 'product_name_176.field_value',
+                        'reportType' => 'report_type_6.field_value',
+                        'reportTypeValue' => 'report_value.caption',
+                        'ageCount' => 'age_count_86.field_value', 
+                        'ageUnitValue' => 'age_unit_value.caption',
+                        'sex' => 'sex_93.field_value', 
+                        'sexValue' => 'sex_value.caption',
+                        'dose' => 'dose_190.field_value', 
+                        'durationStart' => 'duration_Start_199.field_value',
+                        'durationReaction' => 'duration_Reaction_156.field_value', 
+                        'reaction' => 'reaction_149.field_value', 
+                        'meddra_llt' => 'llt_496.field_value',
+                        'outcome' => 'outcome_165.field_value', 
+                        'outcomeValue' => 'outcome_value.caption',
+                        'serverity' => 'serverity_302.field_value',
+                        'serverityValue' => 'serverity_value.caption',
+                        'causeOfDeath1019' => 'death_1019.field_value', 
+                        'causeOfDeath1020' => 'death_1020.field_value', 
+                        'causeOfDeath1021' => 'death_1021.field_value',
+                        'causeOfDeath1022' => 'death_1022.field_value',
+                        'causeOfDeath1023' => 'death_1023.field_value', 
+                        'causeOfDeath1024' => 'death_1024.field_value',
+                        'labeled' => 'label_382.field_value',
+                        'causality' => 'causality_378.field_value',
+                        'causalityValue' => 'causality_value.caption',
+                        'history' => 'history_97.field_value',
+                        'concomitant' => 'concomitant_175.field_value',
+                        'concomitantDrug' => 'concomitantDrug_176.field_value'
+                    ])
+                    ->join([
+                        'country_3'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['country_3.sd_field_id = 3','country_3.sd_case_id = SdCases.id','country_3.status = 1']
+                        ],
+                        'product_name_176'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['product_name_176.sd_field_id = 176','product_name_176.sd_case_id = SdCases.id','product_name_176.status = 1']
+                        ],
+                        'report_type_6'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['report_type_6.sd_field_id = 6','report_type_6.sd_case_id = SdCases.id','report_type_6.status = 1']
+                        ],
+                        'report_value'=>[
+                            'table'=>'sd_field_value_look_ups_r3',
+                            'type'=>'LEFT',
+                            'conditions'=>['report_value.sd_field_id = 6','report_value.value = report_type_6.field_value']
+                        ],   
+                        'age_count_86'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['age_count_86.sd_field_id = 86','age_count_86.sd_case_id = SdCases.id','age_count_86.status = 1']
+                        ],
+                        'age_unit_87'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['age_unit_87.sd_field_id = 87','age_unit_87.sd_case_id = SdCases.id','age_unit_87.status = 1']
+                        ],
+                        'age_unit_value'=>[
+                            'table'=>'sd_field_value_look_ups_r3',
+                            'type'=>'LEFT',
+                            'conditions'=>['age_unit_value.sd_field_id = 87','age_unit_value.value = age_unit_87.field_value']
+                        ],                        
+                        'sex_93'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['sex_93.sd_field_id = 93','sex_93.sd_case_id = SdCases.id','sex_93.status = 1']
+                        ],
+                        'sex_value'=>[
+                            'table'=>'sd_field_value_look_ups_r3',
+                            'type'=>'LEFT',
+                            'conditions'=>['sex_value.sd_field_id = 93','sex_value.value = sex_93.field_value']
+                        ],  
+                        'dose_190'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['dose_190.sd_field_id = 190','dose_190.sd_case_id = SdCases.id','dose_190.status = 1']
+                        ],
+                        'duration_Start_199'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['duration_Start_199.sd_field_id = 199','duration_Start_199.sd_case_id = SdCases.id','duration_Start_199.status = 1']
+                        ],
+                        'duration_Reaction_156'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['duration_Reaction_156.sd_field_id = 156','duration_Reaction_156.sd_case_id = SdCases.id','duration_Reaction_156.status = 1']
+                        ],
+                        'reaction_149'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['reaction_149.sd_field_id = 149','reaction_149.sd_case_id = SdCases.id','reaction_149.status = 1']
+                        ],
+                        'llt_496'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['llt_496.sd_field_id = 496','llt_496.sd_case_id = SdCases.id','llt_496.status = 1']
+                        ],
+                        'outcome_165'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['outcome_165.sd_field_id = 165','outcome_165.sd_case_id = SdCases.id','outcome_165.status = 1']
+                        ],
+                        'outcome_value'=>[
+                            'table'=>'sd_field_value_look_ups_r3',
+                            'type'=>'LEFT',
+                            'conditions'=>['outcome_value.sd_field_id = 165','outcome_value.value = outcome_165.field_value']
+                        ],     
+                        'serverity_302'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['serverity_302.sd_field_id = 302','serverity_302.sd_case_id = SdCases.id','serverity_302.status = 1']
+                        ],
+                        'serverity_value'=>[
+                            'table'=>'sd_field_value_look_ups_r3',
+                            'type'=>'LEFT',
+                            'conditions'=>['serverity_value.sd_field_id = 302','serverity_value.value = serverity_302.field_value']
+                        ],     
+                        'death_1019'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['death_1019.sd_field_id = 1019','death_1019.sd_case_id = SdCases.id','death_1019.status = 1']
+                        ],
+                        'death_1020'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['death_1020.sd_field_id = 1020','death_1020.sd_case_id = SdCases.id','death_1020.status = 1']
+                        ],
+                        'death_1021'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['death_1021.sd_field_id = 1021','death_1021.sd_case_id = SdCases.id','death_1021.status = 1']
+                        ],
+                        'death_1022'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['death_1022.sd_field_id = 1022','death_1022.sd_case_id = SdCases.id','death_1022.status = 1']
+                        ],
+                        'death_1023'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['death_1023.sd_field_id = 1023','death_1023.sd_case_id = SdCases.id','death_1023.status = 1']
+                        ],
+                        'death_1024'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['death_1024.sd_field_id = 1024','death_1024.sd_case_id = SdCases.id','death_1024.status = 1']
+                        ],
+                        'label_382'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['label_382.sd_field_id = 382','label_382.sd_case_id = SdCases.id','label_382.status = 1']
+                        ],
+                        'causality_378'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['causality_378.sd_field_id = 378','causality_378.sd_case_id = SdCases.id','causality_378.status = 1']
+                        ],
+                        'causality_value'=>[
+                            'table'=>'sd_field_value_look_ups_r3',
+                            'type'=>'LEFT',
+                            'conditions'=>['causality_value.sd_field_id = 378','causality_value.value = causality_378.field_value']
+                        ],     
+                        'history_97'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['history_97.sd_field_id = 97','history_97.sd_case_id = SdCases.id','history_97.status = 1']
+                        ],
+                        'concomitant_175'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['concomitant_175.sd_field_id = 175','concomitant_175.sd_case_id = SdCases.id','concomitant_175.status = 1']
+                        ],
+                        'concomitantDrug_176'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['concomitantDrug_176.sd_field_id = 176','concomitantDrug_176.sd_case_id = SdCases.id','concomitantDrug_176.status = 1', 'concomitant_175.field_value = 2']
+                        ],
+                    ])
+                    ->where(['caseNo'=>$caseIdentifier['caseNo'], 'version_no' =>$caseIdentifier['version']])
+                    ->first();
+                    // debug($caseDetail);
+                    $caseFields[$caseDetail['id']] = $caseDetail;
+            }
+            // debug($caseFields);
+            $this->set(compact('caseFields', 'extraFields','cimosFields'));
+        }
 
+    }
+
+    public function caselist(){
+        $this->viewBuilder()->setLayout('main_layout');        
     }
     /**
      * Version Up cases

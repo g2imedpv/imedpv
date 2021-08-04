@@ -182,6 +182,35 @@ $(function(){
 });
 
 });
+function checkFieldsDetail(){
+    var request = {};
+    var count = 0;
+    $('[id^=result-caseNo-]').each(function(){
+        var singleRequest = {
+            'caseNo': $(this).html(),
+            'version':  $("#version-"+$(this).html()).html()
+        }
+        console.log(singleRequest);
+        request[count++] = singleRequest;
+    });
+    $.ajax({
+        headers: {
+            'X-CSRF-Token': csrfToken
+        },
+        type:'POST',
+        url:'/sd-cases/checkfieldsdetail',
+        data:request,
+        beforeSend:function () {
+            $('.loadingSpinner').show();
+        },
+        success:function(response){    
+        var w = window.open('about:blank');
+        w.document.write(response);},
+        error:function(response){
+            console.log(response.responseText);
+        }
+    });
+}
 
 function onQueryClicked(preferrenceId = null){
     //TODO enhance search
@@ -226,8 +255,11 @@ function onQueryClicked(preferrenceId = null){
                 return}
             var result = $.parseJSON(response);
             var text = "";
+            text +="<form method=\"post\" action=\"/sd-cases/checkfieldsdetail\" id=\"checkdetail_form\">";
+            text +="<input type=\"hidden\" name=\"_csrfToken\" value=\""+csrfToken+"\">"
+            text +="<button class=\"caseDetail\" type=\"submit\" value=\"Submit\" form=\"checkdetail_form\">Check fields</button>";
             text +="<table id=\"caseTable\" class=\"table table-striped table-bordered table-hover\">";
-            text += "<thead>";
+            text +="<thead>";
             text +="<tr style=\"cursor: pointer;\">";
             text +="<th class=\"align-middle\" scope=\"col\">"+i18n.gettext("Priority SUSAR")+"</th>";
             text +="<th class=\"align-middle\" scope=\"col\">"+i18n.gettext("AER No.")+"</th>";
@@ -268,9 +300,9 @@ function onQueryClicked(preferrenceId = null){
                 if(caseDetail.serious_case.id!=null) text +=" <i class=\"fas fa-exclamation-triangle\"data-toggle=\"tooltip\" title=\"Serious Case\" style=\"color:red;\"></i>\n";
                 if(caseDetail.clinical_trial.id!=null) text +=" <i class=\"fas fa-user-md\" data-toggle=\"tooltip\" title=\"Clinical Trial\" style=\"color:#845ef7;\"></i>\n";
                 text +="</td>";
-                text += "<td class=\"align-middle\">" + caseDetail.caseNo + "</td>";
+                text += "<td class=\"align-middle\" id=\"result-caseNo-"+k+"\">" + caseDetail.caseNo + "<input name=\"cases["+k+"][caseNo]\" value=\""+caseDetail.caseNo+"\" type=\"hidden\"></td>";
                 // text += "<td></td>";
-                text += "<td class=\"align-middle\" id=\"version-"+caseDetail.caseNo+"\">"+ caseDetail.versions + "</td>";
+                text += "<td class=\"align-middle\" id=\"version-"+caseDetail.caseNo+"\">"+ caseDetail.versions + "<input name=\"cases["+k+"][version]\" value=\""+caseDetail.versions+"\" type=\"hidden\"></td>";
                 text += "<td id=\"activity-"+caseDetail.caseNo+"\" class=\"align-middle\">";
                 if(caseDetail.status == '1') text += i18n.gettext(caseDetail.wa.activity_name+"");
                 else if(caseDetail.status == '2')text += i18n.gettext("Distributed");
@@ -320,8 +352,19 @@ function onQueryClicked(preferrenceId = null){
             })
             text +="</tbody>";
             text +="</table>";
+            text +="</form>";
             $("#textHint").html(text);
-            $('#caseTable').DataTable();
+            $('#caseTable').DataTable(
+                // {dom: 'Bfrtip',
+                // buttons: [
+                //             {
+                //                 collectionTitle: 'Visibility control',
+                //                 extend: 'colvis',
+                //                 collectionLayout: 'two-column'
+                //             }
+                //         ]
+                //     }
+            );
         },
         complete: function () {
             $('.loadingSpinner').hide();

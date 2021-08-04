@@ -136,6 +136,7 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
                 return false;
             }
             if(result['type']==4){
+                //click action
                 let descriptor = $('#descriptor_'+meddraFieldId).val().split(',');
                 $.each(descriptor, function(k,fieldDetail){
                     let mappedId = fieldDetail.split(':')[1];
