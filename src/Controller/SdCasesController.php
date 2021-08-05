@@ -863,6 +863,7 @@ class SdCasesController extends AppController
                         'SdCases.caseNO',
                         'SdCases.version_no',
                         'SdCases.id',
+                        'country_r3' => 'country_1026.field_value', 
                         'country' => 'country_3.field_value', 
                         'suspectDrug' => 'product_name_176.field_value',
                         'reportType' => 'report_type_6.field_value',
@@ -880,6 +881,7 @@ class SdCasesController extends AppController
                         'outcomeValue' => 'outcome_value.caption',
                         'serverity' => 'serverity_302.field_value',
                         'serverityValue' => 'serverity_value.caption',
+                        'causeOfDeath' => 'death.field_value', 
                         'causeOfDeath1019' => 'death_1019.field_value', 
                         'causeOfDeath1020' => 'death_1020.field_value', 
                         'causeOfDeath1021' => 'death_1021.field_value',
@@ -900,6 +902,11 @@ class SdCasesController extends AppController
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
                             'conditions'=>['country_3.sd_field_id = 3','country_3.sd_case_id = SdCases.id','country_3.status = 1']
+                        ],                        
+                        'country_1026'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['country_1026.sd_field_id = 3','country_1026.sd_case_id = SdCases.id','country_1026.status = 1']
                         ],
                         'product_name_176'=>[
                             'table'=>'sd_field_values',
@@ -944,7 +951,7 @@ class SdCasesController extends AppController
                         'dose_190'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['dose_190.sd_field_id = 190','dose_190.sd_case_id = SdCases.id','dose_190.status = 1']
+                            'conditions'=>['dose_190.sd_field_id = 190','dose_190.set_number = 1','dose_190.sd_case_id = SdCases.id','dose_190.status = 1']
                         ],
                         'duration_Start_199'=>[
                             'table'=>'sd_field_values',
@@ -959,17 +966,17 @@ class SdCasesController extends AppController
                         'reaction_149'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['reaction_149.sd_field_id = 149','reaction_149.sd_case_id = SdCases.id','reaction_149.status = 1']
+                            'conditions'=>['reaction_149.sd_field_id = 149','reaction_149.set_number = 1','reaction_149.sd_case_id = SdCases.id','reaction_149.status = 1']
                         ],
                         'llt_496'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['llt_496.sd_field_id = 496','llt_496.sd_case_id = SdCases.id','llt_496.status = 1']
+                            'conditions'=>['llt_496.sd_field_id = 496','llt_496.set_number = 1','llt_496.sd_case_id = SdCases.id','llt_496.status = 1']
                         ],
                         'outcome_165'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['outcome_165.sd_field_id = 165','outcome_165.sd_case_id = SdCases.id','outcome_165.status = 1']
+                            'conditions'=>['outcome_165.sd_field_id = 165','outcome_165.set_number = 1','outcome_165.sd_case_id = SdCases.id','outcome_165.status = 1']
                         ],
                         'outcome_value'=>[
                             'table'=>'sd_field_value_look_ups_r3',
@@ -979,13 +986,18 @@ class SdCasesController extends AppController
                         'serverity_302'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['serverity_302.sd_field_id = 302','serverity_302.sd_case_id = SdCases.id','serverity_302.status = 1']
+                            'conditions'=>['serverity_302.sd_field_id = 302','serverity_302.set_number = 1','serverity_302.sd_case_id = SdCases.id','serverity_302.status = 1']
                         ],
                         'serverity_value'=>[
                             'table'=>'sd_field_value_look_ups_r3',
                             'type'=>'LEFT',
                             'conditions'=>['serverity_value.sd_field_id = 302','serverity_value.value = serverity_302.field_value']
                         ],     
+                        'death'=>[
+                            'table'=>'sd_field_values',
+                            'type'=>'LEFT',
+                            'conditions'=>['death.sd_field_id = 354','death.sd_case_id = SdCases.id','death.status = 1']
+                        ],   
                         'death_1019'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
@@ -1019,7 +1031,7 @@ class SdCasesController extends AppController
                         'label_382'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['label_382.sd_field_id = 382','label_382.sd_case_id = SdCases.id','label_382.status = 1']
+                            'conditions'=>['label_382.sd_field_id = 382','serverity_302.set_number LIKE \'1%\'','label_382.sd_case_id = SdCases.id','label_382.status = 1']
                         ],
                         'label_value'=>[
                             'table'=>'sd_field_value_look_ups_r3',
@@ -1039,7 +1051,7 @@ class SdCasesController extends AppController
                         'history_445'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['history_445.sd_field_id = 445','history_445.sd_case_id = SdCases.id','history_445.status = 1']
+                            'conditions'=>['history_445.sd_field_id = 445','history_445.set_number = 1','history_445.sd_case_id = SdCases.id','history_445.status = 1']
                         ],
                         'concomitant_175'=>[
                             'table'=>'sd_field_values',
