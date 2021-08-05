@@ -51,7 +51,7 @@
                     <th scope="row"><?php echo __("Age of patient");?></th>
                     <th scope="row"><?php echo __("Sex of patient");?></th>
                     <th scope="row"><?php echo __("Dose of drug");?></th>
-                    <th scope="row"><?php echo __("Duration of Treatment");?></th>
+                    <th scope="row"><?php echo __("Duration of Treatment( start of the drug / start of the reaction)");?></th>
                     <th scope="row"><?php echo __("Description of reaction");?></th>
                     <th scope="row"><?php echo __("Event Meddra codding ( LLT / PT / SOC )");?></th>
                     <th scope="row"><?php echo __("Outcome");?></th>
@@ -75,7 +75,13 @@
                         echo"<td>".$caseDetails['ageCount']." ".$caseDetails['ageUnitValue']."</td>";
                         echo"<td>".$caseDetails['sexValue']."</td>";
                         echo"<td>".$caseDetails['dose']."</td>";
-                        echo"<td>".$caseDetails['durationStart']." - ".$caseDetails['durationReaction']."</td>";
+                        echo"<td>";
+                        if ($caseDetails['durationStart'] != null)
+                            echo substr($caseDetails['durationStart'], 0, 2). " / ".substr($caseDetails['durationStart'], 2, 2)." / ".substr($caseDetails['durationStart'], 4, 4);     
+                        echo " ~ ";
+                        if ($caseDetails['durationReaction'] != null)
+                            echo substr($caseDetails['durationReaction'], 0, 2). " / ".substr($caseDetails['durationReaction'], 2, 2)." / ".substr($caseDetails['durationReaction'], 4, 4);     
+                        echo "</td>";
                         echo"<td>".$caseDetails['reaction']."</td>";
                         if($caseDetails['meddra_llt'] != null){
                             list($lltTerm, $lltCode, $ptTerm, $ptCode, $hltTerm, $hltCode, $hlgtTerm, $hlgtCode, $socTerm, $socCode) = explode(",", $caseDetails['meddra_llt']);
@@ -85,10 +91,12 @@
                         echo"<td>".$caseDetails['outcomeValue']."</td>";
                         echo"<td>".$caseDetails['serverityValue']."</td>";
                         echo"<td>"."</td>";
-                        echo"<td>".$caseDetails['labeled']."</td>";
+                        echo"<td>".$caseDetails['labeledValue']."</td>";
                         echo"<td>".$caseDetails['causalityValue']."</td>";
-                        echo"<td>".$caseDetails['history']."</td>";
-                        echo"<td>".$caseDetails['concomitant']."  ".$caseDetails['concomitantDrug']."</td>";
+                        echo"<td >".$caseDetails['history']."</td>";
+                        echo"<td>";
+                        if($caseDetails['concomitant'] == 2) echo $caseDetails['concomitantDrug'];
+                        echo "</td>";
                         echo"</tr>";
                     }
                 ?>

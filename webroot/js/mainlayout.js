@@ -257,8 +257,13 @@ function onQueryClicked(preferrenceId = null){
                 return}
             var result = $.parseJSON(response);
             var text = "";
-            text +="<form method=\"post\" action=\"/sd-cases/checkfieldsdetail\" id=\"checkdetail_form\">";
+            text +="<form method=\"post\" target=\"_blank\" action=\"/sd-cases/checkfieldsdetail\" id=\"checkdetail_form\">";
             text +="<input type=\"hidden\" name=\"_csrfToken\" value=\""+csrfToken+"\">"
+            $.each(result, function(k,caseDetail){
+                text +="<input name=\"cases["+k+"][caseNo]\" value=\""+caseDetail.caseNo+"\" type=\"hidden\">"
+                text +="<input name=\"cases["+k+"][version]\" value=\""+caseDetail.versions+"\" type=\"hidden\">";
+            });
+            text +="</form>";
             text +="<button class=\"caseDetail\" type=\"submit\" value=\"Submit\" form=\"checkdetail_form\">Check fields</button>";
             text +="<table id=\"caseTable\" class=\"table table-striped table-bordered table-hover\">";
             text +="<thead>";
@@ -302,9 +307,9 @@ function onQueryClicked(preferrenceId = null){
                 if(caseDetail.serious_case.id!=null) text +=" <i class=\"fas fa-exclamation-triangle\"data-toggle=\"tooltip\" title=\"Serious Case\" style=\"color:red;\"></i>\n";
                 if(caseDetail.clinical_trial.id!=null) text +=" <i class=\"fas fa-user-md\" data-toggle=\"tooltip\" title=\"Clinical Trial\" style=\"color:#845ef7;\"></i>\n";
                 text +="</td>";
-                text += "<td class=\"align-middle\" id=\"result-caseNo-"+k+"\">" + caseDetail.caseNo + "<input name=\"cases["+k+"][caseNo]\" value=\""+caseDetail.caseNo+"\" type=\"hidden\"></td>";
+                text += "<td class=\"align-middle\" id=\"result-caseNo-"+k+"\">" + caseDetail.caseNo + "</td>";
                 // text += "<td></td>";
-                text += "<td class=\"align-middle\" id=\"version-"+caseDetail.caseNo+"\">"+ caseDetail.versions + "<input name=\"cases["+k+"][version]\" value=\""+caseDetail.versions+"\" type=\"hidden\"></td>";
+                text += "<td class=\"align-middle\" id=\"version-"+caseDetail.caseNo+"\">"+ caseDetail.versions + "</td>";
                 text += "<td id=\"activity-"+caseDetail.caseNo+"\" class=\"align-middle\">";
                 if(caseDetail.status == '1') text += i18n.gettext(caseDetail.wa.activity_name+"");
                 else if(caseDetail.status == '2')text += i18n.gettext("Distributed");
@@ -354,7 +359,6 @@ function onQueryClicked(preferrenceId = null){
             })
             text +="</tbody>";
             text +="</table>";
-            text +="</form>";
             $("#textHint").html(text);
             $('#caseTable').DataTable(
                 // {dom: 'Bfrtip',

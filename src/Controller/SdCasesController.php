@@ -887,10 +887,12 @@ class SdCasesController extends AppController
                         'causeOfDeath1023' => 'death_1023.field_value', 
                         'causeOfDeath1024' => 'death_1024.field_value',
                         'labeled' => 'label_382.field_value',
+                        'labeledValue' => 'label_value.caption',
                         'causality' => 'causality_378.field_value',
                         'causalityValue' => 'causality_value.caption',
-                        'history' => 'history_97.field_value',
+                        'history' => 'history_445.field_value',
                         'concomitant' => 'concomitant_175.field_value',
+                        'concomitantValue' => 'concomitant_value.caption',
                         'concomitantDrug' => 'concomitantDrug_176.field_value'
                     ])
                     ->join([
@@ -902,7 +904,7 @@ class SdCasesController extends AppController
                         'product_name_176'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['product_name_176.sd_field_id = 176','product_name_176.sd_case_id = SdCases.id','product_name_176.status = 1']
+                            'conditions'=>['product_name_176.sd_field_id = 176','product_name_176.set_number = 1','product_name_176.sd_case_id = SdCases.id','product_name_176.status = 1']
                         ],
                         'report_type_6'=>[
                             'table'=>'sd_field_values',
@@ -947,12 +949,12 @@ class SdCasesController extends AppController
                         'duration_Start_199'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['duration_Start_199.sd_field_id = 199','duration_Start_199.sd_case_id = SdCases.id','duration_Start_199.status = 1']
+                            'conditions'=>['duration_Start_199.sd_field_id = 199','duration_Start_199.set_number = 1','duration_Start_199.sd_case_id = SdCases.id','duration_Start_199.status = 1']
                         ],
                         'duration_Reaction_156'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['duration_Reaction_156.sd_field_id = 156','duration_Reaction_156.sd_case_id = SdCases.id','duration_Reaction_156.status = 1']
+                            'conditions'=>['duration_Reaction_156.sd_field_id = 156','duration_Reaction_156.set_number = 1','duration_Reaction_156.sd_case_id = SdCases.id','duration_Reaction_156.status = 1']
                         ],
                         'reaction_149'=>[
                             'table'=>'sd_field_values',
@@ -1019,26 +1021,36 @@ class SdCasesController extends AppController
                             'type'=>'LEFT',
                             'conditions'=>['label_382.sd_field_id = 382','label_382.sd_case_id = SdCases.id','label_382.status = 1']
                         ],
+                        'label_value'=>[
+                            'table'=>'sd_field_value_look_ups_r3',
+                            'type'=>'LEFT',
+                            'conditions'=>['label_value.sd_field_id = 382','label_value.value = label_382.field_value']
+                        ],   
                         'causality_378'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['causality_378.sd_field_id = 378','causality_378.sd_case_id = SdCases.id','causality_378.status = 1']
+                            'conditions'=>['causality_378.sd_field_id = 378','causality_378.set_number = 1','causality_378.sd_case_id = SdCases.id','causality_378.status = 1']
                         ],
                         'causality_value'=>[
                             'table'=>'sd_field_value_look_ups_r3',
                             'type'=>'LEFT',
                             'conditions'=>['causality_value.sd_field_id = 378','causality_value.value = causality_378.field_value']
                         ],     
-                        'history_97'=>[
+                        'history_445'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
-                            'conditions'=>['history_97.sd_field_id = 97','history_97.sd_case_id = SdCases.id','history_97.status = 1']
+                            'conditions'=>['history_445.sd_field_id = 445','history_445.sd_case_id = SdCases.id','history_445.status = 1']
                         ],
                         'concomitant_175'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
                             'conditions'=>['concomitant_175.sd_field_id = 175','concomitant_175.sd_case_id = SdCases.id','concomitant_175.status = 1']
                         ],
+                        'concomitant_value'=>[
+                            'table'=>'sd_field_value_look_ups_r3',
+                            'type'=>'LEFT',
+                            'conditions'=>['concomitant_value.sd_field_id = 378','concomitant_value.value = concomitant_175.field_value']
+                        ],   
                         'concomitantDrug_176'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
