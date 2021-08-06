@@ -70,11 +70,15 @@
             </thead>
             <tbody>
                 <?php
+                    $seriousness = array("Result in death", "Life Threatening", "Caused/Prolonged Hospitalisation", "Disabling / Incapacitating", "Congenital Anomaly/Birth Defect", "Other Medically Important Condition");
                     foreach($caseFields as $caseDetails){
                         echo "<tr id=\'caseId-".$caseDetails['id']."\'>";
                         echo"<td>".$caseDetails['caseNO']."</td>";
-                        // echo"<td>".$caseDetails['version_no']."</td>";
-                        echo"<td>".$caseDetails['country']."</td>";
+                        echo"<td>".$caseDetails['version_no']."</td>";
+                        echo"<td>";
+                        if($caseDetails['country'] != null) echo $caseDetails['country'];
+                        else echo $caseDetails['country_r3'];
+                        echo"</td>";
                         echo"<td>".$caseDetails['suspectDrug']."</td>";
                         echo"<td>".$caseDetails['reportTypeValue']."</td>";
                         echo"<td>".$caseDetails['ageCount']." ".$caseDetails['ageUnitValue']."</td>";
@@ -101,10 +105,30 @@
                         if ($caseDetails['durationReaction'] != null)
                             echo substr($caseDetails['durationReaction'], 0, 2). " / ".substr($caseDetails['durationReaction'], 2, 2)." / ".substr($caseDetails['durationReaction'], 4, 4);
                         echo "</td>";
-
                         echo"<td>".$caseDetails['outcomeValue']."</td>";
                         echo"<td>".$caseDetails['serverityValue']."</td>";
-                        echo"<td>"."</td>";
+                        echo"<td>";
+                        $textcauseOfDeath = "";
+                        if ($caseDetails['causeOfDeath'] != null) {
+                            for($i = 0; $i < 5; $i++){
+                                if(substr($caseDetails['causeOfDeath'], $i, 1) == 1){
+                                    $textcauseOfDeath = $textcauseOfDeath.$seriousness[$i];
+                                    $textcauseOfDeath = $textcauseOfDeath." | ";
+                                }
+                            }
+                        }else {
+                            for($i = 19; $i < 24; $i++){
+                                if ($caseDetails['causeOfDeath10'.$i] == 1){
+                                    $textcauseOfDeath = $textcauseOfDeath.$seriousness[$i - 19];
+                                    $textcauseOfDeath = $textcauseOfDeath." | ";
+                                }
+                            }
+                        }
+                        if (substr($textcauseOfDeath, -3) == " | "){
+                            $textcauseOfDeath = substr($textcauseOfDeath, 0, strlen($textcauseOfDeath) - 3);
+                        }
+                        echo $textcauseOfDeath;
+                        echo"</td>";
                         echo"<td>".$caseDetails['labeledValue']."</td>";
                         echo"<td>".$caseDetails['causalityValue']."</td>";
                         echo"<td >".$caseDetails['history']."</td>";
