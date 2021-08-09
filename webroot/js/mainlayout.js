@@ -424,4 +424,20 @@ jQuery(document).ready(function($) {
     $(".queryBoxTable").click(function() {
         window.location = $(this).data("href");
     });
+
+    // Session timeout notice
+    setTimeout(function(){
+        swal(
+            {
+                icon:'warning',
+                title:'Session Expired',
+                text:'Please login for further operations',
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+            }
+        )
+        .then(() => {
+            location.href = '/sd-users/logout';
+          });
+    },1800000);
 });

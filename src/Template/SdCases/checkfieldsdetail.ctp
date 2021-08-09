@@ -74,7 +74,7 @@
                     foreach($caseFields as $caseDetails){
                         echo "<tr id=\'caseId-".$caseDetails['id']."\'>";
                         echo"<td>".$caseDetails['caseNO']."</td>";
-                        echo"<td>".$caseDetails['version_no']."</td>";
+                        // echo"<td>".$caseDetails['version_no']."</td>";
                         echo"<td>";
                         if($caseDetails['country'] != null) echo $caseDetails['country'];
                         else echo $caseDetails['country_r3'];
