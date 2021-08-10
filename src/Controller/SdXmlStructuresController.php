@@ -194,8 +194,10 @@ class SdXmlStructuresController extends AppController
                 ->select(['caseNo'])
                 ->where(['id='.$caseId,'status=1'])->first();
         $fileName=$name['caseNo'];
-        $time=date("Y-m-d-H-i-s");
-        $xml = "$fileName-$time";
+        $time=date("YmdHis");
+        $xml = $fileName._$time;
+        debug($xml);
+        die();
         header("Content-Type: text/html/force-download");
         header("Content-Disposition: attachment; filename=".$xml.".xml");
 
@@ -205,7 +207,7 @@ class SdXmlStructuresController extends AppController
         $xml->setIndent(true);
         // create xml Document start
         $xml->startDocument('1.0', 'ISO-8859-1');//FDA supports only the ISO-8859-1 character set for encoding the submission.
-            $xml->writeDtd('ichicsr','','https://www.accessdata.fda.gov/xml/icsr-xml-v2.2.dtd');
+            $xml->writeDtd('ichicsr','','https://www.accessdata.fda.gov/xml/icsr-xmlv3.0.dtd');
             //A first element ichicsr
                 $xml->startElement("ichicsr");
                     // Attribute lang="en"
