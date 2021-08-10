@@ -122,7 +122,7 @@ $(document).ready(function(){
                 });
                 console.log(exitFlag);
                 if(exitFlag == 0)
-                    setPageChange(48, tableFields.split("</tr>").length, 1);
+                    setPageChange(48, tableFields.split("</tr>").length, true);
                 else setPageChange(48,exitFlag);
             }
             // $("table[id^=sectionSummary-48]").removeClass("dataTable");
@@ -351,7 +351,7 @@ function renderSummaries(section_id, pageNo){
                 }
                 row  = row +1;
             }while(noValue !=section[sectionKey].sd_section_summary.sdFields.length);
-            $("#addbtn-"+sectionId).attr("onclick","setPageChange("+sectionId+","+parseInt(row-1)+",1)");
+            $("#addbtn-"+sectionId).attr("onclick","setPageChange("+sectionId+","+parseInt(row-1)+",true)");
         });
         $(this).html(text+tbodyText);
         $(this).find('#section-'+sectionId+'-row-1').removeClass('selected-row');
@@ -422,7 +422,8 @@ function renderSummaries(section_id, pageNo){
         }
     });
 }
-function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
+//todo addflag boolean
+function setPageChange(section_id, pageNo, addFlag=false, resultflag = null) {
     let filterFlag =false;
     if(section_id==48) filterFlag = true;
     if(pageNo == 0) return false;
@@ -446,7 +447,7 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
                 if(!$(this).find('th').length)
                     max_set ++;
             });
-            if(addFlag==null){
+            if(addFlag==false){
                 $("[id=summary-"+section_id+"]").find(".selected-row").removeClass("selected-row");
                 $("[id=summary-"+section_id+"]").find("#section-"+section_id+"-row-"+pageNo).addClass("selected-row");
             }
@@ -454,7 +455,7 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
             $("#pagination-section-"+section_id).find("[id*=page_number]").each(function(){
                 max_set ++;
             });
-            if(addFlag==null){
+            if(addFlag==false){
                 $("[id^=left_set-"+section_id+"]")
                 $("#pagination-section-"+section_id).find(".selected-page").removeClass("selected-page");
                 console.log(section_id);
@@ -488,7 +489,7 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
                 }
             });
         }
-        if(section_id==48&&addFlag) max_set = tableFields.split("</tr>").length-1;
+        if(section_id == 48 && addFlag) max_set = tableFields.split("</tr>").length-1;
         if(addFlag)
             setArray[section_id] = max_set+1;            
         else setArray[section_id] = pageNo;
@@ -599,11 +600,13 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
                 if(!relateFlag) return true;
             };
             $(this).find("[id^=section-"+orignalId+"][name$=\\[id\\]]").each(function(){
+                //<input id="section-2-sd_section_structures-9-sd_field_values-0-id" name="sd_field_values[2][9][id]" value="" type="hidden">
                 let sectionStructureK = $(this).attr('name').split(/[\[\]]/)[3];
                 let valueFlag = false;
                 let thisElement = $(this);
                 let idholder = thisElement.attr('id').split('-');//section-65-sd_section_structures-0-sd_field_value_details-0-id
                 let maxindex=0;
+                console.log();
                 if (section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values.length>=1){
                     $.each(section[sectionKey].sd_section_structures[sectionStructureK].sd_field.sd_field_values, function(index, value){
                         let setMatch = true;
@@ -733,7 +736,7 @@ function setPageChange(section_id, pageNo, addFlag=null, resultflag = null) {
             });
 
     });
-    if(!(filterFlag||(section_id==48&&addFlag))||resultflag !=null)
+    if(!(filterFlag||(section_id == 48 && addFlag))||resultflag !=null)
         renderSummaries(section_id, pageNo, addFlag);
     else if(addFlag){
         console.log($("table[id^=sectionSummary-48-sectionKey]").find('.selected-row'))
@@ -808,7 +811,7 @@ function deleteSection(sectionId, setNo,sectionKey){
             section = $.parseJSON(response);
             // var country = $('#country_filter').val("");
             autoChangeflag = true;
-            setPageChange(sectionId,1,null,2);
+            setPageChange(sectionId,1,false,2);
             autoChangeflag = false;
             // if(sectionId == 48) $('#country_filter').val(country).trigger("change");
             return false;
@@ -858,6 +861,7 @@ function saveSection(sectionId,setNo){
     });
     request['sd_field_values'] = sectionRequest;
     let sectionArray={};
+    //eg: name=section[123]
     if($("[name=section\\["+sectionId+"\\]]").length){
         sectionArray[sectionId] = $("[name=section\\["+sectionId+"\\]]").val();
         request['sectionArray'] =sectionArray;
@@ -881,7 +885,7 @@ function saveSection(sectionId,setNo){
             var country = $("#section-48-select-501").val();
             autoChangeflag = true;
             if(sectionId == 48) $('#country_filter').val("").trigger("change");
-            setPageChange(sectionId,setNo, null, 1);
+            setPageChange(sectionId,setNo, false, 1);
             if(sectionId == 48) $('#country_filter').val(country).trigger("change");
             autoChangeflag = false;
             return false;

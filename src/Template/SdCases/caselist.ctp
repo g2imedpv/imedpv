@@ -5,6 +5,10 @@
     <?= $this->Html->css('datepicker/jquery-ui.css') ?>
     <?= $this->Html->script('datepicker/jquery-1.10.2.js') ?>
     <?= $this->Html->script('datepicker/jquery-ui-1.10.4.js') ?>
+    <!-- For local DataTable CSS/JS link -->
+    <?= $this->Html->css('datatable/dataTables.bootstrap4.min.css') ?>
+    <?= $this->Html->script('datatable/DataTables/js/jquery.dataTables.min.js') ?>
+    <?= $this->Html->script('datatable/DataTables/js/dataTables.bootstrap4.min.js') ?>
     <script>
     var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
     var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;

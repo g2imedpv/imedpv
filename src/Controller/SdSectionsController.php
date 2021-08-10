@@ -119,8 +119,14 @@ class SdSectionsController extends AppController
         $writePermission= 0;
         $userinfo = $this->request->getSession()->read('Auth.User');
         $sdCasesTable = TableRegistry::get('SdCases');
-        if ($this->request->is(['patch', 'post', 'put'])) {            
+        if ($this->request->is(['patch', 'post', 'put'])) {           
+            //integrate R3/R2 
             $sdCases = $sdCasesTable->find()->where(['SdCases.id'=>$caseId])->contain(['SdProductWorkflows.SdProducts'])->first();
+            $Products = new AppController;
+            $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
+            if($e2b_version == 3) $e2b_version = "_r3";
+            else $e2b_version = "";
+            $Products->configVersion($e2b_version);
             $currentActivityId = $sdCases['sd_workflow_activity_id'];
             $sdInputHistoryTable = TableRegistry::get('SdInputHistories');
             $error =[];
@@ -259,6 +265,12 @@ class SdSectionsController extends AppController
         if($distribution_id == "null") $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
         else $distribution_condition = "SdFieldValues.sd_case_distribution_id ='".$distribution_id."'";     
         if($this->request->is('POST')){
+            $sdCasesTable = TableRegistry::get('SdCases');
+            $sdCases = $sdCasesTable->find()->where(['SdCases.id'=>$caseId])->contain(['SdProductWorkflows.SdProducts'])->first();
+            $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
+            if($e2b_version == 3) $e2b_version = "_r3";
+            else $e2b_version = "";
+            $Products->configVersion($e2b_version);
             $this->autoRender = false;
             $sdFieldValuesTable = TableRegistry::get('SdFieldValues');
             $sdSectionSetsTable = TableRegistry::get('SdSectionSets');
@@ -295,8 +307,6 @@ class SdSectionsController extends AppController
                     }
                 }
             }
-            $sdCasesTable = TableRegistry::get('SdCases');
-            $sdCases = $sdCasesTable->find()->where(['SdCases.id'=>$caseId])->contain(['SdProductWorkflows.SdProducts'])->first();
             $currentActivityId = $sdCases['sd_workflow_activity_id'];
 
             //User not allow to this activity
@@ -403,9 +413,16 @@ class SdSectionsController extends AppController
      */
     public function search(){
         if($this->request->is('POST')){
+            $Products = new AppController;
+            //integrate R3
             $this->autoRender = false;
             $requstData = $this->request->getData();
-            $case = TableRegistry::get('SdCases')->get($requstData['caseId']);
+            $sdCasesTable = TableRegistry::get('SdCases');
+            $sdCases = $sdCasesTable->find()->where(['SdCases.id'=>$requstData['caseId']])->contain(['SdProductWorkflows.SdProducts'])->first();
+            $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
+            if($e2b_version == 3) $e2b_version = "_r3";
+            else $e2b_version = "";
+            $Products->configVersion($e2b_version);
             $userInfo = TableRegistry::get('SdUsers')->get($requstData['userId']);
             if($userInfo['sd_rold_id'] > 2)
                 $useId = 'ua.sd_user_id ='.$requstData['userId'];
@@ -419,12 +436,12 @@ class SdSectionsController extends AppController
                     'conditions'=>['SdSections.sd_tab_id = tab.id']
                 ],
                 'ss'=>[
-                    'table'=>'sd_section_structures',
+                    'table'=>'sd_section_structures'.$e2b_version,
                     'type'=>'INNER',
                     'conditions'=>['ss.sd_section_id = SdSections.id']
                 ],
                 'field'=>[
-                    'table'=>'sd_fields',
+                    'table'=>'sd_fields'.$e2b_version,
                     'type'=>'INNER',
                     'conditions'=>['field.id = ss.sd_field_id']
                 ],
@@ -436,7 +453,7 @@ class SdSectionsController extends AppController
                 'ua'=>[
                     'table'=>'sd_user_assignments',
                     'type'=>'INNER',
-                    'conditions'=>['ua.sd_workflow_activity_id = asp.sd_workflow_activity_id','ua.sd_product_workflow_id ='.$case['sd_product_workflow_id'],$userId]
+                    'conditions'=>['ua.sd_workflow_activity_id = asp.sd_workflow_activity_id','ua.sd_product_workflow_id ='.$sdCases['sd_product_workflow_id'],$userId]
                 ]
             ])->where([
                 'OR' =>[['field.field_label LIKE \'%'.$requstData['key'].'%\''],['section_name LIKE \'%'.$requstData['key'].'%\''],

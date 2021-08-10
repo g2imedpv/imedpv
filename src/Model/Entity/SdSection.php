@@ -49,6 +49,7 @@ class SdSection extends Entity
         'sd_activity_section_permissions' => true,
         'sd_section_sets' => true,
         'sd_section_structures' => true,
+        'sd_section_structures_r3' => true,
         'sd_section_summary' => true
     ];
 }

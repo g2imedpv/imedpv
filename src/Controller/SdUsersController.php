@@ -23,6 +23,11 @@ class SdUsersController extends AppController
      */
     public function index()
     {
+        // Only Admin user can access this page
+        if($this->request->getSession()->read('Auth.User.sd_role_id') !== 2) {
+            $this->Flash->error(__('You don\'t have permission to access this page'));
+            return $this->redirect(['action' => 'myaccount']);
+        }
         $this->viewBuilder()->setLayout('main_layout');
         $this->paginate = [
             'contain' => ['SdRoles', 'SdCompanies']
@@ -41,6 +46,11 @@ class SdUsersController extends AppController
      */
     public function view($id = null)
     {
+        // Only Admin user can access this page
+        if($this->request->getSession()->read('Auth.User.sd_role_id') !== 2) {
+            $this->Flash->error(__('You don\'t have permission to access this page'));
+            return $this->redirect(['action' => 'myaccount']);
+        }
 
         $sdUser = $this->SdUsers->get($id, [
             'contain' => ['SdRoles', 'SdCompanies', 'SdActivityLog']
@@ -56,6 +66,12 @@ class SdUsersController extends AppController
      */
     public function add()
     {
+        // Only Admin user can access this page
+        if($this->request->getSession()->read('Auth.User.sd_role_id') !== 2) {
+            $this->Flash->error(__('You don\'t have permission to access this page'));
+            return $this->redirect(['action' => 'myaccount']);
+        }
+
         $this->viewBuilder()->setLayout('main_layout');
         $sdUser = $this->SdUsers->newEntity();
         if ($this->request->is('post')) {
@@ -131,12 +147,12 @@ class SdUsersController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $sdUser = $this->SdUsers->get($id);
         if ($this->SdUsers->delete($sdUser)) {
-            $this->Flash->success(__('The sd user has been deleted.'));
+            $this->Flash->success(__('The user has been deleted.'));
         } else {
-            $this->Flash->error(__('The sd user could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'userlist']);
     }
     public function initialize() {
         parent::initialize();
@@ -179,7 +195,7 @@ class SdUsersController extends AppController
                         //'Auth.User.password' => $sdUser['password']
                     ]);
                     // $session->write('Language', 'en_US');
-                    if($session->read('Language')== null) $session->write('Language', 'en_US');;
+                    if($session->read('Language')== null) $session->write('Language', 'en_US');
                     return $this->redirect($this->Auth->redirectUrl(
                         // Set the first page after user logged in
                         ['controller' => 'SdCompanies','action' => 'selectCompany']
@@ -395,6 +411,7 @@ class SdUsersController extends AppController
     public function myaccount() {
         $this->viewBuilder()->setLayout('main_layout');
         $userID = $this->request->getSession()->read('Auth.User.id');
+        $roleID = $this->request->getSession()->read('Auth.User.sd_role_id');
 
         $companyID = $this->request->getSession()->read('Auth.User.company_id');
         $company = TableRegistry::get('SdCompanies')->find()->where(['id'=>$companyID])->select(['company_name'])->first();
@@ -420,7 +437,7 @@ class SdUsersController extends AppController
             $this->Flash->error(__('Your info could not be saved. Please, try again.'));
         }
 
-        $this->set(compact('userID','company'));
+        $this->set(compact('userID','company','roleID'));
     }
 
     public function changePassword () {
@@ -448,4 +465,83 @@ class SdUsersController extends AppController
             $this->Flash->error(__('Your password could not be saved. Please, try again.'));
         }
     }
+
+    public function userlist () {
+        // Only Admin user can access this page
+        if($this->request->getSession()->read('Auth.User.sd_role_id') !== 2) {
+            $this->Flash->error(__('You don\'t have permission to access this page'));
+            return $this->redirect(['action' => 'myaccount']);
+        }
+
+        $this->viewBuilder()->setLayout('main_layout');
+
+        $this->paginate = [
+            'contain' => ['SdRoles', 'SdCompanies']
+        ];
+        $sdUsers = $this->paginate($this->SdUsers);
+        $this->set(compact('sdUsers'));
+    }
+
+    public function edituser($id = null)
+    {
+        // Only Admin user can access this page
+        if($this->request->getSession()->read('Auth.User.sd_role_id') !== 2) {
+            $this->Flash->error(__('You don\'t have permission to access this page'));
+            return $this->redirect(['action' => 'myaccount']);
+        }
+
+        $this->viewBuilder()->setLayout('main_layout');
+        $sdUser = $this->SdUsers->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $request = $this->request->getData();
+            $sdUser = $this->SdUsers->patchEntity($sdUser, $request);
+
+            if ($this->SdUsers->save($sdUser)) {
+                $this->Flash->success(__('The user has been saved.'));
+
+                return $this->redirect(['action' => 'myaccount']);
+            }
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+        }
+        $sdRoles = $this->SdUsers->SdRoles->find('list', ['limit' => 200]);
+        $sdCompanies = $this->SdUsers->SdCompanies->find('list', ['limit' => 200]);
+        $this->set(compact('sdUser', 'sdRoles', 'sdCompanies'));
+    }
+
+    public function adduser()
+    {
+        // Only Admin user can access this page
+        if($this->request->getSession()->read('Auth.User.sd_role_id') !== 2) {
+            $this->Flash->error(__('You don\'t have permission to access this page'));
+            return $this->redirect(['action' => 'myaccount']);
+        }
+
+        $this->viewBuilder()->setLayout('main_layout');
+        $sdUser = $this->SdUsers->newEntity();
+        if ($this->request->is('post')) {
+            $request = $this->request->getData();
+
+            $passwordHasher = new DefaultPasswordHasher;
+            $sdUser['password'] = $passwordHasher->hash($request['pw']);
+
+            $sdUser = $this->SdUsers->patchEntity($sdUser, $request);
+            if ($this->SdUsers->save($sdUser)) {
+                $this->Flash->success(__('The user has been saved.'));
+
+                return $this->redirect(['action' => 'userlist']);
+            }
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+        }
+
+        $sdRoles = TableRegistry::get('SdRoles')->find()->select(['SdRoles.id','SdRoles.role_name']);
+        $sdRolesOptions = $sdRoles->combine('id', 'role_name');
+
+        $sdCompanies = TableRegistry::get('SdCompanies')->find()->select(['SdCompanies.id','SdCompanies.company_name']);
+        $sdCompaniesOptions = $sdCompanies->combine('id', 'company_name');
+
+        $this->set(compact('sdUser','sdRolesOptions','sdCompaniesOptions'));
+    }
+
 }

@@ -115,9 +115,12 @@ ul.topbar > li.nav-item {
 }
 
 /* Making the search table color can be easily recognized */
-tr:nth-child(even) {
+/* tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+#caseTable tbody tr:nth-child(even){
+    background-color: #ddebff;
+} */
 
 /* mainNav hover */
 .dropdown:hover .dropdown-menu {
@@ -482,6 +485,8 @@ ul.queryBoxLeft > a {
     font-family:Arial,sans-serif;
     font-size:15px;
     width: 310px;
+    cursor: pointer;
+    text-align: left;
 }
 
 [id^="quickSearchResult"]:hover{
@@ -554,22 +559,19 @@ ul.queryBoxLeft > a {
     display:block;
 }
 /* table row selected */
-.table tbody tr:nth-child(odd){
+/* .table tbody tr:nth-child(odd){
     background-color: #b5d0f7;
-}
+} */
 .table thead tr{
     background-color: #7ea4e2;
     text-align: center;
 }
 .table tbody tr:hover {
     color: #212529;
-    background-color: #1e90ff !important;
-}
-#caseTable tbody tr:nth-child(even){
-    background-color: #ddebff;
+    /* background-color: #bbbbbb87!important; */
 }
 .selected-row{
-    background-color: #1e90ff!important;
+    background-color: #bbbbbb87!important;
 }
 /*general tab:upload document button*/
 
@@ -596,10 +598,10 @@ ul.queryBoxLeft > a {
 }
 /* Dashboard "Show xxx entries" on top/bottom */
 #caseTable_length{
-    margin-left: -510px;
+    float: left;
 }
 #caseTable_info{
-    margin-left: -340px;
+    float: left;
 }
 /*add product permission collapse */
 
@@ -800,4 +802,8 @@ ul.queryBoxLeft > a {
 .loadingSpinner div {
     width:10rem;
     height:10rem;
+}
+
+.error-message {
+    color:red !important;
 }
