@@ -251,7 +251,7 @@ function onQueryClicked(preferrenceId = null){
         },
         success:function(response){
             $("#textHint").html("");
-            //console.log(response);
+            console.log(response);
             if (response==false) {
                 $("#textHint").html(i18n.gettext("Sorry, no case matches"));
                 return}
@@ -311,9 +311,7 @@ function onQueryClicked(preferrenceId = null){
                 // text += "<td></td>";
                 text += "<td class=\"align-middle\" id=\"version-"+caseDetail.caseNo+"\">"+ caseDetail.versions + "</td>";
                 text += "<td id=\"activity-"+caseDetail.caseNo+"\" class=\"align-middle\">";
-                if(caseDetail.status == '1') text += i18n.gettext(caseDetail.wa.activity_name+"");
-                else if(caseDetail.status == '2')text += i18n.gettext("Distributed");
-                else if(caseDetail.status == '3') text += i18n.gettext("Closed");
+                text += i18n.gettext(caseDetail.wa.activity_name+"")
                 text += "</td>";
                 text += "<td class=\"align-middle\">"+caseDetail.country+"</td>";
                 text += "<td class=\"align-middle\">" + caseDetail.pd.product_name + "</td>";

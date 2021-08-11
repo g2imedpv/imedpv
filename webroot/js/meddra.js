@@ -65,7 +65,7 @@ $(document).ready(function(){
     $('[id^=llt-searchbar]').keyup(function(){
         meddraFieldId = $(this).attr('id').split('_')[1];
         $('#meddraQuickSearch_'+meddraFieldId).show();
-        if($(this).val().length >=3)
+        if($(this).val().length >=3 || ($(this).val().length >0 && !/^[a-zA-Z]+$/.test($(this).val())))
             searchMedDra(meddraFieldId, 3, $(this).val());
         else $('#meddraQuickSearch_'+meddraFieldId).hide();
     });
