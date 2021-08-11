@@ -356,8 +356,8 @@ class SdCasesController extends AppController
                     'SdCases.id',
                     'versions'=>'SdCases.version_no',
                     'pw.sd_product_id',
-                    'submission_due_date'=>'submission_due_date.field_value',
                     'case_received_date'=>'case_received_date.field_value',
+                    'submission_due_date'=>'submission_due_date.field_value',
                     'activity_due_date'=>'activity_due_date.field_value',
                     'caseNo',
                     'patient_id_v'=>'patient_id.field_value',
@@ -524,36 +524,51 @@ class SdCasesController extends AppController
                 }
                 // die();
                 if(!empty($searchKey['patient_dob'])) $searchResult = $searchResult->where(['patient_dob.field_value'=>$searchKey['patient_dob']]);
-                //if(!empty($searchKey['case_receivedDate'])) $searchResult = $searchResult->where(['case_received_date.field_value'=>$searchKey['case_receivedDate']]);
                 if(!empty($searchKey['patient_gender'])) $searchResult = $searchResult->where(['patient_gender.field_value'=>$searchKey['patient_gender']]);
                 if(!empty($searchKey['patient_id'])) $searchResult = $searchResult->where(['patient_id.field_value LIKE'=>'%'.$searchKey['patient_id'].'%']);
                 if(!empty($searchKey['searchProductName'])) $searchResult = $searchResult->where(['product_name  LIKE'=>'%'.$searchKey['searchProductName'].'%']);
                 $output = $searchResult->all()->toArray();
                 foreach($output as $key => $caseDetail){
-                    if($caseDetail['submission_due_date']==null&&$caseDetail['activity_due_date']==null) continue;
-                    $scaseTime = Intval(substr($caseDetail['submission_due_date'],4))*10000+Intval(substr($caseDetail['submission_due_date'],2,2))*100+Intval(substr($caseDetail['submission_due_date'],0,2));
-                    $acaseTime = Intval(substr($caseDetail['activity_due_date'],4))*10000+Intval(substr($caseDetail['activity_due_date'],2,2))*100+Intval(substr($caseDetail['activity_due_date'],0,2));
                     // debug($acaseTime);
-                    if(!empty($searchKey['submission_due_date_end']))
-                        if($scaseTime > Intval(substr($searchKey['submission_due_date_end'],4))*10000+Intval(substr($searchKey['submission_due_date_end'],2,2))*100+Intval(substr($searchKey['submission_due_date_end'],0,2))){
-                            unset($output[$key]);
-                            continue;
-                        }
-                    if(!empty($searchKey['submission_due_date_start']))
-                        if($scaseTime < Intval(substr($searchKey['submission_due_date_start'],4))*10000+Intval(substr($searchKey['submission_due_date_start'],2,2))+Intval(substr($searchKey['submission_due_date_start'],0,2))){
-                            unset($output[$key]);
-                            continue;
-                        }
-                    if(!empty($searchKey['activity_due_date_end']))
-                        if($acaseTime > Intval(substr($searchKey['activity_due_date_end'],4))*10000+Intval(substr($searchKey['activity_due_date_end'],2,2))*100+Intval(substr($searchKey['activity_due_date_end'],0,2))){
-                            unset($output[$key]);
-                            continue;
-                        }
-                    if(!empty($searchKey['activity_due_date_start']))
-                        if($acaseTime < Intval(substr($searchKey['activity_due_date_start'],4))*10000+Intval(substr($searchKey['activity_due_date_start'],2,2))*100+Intval(substr($searchKey['activity_due_date_start'],0,2))){
-                            unset($output[$key]);
-                            continue;
-                        }
+                    if($caseDetail['submission_due_date'] != null){
+                        $scaseTime = Intval(substr($caseDetail['submission_due_date'],4))*10000+Intval(substr($caseDetail['submission_due_date'],2,2))*100+Intval(substr($caseDetail['submission_due_date'],0,2));
+                        if(!empty($searchKey['submission_due_date_end']))
+                            if($scaseTime > Intval(substr($searchKey['submission_due_date_end'],4))*10000+Intval(substr($searchKey['submission_due_date_end'],2,2))*100+Intval(substr($searchKey['submission_due_date_end'],0,2))){
+                                unset($output[$key]);
+                                continue;
+                            }
+                        if(!empty($searchKey['submission_due_date_start']))
+                            if($scaseTime < Intval(substr($searchKey['submission_due_date_start'],4))*10000+Intval(substr($searchKey['submission_due_date_start'],2,2))+Intval(substr($searchKey['submission_due_date_start'],0,2))){
+                                unset($output[$key]);
+                                continue;
+                            }
+                    }
+                    if($caseDetail['case_received_date'] != null){
+                        $rcaseTime = Intval(substr($caseDetail['case_received_date'],4))*10000+Intval(substr($caseDetail['case_received_date'],2,2))*100+Intval(substr($caseDetail['case_received_date_start'],0,2));                    
+                        if(!empty($searchKey['case_received_date_end']))
+                            if($rcaseTime > Intval(substr($searchKey['case_received_date_end'],4))*10000+Intval(substr($searchKey['case_received_date_end'],2,2))*100+Intval(substr($searchKey['case_received_date_end'],0,2))){
+                                unset($output[$key]);
+                                continue;
+                            }
+                        if(!empty($searchKey['case_received_date_start']))
+                            if($rcaseTime < Intval(substr($searchKey['case_received_date_start'],4))*10000+Intval(substr($searchKey['case_received_date_start'],2,2))+Intval(substr($searchKey['case_received_date_start'],0,2))){
+                                unset($output[$key]);
+                                continue;
+                            }
+                    }
+                    if($caseDetail['activity_due_date']!=null){
+                        $acaseTime = Intval(substr($caseDetail['activity_due_date'],4))*10000+Intval(substr($caseDetail['activity_due_date'],2,2))*100+Intval(substr($caseDetail['activity_due_date'],0,2));
+                        if(!empty($searchKey['activity_due_date_end']))
+                            if($acaseTime > Intval(substr($searchKey['activity_due_date_end'],4))*10000+Intval(substr($searchKey['activity_due_date_end'],2,2))*100+Intval(substr($searchKey['activity_due_date_end'],0,2))){
+                                unset($output[$key]);
+                                continue;
+                            }
+                        if(!empty($searchKey['activity_due_date_start']))
+                            if($acaseTime < Intval(substr($searchKey['activity_due_date_start'],4))*10000+Intval(substr($searchKey['activity_due_date_start'],2,2))*100+Intval(substr($searchKey['activity_due_date_start'],0,2))){
+                                unset($output[$key]);
+                                continue;
+                            }
+                    }
                     // debug($acaseTime);
                 }
             }catch (\PDOException $e){
@@ -1110,6 +1125,7 @@ class SdCasesController extends AppController
             $case['sd_workflow_activity_id'] = $sdWorkflowActivity['id'];
             $case['version_no'] = (int)$case['version_no'] + 1;
             $case['sd_user_id'] = $requstData['userId'];
+            $case['status'] = 1;
             $patchedCase = $this->SdCases->patchEntity($newCase, $case);
             $savedCase = $this->SdCases->save($patchedCase);
             if ($savedCase) echo "success"; else echo "error";
@@ -1458,7 +1474,7 @@ class SdCasesController extends AppController
            $this->autoRender = false;
            $requstData = $this->request->getData();
            $case = $this->SdCases->find()->where(['caseNo'=>$requstData['caseNo'],'version_no'=>$requstData['version_no']])->first();
-           $this->updateActivityHistory($case['id'], $case['sd_workflow_activity_id'], $comment);
+           $this->updateActivityHistory($case['id'], $case['sd_workflow_activity_id'], null, $comment);
            $case['status'] = 3;
            //TODO add into acitvity history
            if ($this->SdCases->save($case)) echo "success"; else echo "error";
