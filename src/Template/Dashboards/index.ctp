@@ -34,7 +34,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                     echo "<div class=\"font-weight-bold QL-size\">";
                     echo "<span>".__($preferrence_detail['preferrence_name'])."</span>" ;
                     echo "<span class=\"badge badge-warning ml-3\">".$preferrence_detail['count']."</span></div>";
-                    echo "<div class=\"badge badge-danger\"><i class=\"".$preferrence_detail['icon']." fa-3x\"></i></div>";
+                    //echo "<div class=\"badge badge-danger\"><i class=\"".$preferrence_detail['icon']." fa-3x\"></i></div>";  // icon
                     echo "</div></button>";
                 }
                 else {
@@ -43,7 +43,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
                     echo "<div class=\"font-weight-bold QL-size\" >";
                     echo "<span>".__($preferrence_detail['preferrence_name'])."</span>" ;
                     echo "<span class=\"badge badge-warning ml-3\">".$preferrence_detail['count']."</span></div>";
-                    echo"<div class=\"badge badge-primary\"><i class=\"".$preferrence_detail['icon']." QL-icon fa-3x\"></i></div>";
+                    //echo"<div class=\"badge badge-primary\"><i class=\"".$preferrence_detail['icon']." QL-icon fa-3x\"></i></div>";  // icon
                     echo "</div></button>";
                 }
             }
@@ -201,7 +201,7 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
         </div>
 
         <div class='form-row'>
-            <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary"><i class="fas fa-search"></i> <?php echo __("Search");?></button>
+            <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary w-50 mx-auto"><i class="fas fa-search"></i> <?php echo __("Search");?></button>
         </div>
 
     </div>
