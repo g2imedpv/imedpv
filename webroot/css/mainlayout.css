@@ -598,10 +598,10 @@ ul.queryBoxLeft > a {
 }
 /* Dashboard "Show xxx entries" on top/bottom */
 #caseTable_length{
-    margin-left: -510px;
+    float: left;
 }
 #caseTable_info{
-    margin-left: -340px;
+    float: left;
 }
 /*add product permission collapse */
 

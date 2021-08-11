@@ -203,7 +203,7 @@ function checkFieldsDetail(){
         beforeSend:function () {
             $('.loadingSpinner').show();
         },
-        success:function(response){    
+        success:function(response){
         var w = window.open('about:blank');
         w.document.write(response);},
         error:function(response){
@@ -264,7 +264,7 @@ function onQueryClicked(preferrenceId = null){
                 text +="<input name=\"cases["+k+"][version]\" value=\""+caseDetail.versions+"\" type=\"hidden\">";
             });
             text +="</form>";
-            text +="<button class=\"caseDetail\" type=\"submit\" value=\"Submit\" form=\"checkdetail_form\">Check fields</button>";
+            text +="<button class=\"caseDetail btn btn-info\" type=\"submit\" value=\"Submit\" form=\"checkdetail_form\">Open Line Listing</button>";
             text +="<table id=\"caseTable\" class=\"table table-striped table-bordered table-hover\">";
             text +="<thead>";
             text +="<tr style=\"cursor: pointer;\">";
@@ -358,17 +358,7 @@ function onQueryClicked(preferrenceId = null){
             text +="</tbody>";
             text +="</table>";
             $("#textHint").html(text);
-            $('#caseTable').DataTable(
-                // {dom: 'Bfrtip',
-                // buttons: [
-                //             {
-                //                 collectionTitle: 'Visibility control',
-                //                 extend: 'colvis',
-                //                 collectionLayout: 'two-column'
-                //             }
-                //         ]
-                //     }
-            );
+            $('#caseTable').DataTable();
         },
         complete: function () {
             $('.loadingSpinner').hide();
@@ -432,4 +422,20 @@ jQuery(document).ready(function($) {
     $(".queryBoxTable").click(function() {
         window.location = $(this).data("href");
     });
+
+    // Session timeout notice
+    setTimeout(function(){
+        swal(
+            {
+                icon:'warning',
+                title:'Session Expired',
+                text:'Please login for further operations',
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+            }
+        )
+        .then(() => {
+            location.href = '/sd-users/logout';
+          });
+    },1800000);
 });

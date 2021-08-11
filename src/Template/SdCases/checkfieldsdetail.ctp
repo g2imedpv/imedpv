@@ -1,13 +1,19 @@
 <title>Line Listing</title>
 <head>
+
     <!-- For local DataTable CSS/JS link -->
     <?= $this->Html->css('datatable/dataTables.bootstrap4.min.css') ?>
-    <?= $this->Html->css('datatable/buttons.dataTables.min.css') ?>
-    <?= $this->Html->css('datatable/jquery.dataTables.min.css') ?>
     <?= $this->Html->script('datatable/DataTables/js/jquery.dataTables.min.js') ?>
     <?= $this->Html->script('datatable/DataTables/js/dataTables.bootstrap4.min.js') ?>
+
+    <!-- For local DataTable File Export CSS/JS link -->
     <?= $this->Html->script('datatable/DataTables/js/dataTables.buttons.min.js') ?>
+    <?= $this->Html->script('datatable/DataTables/js/jszip.min.js') ?>
+    <?= $this->Html->script('datatable/DataTables/js/pdfmake.min.js') ?>
+    <?= $this->Html->script('datatable/DataTables/js/vfs_fonts.js') ?>
+    <?= $this->Html->script('datatable/DataTables/js/buttons.html5.min.js') ?>
     <?= $this->Html->script('datatable/DataTables/js/buttons.colVis.min.js') ?>
+
     <?= $this->Html->script('cases/checkfieldsdetail.js') ?>
     <script>
     var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
@@ -24,36 +30,35 @@
     <!-- <div>CIMOS fields</div>
     <?php
         foreach($cimosFields as $fieldId => $label) {
-            ?> 
+            ?>
                 <input name="filter[<?php echo $fieldId?>]" type="radio" value="1">
-                <label><?php echo __($label)?></label> 
+                <label><?php echo __($label)?></label>
             <?php
         }
     ?>
     <div>Extra fields</div>
     <?php
         foreach($extraFields as $fieldId => $label) {
-            ?> 
+            ?>
                 <input name="filter[<?php echo $fieldId?>]" type="radio" value="1">
-                <label><?php echo __($label)?></label> 
+                <label><?php echo __($label)?></label>
             <?php
         }
     ?> -->
-    <button onclick="exportTable()">Export Table</button>
     <table class="table table-bordered table-hover display" id="lineListTable">
             <thead>
                 <tr>
                     <th scope="row"><?php echo __("Case No");?></th>
-                    <th scope="row"><?php echo __("Case Version");?></th>
-                    <th scope="row"><?php echo __("Country of report origin");?></th>
+                    <!-- <th scope="row"><?php echo __("Case Version");?></th> -->
+                    <th scope="row"><?php echo __("Country");?></th>
                     <th scope="row"><?php echo __("Suspect Drug");?></th>
                     <th scope="row"><?php echo __("Source of Report");?></th>
-                    <th scope="row"><?php echo __("Age of patient");?></th>
-                    <th scope="row"><?php echo __("Sex of patient");?></th>
+                    <th scope="row"><?php echo __("Age");?></th>
+                    <th scope="row"><?php echo __("Sex");?></th>
                     <th scope="row"><?php echo __("Dose of drug");?></th>
-                    <th scope="row"><?php echo __("Duration of Treatment( start of the drug / start of the reaction)");?></th>
-                    <th scope="row"><?php echo __("Description of reaction");?></th>
-                    <th scope="row"><?php echo __("Event Meddra codding ( LLT | PT | SOC )");?></th>
+                    <th scope="row"><?php echo __("Event");?></th>
+                    <th scope="row"><?php echo __("Event (MedDra PT)");?></th>
+                    <th scope="row"><?php echo __("Time Onset");?></th>
                     <th scope="row"><?php echo __("Outcome");?></th>
                     <th scope="row"><?php echo __("Serverity");?></th>
                     <th scope="row"><?php echo __("Seriousness");?></th>
@@ -64,12 +69,12 @@
                 </tr>
             </thead>
             <tbody>
-                <?php 
+                <?php
                     $seriousness = array("Result in death", "Life Threatening", "Caused/Prolonged Hospitalisation", "Disabling / Incapacitating", "Congenital Anomaly/Birth Defect", "Other Medically Important Condition");
                     foreach($caseFields as $caseDetails){
                         echo "<tr id=\'caseId-".$caseDetails['id']."\'>";
                         echo"<td>".$caseDetails['caseNO']."</td>";
-                        echo"<td>".$caseDetails['version_no']."</td>";
+                        // echo"<td>".$caseDetails['version_no']."</td>";
                         echo"<td>";
                         if($caseDetails['country'] != null) echo $caseDetails['country'];
                         else echo $caseDetails['country_r3'];
@@ -79,18 +84,27 @@
                         echo"<td>".$caseDetails['ageCount']." ".$caseDetails['ageUnitValue']."</td>";
                         echo"<td>".$caseDetails['sexValue']."</td>";
                         echo"<td>".$caseDetails['dose']."</td>";
-                        echo"<td>";
-                        if ($caseDetails['durationStart'] != null)
-                            echo substr($caseDetails['durationStart'], 0, 2). " / ".substr($caseDetails['durationStart'], 2, 2)." / ".substr($caseDetails['durationStart'], 4, 4);     
-                        echo " ~ ";
-                        if ($caseDetails['durationReaction'] != null)
-                            echo substr($caseDetails['durationReaction'], 0, 2). " / ".substr($caseDetails['durationReaction'], 2, 2)." / ".substr($caseDetails['durationReaction'], 4, 4);     
-                        echo "</td>";
+
+                        // Event
                         echo"<td>".$caseDetails['reaction']."</td>";
+
+                        // Event (MedDra PT)
                         if($caseDetails['meddra_llt'] != null){
                             list($lltTerm, $lltCode, $ptTerm, $ptCode, $hltTerm, $hltCode, $hlgtTerm, $hlgtCode, $socTerm, $socCode) = explode(",", $caseDetails['meddra_llt']);
-                            echo"<td>".$lltTerm." | ".$ptTerm." | ".$socTerm."</td>";
-                        }else echo "<td></td>";                            
+                            // Shows LLT, PT, SOC
+                            // echo"<td>".$lltTerm." / ".$ptTerm." / ".$socTerm."</td>";
+                            // Shows PT ONLY
+                            echo"<td>".$ptTerm."</td>";
+                        }else echo "<td></td>";
+
+                        // Time Onset
+                        echo"<td>";
+                        if ($caseDetails['durationStart'] != null)
+                            echo substr($caseDetails['durationStart'], 0, 2). " / ".substr($caseDetails['durationStart'], 2, 2)." / ".substr($caseDetails['durationStart'], 4, 4);
+                        echo " ~ ";
+                        if ($caseDetails['durationReaction'] != null)
+                            echo substr($caseDetails['durationReaction'], 0, 2). " / ".substr($caseDetails['durationReaction'], 2, 2)." / ".substr($caseDetails['durationReaction'], 4, 4);
+                        echo "</td>";
                         echo"<td>".$caseDetails['outcomeValue']."</td>";
                         echo"<td>".$caseDetails['serverityValue']."</td>";
                         echo"<td>";
