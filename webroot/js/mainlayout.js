@@ -437,5 +437,5 @@ jQuery(document).ready(function($) {
         .then(() => {
             location.href = '/sd-users/logout';
           });
-    },1800000);
+    },30*60*1000);
 });

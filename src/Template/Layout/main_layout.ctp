@@ -123,7 +123,7 @@
         <ul class="dropdown-menu">
           <a class="dropdown-item" href="/sd-products/search"><?php echo __("Search Product");?></a>
         <!-- Admin Permission ONLY -->
-        <?php if($this->Session->read('Auth.User.sd_role_id') == 2) {
+        <?php if($this->request->getSession()->read('Auth.User.sd_role_id') == 2) {
           echo "<a class=\"dropdown-item\" href=\"/sd-products/addproduct\">". __("Add Product")."</a>";
         }?>
         </ul>

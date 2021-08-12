@@ -807,3 +807,7 @@ ul.queryBoxLeft > a {
 .error-message {
     color:red !important;
 }
+
+.swal-overlay {
+    background-color: #aaaaaae8;
+}
