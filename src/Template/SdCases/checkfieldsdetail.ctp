@@ -72,6 +72,8 @@
                 <?php
                     $seriousness = array("Result in death", "Life Threatening", "Caused/Prolonged Hospitalisation", "Disabling / Incapacitating", "Congenital Anomaly/Birth Defect", "Other Medically Important Condition");
                     foreach($caseFields as $caseDetails){
+                    // foreach($caseFields as $caseAllDetails){
+                    //     $caseDetails = $caseAllDetails['general'];
                         echo "<tr id=\'caseId-".$caseDetails['id']."\'>";
                         echo"<td>".$caseDetails['caseNO']."</td>";
                         // echo"<td>".$caseDetails['version_no']."</td>";

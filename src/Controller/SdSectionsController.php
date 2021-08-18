@@ -270,6 +270,7 @@ class SdSectionsController extends AppController
             $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
             if($e2b_version == 3) $e2b_version = "_r3";
             else $e2b_version = "";
+            $Products = new AppController;
             $Products->configVersion($e2b_version);
             $this->autoRender = false;
             $sdFieldValuesTable = TableRegistry::get('SdFieldValues');
@@ -281,7 +282,8 @@ class SdSectionsController extends AppController
                         'type'=>'INNER',
                         'conditions'=>['structure.sd_field_id = SdFieldValues.sd_field_id']
                     ],
-                ])->select(['created_time','field_value','sd_field_id','set_number','sd_case_id','id','status','structure.sd_section_id'])->where(['SdFieldValues.sd_case_id'=>$caseId,$distribution_condition,'structure.sd_section_id '=>$changeSectionId, 'status'=>1]);
+                ])->select(['created_time','field_value','sd_field_id','set_number','sd_case_id','id','status','structure.sd_section_id'])
+                    ->where(['SdFieldValues.sd_case_id'=>$caseId,$distribution_condition,'structure.sd_section_id '=>$changeSectionId, 'status'=>1]);
                 // debug($field_values->toArray());
                 foreach($field_values as $field_value){
                     if($sectionId =='44'&&$field_value['sd_field_id'] == '149') continue;
