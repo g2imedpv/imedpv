@@ -20,7 +20,8 @@ echo $this->element('generatepdf');
     var dynamic_options = <?php if(empty($dynamic_options)) echo"null"; else echo json_encode($dynamic_options)?>;
     var section = <?php
     echo json_encode($sdSections,JSON_UNESCAPED_UNICODE)?>;
-
+debug($caseNo);
+die();
     var caseId = <?= $caseId ?>;
     // jQuery(function($) {
     //     $(document).ready(function () {
@@ -66,10 +67,10 @@ echo $this->element('generatepdf');
             </li>
 
             <!-- "Version Switch" Dropdown Button -->
-            <li class="nav-item dropdown m-1">
+            <!--<li class="nav-item dropdown m-1">
                 <a class="btn btn-sm btn-outline-info dropdown-toggle" href="#" title="Version Switch" role="button" id="versionSwitch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-code-branch"></i> <?php echo __("Switch Version")?>
-                </a>
+                </a>-->
                 <?php
                 if(sizeof($case_versions->toList())>1){
                     echo "<div class=\"dropdown-menu\"  aria-labelledby=\"versionSwitch\">";
