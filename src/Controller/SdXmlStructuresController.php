@@ -123,7 +123,7 @@ class SdXmlStructuresController extends AppController
         $sdXmlStructures = TableRegistry::get('sdXmlStructures');
         $ICSR = $sdXmlStructures ->find()
         ->select(['sdXmlStructures.tag','fv.field_value','sdXmlStructures.level','sdXmlStructures.last_tag_id','sdXmlStructures.sd_field_id','sdXmlStructures.multiple','fv.set_number'])
-       
+    
         ->join([
             'fv' =>[
                 'table' =>'sd_field_values',
@@ -195,9 +195,7 @@ class SdXmlStructuresController extends AppController
                 ->where(['id='.$caseId,'status=1'])->first();
         $fileName=$name['caseNo'];
         $time=date("YmdHis");
-        $xml = $fileName._$time;
-        debug($xml);
-        die();
+        $xml = $fileName.$time;
         header("Content-Type: text/html/force-download");
         header("Content-Disposition: attachment; filename=".$xml.".xml");
 
@@ -207,22 +205,23 @@ class SdXmlStructuresController extends AppController
         $xml->setIndent(true);
         // create xml Document start
         $xml->startDocument('1.0', 'ISO-8859-1');//FDA supports only the ISO-8859-1 character set for encoding the submission.
-            $xml->writeDtd('ichicsr','','https://www.accessdata.fda.gov/xml/icsr-xmlv3.0.dtd');
+            $xml->writeDtd('ichicsr','','https://www.accessdata.fda.gov/xml/icsr-xmlv2.1.dtd');
             //A first element ichicsr
                 $xml->startElement("ichicsr");
                     // Attribute lang="en"
                     $xml->writeAttribute("lang","en");
                         $xml->startElement("ichicsrmessageheader");
                             $xml->writeElement('messagetype','ICSR');
-                            $xml->writeElement('messageformatversion','2.1');
-                            $xml->writeElement('messageformatrelease','1.0');
+                            $xml->writeElement('messageformatversion','2');
+                            $xml->writeElement('messageformatrelease','1');
                             $xml->writeElement('receivedate',$this->getSingleTag($caseId,'receivedate'));
                             $xml->writeElement('messagesenderidentifier','Company G2');
-                            $xml->writeElement('messagereceiveridentifier',$this->getSingleTag($caseId,'messagereceiveridentifier'));
-                            $xml->writeElement('messagedateformat','102');
+                            $xml->writeElement('messagereceiveridentifier','ZZFDA');
+                            $xml->writeElement('messagedateformat','204');
                             $xml->writeElement('messagedate',$this->getSingleTag($caseId,'messagedate'));
                         $xml->endElement();//ichicsrmessageheader
-
+                        //debug($xml);
+                        //die();
                         $xml->startElement("safetyreport");
                                 //SafetyReport
                                 $safetyreport=$this->getErgodicTag($caseId,3,11);
@@ -301,10 +300,20 @@ class SdXmlStructuresController extends AppController
 
                             //receiver
                             $xml->startElement("receiver");
-                            $receiver=$this->getErgodicTag($caseId,4,80);
-                            foreach($receiver as $Receiver){
-                                $xml->writeElement($Receiver['tag'],$Receiver['fv']['field_value']);
-                            }
+                                $xml->writeElement('receivertype','2');
+                                $xml->writeElement('receiverorganization','FDA');
+                                $xml->writeElement('receiverdepartment','Office of Surveillance and Epidemiology');
+                                $xml->writeElement('receivergivename','FAERS');
+                                $xml->writeElement('receiverstreetaddress','10903 New Hampshire Avenue');
+                                $xml->writeElement('receivercity','Silver Spring');
+                                $xml->writeElement('receiverstate','MD');
+                                $xml->writeElement('receiverpostcode','20993');
+                                $xml->writeElement('receivercountrycode','US');
+                                $xml->writeElement('receiveremailaddress','faersesub@fda.hhs.gov');
+                                //$receiver=$this->getErgodicTag($caseId,4,80);
+                                //foreach($receiver as $Receiver){
+                                //    $xml->writeElement($Receiver['tag'],$Receiver['fv']['field_value']);
+                                //}
                             $xml->endElement();//receiver
 
                             //patient

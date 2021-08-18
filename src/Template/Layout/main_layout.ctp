@@ -122,7 +122,10 @@
       <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("Product");?> </a>
         <ul class="dropdown-menu">
           <a class="dropdown-item" href="/sd-products/search"><?php echo __("Search Product");?></a>
-          <a class="dropdown-item" href="/sd-products/addproduct"><?php echo __("Add Product");?></a>
+        <!-- Admin Permission ONLY -->
+        <?php if($this->request->getSession()->read('Auth.User.sd_role_id') == 2) {
+          echo "<a class=\"dropdown-item\" href=\"/sd-products/addproduct\">". __("Add Product")."</a>";
+        }?>
         </ul>
       </li>
       <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("Contact");?></a>

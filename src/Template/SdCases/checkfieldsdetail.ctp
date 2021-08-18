@@ -52,13 +52,13 @@
                     <!-- <th scope="row"><?php echo __("Case Version");?></th> -->
                     <th scope="row"><?php echo __("Country");?></th>
                     <th scope="row"><?php echo __("Suspect Drug");?></th>
-                    <th scope="row"><?php echo __("Source of Report");?></th>
+                    <th scope="row"><?php echo __("Source Of Report");?></th>
                     <th scope="row"><?php echo __("Age");?></th>
                     <th scope="row"><?php echo __("Sex");?></th>
-                    <th scope="row"><?php echo __("Dose of drug");?></th>
+                    <th scope="row"><?php echo __("Dose");?></th>
                     <th scope="row"><?php echo __("Event");?></th>
                     <th scope="row"><?php echo __("Event (MedDra PT)");?></th>
-                    <th scope="row"><?php echo __("Time Onset");?></th>
+                    <th scope="row"><?php echo __("Time To Onset");?></th>
                     <th scope="row"><?php echo __("Outcome");?></th>
                     <th scope="row"><?php echo __("Serverity");?></th>
                     <th scope="row"><?php echo __("Seriousness");?></th>
