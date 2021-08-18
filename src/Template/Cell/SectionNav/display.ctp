@@ -9,7 +9,7 @@
         echo ($sdTabV->id==$tabid)?"selval ":null;
         // echo ($multiSec)?"dropright ":null;
         echo "mb-2 bg-outline-primary text-white border border-primary rounded\">";
-        echo "<a class=\"nav-link ";
+        echo "<a class=\"nav-link loadingAni";
         // echo ($multiSec)?"dropdown-toggle\" aria-haspopup=\"true\" aria-expanded=\"false\" data-toggle=\"dropdown ":null;
         echo "\" href=\"/sd-tabs/showdetails/".$caseNo."/".$version."/".$sdTabV->id;
         if($readonly) echo "?readonly=1";

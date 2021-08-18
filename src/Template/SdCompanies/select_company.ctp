@@ -1,3 +1,4 @@
+<?= $this->Html->script('animation/loadingAnimation.js') ?>
 <div class="card login w-50 m-auto cardcolor">
     <?= $this->Form->create($sdCompany);?>
     <div class="card-body">
@@ -16,7 +17,7 @@
                 </select>
             </div>
         </div>
-            <button type="submit" class="btn btn-primary d-block mx-auto w-50 mt-4"><?php echo __("Confirm");?>   </button>
+        <button type="submit" class="btn btn-primary d-block mx-auto w-50 mt-4 login"><?php echo __("Confirm");?>   </button>
     </div>
     <?= $this->Form->end();?>
 </div>

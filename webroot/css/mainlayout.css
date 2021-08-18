@@ -813,23 +813,9 @@ ul.queryBoxLeft > a {
 }
 
  /* Global loading animation */
-.mainLoading {
-    display: flex;
-    height: 770px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 .mainLoadingSpinner {
     width: 10rem !important;
     height: 10rem !important;
-}
-
-.mainLoadingPic {
-    width: 12rem;
-    display: block;
-    margin: 5rem auto;
 }
 
 .mainLoadingTxt {

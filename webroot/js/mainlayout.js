@@ -180,18 +180,6 @@ $(function(){
         }
     });
 
-    // Global loading animation
-    $('a').click(function (){
-        $('body').html(
-            `<div class="mainLoading">
-                <img class="mainLoadingPic" src="/img/logo-mds.png" alt="G2-MDS loading request" />
-                <div class="spinner-border text-primary mainLoadingSpinner" role="status">
-                    <span class="visually-hidden"></span>
-                </div>
-                <h3 class="mainLoadingTxt">G2-MDS is loading your request ...</h3>
-            </div>`);
-    });
-
 });
 
 });
@@ -376,11 +364,7 @@ function onQueryClicked(preferrenceId = null){
         complete: function () {
             $('.loadingSpinner').hide();
             $('a').click(function (){
-                $(this).replaceWith(
-                    `<button class="btn btn-warning" type="button" disabled>
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    Loading...
-                  </button>`);
+                $(this).append(` <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`);
             });
 
         },
