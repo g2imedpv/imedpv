@@ -807,3 +807,49 @@ ul.queryBoxLeft > a {
 .error-message {
     color:red !important;
 }
+
+.swal-overlay {
+    background-color: #aaaaaae8;
+}
+
+ /* Global loading animation */
+.mainLoading {
+    display: flex;
+    height: 770px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainLoadingSpinner {
+    width: 10rem !important;
+    height: 10rem !important;
+}
+
+.mainLoadingPic {
+    width: 12rem;
+    display: block;
+    margin: 5rem auto;
+}
+
+.mainLoadingTxt {
+    margin-top: 5rem;
+    color: #007bff;
+    animation: blink 1s linear infinite;
+    -webkit-animation: blink 1s linear infinite;
+    -moz-animation: blink 1s linear infinite;
+    -ms-animation: blink 1s linear infinite;
+    -o-animation: blink 1s linear infinite;
+}
+@keyframes blink {
+    0% {
+        color: #007bff;
+    }
+    50% {
+        color: transparent;
+    }
+    100% {
+        color: #007bff;
+    }
+
+}

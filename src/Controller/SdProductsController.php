@@ -177,6 +177,12 @@ class SdProductsController extends AppController
 
     public function addproduct()
     {
+        // Only Admin user can access this page
+        if($this->request->getSession()->read('Auth.User.sd_role_id') !== 2) {
+            $this->Flash->error(__('You don\'t have permission to access this page'));
+            return $this->redirect(['controller' => 'Dashboards', 'action' => 'index']);
+        }
+
         $this->viewBuilder()->setLayout('main_layout');
         // $this->set('sdSponsors', $sponsors);
         $assessment_workflow_structure = $this->loadWorkflowsStructure(0);

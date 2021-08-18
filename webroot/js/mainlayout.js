@@ -179,6 +179,19 @@ $(function(){
                 $(this).addClass('queryBoxActive');
         }
     });
+
+    // Global loading animation
+    $('a').click(function (){
+        $('body').html(
+            `<div class="mainLoading">
+                <img class="mainLoadingPic" src="/img/logo-mds.png" alt="G2-MDS loading request" />
+                <div class="spinner-border text-primary mainLoadingSpinner" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+                <h3 class="mainLoadingTxt">G2-MDS is loading your request ...</h3>
+            </div>`);
+    });
+
 });
 
 });
@@ -251,7 +264,7 @@ function onQueryClicked(preferrenceId = null){
         },
         success:function(response){
             $("#textHint").html("");
-            //console.log(response);
+            console.log(response);
             if (response==false) {
                 $("#textHint").html(i18n.gettext("Sorry, no case matches"));
                 return}
@@ -311,9 +324,7 @@ function onQueryClicked(preferrenceId = null){
                 // text += "<td></td>";
                 text += "<td class=\"align-middle\" id=\"version-"+caseDetail.caseNo+"\">"+ caseDetail.versions + "</td>";
                 text += "<td id=\"activity-"+caseDetail.caseNo+"\" class=\"align-middle\">";
-                if(caseDetail.status == '1') text += i18n.gettext(caseDetail.wa.activity_name+"");
-                else if(caseDetail.status == '2')text += i18n.gettext("Distributed");
-                else if(caseDetail.status == '3') text += i18n.gettext("Closed");
+                text += i18n.gettext(caseDetail.wa.activity_name+"")
                 text += "</td>";
                 text += "<td class=\"align-middle\">"+caseDetail.country+"</td>";
                 text += "<td class=\"align-middle\">" + caseDetail.pd.product_name + "</td>";
@@ -346,9 +357,9 @@ function onQueryClicked(preferrenceId = null){
                 text+="</td>";
                 text += "<td class=\"align-middle\">";
                 if(caseDetail.sd_user_id == userId && caseDetail.status != '3') {
-                    if(caseDetail.wa.activity_name=="Triage")text += "<a href=\"/sd-cases/triage/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">"+i18n.gettext("Continue Triage")+"</div></a>";
-                    else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-outline-info m-1\">"+i18n.gettext("Enter")+"</div></a>";
-                }else text += "<a href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\"><div class=\"btn btn-info m-1\">"+i18n.gettext("Check Detail")+"</div></a>";
+                    if(caseDetail.wa.activity_name=="Triage")text += "<a class=\"btn btn-outline-info m-1\" href=\"/sd-cases/triage/"+caseDetail.caseNo+"/"+caseDetail.versions+"\" role=\"button\">"+i18n.gettext("Continue Triage")+"</a>";
+                    else text += "<a class=\"btn btn-outline-info m-1\" href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\" role=\"button\">"+i18n.gettext("Enter")+"</a>";
+                }else text += "<a class=\"btn btn-info m-1\" href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\" role=\"button\">"+i18n.gettext("Check Detail")+"</a>";
                 if((caseDetail.status!='1')&&(previous_case!=caseDetail.caseNo))
                     text += "<button class=\"btn btn-warning m-1\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"versionUp(\'"+caseDetail.caseNo+"\')\">"+i18n.gettext("Version Up")+"</button>";
                 else if(caseDetail.status != '3')
@@ -364,6 +375,14 @@ function onQueryClicked(preferrenceId = null){
         },
         complete: function () {
             $('.loadingSpinner').hide();
+            $('a').click(function (){
+                $(this).replaceWith(
+                    `<button class="btn btn-warning" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                  </button>`);
+            });
+
         },
         error:function(response){
                 console.log(response.responseText);
@@ -439,5 +458,5 @@ jQuery(document).ready(function($) {
         .then(() => {
             location.href = '/sd-users/logout';
           });
-    },1800000);
+    },60*60*1000);
 });
