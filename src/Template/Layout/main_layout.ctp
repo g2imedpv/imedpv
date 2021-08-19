@@ -63,14 +63,15 @@
     <!-- Language Switcher -->
     <div class="btn-group mx-3 my-auto dropdown">
       <button type="button" class="btn" title="Language Switcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class="fas fa-language fa-2x"></i>
+        <i class="fas fa-language fa-2x"></i>
       </button>
+
       <div class="dropdown-menu">
         <a class="dropdown-item loadingAni" class='flag cn_flag' href="/sd-users/setLanguage/en_US">
-          <img src="/img/flags/4x3/us.svg" alt="us_flag" class='flag' >English
+          <img src="/img/flags/4x3/us.svg" alt="us_flag" class='flag' > <span>English</span>
         </a>
         <a class="dropdown-item loadingAni" href="/sd-users/setLanguage/zh_CN">
-          <img src="/img/flags/4x3/cn.svg" alt="cn_flag" class='flag' >Chinese
+          <img src="/img/flags/4x3/cn.svg" alt="cn_flag" class='flag' > <span>Chinese</span>
         </a>
       </div>
     </div>

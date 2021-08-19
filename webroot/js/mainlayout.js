@@ -152,24 +152,6 @@ $("#DeSearch").click(function() {
     $("#searchArea").toggle();
 })
 
-// Make nav button has "active" effect
-    $(function(){
-        // If clicked the first level menu
-        $('#navbarNavDropdown > ul > li > a').each(function(){
-            if (
-                $(this).prop('href') == window.location.href) {
-                    $(this).addClass('active');
-            }
-        });
-        // If clicked the second (submenu) level
-        $('#navbarNavDropdown > ul > li > ul > a').each(function(){
-            if (
-                ($(this).prop('href').split('/').slice(3,4)).toString() == ((window.location.pathname).split('/').slice(1,2)).toString() ) {
-                    $(this).parent().siblings('a').addClass('active');
-            }
-        });
-    });
-
 // Make Query Box left nav button has "active" effect
 $(function(){
     // If clicked the first level menu
@@ -177,6 +159,23 @@ $(function(){
         if (
             $(this).prop('href').split('/').slice(5,6).toString() == (window.location.href).split('/').slice(5,6).toString()) {
                 $(this).addClass('queryBoxActive');
+        }
+    });
+
+    // Make nav button has "active" effect
+    // If clicked the first level menu
+    $('#navbarNavDropdown > ul > li > a').each(function(){
+        if (
+            $(this).prop('href') == window.location.href) {
+                $(this).addClass('active');
+        }
+    });
+
+    // If clicked the second (submenu) level
+    $('#navbarNavDropdown > ul > li > ul > a').each(function(){
+        if (
+            ($(this).prop('href').split('/').slice(3,4)).toString() == ((window.location.pathname).split('/').slice(1,2)).toString() ) {
+                $(this).parent().siblings('a').addClass('active');
         }
     });
 

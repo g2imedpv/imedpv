@@ -67,8 +67,8 @@ die();
             </li>
 
             <!-- "Version Switch" Dropdown Button -->
-            <!--<li class="nav-item dropdown m-1">
-                <a class="btn btn-sm btn-outline-info dropdown-toggle" href="#" title="Version Switch" role="button" id="versionSwitch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown m-1">
+                <!--<a class="btn btn-sm btn-outline-info dropdown-toggle" href="#" title="Version Switch" role="button" id="versionSwitch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-code-branch"></i> <?php echo __("Switch Version")?>
                 </a>-->
                 <?php

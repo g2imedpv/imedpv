@@ -438,15 +438,14 @@ ul.queryBoxLeft > a {
     color:#1e90ff;
     font-weight: bolder;
 }
-#navbarNavDropdown > ul > li > a.nav-link:hover{
+#navbarNavDropdown > ul > li > a.nav-link:hover {
     background-color:#1e90ff;
     color:white;
     border-radius: 5px;
     padding:6px 8px;
-
 }
 #navbarNavDropdown > ul > li > a.active{
-    color:rgba(0,0,0);
+    color:#E63946;
 }
 
 .queryBackBtn {
@@ -813,10 +812,6 @@ ul.queryBoxLeft > a {
 }
 
  /* Global loading animation */
-.mainLoadingSpinner {
-    width: 10rem !important;
-    height: 10rem !important;
-}
 
 .mainLoadingTxt {
     margin-top: 5rem;
