@@ -1,6 +1,7 @@
 <!-- This Login Page was applied layout which located in template/layout/login.ctp -->
 <?php $this->assign('title', 'iMedPV'); ?>
 <?= $this->Html->css('login.css') ?>
+<?= $this->Html->script('animation/loadingAnimation.js') ?>
 <?= $this->Form->create('login',
     [
         'class'=>'card mx-auto w-50 cardcolor'
@@ -34,5 +35,5 @@
             <a class="btn text-white flag cn_flag" href="/sd-users/setLanguage/zh_CN" role="button"><?php echo __("Chinese");?></a>
         </div>
     </div>
-    <?= $this->Form->button(__("Login"),['type'=>'submit','class'=>'btn btn-primary w-50 mx-auto my-4']) ?>
+    <?= $this->Form->button(__("Login"),['type'=>'submit','class'=>'btn btn-primary w-50 mx-auto my-4 login']) ?>
 <?= $this->Form->end() ?>

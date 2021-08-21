@@ -20,11 +20,12 @@
     <?= $this->Html->css('fontAwesome/all.min.css') ?>
 
     <!-- For local CSS link -->
-    <?= $this->Html->css('mainlayout.css') ?>
+    <?= $this->Html->css('mainlayout.css',['type' => 'text/css']) ?>
 
     <!-- For local JS link -->
     <?= $this->Html->script('mainlayout.js') ?>
     <?= $this->Html->script('sweetalert.js') ?>
+    <?= $this->Html->script('animation/loadingAnimation.js') ?>
 
     <!-- For local Bootstrap/CSS link -->
     <?= $this->Html->css('bootstrap/bootstrap-grid.min.css') ?>
@@ -55,21 +56,22 @@
 
 <div class="topNav">
     <div class="navInner mx-auto d-flex bd-highlight">
-      <a class="navLogo navbar-brand mr-auto my-auto bd-highlight" href="/Dashboards/index">
+      <a class="navLogo navbar-brand mr-auto my-auto bd-highlight loadingAni" href="/Dashboards/index">
         <img src="/img/logo-mds.png" title="MDS" alt="logo" style="width:160px;">
       </a>
 
     <!-- Language Switcher -->
     <div class="btn-group mx-3 my-auto dropdown">
       <button type="button" class="btn" title="Language Switcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class="fas fa-language fa-2x"></i>
+        <i class="fas fa-language fa-2x"></i>
       </button>
+
       <div class="dropdown-menu">
-        <a class="dropdown-item" class='flag cn_flag' href="/sd-users/setLanguage/en_US">
-          <img src="/img/flags/4x3/us.svg" alt="us_flag" class='flag' >English
+        <a class="dropdown-item loadingAni" class='flag cn_flag' href="/sd-users/setLanguage/en_US">
+          <img src="/img/flags/4x3/us.svg" alt="us_flag" class='flag' > <span>English</span>
         </a>
-        <a class="dropdown-item" href="/sd-users/setLanguage/zh_CN">
-          <img src="/img/flags/4x3/cn.svg" alt="cn_flag" class='flag' >Chinese
+        <a class="dropdown-item loadingAni" href="/sd-users/setLanguage/zh_CN">
+          <img src="/img/flags/4x3/cn.svg" alt="cn_flag" class='flag' > <span>Chinese</span>
         </a>
       </div>
     </div>
@@ -103,8 +105,8 @@
       </button>
       <div class="dropdown-menu">
         <h6 class="dropdown-header"><?php echo   __("Role: ") ?><b><?php echo $this->request->getSession()->read('Auth.User.role_name'); ?></b></h6>
-        <a class="dropdown-item" href="/sd-users/myaccount"><i class="far fa-user-circle accountIcon"></i><?php echo __(" My Account");?></a>
-        <a class="dropdown-item" href="/sd-users/logout"><i class="fas fa-sign-out-alt"></i><?php echo __(" Log Out");?></a>
+        <a class="dropdown-item loadingAni" href="/sd-users/myaccount"><i class="far fa-user-circle accountIcon"></i><?php echo __(" My Account");?></a>
+        <a class="dropdown-item loadingAni" href="/sd-users/logout"><i class="fas fa-sign-out-alt"></i><?php echo __(" Log Out");?></a>
       </div>
     </div>
     </div>
@@ -114,33 +116,33 @@
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="nav navbar-nav container d-flex justify-content-between">
       <li class="nav-item">
-        <a class="nav-link" href="/Dashboards/index">
+        <a class="nav-link loadingAni" href="/Dashboards/index">
           <?php echo __("Dashboard");?>
           <span class="sr-only">(current)</span>
         </a>
       </li>
       <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("Product");?> </a>
         <ul class="dropdown-menu">
-          <a class="dropdown-item" href="/sd-products/search"><?php echo __("Search Product");?></a>
+          <a class="dropdown-item loadingAni" href="/sd-products/search"><?php echo __("Search Product");?></a>
         <!-- Admin Permission ONLY -->
         <?php if($this->request->getSession()->read('Auth.User.sd_role_id') == 2) {
-          echo "<a class=\"dropdown-item\" href=\"/sd-products/addproduct\">". __("Add Product")."</a>";
+          echo "<a class=\"dropdown-item loadingAni\" href=\"/sd-products/addproduct\">". __("Add Product")."</a>";
         }?>
         </ul>
       </li>
       <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("Contact");?></a>
         <ul class="dropdown-menu">
-          <a class="dropdown-item" href="/sd-contacts/search"><?php echo __("Search Contact");?></a>
-          <a class="dropdown-item" href="/sd-contacts/addcontact"><?php echo __("Add Contact");?></a>
+          <a class="dropdown-item loadingAni" href="/sd-contacts/search"><?php echo __("Search Contact");?></a>
+          <a class="dropdown-item loadingAni" href="/sd-contacts/addcontact"><?php echo __("Add Contact");?></a>
         </ul>
       </li>
       <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("ICSR");?></a>
         <ul class="dropdown-menu">
-          <a class="dropdown-item" href="/sd-cases/caseregistration"><?php echo __("Register SAE/AE");?></a>
-          <a class="dropdown-item" href="/sd-cases/caselist"><?php echo __("Case List");?></a>
+          <a class="dropdown-item loadingAni" href="/sd-cases/caseregistration"><?php echo __("Register SAE/AE");?></a>
+          <a class="dropdown-item loadingAni" href="/sd-cases/caselist"><?php echo __("Case List");?></a>
         </ul>
       </li>
-      <li class="nav-item"><a class="nav-link" href="/sd-users/myaccount"><?php echo __("My Account");?></a></li>
+      <li class="nav-item"><a class="nav-link loadingAni" href="/sd-users/myaccount"><?php echo __("My Account");?></a></li>
     </ul>
   </div>
 </nav>

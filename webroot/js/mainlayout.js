@@ -152,24 +152,6 @@ $("#DeSearch").click(function() {
     $("#searchArea").toggle();
 })
 
-// Make nav button has "active" effect
-    $(function(){
-        // If clicked the first level menu
-        $('#navbarNavDropdown > ul > li > a').each(function(){
-            if (
-                $(this).prop('href') == window.location.href) {
-                    $(this).addClass('active');
-            }
-        });
-        // If clicked the second (submenu) level
-        $('#navbarNavDropdown > ul > li > ul > a').each(function(){
-            if (
-                ($(this).prop('href').split('/').slice(3,4)).toString() == ((window.location.pathname).split('/').slice(1,2)).toString() ) {
-                    $(this).parent().siblings('a').addClass('active');
-            }
-        });
-    });
-
 // Make Query Box left nav button has "active" effect
 $(function(){
     // If clicked the first level menu
@@ -180,16 +162,21 @@ $(function(){
         }
     });
 
-    // Global loading animation
-    $('a').click(function (){
-        $('body').html(
-            `<div class="mainLoading">
-                <img class="mainLoadingPic" src="/img/logo-mds.png" alt="G2-MDS loading request" />
-                <div class="spinner-border text-primary mainLoadingSpinner" role="status">
-                    <span class="visually-hidden"></span>
-                </div>
-                <h3 class="mainLoadingTxt">G2-MDS is loading your request ...</h3>
-            </div>`);
+    // Make nav button has "active" effect
+    // If clicked the first level menu
+    $('#navbarNavDropdown > ul > li > a').each(function(){
+        if (
+            $(this).prop('href') == window.location.href) {
+                $(this).addClass('active');
+        }
+    });
+
+    // If clicked the second (submenu) level
+    $('#navbarNavDropdown > ul > li > ul > a').each(function(){
+        if (
+            ($(this).prop('href').split('/').slice(3,4)).toString() == ((window.location.pathname).split('/').slice(1,2)).toString() ) {
+                $(this).parent().siblings('a').addClass('active');
+        }
     });
 
 });
@@ -376,11 +363,7 @@ function onQueryClicked(preferrenceId = null){
         complete: function () {
             $('.loadingSpinner').hide();
             $('a').click(function (){
-                $(this).replaceWith(
-                    `<button class="btn btn-warning" type="button" disabled>
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    Loading...
-                  </button>`);
+                $(this).append(` <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`);
             });
 
         },

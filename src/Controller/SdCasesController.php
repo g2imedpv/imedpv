@@ -873,6 +873,7 @@ class SdCasesController extends AppController
             $caseFields = array();
             //R3 version
             foreach($requstData as $caseIdentifier) {
+                //find all general informaiton
                 $caseDetail = $this->SdCases->find()
                     ->select([
                         'SdCases.caseNO',
@@ -1088,6 +1089,61 @@ class SdCasesController extends AppController
                     ->first();
                     // debug($caseDetail);
                     $caseFields[$caseDetail['id']] = $caseDetail;
+                    // $sdFieldValueTable = TableRegistry::get('SdFieldValues');
+                    // $caseFields[$caseDetail['id']]['general'] = $caseDetail;
+
+                    // //find all events
+                    // $event_reaction = $sdFieldValueTable->find()
+                    //     ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
+                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'149'])->toArray();
+
+                    // $event_pt = $sdFieldValueTable->find()
+                    //     ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
+                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'496'])->toArray();
+            
+                    // $event_start_date = $sdFieldValueTable->find()
+                    //     ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
+                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'199'])->toArray();
+                    
+                    // $event_reaction_date = $sdFieldValueTable->find()
+                    //     ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
+                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'156'])->toArray();      
+                    
+                    // $event_dose = $sdFieldValueTable->find()
+                    //     ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
+                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'190'])->toArray();      
+                    
+                    // $event_labeling_db = $sdFieldValueTable->find()
+                    //     ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
+                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'382'])->toArray(); 
+
+                    // //TODO labeling
+
+                    // //find all products                    
+                    // $product = $sdFieldValueTable->find()
+                    // ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
+                    // ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'176'])->order(['set_number' => 'ASC'])->toArray();
+
+                    // $event_casuality_db = $sdFieldValueTable->find()
+                    //     ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
+                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'378'])->order(['set_number' => 'ASC'])->toArray(); 
+                    
+                    // for($i = 0; $i < count($product); $i++){
+                    //     $caseAllFields[$caseDetail['id']]['product']['product_name'] = $product[$i];
+                    // }
+                    
+                    // for($i = 0; $i < count($event_reaction) | $i < count($event_pt) | $i < count($event_start_date)|$i < count($event_reaction_date); $i++){
+                    //     if(array_key_exists($i, $event_reaction)) 
+                    //         $caseAllFields[$caseDetail['id']]['Events'][$i]['event_reaction'] = $event_reaction[$i]['field_value'];
+                    //     if(array_key_exists($i, $event_pt)) 
+                    //         $caseAllFields[$caseDetail['id']]['Events'][$i]['event_pt'] = $event_pt[$i]['field_value'];
+                    //     if(array_key_exists($i, $event_start_date)) 
+                    //         $caseAllFields[$caseDetail['id']]['Events'][$i]['event_start_date'] = $event_start_date[$i]['field_value'];
+                    //     if(array_key_exists($i, $event_reaction_date)) 
+                    //         $caseAllFields[$caseDetail['id']]['Events'][$i]['event_reaction_date'] = $event_reaction_date[$i]['field_value'];
+                    //     if(array_key_exists($i, $event_dose)) 
+                    //         $caseAllFields[$caseDetail['id']]['Events'][$i]['event_dose'] = $event_dose[$i]['field_value'];
+                    // } 
             }
             // debug($caseFields);
             $this->set(compact('caseFields', 'extraFields','cimosFields'));

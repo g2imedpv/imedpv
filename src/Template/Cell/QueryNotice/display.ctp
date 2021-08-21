@@ -1,13 +1,13 @@
 <?php
 if($newQueryCount)
 
-echo    "<a role=\"button\" class=\"btn\" href=\"/sd-queries/queries/unread\" title=\"You have ".$newQueryCount." New Queries\">
+echo    "<a role=\"button\" class=\"btn loadingAni\" href=\"/sd-queries/queries/unread\" title=\"You have ".$newQueryCount." New Queries\">
             <i class=\"far fa-bell fa-2x position-relative\">
             <span class=\"rounded-circle bg-danger mailIconText\">$newQueryCount</span>
             </i>
         </a>";
 
-else echo   "<a role=\"button\" class=\"btn\" href=\"/sd-queries/queries/\" title=\"You have 0 New Queries\">
+else echo   "<a role=\"button\" class=\"btn loadingAni\" href=\"/sd-queries/queries/\" title=\"You have 0 New Queries\">
             <i class=\"far fa-bell fa-2x position-relative\"></i>
             </a>";
 
