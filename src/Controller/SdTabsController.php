@@ -315,6 +315,10 @@
                     $sdDocLists.=$sdDocList_details['doc_name']." ; ";
                 }
                 $this->set(compact('sdDocLists'));
+
+                //get case E2B version
+                $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
+                $this->set(compact('e2b_version'));
             }
             /**
              *

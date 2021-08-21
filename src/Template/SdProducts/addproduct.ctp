@@ -161,6 +161,7 @@
                     <option value="3">3</option>
                 </select>
             </div>
+            
         </div>
 
         <div class="form-row">
@@ -349,7 +350,7 @@
                         $country_list=[
                             'USA'=>'Unitied States',
                             'JPN'=>'Japan',
-                            'CHN'=>'China'
+                            'CN'=>'China',
                         ];
                         foreach($assessment_workflow_structure as $workflow_structure_detail){
                             echo "<option value=".$workflow_structure_detail->country.">".$country_list[$workflow_structure_detail->country]."</option>";

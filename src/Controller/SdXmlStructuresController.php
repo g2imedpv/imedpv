@@ -184,7 +184,7 @@ class SdXmlStructuresController extends AppController
         return $value; 
       
     }
-    
+
 
     public function genXMLTwo($caseId){   
         $this->autoRender = false;
@@ -198,7 +198,6 @@ class SdXmlStructuresController extends AppController
         $xml = $fileName.$time;
         header("Content-Type: text/html/force-download");
         header("Content-Disposition: attachment; filename=".$xml.".xml");
-
         $xml = new \XMLWriter();
         $xml->openUri("php://output");
         $xml->setIndentString("\t");
@@ -228,7 +227,6 @@ class SdXmlStructuresController extends AppController
                                 foreach($safetyreport as $SafetyReport){
                                     $xml->writeElement($SafetyReport['tag'],$SafetyReport['fv']['field_value']);
                                 }
-                                
                         /*
                             $xml->writeElement('safetyreportversion',$this->getSingleTag($caseId,'safetyreportversion'));
                             $xml->writeElement('safetyreportid',$this->getSingleTag($caseId,'safetyreportid'));
@@ -267,7 +265,6 @@ class SdXmlStructuresController extends AppController
                                     }       
                                 $xml->endElement();
                             }//ReportDuplicate
-
                             //linkedreport
                             $linkedNumber=$this->getMaxSetNumber($caseId,4,41);
                             for($i=1;$i<=$linkedNumber;$i++){
@@ -278,7 +275,6 @@ class SdXmlStructuresController extends AppController
                                     }       
                                 $xml->endElement();
                             }
-
                             //primarysource
                             $primarysourceNumber=$this->getMaxSetNumber($caseId,4,43);
                             for($i=1;$i<=$primarysourceNumber;$i++){
