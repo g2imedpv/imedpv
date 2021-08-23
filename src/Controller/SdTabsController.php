@@ -239,7 +239,7 @@
                 $sdFieldTable = TableRegistry::get('SdFields');
                 $sdTab = TableRegistry::get('SdSections');
                 $sdSections = $sdTab ->find()->where(['sd_tab_id'=>$tabid,'status'=>true])
-                                    ->order(['SdSections.section_level'=>'ASC','SdSections.display_order'=>'ASC'])
+                                    ->order(['SdSections.section_level'=>'ASC','SdSections.display_order'=>'ASC','SdSections.id'=>'ASC'])
                                     ->contain(['SdSectionSummaries','SdSectionStructures'=>function($q)use($caseId,$distribution_condition){
                                         return $q->order(['SdSectionStructures.row_no'=>'ASC','SdSectionStructures.field_start_at'=>'ASC'])
                                             ->contain(['SdFields'=>['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
@@ -315,10 +315,6 @@
                     $sdDocLists.=$sdDocList_details['doc_name']." ; ";
                 }
                 $this->set(compact('sdDocLists'));
-
-                //get case E2B version
-                $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
-                $this->set(compact('e2b_version'));
             }
             /**
              *
