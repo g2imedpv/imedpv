@@ -409,7 +409,6 @@
         <?php echo "<input type=\"hidden\" id=\"validcase\" name=\"field_value[223][value]\" value=\"".$field_value_set['223']['field_value']."\">";?>
         <button type="button" id="confirmElements" class="btn btn-primary m-auto w-25"><?php echo __("Continue")?></button>
         <button type="button" onclick="savenexit()" id="savenexitbtn" class="btn btn-outline-info m-auto w-25"><?php echo __("Save and Exit")?></button>
-    </div>
 
     <hr class="my-2">
 
