@@ -667,7 +667,7 @@ class SdCasesController extends AppController
                     '344'=>'WHODD_code',
                     '389'=>'WHODD_name',
                     '284'=>'mfr_name',
-                    '48'=>'study_name'
+                    '38'=>'study_name'
                 ];
                 foreach($fieldId_product_set as $fieldId =>$product_info)
                 {
