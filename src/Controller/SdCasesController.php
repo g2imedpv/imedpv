@@ -666,7 +666,8 @@ class SdCasesController extends AppController
                     '283'=>'WHODD_decode',
                     '344'=>'WHODD_code',
                     '389'=>'WHODD_name',
-                    '284'=>'mfr_name'
+                    '284'=>'mfr_name',
+                    '48'=>'study_name'
                 ];
                 foreach($fieldId_product_set as $fieldId =>$product_info)
                 {
@@ -687,44 +688,44 @@ class SdCasesController extends AppController
                         debug($savedFieldValueEntity);
                         return null;
                     }
-                    $sdSectionSetEntity = $sdSectionSetTable->newEntity();
-                    $dataSet = [
-                        'sd_field_value_id' => $savedFieldValue['id'],
-                        'sd_section_id' => 21,
-                        'set_array'=>1
-                    ];
-                    $savedSectionSetEntity = $sdSectionSetTable->patchEntity($sdSectionSetEntity, $dataSet);
-                    if(!$sdSectionSetTable->save($savedSectionSetEntity)){
-                        echo "problem in saving".$product_info."sets";
-                        debug($savedSectionSetEntity);
-                        return null;
-                    }
-                    if($fieldId == 176){
-                        $sdSectionSetEntity = $sdSectionSetTable->newEntity();
-                        $dataSet = [
-                            'sd_field_value_id' => $savedFieldValue['id'],
-                            'sd_section_id' => 65,
-                            'set_array'=>1
-                        ];
-                        $savedSectionSetEntity = $sdSectionSetTable->patchEntity($sdSectionSetEntity, $dataSet);
-                        if(!$sdSectionSetTable->save($savedSectionSetEntity)){
-                            echo "problem in saving".$product_info." casulity";
-                            debug($savedSectionSetEntity);
-                            return null;
-                        }
-                        $sdSectionSetEntity = $sdSectionSetTable->newEntity();
-                        $dataSet = [
-                            'sd_field_value_id' => $savedFieldValue['id'],
-                            'sd_section_id' => 47,
-                            'set_array'=>1
-                        ];
-                        $savedSectionSetEntity = $sdSectionSetTable->patchEntity($sdSectionSetEntity, $dataSet);
-                        if(!$sdSectionSetTable->save($savedSectionSetEntity)){
-                            echo "problem in saving".$product_info." labeling";
-                            debug($savedSectionSetEntity);
-                            return null;
-                        }
-                    }
+                    // $sdSectionSetEntity = $sdSectionSetTable->newEntity();
+                    // $dataSet = [
+                    //     'sd_field_value_id' => $savedFieldValue['id'],
+                    //     'sd_section_id' => 21,
+                    //     'set_array'=>1
+                    // ];
+                    // $savedSectionSetEntity = $sdSectionSetTable->patchEntity($sdSectionSetEntity, $dataSet);
+                    // if(!$sdSectionSetTable->save($savedSectionSetEntity)){
+                    //     echo "problem in saving".$product_info."sets";
+                    //     debug($savedSectionSetEntity);
+                    //     return null;
+                    // }
+                    // if($fieldId == 176){
+                    //     $sdSectionSetEntity = $sdSectionSetTable->newEntity();
+                    //     $dataSet = [
+                    //         'sd_field_value_id' => $savedFieldValue['id'],
+                    //         'sd_section_id' => 65,
+                    //         'set_array'=>1
+                    //     ];
+                    //     $savedSectionSetEntity = $sdSectionSetTable->patchEntity($sdSectionSetEntity, $dataSet);
+                    //     if(!$sdSectionSetTable->save($savedSectionSetEntity)){
+                    //         echo "problem in saving".$product_info." casulity";
+                    //         debug($savedSectionSetEntity);
+                    //         return null;
+                    //     }
+                    //     $sdSectionSetEntity = $sdSectionSetTable->newEntity();
+                    //     $dataSet = [
+                    //         'sd_field_value_id' => $savedFieldValue['id'],
+                    //         'sd_section_id' => 47,
+                    //         'set_array'=>1
+                    //     ];
+                    //     $savedSectionSetEntity = $sdSectionSetTable->patchEntity($sdSectionSetEntity, $dataSet);
+                    //     if(!$sdSectionSetTable->save($savedSectionSetEntity)){
+                    //         echo "problem in saving".$product_info." labeling";
+                    //         debug($savedSectionSetEntity);
+                    //         return null;
+                    //     }
+                    // }
                 }
 
                 //save latest Recieved date
