@@ -776,7 +776,6 @@ function searchWhoDra(){
 }
 function deleteSection(sectionId, setNo,sectionKey){
     let request = {};
-    console.log()
     if('child_section' in section[sectionKey]){
         request['child_section'] =  section[sectionKey].child_section;
         let added="";
