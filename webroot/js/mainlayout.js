@@ -42,17 +42,6 @@ jQuery(function($) {  // In case of jQuery conflict
         }
     });
 
-// jQuery(function($) {
-//     $(document).ready(function(){
-//         // Dashboard popup Advance Search
-//         $("#advsearch").click(function(){
-//             if($("#advsearchfield").is(':hidden'))
-//                 $("#advsearchfield").slideDown();
-//                 else $("#advsearchfield").slideUp();
-//         });
-
-//     });
-// });
 
 $("#searchSMQ").keyup(function(){
     $('#SMQoptions').show();

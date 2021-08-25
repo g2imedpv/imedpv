@@ -78,7 +78,7 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
             var thisField = $(this).attr('id').split('-')[1];
             if($(this).val()!=""){
                 request[thisField+'_name'] = $.trim($(this).val());
-            }
+            };
         });
         if($('#meddra-full_text').prop('checked'))
             request['full_text'] = 1;
@@ -116,6 +116,10 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
         type:'POST',
         url:'/med-dra/search',
         data:request,
+        beforeSend:function () {
+            $('.loadingSpinner').show();
+            $('.pendingShow').hide();
+        },
         success:function(response){
             console.log(response);
             var result = $.parseJSON(response);
@@ -212,10 +216,13 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
                 });
             });
         },
+        complete: function () {
+            $('.loadingSpinner').hide();
+            $('.pendingShow').show();
+        },
         error:function(response){
-                console.log(response.responseText);
-
-            $("#textHint").html(i18n.gettext("Sorry, no case matches"));
+            console.log(response.responseText);
+            $("#noMDmatch").html(i18n.gettext("Sorry, no case matches"));
 
         }
     });

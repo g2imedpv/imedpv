@@ -40,9 +40,9 @@ use Cake\ORM\TableRegistry;
                 <input type="text" class="form-control" id="Contact_Type" name="Contact_Type" placeholder="<?php echo __("Search Contact Type");?>">
             </div>
         </div>
-        <button  class="btn btn-primary w-25" onclick="searchContact()"><i class="fas fa-search"></i> <?php echo __("Search");?> </button>
+        <button  class="btn btn-primary w-25" onclick="searchContact()" type="button"><i class="fas fa-search"></i> <?php echo __("Search");?> </button>
         <!-- <button id="advsearch" class="btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</button> -->
-        <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> <?php echo __("Clear");?> </button>
+        <button class="clearsearch btn btn-outline-danger" type="button"><i class="fas fa-eraser"></i> <?php echo __("Clear");?> </button>
 
         <hr class="my-4">
 
@@ -66,7 +66,7 @@ use Cake\ORM\TableRegistry;
                 </tr>
             </thead>
             <tbody>
-                <?php 
+                <?php
                     foreach($query as $contacters){
                         echo "<tr id='contacter$contacters->id'>";
                         echo"<td>".$contacters->contactId."</td>";

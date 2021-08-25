@@ -197,7 +197,9 @@ die();
         ?>
         <?php if(($writePermission)&&($this->request->getQuery('readonly')!=1)):?>
             <div class="text-center">
-                <button type="submit" class="completeBtn w-25 btn btn-success mb-5"><?php echo __("Complete")?></button>
+                <!-- <button type="submit" class="completeBtn w-25 btn btn-success mb-5"><?php echo __("Complete")?></button> -->
+                <!-- Do not use BUTTON tag with type="submit" here in case meddra search trigger auto refreash page -->
+                <a href="javascript:$('#dataEntry').submit()" class="completeBtn w-25 btn btn-success mb-5" role="button"><?php echo __("Complete")?></a>
             </div>
         <?php endif;?>
     <?= $this->Form->end() ?>

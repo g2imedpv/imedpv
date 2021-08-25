@@ -82,9 +82,9 @@
                 </div>
             </div>
         </div>
-        <button onclick="searchProd()" class="btn btn-primary w-25"><i class="fas fa-search"></i> <?php echo __("Search")?></button>
-        <button id="advsearch" class="btn btn-outline-info"><i class="fas fa-keyboard"></i> <?php echo __("Advanced Search")?></button>
-        <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> <?php echo __("Clear")?></button>
+        <button onclick="searchProd()" class="btn btn-primary w-25" type="button"><i class="fas fa-search"></i> <?php echo __("Search")?></button>
+        <button id="advsearch" class="btn btn-outline-info" type="button"><i class="fas fa-keyboard"></i> <?php echo __("Advanced Search")?></button>
+        <button class="clearsearch btn btn-outline-danger" type="button"><i class="fas fa-eraser"></i> <?php echo __("Clear")?></button>
         <!-- <div class="form-row justify-content-center">
             <div class="form-group col-lg-3">
                 <div onclick="searchProd()" class="btn btn-primary w-100"><i class="fas fa-search"></i> Search</div>
@@ -152,7 +152,7 @@
                 </div>
             </div>
             <div class="modal fade product_detail" tabindex="-1" role="dialog" aria-labelledby="product_detail" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title text-center"><?php echo __("Product Detail")?></h5>
@@ -249,6 +249,13 @@
                     </div>
                 </div>
             </div>
-        <div id="searchProductlist" class="my-3"></div>
+        <div id="searchProductlist" class="my-2">
+            <!-- Loading Animation -->
+            <div class="text-center w-75 mx-auto loadingSpinner">
+                <div class="spinner-border text-primary m-5" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -22,6 +22,9 @@ function searchProd(){
         type:'POST',
         url:'/sd-products/search',
         data:request,
+        beforeSend:function () {
+            $('.loadingSpinner').show();
+        },
         success:function(response){
             //console.log('response',response);
             var result = JSON.parse(response);
@@ -54,11 +57,11 @@ function searchProd(){
                 text += "<td>"+i18n.gettext("new")+"</td>";
                 text += "<td>";
                 $.each(caseDetail.sd_product_workflows, function(k,product_workflowdetail){
-                    text += "<div class=\"btn btn-sm btn-info mx-1\" data-toggle=\"modal\" onclick=\"view_workflow("+product_workflowdetail.id+")\" data-target=\".WFlistView\">"+product_workflowdetail.sd_workflow.name+" / "+i18n.gettext(product_workflowdetail.sd_workflow.country+"")+"</div>";
+                    text += "<button class=\"btn btn-sm btn-info m-1\" type=\"button\" data-toggle=\"modal\" onclick=\"view_workflow("+product_workflowdetail.id+")\" data-target=\".WFlistView\">"+product_workflowdetail.sd_workflow.name+" / "+i18n.gettext(product_workflowdetail.sd_workflow.country+"")+"</button>";
                 });
                 //console.log('caseDetail',caseDetail);
                 text += "</td>";
-                text += "<td><div class=\"btn btn-sm btn-info\" data-toggle=\"modal\" onclick=\"view_product("+caseDetail.id+")\" data-target=\".product_detail\">"+i18n.gettext("View Detail")+"</div></td>";
+                text += "<td><button class=\"btn btn-sm btn-info\" type=\"button\" data-toggle=\"modal\" onclick=\"view_product("+caseDetail.id+")\" data-target=\".product_detail\">"+i18n.gettext("View Detail")+"</button></td>";
                 text +="<div id=\"product_"+caseDetail.id+"\" style=\"display:none\">"+JSON.stringify(caseDetail)+"</div>";
                 text +="<td><a class=\"btn btn-info btn-sm\"  role=\"button\" href=\"/sd-products/edit/"+caseDetail.id+"\"><i class=\"fas fa-edit\"></i></a></td>";
                 text += "</tr>";
@@ -73,6 +76,13 @@ function searchProd(){
                     'processing': "<div class='spinner-border' role='status'> <span class='sr-only'>Loading...</span> </div>",
                 }
             });
+        },
+        complete: function () {
+            $('.loadingSpinner').hide();
+            $('a').click(function (){
+                $(this).append(` <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`);
+            });
+
         },
         error:function(response){
                 console.log(response.responseText);

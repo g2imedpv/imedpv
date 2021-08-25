@@ -8,17 +8,17 @@ var distribution_permission_list ={};
 var distribution_list =[];
 var distribution_No = 0;
 $(document).ready(function() {
-    var unsaved = false;
+    // var unsaved = false;
 
-    $("input:not(:button,:submit),textarea,select").change(function(){   //triggers change in all input fields including text type
-        unsaved = true;
-    });
+    // $("input:not(:button,:submit),textarea,select").change(function(){   //triggers change in all input fields including text type
+    //     unsaved = true;
+    // });
 
-    window.onbeforeunload = function (){
-        if(unsaved){
-            return 'Your data is changed, are you sure you want to complete?';
-        }
-    };
+    // window.onbeforeunload = function (){
+    //     if(unsaved){
+    //         return 'Your data is changed, are you sure you want to complete?';
+    //     }
+    // };
      /**
      * dashboard advanced search:activity due date and submission due date calendar
      */
@@ -1185,7 +1185,7 @@ function confirm_cust_activity(type=0){
     let orignialHTML =  $('#draggable').html();
     let html = "<li class=\"custworkflowstep\" id=\"cust-"+typestr+"-workflowstep\"><div class=\"card w-100 h-25 my-2\"><div class=\"card-body p-3\"><button class=\"close closewf\">×</button><h5 class=\"card-title\"><b>";
     html = html + $("#new_"+typestr+"_activity_name").val();
-    html = html+"</b></h5><p class=\"card-text\">" +$("#new_"+typestr+"_activity_description").val()+"</p></div></div></li>";    
+    html = html+"</b></h5><p class=\"card-text\">" +$("#new_"+typestr+"_activity_description").val()+"</p></div></div></li>";
     $("#"+typestr+"-sortable").prepend(html);
     $("#new_"+typestr+"_activity_name").val("");
     $("#new_"+typestr+"_activity_description").val("");
