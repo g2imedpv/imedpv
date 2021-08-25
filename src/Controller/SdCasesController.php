@@ -533,41 +533,51 @@ class SdCasesController extends AppController
                     if($caseDetail['submission_due_date'] != null){
                         $scaseTime = Intval(substr($caseDetail['submission_due_date'],4))*10000+Intval(substr($caseDetail['submission_due_date'],2,2))*100+Intval(substr($caseDetail['submission_due_date'],0,2));
                         if(!empty($searchKey['submission_due_date_end']))
-                            if($scaseTime > Intval(substr($searchKey['submission_due_date_end'],4))*10000+Intval(substr($searchKey['submission_due_date_end'],2,2))*100+Intval(substr($searchKey['submission_due_date_end'],0,2))){
+                            if($scaseTime > Intval(substr($searchKey['submission_due_date_end'],6,4))*10000+Intval(substr($searchKey['submission_due_date_end'],3,2))*100+Intval(substr($searchKey['submission_due_date_end'],0,2))){
                                 unset($output[$key]);
                                 continue;
                             }
                         if(!empty($searchKey['submission_due_date_start']))
-                            if($scaseTime < Intval(substr($searchKey['submission_due_date_start'],4))*10000+Intval(substr($searchKey['submission_due_date_start'],2,2))+Intval(substr($searchKey['submission_due_date_start'],0,2))){
+                            if($scaseTime < Intval(substr($searchKey['submission_due_date_start'],6,4))*10000+Intval(substr($searchKey['submission_due_date_start'],3,2))+Intval(substr($searchKey['submission_due_date_start'],0,2))){
                                 unset($output[$key]);
                                 continue;
                             }
+                    }else if(!empty($searchKey['submission_due_date_start']) || !empty($searchKey['submission_due_date_end'])){
+                        unset($output[$key]);
+                        continue;
                     }
                     if($caseDetail['case_received_date'] != null){
                         $rcaseTime = Intval(substr($caseDetail['case_received_date'],4))*10000+Intval(substr($caseDetail['case_received_date'],2,2))*100+Intval(substr($caseDetail['case_received_date_start'],0,2));                    
                         if(!empty($searchKey['case_received_date_end']))
-                            if($rcaseTime > Intval(substr($searchKey['case_received_date_end'],4))*10000+Intval(substr($searchKey['case_received_date_end'],2,2))*100+Intval(substr($searchKey['case_received_date_end'],0,2))){
+                            if($rcaseTime > Intval(substr($searchKey['case_received_date_end'],6,4))*10000+Intval(substr($searchKey['case_received_date_end'],3,2))*100+Intval(substr($searchKey['case_received_date_end'],0,2))){
                                 unset($output[$key]);
                                 continue;
                             }
                         if(!empty($searchKey['case_received_date_start']))
-                            if($rcaseTime < Intval(substr($searchKey['case_received_date_start'],4))*10000+Intval(substr($searchKey['case_received_date_start'],2,2))+Intval(substr($searchKey['case_received_date_start'],0,2))){
+                            if($rcaseTime < Intval(substr($searchKey['case_received_date_start'],6,4))*10000+Intval(substr($searchKey['case_received_date_start'],3,2))+Intval(substr($searchKey['case_received_date_start'],0,2))){
                                 unset($output[$key]);
                                 continue;
                             }
+                    }else if(!empty($searchKey['case_received_date_start']) || !empty($searchKey['case_received_date_end'])){
+                        unset($output[$key]);
+                        continue;
                     }
                     if($caseDetail['activity_due_date']!=null){
                         $acaseTime = Intval(substr($caseDetail['activity_due_date'],4))*10000+Intval(substr($caseDetail['activity_due_date'],2,2))*100+Intval(substr($caseDetail['activity_due_date'],0,2));
-                        if(!empty($searchKey['activity_due_date_end']))
-                            if($acaseTime > Intval(substr($searchKey['activity_due_date_end'],4))*10000+Intval(substr($searchKey['activity_due_date_end'],2,2))*100+Intval(substr($searchKey['activity_due_date_end'],0,2))){
+                        if(!empty($searchKey['activity_due_date_end'])){
+                            if($acaseTime > Intval(substr($searchKey['activity_due_date_end'],6,4))*10000+Intval(substr($searchKey['activity_due_date_end'],3,2))*100+Intval(substr($searchKey['activity_due_date_end'],0,2))){
                                 unset($output[$key]);
                                 continue;
                             }
+                        }
                         if(!empty($searchKey['activity_due_date_start']))
-                            if($acaseTime < Intval(substr($searchKey['activity_due_date_start'],4))*10000+Intval(substr($searchKey['activity_due_date_start'],2,2))*100+Intval(substr($searchKey['activity_due_date_start'],0,2))){
+                            if($acaseTime < Intval(substr($searchKey['activity_due_date_start'],6,4))*10000+Intval(substr($searchKey['activity_due_date_start'],3,2))*100+Intval(substr($searchKey['activity_due_date_start'],0,2))){
                                 unset($output[$key]);
                                 continue;
                             }
+                    }else if(!(empty($searchKey['activity_due_date_start']) && empty($searchKey['activity_due_date_end']))){
+                        unset($output[$key]);
+                        continue;
                     }
                     // debug($acaseTime);
                 }
