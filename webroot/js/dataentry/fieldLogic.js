@@ -17,7 +17,7 @@ $(document).ready(function(){
     });
     $("[name*=\\[field_value\\]]").change(function(){
         if($(this).attr('type') == "checkbox" ||$(this).attr('type') == "radio") return false;
-        if(autoChangeflag) return false; 
+        if(autoChangeflag) return false;
         autoChangeflag = true;
         let field_id = $(this).attr('id').split("-")[3];
         let val = $(this).val();
@@ -125,7 +125,7 @@ $(document).ready(function(){
         });
     }
 
-    
+
 
     //change general tab date format shown on screen
     function dateConvert(target){
@@ -165,7 +165,7 @@ $(document).ready(function(){
         let date = $("#specified-date-section-"+sectionId+"-date-"+fieldId).val().split(' / ');
         $("#section-"+sectionId+"-date-"+fieldId).val(date[0]+date[1]+date[2]);
     });
-    
+
 
     //gray out fields
     function grayout(target){
@@ -180,7 +180,7 @@ $(document).ready(function(){
         // For Additional documents  (C.1.6.1) select and add document
         selectShowORhide ("#section-1-field-1000, #section-1-field-1064","#section-1-radio-13-option-1","#section-1-radio-13-option-2");
         //add upload files button
-        var uploadDocButton="<button type=\"button\" class=\"btn btn-primary float-left ml-3 mt-3\" data-toggle=\"modal\" data-target=\".uploadDoc\"><i class=\"fas fa-cloud-upload-alt\"></i>"+i18n.gettext("Upload Documents")+"</button>";    
+        var uploadDocButton="<button type=\"button\" class=\"btn btn-primary float-left ml-3 mt-3\" data-toggle=\"modal\" data-target=\".uploadDoc\"><i class=\"fas fa-cloud-upload-alt\"></i> "+i18n.gettext("Upload Documents")+"</button>";
         $("#section-1-field_label-355").append(uploadDocButton);
         // For Report Nullification (A.1.13) checkbox
         checkboxShowORhide ('#section-1-field-23',"#section-1-checkbox-22-option-1");
@@ -190,8 +190,15 @@ $(document).ready(function(){
         checkboxShowORhide ('#section-1-field-19, #section-1-field-20,#section-1-field-1066', "#section-1-checkbox-18-option-1");
         //show document list in field
         var docLists=$('#hidden_docLists').val();
-        $('#section-1-text-14').val(docLists)
- 
+        $('#section-1-text-14').val(docLists);
+
+    // Reporter Tab:
+        //-> Reporter section
+        // Included Documents (C.4.r.2)
+        $("#section-2-field_label-355").append(uploadDocButton);
+        var docListsRep=$('#hidden_docLists_rep').val();
+        $('#section-2-text-1002').val(docListsRep);
+
     // Patient Tab:
         // Congenital Anomaly section
             // Congenital Anomaly field
@@ -217,7 +224,7 @@ $(document).ready(function(){
         //Patient Medical Record (D.1.1) gray out fields according to selected options
             function selectedGrayout(option,targetA,targetB,targetC,targetD){
                 var selected=$(option).val();
-                    if (selected==1){ 
+                    if (selected==1){
                         $(targetA).prop("disabled", false);
                         $(targetB).prop("disabled", true);
                         $(targetC).prop("disabled", true);
@@ -245,7 +252,7 @@ $(document).ready(function(){
                     }
                 $(option).change(function(){
                     var selected=$(option).val();
-                    if (selected==1){ 
+                    if (selected==1){
                         $(targetA).prop("disabled", false);
                         $(targetB).prop("disabled", true);
                         $(targetC).prop("disabled", true);
@@ -275,7 +282,7 @@ $(document).ready(function(){
             }
             selectedGrayout("#section-4-select-236","#section-4-text-80","#section-4-text-81","#section-4-text-82","#section-4-text-83");
 
-        
+
     // Product Tab:
         // If "Ongoing field checked", then Therapy End date (B.4.k.14b) DISABLED
             function optionalGrayout(target,option){
@@ -289,9 +296,9 @@ $(document).ready(function(){
                 });
             }
             optionalGrayout("#unspecified-day_section-22-unspecifieddate-205,#unspecified-month_section-22-unspecifieddate-205,#unspecified-year_section-22-unspecifieddate-205,#section-22-text-206,#section-22-select-207","#section-22-checkbox-434-2-final");
-            
+
     //Seriousness Criteria Tab:
-            
+
         function duration(startDay,startMonth,startYear,endDay,endMonth,endYear,dur,durUnit) {
             var endTime=($(endYear)*365+$(endMonth)*30+$(endDay))*24*60;
             var startTime=($(startYear)*365+$(startMonth)*30+$(startDay))*24*60;
@@ -314,7 +321,7 @@ $(document).ready(function(){
             }else if(diffTime>525600){
                  $(dur).val(diffTime/365/24/60);
                  $(durUnit).val('801').trigger('change');
-            }     
+            }
         }
         duration("#unspecified-day_section-22-unspecifieddate-199", "#unspecified-month_section-22-unspecifieddate-199","#unspecified-year_section-22-unspecifieddate-199",
         "#unspecified-day_section-22-unspecifieddate-205","#unspecified-month_section-22-unspecifieddate-205","#unspecified-year_section-22-unspecifieddate-205",
@@ -357,7 +364,7 @@ $(document).ready(function(){
             if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
             var values = input.split('/').map(function(v) {
                 return v.replace(/\D/g, '')
-               
+
             });
             if (values[0]) values[0] = checkValue(values[0], 31);
             if (values[1]) values[1] = checkValue(values[1], 12);
@@ -374,5 +381,3 @@ $(document).ready(function(){
     dateListner('specified-date-section-55-date-388');
     dateListner('specified-date-section-1-date-1063');
 });
-    
-    
