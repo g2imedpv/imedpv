@@ -35,5 +35,5 @@
             <a class="btn text-white flag cn_flag" href="/sd-users/setLanguage/zh_CN" role="button"><?php echo __("Chinese");?></a>
         </div>
     </div>
-    <?= $this->Form->button(__("Login"),['type'=>'submit','class'=>'btn btn-primary w-50 mx-auto my-4 login']) ?>
+    <?= $this->Form->button(__("Login "),['type'=>'submit','class'=>'btn btn-primary w-50 mx-auto my-4 login']) ?>
 <?= $this->Form->end() ?>
