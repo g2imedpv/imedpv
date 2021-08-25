@@ -20,8 +20,6 @@ echo $this->element('generatepdf');
     var dynamic_options = <?php if(empty($dynamic_options)) echo"null"; else echo json_encode($dynamic_options)?>;
     var section = <?php
     echo json_encode($sdSections,JSON_UNESCAPED_UNICODE)?>;
-debug($caseNo);
-die();
     var caseId = <?= $caseId ?>;
     // jQuery(function($) {
     //     $(document).ready(function () {
@@ -98,10 +96,19 @@ die();
                     <i class="fas fa-drafting-compass"></i> <?php echo __("Export DRAFT")?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="exportDRAFT">
-                    <a class="dropdown-item text-warning" target="_blank" href="/sd-export/genCIOMSDRAFT/<?php echo $caseId ?>"><?php echo __("CIOMS-R2")?></a>
-                    <a class="dropdown-item text-warning" target="_blank" href="/sd-export/genCIOMSThreeDRAFT/<?php echo $caseId ?>"><?php echo __("CIOMS-R3")?></a>
-                    <a class="dropdown-item text-warning" target="_blank" href="/sd-export/genFDApdfDRAFT/<?php echo $caseId ?>"><?php echo __("FDA-R2")?></a>
-                    <a class="dropdown-item text-warning" target="_blank" href="/sd-medwatch-positions-r3/genPdfThreeDRAFT/<?php echo $caseId ?>"><?php echo __("FDA-R3")?></a>
+                    <?php if($e2b_version == '3') {
+                                echo "<a class=\"dropdown-item text-warning\" href=\"/sd-export/genCIOMSThreeDRAFT/$caseId\">". __("CIOMS-R3")."</a>";
+                                echo "<a class=\"dropdown-item text-warning\" href=\"/sd-export/sd-medwatch-positions-r3/genPdfThreeDRAFT/$caseId\">". __("FDA-R3")."</a>";
+
+                        }else{
+                                echo "<a class=\"dropdown-item text-warning\" href=\"/sd-export/genCIOMSDRAFT/$caseId\">". __("CIOMS-R2")."</a>";
+                                echo "<a class=\"dropdown-item text-warning\" href=\"/sd-export/genFDApdfDRAFT/$caseId\">". __("FDA-R2")."</a>";
+                        }
+                    ?>
+                    <!--<a class="dropdown-item text-warning" target="_blank" href="/sd-export/genCIOMSDRAFT/<?php echo $caseId ?>"><?php echo __("CIOMS-R2")?></a>-->
+                    <!--<a class="dropdown-item text-warning" target="_blank" href="/sd-export/genCIOMSThreeDRAFT/<?php echo $caseId ?>"><?php echo __("CIOMS-R3")?></a>-->
+                    <!--<a class="dropdown-item text-warning" target="_blank" href="/sd-export/genFDApdfDRAFT/<?php echo $caseId ?>"><?php echo __("FDA-R2")?></a>-->
+                    <!--<a class="dropdown-item text-warning" target="_blank" href="/sd-medwatch-positions-r3/genPdfThreeDRAFT/<?php echo $caseId ?>"><?php echo __("FDA-R3")?></a>-->
                 </div>
             </li>
 
@@ -111,12 +118,16 @@ die();
                     <i class="fas fa-file-export"></i> <?php echo __("Export")?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="export">
-                    <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMS/<?php echo $caseId ?>"><?php echo __("CIOMS-R2")?></a>
-                    <a class="dropdown-item" target="_blank" href="/sd-export/genCIOMSThree/<?php echo $caseId ?>"><?php echo __("CIOMS-R3")?></a>
-                    <a class="dropdown-item" target="_blank" href="/sd-export/genFDApdf/<?php echo $caseId ?>"><?php echo __("FDA-R2")?></a>
-                    <a class="dropdown-item" target="_blank" href="/sd-medwatch-positions-r3/genPdfThree/<?php echo $caseId ?>"><?php echo __("FDA-R3")?></a>
-                    <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLTwo/<?php echo $caseId ?>"><?php echo __("XML-R2")?></a>
-                    <a class="dropdown-item" target="_blank" href="/sd-xml-structures/genXMLThree/<?php echo $caseId ?>"><?php echo __("XML-R3")?></a>
+                    <?php if($e2b_version == '3') {
+                            echo "<a class=\"dropdown-item\" href=\"/sd-export/genCIOMSThree/$caseId\">". __("CIOMS-R3")."</a>";
+                            echo "<a class=\"dropdown-item\" href=\"/sd-medwatch-positions-r3/genPdfThree/$caseId\">". __("FDA-R3")."</a>";
+                            echo "<a class=\"dropdown-item\" href=\"/sd-xml-structures/genXMLThree/$caseId\">". __("XML-R3")."</a>";
+                        }else{
+                            echo "<a class=\"dropdown-item\" href=\"/sd-export/genCIOMS/$caseId\">". __("CIOMS-R2")."</a>";
+                            echo "<a class=\"dropdown-item\" href=\"/sd-export/genFDApdf/$caseId\">". __("FDA-R2")."</a>";
+                            echo "<a class=\"dropdown-item\" href=\"/sd-xml-structures/genXMLTwo/$caseId\">". __("XML-R2")."</a>";
+                        }
+                    ?>
                 </div>
             </li>
 

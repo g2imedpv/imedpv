@@ -123,7 +123,6 @@ class SdXmlStructuresController extends AppController
         $sdXmlStructures = TableRegistry::get('sdXmlStructures');
         $ICSR = $sdXmlStructures ->find()
         ->select(['sdXmlStructures.tag','fv.field_value','sdXmlStructures.level','sdXmlStructures.last_tag_id','sdXmlStructures.sd_field_id','sdXmlStructures.multiple','fv.set_number'])
-    
         ->join([
             'fv' =>[
                 'table' =>'sd_field_values',
@@ -180,12 +179,14 @@ class SdXmlStructuresController extends AppController
             ]
         ])->first();
         $value=$ICSR['fv']['field_value'];
-          
+        $value= str_replace('>', '&gt', $value);
+        $value= str_replace('<', '&lt', $value);
+        $value= str_replace('&', '&amp', $value);
         return $value; 
       
     }
-    
 
+    
     public function genXMLTwo($caseId){   
         $this->autoRender = false;
         //set file name with caseNo and create time
@@ -198,13 +199,15 @@ class SdXmlStructuresController extends AppController
         $xml = $fileName.$time;
         header("Content-Type: text/html/force-download");
         header("Content-Disposition: attachment; filename=".$xml.".xml");
-
         $xml = new \XMLWriter();
         $xml->openUri("php://output");
         $xml->setIndentString("\t");
         $xml->setIndent(true);
-        // create xml Document start
-        $xml->startDocument('1.0', 'ISO-8859-1');//FDA supports only the ISO-8859-1 character set for encoding the submission.
+        $lang=$this->getSingleTag($caseId,'primarysourcecountry');
+        //Determine the language
+        if($lang=='US'){
+            // create xml Document start
+            $xml->startDocument('1.0', 'ISO-8859-1');//FDA supports only the ISO-8859-1 character set for encoding the submission.
             $xml->writeDtd('ichicsr','','https://www.accessdata.fda.gov/xml/icsr-xmlv2.1.dtd');
             //A first element ichicsr
                 $xml->startElement("ichicsr");
@@ -215,21 +218,43 @@ class SdXmlStructuresController extends AppController
                             $xml->writeElement('messageformatversion','2');
                             $xml->writeElement('messageformatrelease','1');
                             $xml->writeElement('receivedate',$this->getSingleTag($caseId,'receivedate'));
-                            $xml->writeElement('messagesenderidentifier','Company G2');
+                            $xml->writeElement('messagesenderidentifier','G2-BioPharma-Services INC.');
                             $xml->writeElement('messagereceiveridentifier','ZZFDA');
                             $xml->writeElement('messagedateformat','204');
                             $xml->writeElement('messagedate',$this->getSingleTag($caseId,'messagedate'));
                         $xml->endElement();//ichicsrmessageheader
-                        //debug($xml);
-                        //die();
+        }else if($lang=='CN'){
+            // create xml Document start
+            $xml->startDocument('1.0', 'UTF-8');//FDA supports only the ISO-8859-1 character set for encoding the submission.
+            $xml->writeDtd('ichicsr','','http://www.cde.org.cn/DTD/icsr21xml.dtd');
+            //TEST:$xml->writeDtd('ichicsr','','http://www.cde.org.cn/DTD/ichicsrack11xml.dtd');
+            //A first element ichicsr
+                $xml->startElement("ichicsr");
+                    // Attribute lang="en"
+                    $xml->writeAttribute("lang","zh");
+                        $xml->writeComment(" M.1 ICH ICSR Message Header Information");
+                        $xml->startElement("ichicsrmessageheader");
+                            $xml->writeComment(" M.1.1 Message Type");
+                            $xml->writeElement('messagetype','ichicsrack');
+                            $xml->writeComment(" M.1.2 Message Format Version");
+                            $xml->writeElement('messageformatversion','1.1');
+                            $xml->writeComment(" M.1.3 Message Format Release");
+                            $xml->writeElement('messageformatrelease','1.0');
+                            $xml->writeComment(" M.1.4 Message Number");
+                            $xml->writeElement('messagenumb',$this->getSingleTag($caseId,'receivedate'));
+                            $xml->writeComment(" M.1.5 Message Sender Identifier");
+                            $xml->writeElement('messagesenderidentifier','G2-BioPharma-Services INC.');
+                            $xml->writeComment(" M.1.6 Message Receiver Identifier");
+                            $xml->writeElement('messagereceiveridentifier','CDEE2B');// test calue="CDETEST"
+                            $xml->writeComment("M.1.7.a Message Date Format");
+                            $xml->writeElement('messagedateformat','204');
+                            $xml->writeComment("M.1.7.b Message Date");
+                            $xml->writeElement('messagedate',date("YmdHis"));
+                        $xml->endElement();//ichicsrmessageheader
+        }
+                        $xml->writeComment("A.1 SAFETY REPORT");
                         $xml->startElement("safetyreport");
                                 //SafetyReport
-                                $safetyreport=$this->getErgodicTag($caseId,3,11);
-                                foreach($safetyreport as $SafetyReport){
-                                    $xml->writeElement($SafetyReport['tag'],$SafetyReport['fv']['field_value']);
-                                }
-                                
-                        /*
                             $xml->writeElement('safetyreportversion',$this->getSingleTag($caseId,'safetyreportversion'));
                             $xml->writeElement('safetyreportid',$this->getSingleTag($caseId,'safetyreportid'));
                             $xml->writeElement('primarysourcecountry',$this->getSingleTag($caseId,'primarysourcecountry'));
@@ -256,48 +281,56 @@ class SdXmlStructuresController extends AppController
                             $xml->writeElement('casenullification',$this->getSingleTag($caseId,'casenullification'));
                             $xml->writeElement('nullificationreason',$this->getSingleTag($caseId,'nullificationreason'));
                             $xml->writeElement('medicallyconfirm',$this->getSingleTag($caseId,'medicallyconfirm'));
-                            */
                             //reportduplicate
-                            $duplicateNumber=$this->getMaxSetNumber($caseId,4,38);
-                            for($i=1;$i<=$duplicateNumber;$i++){
-                                $xml->startElement("reportduplicate");
-                                $reportduplicate=$this->getRepeatTag($caseId,4,38,$i);
-                                    foreach($reportduplicate as $ReportDuplicate){   
-                                        $xml->writeElement($ReportDuplicate['tag'],$ReportDuplicate['fv']['field_value']); 
-                                    }       
-                                $xml->endElement();
-                            }//ReportDuplicate
-
+                            $xml->startElement("reportduplicate");
+                                $xml->writeElement('duplicatesource',$this->getSingleTag($caseId,'duplicatesource'));
+                                $xml->writeElement('duplicatenumb',$this->getSingleTag($caseId,'duplicatenumb'));
+                            $xml->endElement();
                             //linkedreport
-                            $linkedNumber=$this->getMaxSetNumber($caseId,4,41);
-                            for($i=1;$i<=$linkedNumber;$i++){
-                                $xml->startElement("linkedreport");
-                                $linkedreport=$this->getRepeatTag($caseId,4,41,$i);
-                                    foreach($linkedreport as $LinkedReport){   
-                                        $xml->writeElement($LinkedReport['tag'],$LinkedReport['fv']['field_value']); 
-                                    }       
-                                $xml->endElement();
-                            }
-
+                            $xml->startElement("linkedreport");
+                                $xml->writeElement('linkreportnumb',$this->getSingleTag($caseId,'linkreportnumb'));
+                            $xml->endElement();
                             //primarysource
-                            $primarysourceNumber=$this->getMaxSetNumber($caseId,4,43);
-                            for($i=1;$i<=$primarysourceNumber;$i++){
-                                $xml->startElement("primarysource");
-                                $primarysource=$this->getRepeatTag($caseId,4,43,$i);
-                                    foreach($primarysource as $PrimarySource){   
-                                        $xml->writeElement($PrimarySource['tag'],$PrimarySource['fv']['field_value']); 
-                                    }       
-                                $xml->endElement();
-                            } //primarysource
-
+                            $xml->startElement("primarysource");
+                                $xml->writeElement('reportertitle',$this->getSingleTag($caseId,'reportertitle'));
+                                $xml->writeElement('reportergivename',$this->getSingleTag($caseId,'reportergivename'));
+                                $xml->writeElement('reportermiddlename',$this->getSingleTag($caseId,'reportermiddlename'));
+                                $xml->writeElement('reporterfamilyname',$this->getSingleTag($caseId,'reporterfamilyname'));
+                                $xml->writeElement('reporterorganization',$this->getSingleTag($caseId,'reporterorganization'));
+                                $xml->writeElement('reporterdepartment',$this->getSingleTag($caseId,'reporterdepartment'));
+                                $xml->writeElement('reporterstreet',$this->getSingleTag($caseId,'reporterstreet'));
+                                $xml->writeElement('reportercity',$this->getSingleTag($caseId,'reportercity'));
+                                $xml->writeElement('reporterstate',$this->getSingleTag($caseId,'reporterstate'));
+                                $xml->writeElement('reporterpostcode',$this->getSingleTag($caseId,'reporterpostcode'));
+                                $xml->writeElement('reportercountry',$this->getSingleTag($caseId,'reportercountry'));
+                                $xml->writeElement('qualification',$this->getSingleTag($caseId,'qualification'));
+                                $xml->writeElement('literaturereference',$this->getSingleTag($caseId,'literaturereference'));
+                                $xml->writeElement('studyname',$this->getSingleTag($caseId,'studyname'));
+                                $xml->writeElement('sponsorstudynumb',$this->getSingleTag($caseId,'sponsorstudynumb'));
+                                $xml->writeElement('observestudytype',$this->getSingleTag($caseId,'observestudytype'));
+                            $xml->endElement();
                             //sender
                             $xml->startElement("sender");
-                            $sender=$this->getErgodicTag($caseId,4,60);
-                            foreach($sender as $Sender){
-                                $xml->writeElement($Sender['tag'],$Sender['fv']['field_value']);
-                            }
-                            $xml->endElement();//sender
-
+                                $xml->writeElement('sendertype',$this->getSingleTag($caseId,'sendertype'));
+                                $xml->writeElement('senderorganization',$this->getSingleTag($caseId,'senderorganization'));
+                                $xml->writeElement('senderdepartment',$this->getSingleTag($caseId,'senderdepartment'));
+                                $xml->writeElement('sendertitle',$this->getSingleTag($caseId,'sendertitle'));
+                                $xml->writeElement('sendergivename',$this->getSingleTag($caseId,'sendergivename'));
+                                $xml->writeElement('sendermiddlename',$this->getSingleTag($caseId,'sendermiddlename'));
+                                $xml->writeElement('senderfamilyname',$this->getSingleTag($caseId,'senderfamilyname'));
+                                $xml->writeElement('senderstreetaddress',$this->getSingleTag($caseId,'senderstreetaddress'));
+                                $xml->writeElement('sendercity',$this->getSingleTag($caseId,'sendercity'));
+                                $xml->writeElement('senderstate',$this->getSingleTag($caseId,'senderstate'));
+                                $xml->writeElement('senderpostcode',$this->getSingleTag($caseId,'senderpostcode'));
+                                $xml->writeElement('sendercountrycode',$this->getSingleTag($caseId,'sendercountrycode'));
+                                $xml->writeElement('sendertel',$this->getSingleTag($caseId,'sendertel'));
+                                $xml->writeElement('sendertelextension',$this->getSingleTag($caseId,'sendertelextension'));
+                                $xml->writeElement('sendertelcountrycode',$this->getSingleTag($caseId,'sendertelcountrycode'));
+                                $xml->writeElement('senderfax',$this->getSingleTag($caseId,'senderfax'));
+                                $xml->writeElement('senderfaxextension',$this->getSingleTag($caseId,'senderfaxextension'));
+                                $xml->writeElement('senderfaxcountrycode',$this->getSingleTag($caseId,'senderfaxcountrycode'));
+                                $xml->writeElement('senderemailaddress',$this->getSingleTag($caseId,'senderemailaddress'));
+                            $xml->endElement();
                             //receiver
                             $xml->startElement("receiver");
                                 $xml->writeElement('receivertype','2');
@@ -310,21 +343,10 @@ class SdXmlStructuresController extends AppController
                                 $xml->writeElement('receiverpostcode','20993');
                                 $xml->writeElement('receivercountrycode','US');
                                 $xml->writeElement('receiveremailaddress','faersesub@fda.hhs.gov');
-                                //$receiver=$this->getErgodicTag($caseId,4,80);
-                                //foreach($receiver as $Receiver){
-                                //    $xml->writeElement($Receiver['tag'],$Receiver['fv']['field_value']);
-                                //}
+                                
                             $xml->endElement();//receiver
-
                             //patient
                             $xml->startElement("patient");
-                                $xml->startElement("patient");
-                                $patient=$this->getErgodicTag($caseId,4,100);
-                                foreach($patient as $Patient){
-                                    $xml->writeElement($Patient['tag'],$Patient['fv']['field_value']);
-                                }
-                                
-                            /*
                                 $xml->writeElement('patientinitial',$this->getSingleTag($caseId,'patientinitial'));
                                 $xml->writeElement('patientgpmedicalrecordnumb',$this->getSingleTag($caseId,'patientgpmedicalrecordnumb'));
                                 $xml->writeElement('patientspecialistrecordnumb',$this->getSingleTag($caseId,'patientspecialistrecordnumb'));
@@ -344,64 +366,51 @@ class SdXmlStructuresController extends AppController
                                 $xml->writeElement('patientlastmenstrualdate',$this->getSingleTag($caseId,'patientlastmenstrualdate'));
                                 $xml->writeElement('patientmedicalhistorytext',$this->getSingleTag($caseId,'patientmedicalhistorytext'));
                                 $xml->writeElement('resultstestsprocedures',$this->getSingleTag($caseId,'resultstestsprocedures'));
-                                */
-
-                                //medicalhistoryepisode
-                                $medicalhistoryepisodeNumber=$this->getMaxSetNumber($caseId,5,120);
-                                for($i=1;$i<=$medicalhistoryepisodeNumber;$i++){
-                                    $xml->startElement("medicalhistoryepisode");
-                                    $medicalhistoryepisode=$this->getRepeatTag($caseId,5,120,$i);
-                                        foreach($medicalhistoryepisode as $MedicalHistoryEpisode){   
-                                            $xml->writeElement($MedicalHistoryEpisode['tag'],$MedicalHistoryEpisode['fv']['field_value']); 
-                                        }       
-                                    $xml->endElement();
-                                } //medicalhistoryepisode
-
+                               //medicalhistoryepisode
+                               $xml->startElement("medicalhistoryepisode");
+                                    $xml->writeElement('patientepisodenamemeddraversion',$this->getSingleTag($caseId,'patientepisodenamemeddraversion'));
+                                    $xml->writeElement('patientepisodename',$this->getSingleTag($caseId,'patientepisodename'));
+                                    $xml->writeElement('patientmedicalstartdateformat',$this->getSingleTag($caseId,'patientmedicalstartdateformat'));
+                                    $xml->writeElement('patientmedicalstartdate',$this->getSingleTag($caseId,'patientmedicalstartdate'));
+                                    $xml->writeElement('patientmedicalcontinue',$this->getSingleTag($caseId,'patientmedicalcontinue'));
+                                    $xml->writeElement('patientmedicalenddateformat',$this->getSingleTag($caseId,'patientmedicalenddateformat'));
+                                    $xml->writeElement('patientmedicalenddate',$this->getSingleTag($caseId,'patientmedicalenddate'));
+                                    $xml->writeElement('patientmedicalcomment',$this->getSingleTag($caseId,'patientmedicalcomment'));
+                                $xml->endElement();
+                               
                                 //patientpastdrugtherapy
-                                $patientpastdrugtherapyNumber=$this->getMaxSetNumber($caseId,5,129);
-                                for($i=1;$i<=$patientpastdrugtherapyNumber;$i++){
-                                    $xml->startElement("patientpastdrugtherapy");
-                                    $patientpastdrugtherapy=$this->getRepeatTag($caseId,5,129,$i);
-                                        foreach($patientpastdrugtherapy as $PatientPastDrugTherapy){   
-                                            $xml->writeElement($PatientPastDrugTherapy['tag'],$PatientPastDrugTherapy['fv']['field_value']); 
-                                        }       
-                                    $xml->endElement();
-                                } //patientpastdrugtherapy
+                                $xml->startElement("patientpastdrugtherapy");
+                                    $xml->writeElement('patientdrugname',$this->getSingleTag($caseId,'patientdrugname'));
+                                    $xml->writeElement('patientdrugstartdateformat',$this->getSingleTag($caseId,'patientdrugstartdateformat'));
+                                    $xml->writeElement('patientdrugstartdate',$this->getSingleTag($caseId,'patientdrugstartdate'));
+                                    $xml->writeElement('patientdrugenddateformat',$this->getSingleTag($caseId,'patientdrugenddateformat'));
+                                    $xml->writeElement('patientdrugenddate',$this->getSingleTag($caseId,'patientdrugenddate'));
+                                    $xml->writeElement('patientindicationmeddraversion',$this->getSingleTag($caseId,'patientindicationmeddraversion'));
+                                    $xml->writeElement('patientdrugindication',$this->getSingleTag($caseId,'patientdrugindication'));
+                                    $xml->writeElement('patientdrgreactionmeddraversion',$this->getSingleTag($caseId,'patientdrgreactionmeddraversion'));
+                                    $xml->writeElement('patientdrugreaction',$this->getSingleTag($caseId,'patientdrugreaction'));
+                                $xml->endElement();
+                                
                                 //patientdeath
                                 $xml->startElement("patientdeath");
-                                    $xml->writeElement('patientdeathdateformat','102');
+                                    $xml->writeElement('patientdeathdateformat',$this->getSingleTag($caseId,'patientdeathdateformat'));
                                     $xml->writeElement('patientdeathdate',$this->getSingleTag($caseId,'patientdeathdate'));
-                                    $xml->writeElement('patientautopsyyesno',$this->getSingleTag($caseId,'patientautopsyyesno')); //patientpastdrugtherapy
-                                    //patientdeathcause
-                                    $patientdeathcauseNumber=$this->getMaxSetNumber($caseId,6,143);
-                                    for($i=1;$i<=$patientdeathcauseNumber;$i++){
-                                        $xml->startElement("patientdeathcause");
-                                            $patientdeathcause=$this->getRepeatTag($caseId,6,143,$i);
-                                                foreach($patientdeathcause as $PatientDeathCause){   
-                                                    $xml->writeElement($PatientDeathCause['tag'],$PatientDeathCause['fv']['field_value']); 
-                                                }       
-                                        $xml->endElement();
-                                    } //patientdeathcause
-                                    //patientautopsy
-                                    $patientautopsyNumber=$this->getMaxSetNumber($caseId,6,146);
-                                    for($i=1;$i<=$patientautopsyNumber;$i++){
-                                         $xml->startElement("patientautopsy");
-                                         $patientautopsy=$this->getRepeatTag($caseId,6,146,$i);
-                                             foreach($patientautopsy as $PatientAutopsy){   
-                                                 $xml->writeElement($PatientAutopsy['tag'],$PatientAutopsy['fv']['field_value']); 
-                                             }       
-                                         $xml->endElement();
-                                     } //patientautopsy
-                                $xml->endElement();//patientdeath
+                                    $xml->writeElement('patientautopsyyesno',$this->getSingleTag($caseId,'patientautopsyyesno'));
+                                    $xml->startElement("patientdeathcause");
+                                        $xml->writeElement('patientdeathreportmeddraversion',$this->getSingleTag($caseId,'patientdeathreportmeddraversion'));
+                                        $xml->writeElement('patientdeathreport',$this->getSingleTag($caseId,'patientdeathreport'));
+                                    $xml->endElement();
+                                    $xml->startElement("patientautopsy");
+                                        $xml->writeElement('patientdetermautopsmeddraversion',$this->getSingleTag($caseId,'patientdetermautopsmeddraversion'));
+                                        $xml->writeElement('patientdetermineautopsy',$this->getSingleTag($caseId,'patientdetermineautopsy'));
+                                    $xml->endElement();
+                                $xml->endElement();
+                                
                                 //parent
                                 $xml->startElement("parent");
-                                    $patient=$this->getErgodicTag($caseId,5,149);
-                                    $xml->writeElement('parentlastmenstrualdateformat','102');
-                                    foreach($patient as $Patient){
-                                        $xml->writeElement($Patient['tag'],$Patient['fv']['field_value']);
-                                    }
-                                /*
                                     $xml->writeElement('parentidentification',$this->getSingleTag($caseId,'parentidentification'));
+                                    $xml->writeElement('parentbirthdateformat',$this->getSingleTag($caseId,'parentbirthdateformat'));
+                                    $xml->writeElement('parentbirthdate',$this->getSingleTag($caseId,'parentbirthdate'));
                                     $xml->writeElement('parentage',$this->getSingleTag($caseId,'parentage'));
                                     $xml->writeElement('parentageunit',$this->getSingleTag($caseId,'parentageunit'));
                                     $xml->writeElement('parentlastmenstrualdateformat','102');
@@ -410,18 +419,228 @@ class SdXmlStructuresController extends AppController
                                     $xml->writeElement('parentheight',$this->getSingleTag($caseId,'parentheight'));
                                     $xml->writeElement('parentsex',$this->getSingleTag($caseId,'parentsex'));
                                     $xml->writeElement('parentmedicalrelevanttext',$this->getSingleTag($caseId,'parentmedicalrelevanttext'));
-                                   */
+                                    //parentmedicalhistoryepisode
+                                    $xml->startElement("parentmedicalhistoryepisode");
+                                        $xml->writeElement('parentmdepisodemeddraversion',$this->getSingleTag($caseId,'parentmdepisodemeddraversion'));
+                                        $xml->writeElement('parentmedicalepisodename',$this->getSingleTag($caseId,'parentmedicalepisodename'));
+                                        $xml->writeElement('parentmedicalstartdateformat',$this->getSingleTag($caseId,'parentmedicalstartdateformat'));
+                                        $xml->writeElement('parentmedicalstartdate',$this->getSingleTag($caseId,'parentmedicalstartdate'));
+                                        $xml->writeElement('parentmedicalcontinue',$this->getSingleTag($caseId,'parentmedicalcontinue'));
+                                        $xml->writeElement('parentmedicalenddateformat',$this->getSingleTag($caseId,'parentmedicalenddateformat'));
+                                        $xml->writeElement('parentmedicalenddate',$this->getSingleTag($caseId,'parentmedicalenddate'));
+                                        $xml->writeElement('parentmedicalcomment',$this->getSingleTag($caseId,'parentmedicalcomment'));
+                                    $xml->endElement();
+                                    //parentpastdrugtherapy
+                                    $xml->startElement("parentpastdrugtherapy");
+                                        $xml->writeElement('parentdrugname',$this->getSingleTag($caseId,'parentdrugname'));
+                                        $xml->writeElement('parentdrugstartdateformat',$this->getSingleTag($caseId,'parentdrugstartdateformat'));
+                                        $xml->writeElement('parentdrugstartdate',$this->getSingleTag($caseId,'parentdrugstartdate'));
+                                        $xml->writeElement('parentdrugenddateformat',$this->getSingleTag($caseId,'parentdrugenddateformat'));
+                                        $xml->writeElement('parentdrugenddate',$this->getSingleTag($caseId,'parentdrugenddate'));
+                                        $xml->writeElement('parentdrgindicationmeddraversion',$this->getSingleTag($caseId,'parentdrgindicationmeddraversion'));
+                                        $xml->writeElement('parentdrugindication',$this->getSingleTag($caseId,'parentdrugindication'));
+                                        $xml->writeElement('parentdrgreactionmeddraversion',$this->getSingleTag($caseId,'parentdrgreactionmeddraversion'));
+                                        $xml->writeElement('parentdrugreaction',$this->getSingleTag($caseId,'parentdrugreaction'));
+                                    $xml->endElement();
+                                $xml->endElement();  
+                                //reaction
+                                $xml->startElement("reaction");  
+                                    $xml->writeElement('primarysourcereaction',$this->getSingleTag($caseId,'primarysourcereaction'));
+                                    $xml->writeElement('reactionmeddraversionllt',$this->getSingleTag($caseId,'reactionmeddraversionllt'));
+                                    $xml->writeElement('reactionmeddrallt',$this->getSingleTag($caseId,'reactionmeddrallt'));
+                                    $xml->writeElement('reactionmeddraversionpt',$this->getSingleTag($caseId,'reactionmeddraversionpt'));
+                                    $xml->writeElement('reactionmeddrapt',$this->getSingleTag($caseId,'reactionmeddrapt'));
+                                    $xml->writeElement('termhighlighted',$this->getSingleTag($caseId,'termhighlighted'));
+                                    $xml->writeElement('reactionstartdateformat',$this->getSingleTag($caseId,'reactionstartdateformat'));
+                                    $xml->writeElement('reactionstartdate',$this->getSingleTag($caseId,'reactionstartdate'));
+                                    $xml->writeElement('reactionenddateformat',$this->getSingleTag($caseId,'reactionenddateformat'));
+                                    $xml->writeElement('reactionenddate',$this->getSingleTag($caseId,'reactionenddate'));
+                                    $xml->writeElement('reactionduration',$this->getSingleTag($caseId,'reactionduration'));
+                                    $xml->writeElement('reactiondurationunit',$this->getSingleTag($caseId,'reactiondurationunit'));
+                                    $xml->writeElement('reactionfirsttime',$this->getSingleTag($caseId,'reactionfirsttime'));
+                                    $xml->writeElement('reactionfirsttimeunit',$this->getSingleTag($caseId,'reactionfirsttimeunit'));
+                                    $xml->writeElement('reactionlasttime',$this->getSingleTag($caseId,'reactionlasttime'));
+                                    $xml->writeElement('reactionlasttimeunit',$this->getSingleTag($caseId,'reactionlasttimeunit'));
+                                    $xml->writeElement('reactionoutcome',$this->getSingleTag($caseId,'reactionoutcome'));
+                                $xml->endElement(); 
+                                //test
+                                $xml->startElement("test");  
+                                    $xml->writeElement('testdateformat',$this->getSingleTag($caseId,'testdateformat'));
+                                    $xml->writeElement('testdate',$this->getSingleTag($caseId,'testdate'));
+                                    $xml->writeElement('testname',$this->getSingleTag($caseId,'testname'));
+                                    $xml->writeElement('testresult',$this->getSingleTag($caseId,'testresult'));
+                                    $xml->writeElement('testunit',$this->getSingleTag($caseId,'testunit'));
+                                    $xml->writeElement('lowtestrange',$this->getSingleTag($caseId,'lowtestrange'));
+                                    $xml->writeElement('hightestrange',$this->getSingleTag($caseId,'hightestrange'));
+                                    $xml->writeElement('moreinformation',$this->getSingleTag($caseId,'moreinformation'));
+                                $xml->endElement(); 
+                                //drug
+                                $xml->startElement("drug");  
+                                    $xml->writeElement('drugcharacterization',$this->getSingleTag($caseId,'drugcharacterization'));
+                                    $xml->writeElement('medicinalproduct',$this->getSingleTag($caseId,'medicinalproduct'));
+                                    $xml->writeElement('obtaindrugcountry',$this->getSingleTag($caseId,'obtaindrugcountry'));
+                                    $xml->writeElement('drugbatchnumb',$this->getSingleTag($caseId,'drugbatchnumb'));
+                                    $xml->writeElement('drugauthorizationnumb',$this->getSingleTag($caseId,'drugauthorizationnumb'));
+                                    $xml->writeElement('drugauthorizationcountry',$this->getSingleTag($caseId,'drugauthorizationcountry'));
+                                    $xml->writeElement('drugauthorizationholder',$this->getSingleTag($caseId,'drugauthorizationholder'));
+                                    $xml->writeElement('drugstructuredosagenumb',$this->getSingleTag($caseId,'drugstructuredosagenumb'));
+                                    $xml->writeElement('drugstructuredosageunit',$this->getSingleTag($caseId,'drugstructuredosageunit'));
+                                    $xml->writeElement('drugseparatedosagenumb',$this->getSingleTag($caseId,'drugseparatedosagenumb'));
+                                    $xml->writeElement('drugintervaldosageunitnumb',$this->getSingleTag($caseId,'drugintervaldosageunitnumb'));
+                                    $xml->writeElement('drugintervaldosagedefinition',$this->getSingleTag($caseId,'drugintervaldosagedefinition'));
+                                    $xml->writeElement('drugcumulativedosagenumb',$this->getSingleTag($caseId,'drugcumulativedosagenumb'));
+                                    $xml->writeElement('drugcumulativedosageunit',$this->getSingleTag($caseId,'drugcumulativedosageunit'));
+                                    $xml->writeElement('drugdosagetext',$this->getSingleTag($caseId,'drugdosagetext'));
+                                    $xml->writeElement('drugdosageform',$this->getSingleTag($caseId,'drugdosageform'));
+                                    $xml->writeElement('drugadministrationroute',$this->getSingleTag($caseId,'drugadministrationroute'));
+                                    $xml->writeElement('drugparadministration',$this->getSingleTag($caseId,'drugparadministration'));
+                                    $xml->writeElement('reactiongestationperiod',$this->getSingleTag($caseId,'reactiongestationperiod'));
+                                    $xml->writeElement('reactiongestationperiodunit',$this->getSingleTag($caseId,'reactiongestationperiodunit'));
+                                    $xml->writeElement('drugindicationmeddraversion',$this->getSingleTag($caseId,'drugindicationmeddraversion'));
+                                    $xml->writeElement('drugindication',$this->getSingleTag($caseId,'drugindication'));
+                                    $xml->writeElement('drugstartdateformat',$this->getSingleTag($caseId,'drugstartdateformat'));
+                                    $xml->writeElement('drugstartdate',$this->getSingleTag($caseId,'drugstartdate'));
+                                    $xml->writeElement('drugstartperiod',$this->getSingleTag($caseId,'drugstartperiod'));
+                                    $xml->writeElement('drugstartperiodunit',$this->getSingleTag($caseId,'drugstartperiodunit'));
+                                    $xml->writeElement('druglastperiod',$this->getSingleTag($caseId,'druglastperiod'));
+                                    $xml->writeElement('druglastperiodunit',$this->getSingleTag($caseId,'druglastperiodunit'));
+                                    $xml->writeElement('drugenddateformat',$this->getSingleTag($caseId,'drugenddateformat'));
+                                    $xml->writeElement('drugenddate',$this->getSingleTag($caseId,'drugenddate'));
+                                    $xml->writeElement('drugtreatmentduration',$this->getSingleTag($caseId,'drugtreatmentduration'));
+                                    $xml->writeElement('drugtreatmentdurationunit',$this->getSingleTag($caseId,'drugtreatmentdurationunit'));
+                                    $xml->writeElement('actiondrug',$this->getSingleTag($caseId,'actiondrug'));
+                                    $xml->writeElement('drugrecurreadministration',$this->getSingleTag($caseId,'drugrecurreadministration'));
+                                    $xml->writeElement('drugadditional',$this->getSingleTag($caseId,'drugadditional'));
+                                    //activesubstance
+                                    $xml->startElement("activesubstance");  
+                                        $xml->writeElement('activesubstancename',$this->getSingleTag($caseId,'activesubstancename'));
+                                    $xml->endElement(); 
+                                    //drugrecurrence
+                                    $xml->startElement("drugrecurrence");  
+                                        $xml->writeElement('drugrecuractionmeddraversion',$this->getSingleTag($caseId,'drugrecuractionmeddraversion'));
+                                        $xml->writeElement('drugrecuraction',$this->getSingleTag($caseId,'drugrecuraction'));
+                                    $xml->endElement(); 
+                                    //drugreactionrelatedness
+                                    $xml->startElement("drugreactionrelatedness");  
+                                        $xml->writeElement('drugreactionassesmeddraversion',$this->getSingleTag($caseId,'drugreactionassesmeddraversion'));
+                                        $xml->writeElement('drugreactionasses',$this->getSingleTag($caseId,'drugreactionasses'));
+                                        $xml->writeElement('drugassessmentsource',$this->getSingleTag($caseId,'drugassessmentsource'));
+                                        $xml->writeElement('drugassessmentmethod',$this->getSingleTag($caseId,'drugassessmentmethod'));
+                                        $xml->writeElement('drugassessmentmethod',$this->getSingleTag($caseId,'drugassessmentmethod'));
+                                    $xml->endElement(); 
+                                $xml->endElement(); 
+                                //summary
+                                $xml->startElement("summary");  
+                                    $xml->writeElement('narrativeincludeclinical',$this->getSingleTag($caseId,'narrativeincludeclinical'));
+                                    $xml->writeElement('reportercomment',$this->getSingleTag($caseId,'reportercomment'));
+                                    $xml->writeElement('senderdiagnosismeddraversion',$this->getSingleTag($caseId,'senderdiagnosismeddraversion'));
+                                    $xml->writeElement('senderdiagnosis',$this->getSingleTag($caseId,'senderdiagnosis'));
+                                    $xml->writeElement('sendercomment',$this->getSingleTag($caseId,'sendercomment'));
+                                $xml->endElement(); 
+                                /*$safetyreport=$this->getErgodicTag($caseId,3,11);
+                                    foreach($safetyreport as $SafetyReport){
+                                        $xml->writeElement($SafetyReport['tag'],$SafetyReport['fv']['field_value']);
+                                    }$duplicateNumber=$this->getMaxSetNumber($caseId,4,38);
+                                        for($i=1;$i<=$duplicateNumber;$i++){
+                                        $xml->startElement("reportduplicate");
+                                        $reportduplicate=$this->getRepeatTag($caseId,4,38,$i);
+                                        foreach($reportduplicate as $ReportDuplicate){   
+                                        $xml->writeElement($ReportDuplicate['tag'],$ReportDuplicate['fv']['field_value']); 
+                                        }       
+                                        $xml->endElement();
+                                        $linkedNumber=$this->getMaxSetNumber($caseId,4,41);
+                                        for($i=1;$i<=$linkedNumber;$i++){
+                                        $xml->startElement("linkedreport");
+                                        $linkedreport=$this->getRepeatTag($caseId,4,41,$i);
+                                            foreach($linkedreport as $LinkedReport){   
+                                                $xml->writeElement($LinkedReport['tag'],$LinkedReport['fv']['field_value']); 
+                                            }       
+                                        $xml->endElement();
+                                    $primarysourceNumber=$this->getMaxSetNumber($caseId,4,43);
+                                        for($i=1;$i<=$primarysourceNumber;$i++){
+                                            $xml->startElement("primarysource");
+                                            $primarysource=$this->getRepeatTag($caseId,4,43,$i);
+                                                foreach($primarysource as $PrimarySource){   
+                                                    $xml->writeElement($PrimarySource['tag'],$PrimarySource['fv']['field_value']); 
+                                                }       
+                                            $xml->endElement();
+                                        }
+                                    $xml->startElement("sender");
+                                    $sender=$this->getErgodicTag($caseId,4,60);
+                                    foreach($sender as $Sender){
+                                        $xml->writeElement($Sender['tag'],$Sender['fv']['field_value']);
+                                    }
+                                    $xml->endElement();
+                                    $receiver=$this->getErgodicTag($caseId,4,80);
+                                    foreach($receiver as $Receiver){
+                                    $xml->writeElement($Receiver['tag'],$Receiver['fv']['field_value']);
+                                    }
+                                    $xml->startElement("patient");
+                                    $xml->startElement("patient");
+                                    $patient=$this->getErgodicTag($caseId,4,100);
+                                    foreach($patient as $Patient){
+                                        $xml->writeElement($Patient['tag'],$Patient['fv']['field_value']);
+                                    }
+                                    $medicalhistoryepisodeNumber=$this->getMaxSetNumber($caseId,5,120);
+                                    for($i=1;$i<=$medicalhistoryepisodeNumber;$i++){
+                                        $xml->startElement("medicalhistoryepisode");
+                                        $medicalhistoryepisode=$this->getRepeatTag($caseId,5,120,$i);
+                                            foreach($medicalhistoryepisode as $MedicalHistoryEpisode){   
+                                                $xml->writeElement($MedicalHistoryEpisode['tag'],$MedicalHistoryEpisode['fv']['field_value']); 
+                                            }       
+                                        $xml->endElement();
+                                    } 
+                                    $patientpastdrugtherapyNumber=$this->getMaxSetNumber($caseId,5,129);
+                                        for($i=1;$i<=$patientpastdrugtherapyNumber;$i++){
+                                            $xml->startElement("patientpastdrugtherapy");
+                                            $patientpastdrugtherapy=$this->getRepeatTag($caseId,5,129,$i);
+                                                foreach($patientpastdrugtherapy as $PatientPastDrugTherapy){   
+                                                    $xml->writeElement($PatientPastDrugTherapy['tag'],$PatientPastDrugTherapy['fv']['field_value']); 
+                                                }       
+                                            $xml->endElement();
+                                        } 
+                                    $xml->startElement("patientdeath");
+                                        $xml->writeElement('patientdeathdateformat','102');
+                                        $xml->writeElement('patientdeathdate',$this->getSingleTag($caseId,'patientdeathdate'));
+                                        $xml->writeElement('patientautopsyyesno',$this->getSingleTag($caseId,'patientautopsyyesno')); //patientpastdrugtherapy
+                                        //patientdeathcause
+                                        $patientdeathcauseNumber=$this->getMaxSetNumber($caseId,6,143);
+                                        for($i=1;$i<=$patientdeathcauseNumber;$i++){
+                                            $xml->startElement("patientdeathcause");
+                                                $patientdeathcause=$this->getRepeatTag($caseId,6,143,$i);
+                                                    foreach($patientdeathcause as $PatientDeathCause){   
+                                                        $xml->writeElement($PatientDeathCause['tag'],$PatientDeathCause['fv']['field_value']); 
+                                                    }       
+                                            $xml->endElement();
+                                        } //patientdeathcause
+                                        //patientautopsy
+                                        $patientautopsyNumber=$this->getMaxSetNumber($caseId,6,146);
+                                        for($i=1;$i<=$patientautopsyNumber;$i++){
+                                            $xml->startElement("patientautopsy");
+                                            $patientautopsy=$this->getRepeatTag($caseId,6,146,$i);
+                                                foreach($patientautopsy as $PatientAutopsy){   
+                                                    $xml->writeElement($PatientAutopsy['tag'],$PatientAutopsy['fv']['field_value']); 
+                                                }       
+                                            $xml->endElement();
+                                        } //patientautopsy
+                                    $xml->endElement();
+                                    $xml->startElement("parent");
+                                    $patient=$this->getErgodicTag($caseId,5,149);
+                                    $xml->writeElement('parentlastmenstrualdateformat','102');
+                                    foreach($patient as $Patient){
+                                        $xml->writeElement($Patient['tag'],$Patient['fv']['field_value']);
+                                    }
                                     //parentmedicalhistoryepisode
                                     $parentmedicalhistoryepisodeNumber=$this->getMaxSetNumber($caseId,6,159);
                                     for($i=1;$i<=$parentmedicalhistoryepisodeNumber;$i++){
-                                         $xml->startElement("parentmedicalhistoryepisode");
-                                         $parentmedicalhistoryepisode=$this->getRepeatTag($caseId,6,159,$i);
-                                             foreach($parentmedicalhistoryepisode as $ParentMedicalHistoryEpisode){   
-                                                 $xml->writeElement($ParentMedicalHistoryEpisode['tag'],$ParentMedicalHistoryEpisode['fv']['field_value']); 
-                                             }       
-                                         $xml->endElement();
-                                     } //parentmedicalhistoryepisode
-                                     //parentpastdrugtherapy
+                                        $xml->startElement("parentmedicalhistoryepisode");
+                                        $parentmedicalhistoryepisode=$this->getRepeatTag($caseId,6,159,$i);
+                                            foreach($parentmedicalhistoryepisode as $ParentMedicalHistoryEpisode){   
+                                                $xml->writeElement($ParentMedicalHistoryEpisode['tag'],$ParentMedicalHistoryEpisode['fv']['field_value']); 
+                                            }       
+                                        $xml->endElement();
+                                    } //parentmedicalhistoryepisode
+                                    //parentpastdrugtherapy
                                     $parentpastdrugtherapyNumber=$this->getMaxSetNumber($caseId,6,168);
                                     for($i=1;$i<=$parentpastdrugtherapyNumber;$i++){
                                         $xml->startElement("parentpastdrugtherapy");
@@ -431,8 +650,7 @@ class SdXmlStructuresController extends AppController
                                             }       
                                         $xml->endElement();
                                     } //parentpastdrugtherapy 
-                                $xml->endElement();//parent
-
+                                $xml->endElement();
                                 //reaction
                                 $reactionNumber=$this->getMaxSetNumber($caseId,5,178);
                                 for($i=1;$i<=$reactionNumber;$i++){
@@ -443,7 +661,6 @@ class SdXmlStructuresController extends AppController
                                         }       
                                     $xml->endElement();
                                 } //reaction 
-
                                 //test
                                 $testNumber=$this->getMaxSetNumber($caseId,5,196);
                                 for($i=1;$i<=$testNumber;$i++){
@@ -492,15 +709,14 @@ class SdXmlStructuresController extends AppController
                                     foreach($summary as $Summary){
                                         $xml->writeElement($Summary['tag'],$Summary['fv']['field_value']);
                                     }    
-                                $xml->endElement();//summary 
+                                $xml->endElement();//summary*/ 
                             $xml->endElement();//patient
                         $xml->endElement();//safetyreport
                     $xml->endAttribute();
                 $xml->endElement();//rootelement"ichicsr"
             $xml->endDtd();
-        $xml->endDocument();
-        echo $xml->outputMemory(); 
-   
+            $xml->endDocument();
+            echo $xml->outputMemory(); 
     }
     public function XMLvalue($caseId,$field_id,$set_num=null){
         $more_conditions = "";
