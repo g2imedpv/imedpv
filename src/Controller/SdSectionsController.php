@@ -278,7 +278,7 @@ class SdSectionsController extends AppController
             foreach($sections as $changeSectionId){
                 $field_values = $sdFieldValuesTable->find()->join([
                     'structure'=>[
-                        'table'=>'sd_section_structures',
+                        'table'=>'sd_section_structures'.$e2b_version,
                         'type'=>'INNER',
                         'conditions'=>['structure.sd_field_id = SdFieldValues.sd_field_id']
                     ],
