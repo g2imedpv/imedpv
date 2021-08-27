@@ -427,7 +427,7 @@ class SdSectionsController extends AppController
             $Products->configVersion($e2b_version);
             $userInfo = TableRegistry::get('SdUsers')->get($requstData['userId']);
             if($userInfo['sd_rold_id'] > 2)
-                $useId = 'ua.sd_user_id ='.$requstData['userId'];
+                $userId = 'ua.sd_user_id ='.$requstData['userId'];
             else $userId = "";
             $sections = $this->SdSections->find()
             ->distinct()->select(['tab.id','tab.tab_name','section_name','id','section_level','field.id','field.field_label'])
