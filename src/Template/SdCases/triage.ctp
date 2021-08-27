@@ -206,7 +206,7 @@
                         <th><?php echo __("PT Name")?></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id='eventTable' style='cursor:pointer;'>
                     <?php
                     foreach($event_set as $setNo => $event_detail){
                         echo "<tr id=\"eventSet-".$setNo."\" onclick=\"mapfieldId(".$setNo.")\">";
