@@ -196,12 +196,13 @@ var userId = <?= $this->request->getSession()->read('Auth.User.id')?>;
 
         <div class='form-row'>
             <div class="form-group col-md-2">
-                <a href='https://tools.meddra.org/wbb/login.aspx' role="button" target="_blank" class="form-control btn btn-sm btn-outline-secondary"><?php echo __("MedDRA Dictionary");?></a>
+                <a href='https://tools.meddra.org/wbb/login.aspx' role="button" target="_blank" class="btn btn-sm btn-outline-secondary"><?php echo __("MedDRA Dictionary");?></a>
             </div>
         </div>
 
-        <div class='form-row'>
-            <button id="searchBtn" onclick="onQueryClicked()" class="form-control btn btn-primary w-50 mx-auto"><i class="fas fa-search"></i> <?php echo __("Search");?></button>
+        <div class='form-row justify-content-around'>
+            <button id="searchBtn" onclick="onQueryClicked()" class="btn btn-primary w-50" type="button"><i class="fas fa-search"></i> <?php echo __("Search");?></button>
+            <button class="clearsearch btn btn-outline-danger" type="button"><i class="fas fa-eraser"></i> <?php echo __("Clear")?></button>
         </div>
 
     </div>

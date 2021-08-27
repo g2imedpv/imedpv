@@ -86,9 +86,9 @@
             </div>
         </div>
         <div class="text-center">
-            <button onclick="onQueryClicked()" class="btn btn-primary w-25"><i class="fas fa-search"></i> <?php echo __("Search")?></button>
+            <button onclick="onQueryClicked()" class="btn btn-primary w-25" type="button"><i class="fas fa-search"></i> <?php echo __("Search")?></button>
             <!-- <button id="advsearch" class="btn btn-outline-info"><i class="fas fa-keyboard"></i> Advanced Search</button> -->
-            <button class="clearsearch btn btn-outline-danger"><i class="fas fa-eraser"></i> <?php echo __("Clear")?></button>
+            <button class="clearsearch btn btn-outline-danger" type="button"><i class="fas fa-eraser"></i> <?php echo __("Clear")?></button>
         </div>
 
         <div id="textHint" class="d-block w-100 text-center"></div>

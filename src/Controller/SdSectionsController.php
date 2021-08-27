@@ -203,7 +203,7 @@ class SdSectionsController extends AppController
         $sdFieldTable = TableRegistry::get('SdFields');
         $sdTab = TableRegistry::get('SdSections');
         $sdSections = $sdTab ->find()->where(['sd_tab_id'=>$tabid,'status'=>true])
-                            ->order(['SdSections.section_level'=>'ASC','SdSections.display_order'=>'ASC'])
+                            ->order(['SdSections.section_level'=>'ASC','SdSections.display_order'=>'ASC','SdSections.id'=>'ASC'])
                             ->contain(['SdSectionSummaries','SdSectionStructures'=>function($q)use($caseId,$distribution_condition){
                                 return $q->order(['SdSectionStructures.row_no'=>'ASC','SdSectionStructures.field_start_at'=>'ASC'])
                                     ->contain(['SdFields'=>['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
@@ -278,7 +278,7 @@ class SdSectionsController extends AppController
             foreach($sections as $changeSectionId){
                 $field_values = $sdFieldValuesTable->find()->join([
                     'structure'=>[
-                        'table'=>'sd_section_structures',
+                        'table'=>'sd_section_structures'.$e2b_version,
                         'type'=>'INNER',
                         'conditions'=>['structure.sd_field_id = SdFieldValues.sd_field_id']
                     ],
@@ -354,7 +354,7 @@ class SdSectionsController extends AppController
             $sdFieldTable = TableRegistry::get('SdFields');
             $sdTab = TableRegistry::get('SdSections');
             $sdSections = $sdTab ->find()->where(['sd_tab_id'=>$tabid,'status'=>true])
-                                ->order(['SdSections.section_level'=>'ASC','SdSections.display_order'=>'ASC'])
+                                ->order(['SdSections.section_level'=>'ASC','SdSections.display_order'=>'ASC','SdSections.id'=>'ASC'])
                                 ->contain(['SdSectionSummaries','SdSectionStructures'=>function($q)use($caseId,$distribution_condition){
                                     return $q->order(['SdSectionStructures.row_no'=>'ASC','SdSectionStructures.field_start_at'=>'ASC'])
                                         ->contain(['SdFields'=>['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
@@ -427,7 +427,7 @@ class SdSectionsController extends AppController
             $Products->configVersion($e2b_version);
             $userInfo = TableRegistry::get('SdUsers')->get($requstData['userId']);
             if($userInfo['sd_rold_id'] > 2)
-                $useId = 'ua.sd_user_id ='.$requstData['userId'];
+                $userId = 'ua.sd_user_id ='.$requstData['userId'];
             else $userId = "";
             $sections = $this->SdSections->find()
             ->distinct()->select(['tab.id','tab.tab_name','section_name','id','section_level','field.id','field.field_label'])

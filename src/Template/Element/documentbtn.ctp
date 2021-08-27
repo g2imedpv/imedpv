@@ -4,6 +4,7 @@
         var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
         var caseId = <?= $caseId ?>;
         var sdDocLists = "<?= $sdDocLists ?>";
+        var sdDocListsRep = "<?= $sdDocListsRep ?>";
 </script>
 <form method="post" action="/sd-documents/save/<?= $caseId ?>" enctype="multipart/form-data">
 
@@ -12,10 +13,11 @@
         <input type="hidden" name="_csrfToken" autocomplete="off" value=<?= json_encode($this->request->getParam('_csrfToken')) ?>/>
     </div>
 
-    
+
     <!-- Add Document Modal -->
     <div class="modal fade uploadDoc" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <input type="hidden"  id="hidden_docLists" value="<?= $sdDocLists?>"/>
+        <input type="hidden"  id="hidden_docLists" value="<?= $sdDocLists?>"/>
+        <input type="hidden"  id="hidden_docLists_rep" value="<?= $sdDocListsRep?>"/>
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -25,7 +27,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div><button id="addNewAttach" type="button" class="btn btn-outline-primary mb-3 float-left"><i class="fas fa-folder-plus"></i><?php echo __("Add New")?></button></div>
+                    <div><button id="addNewAttach" type="button" class="btn btn-outline-primary mb-3 float-left"><i class="fas fa-folder-plus"></i> <?php echo __("Add New")?></button></div>
                     <div class="form-row mb-3 d-block">
                         <table class="doctable table-hover" style="width:100%;">
                             <thead style="line-height:30px;">
@@ -41,13 +43,14 @@
                             <tr>
                             <th scope="row"><input class="form-control" name="doc_classification_0" id="doc_classification_0" type="text"></th>
                             <td><input class="form-control" name="doc_description_0" id="doc_description_0" type="text"></td>
-                            <td><select class="custom-select" name="doc_source_0" id="doc_source_0">
-                                <option value="File Attachment"><?php echo __("File Attachment")?></option>
-                                <option value="URL Reference"><?php echo __("URL Reference")?></option>
+                            <td>
+                                <select class="custom-select" name="doc_source_0" id="doc_source_0">
+                                    <option value="File Attachment"><?php echo __("File Attachment")?></option>
+                                    <option value="URL Reference"><?php echo __("URL Reference")?></option>
                                 </select>
-                                </td>
+                            </td>
                             <td><input class="form-control" style="display:none;" name="doc_path_0" id="doc_path_0" type="text">
-                            <input name="doc_attachment_0" id="doc_attachment_0" type="file"></td>                                    
+                            <input name="doc_attachment_0" id="doc_attachment_0" type="file"></td>
                             <td><button type="button" class="btn btn-outline-danger btn-sm my-1 w-100 attachDel"><?php echo __("Delete")?></button></td>
                             </tr>
                             </tbody>

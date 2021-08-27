@@ -355,10 +355,9 @@ $(document).ready(function(){
         $('#prioritize :input').prop('disabled',true);
     });
 
-    $(document).ready(function() {
-        $('.js-example-basic-single').select2();
-    });
+    $('.js-example-basic-single').select2();
     $('[id^=prioritize]').change(function(){prioritizeDate()});
+
 });
 function mapfieldId(setNo){
     $("#llt-searchbar_496").val("");

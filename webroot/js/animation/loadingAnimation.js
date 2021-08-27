@@ -1,8 +1,8 @@
 jQuery(function($) {
     $(function(){
         // Login and select company screen
-        $(':submit, a.flag').click(function (){
-            $(this).append(` <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`);
+        $(':submit, a.flag').one('click', function (){
+            $(this).append(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`);
         });
 
         // Global loading animation

@@ -21,7 +21,7 @@ $(document).ready(function(){
                 }
             }
             if(($(this).find("[name$=\\[field_rule\\]]").length)&&(field_value!="")){
-                
+
                 let rule = $(this).find("[name$=\\[field_rule\\]]").val().split("-");
                 if((rule[1]=="N")&&(!/^[0-9]+$/.test(field_value)))
                 {
@@ -141,12 +141,12 @@ $(document).ready(function(){
             htmltext = "<table class=\""+$("table[id^=sectionSummary-48]").attr('class')+"\" id=\""+$("table[id^=sectionSummary-48]").attr('id')+"\">"+htmltext+"</table>";
             $("#sectionSummary-48-sectionKey-1_wrapper").remove();
             $("#summary-48").prepend(htmltext);
-            
+
             $("table[id^=sectionSummary-48]").find(".dataTables_empty").parent().remove();
             console.log($("table[id^=sectionSummary-48]").html());
             $("table[id^=sectionSummary-48]").DataTable();
             autoChangeflag = false;
-            
+
         });
      }
 });
@@ -168,7 +168,7 @@ $(document).ready(function(){
     }
 //search result in other page
 $(document).ready(function(){
-    var url = window.location.href; 
+    var url = window.location.href;
     index = url.indexOf("searchFlag");
     if(index !=-1){
         var fieldID = getUrlVars()["field"];
@@ -308,7 +308,7 @@ function renderSummaries(section_id, pageNo){
                 noValue = section[sectionKey].sd_section_summary.sdFields.length;
                 let rowtext = "";
                 $.each(section[sectionKey].sd_section_summary.sdFields,function(k, field_detail){
-                    let noMatchFlag = 0;  
+                    let noMatchFlag = 0;
                     $.each(field_detail.sd_field_values,function(k, field_value_detail){
                         let fieldSetArray = field_value_detail.set_number+'';
                         let match =true;
@@ -320,13 +320,13 @@ function renderSummaries(section_id, pageNo){
                             }
                         });
                         if(match && fieldSetArray.split(',')[0] == row){
-                            rowtext = rowtext+"<td id=\"section-"+sectionId+"-row-"+row+"-td-"+field_detail.id+"\">";     
+                            rowtext = rowtext+"<td id=\"section-"+sectionId+"-row-"+row+"-td-"+field_detail.id+"\">";
                             if(field_detail.sd_element_type_id != 1 && field_detail.sd_element_type_id != 13 && field_detail.sd_element_type_id != 3 && field_detail.sd_element_type_id != 4)
                                 rowtext = rowtext + field_value_detail.field_value;
                             else if(field_detail.sd_element_type_id == 13){
                                 console.log(field_value_detail);
                                 rowtext = rowtext + dynamic_options[field_detail.descriptor.split('-')[1]][field_value_detail.field_value]
-                                
+
                             }//TODO ADD DATE RENDER LOGIC
                             else{
                             $.each(field_detail.sd_field_value_look_ups,function(k, look_ups){
@@ -336,10 +336,10 @@ function renderSummaries(section_id, pageNo){
                                 }
                             });
                             }
-                            rowtext = rowtext+"</td>"; 
+                            rowtext = rowtext+"</td>";
                             noValue --;
                             noMatchFlag = 1;
-                            return true;     
+                            return true;
                         }
                     });
                     if(!noMatchFlag) rowtext = rowtext+"<td id=\"section-"+sectionId+"-row-"+row+"-"+field_detail.id+"\"></td>";
@@ -491,7 +491,7 @@ function setPageChange(section_id, pageNo, addFlag=false, resultflag = null) {
         }
         if(section_id == 48 && addFlag) max_set = tableFields.split("</tr>").length-1;
         if(addFlag)
-            setArray[section_id] = max_set+1;            
+            setArray[section_id] = max_set+1;
         else setArray[section_id] = pageNo;
     }
     //for each field
@@ -631,9 +631,9 @@ function setPageChange(section_id, pageNo, addFlag=false, resultflag = null) {
                 if(valueFlag == false) {
                     $(this).val(null);
                     let idholder = thisElement.attr('id').split('-');
-                   
+
                     thisElement.attr('id',idholder[0]+'-'+idholder[1]+'-'+idholder[2]+'-'+idholder[3]+'-'+idholder[4]+'-'+maxindex+'-'+idholder[6]);
-                };    
+                };
             });
             if(addFlag) $("#addbtnalert-"+orignalId).show();
             else $("#addbtnalert-"+orignalId).hide();
@@ -662,7 +662,7 @@ function setPageChange(section_id, pageNo, addFlag=false, resultflag = null) {
                                 autoChangeflag = true;
                                 thisElement.val(value.field_value).trigger('change');
                                 autoChangeflag = false;
-                                
+
                             }else{
                                 if(thisElement.attr('id').split('-')[2]=='unspecifieddate'){
                                     let fieldId = thisElement.attr('id').split('-')[3];
@@ -721,9 +721,9 @@ function setPageChange(section_id, pageNo, addFlag=false, resultflag = null) {
                         }
                     }
 
-                    
+
                     // if(thisElement.attr('id').split('-')[2]=='unspecifieddate'){
-                        
+
                     //     let fieldId = thisElement.attr('id').split('-')[3];
                     //     let sectionId = thisElement.attr('id').split('-')[1];console.log($("#unspecified-day_section-"+sectionId+"unspecifieddate"+fieldId));
                     //     autoChangeflag = true;
@@ -776,7 +776,6 @@ function searchWhoDra(){
 }
 function deleteSection(sectionId, setNo,sectionKey){
     let request = {};
-    console.log()
     if('child_section' in section[sectionKey]){
         request['child_section'] =  section[sectionKey].child_section;
         let added="";
@@ -930,7 +929,7 @@ function endDistributionDecision(){
             activityList[count] = detail;
             count++;
         }
-    });    
+    });
     let request ={
         'senderId':userId,
         'activityList':activityList,
@@ -945,7 +944,7 @@ function endDistributionDecision(){
         data:request,
         success:function(response){console.log(response);
             response = JSON.parse(response);
-            
+
         },
         error:function(response){
             console.log(response.responseText);
@@ -1226,46 +1225,46 @@ function backward(){
 
 jQuery(function($) {
     // Alert if changes unsaved
-    $(document).ready(function() {
-        let unsaved = false;
+    // $(document).ready(function() {
+    //     let unsaved = false;
 
-        $("input:not(:button,:submit),textarea,select").change(function(){   //triggers change in all input fields including text type
-            unsaved = true;
-        });
+    //     $("input:not(:button,:submit),textarea,select").change(function(){   //triggers change in all input fields including text type
+    //         unsaved = true;
+    //     });
 
-        // $(window).bind('beforeunload', function(){
-        //     if(unsaved){
-        //          return swal({
-        //             title: "Are you sure?",
-        //             text: "Your data is changed, are you sure you want to complete?",
-        //             icon: "warning",
-        //             buttons: true,
-        //             dangerMode: true,
-        //         })}
-        //   });
+    //     // $(window).bind('beforeunload', function(){
+    //     //     if(unsaved){
+    //     //          return swal({
+    //     //             title: "Are you sure?",
+    //     //             text: "Your data is changed, are you sure you want to complete?",
+    //     //             icon: "warning",
+    //     //             buttons: true,
+    //     //             dangerMode: true,
+    //     //         })}
+    //     //   });
 
-        window.onbeforeunload = function (){
-            if(unsaved){
-                let _msg = 'Your data is changed, are you sure you want to complete?';
-                return  _msg;
-                // return swal({
-                //     title: "Are you sure?",
-                //     text: "Your data is changed, are you sure you want to complete?",
-                //     icon: "warning",
-                //     buttons: true,
-                //     dangerMode: true,
-                // })
-            }
-        };
-    });
-    
+    //     window.onbeforeunload = function (){
+    //         if(unsaved){
+    //             let _msg = 'Your data is changed, are you sure you want to complete?';
+    //             return  _msg;
+    //             // return swal({
+    //             //     title: "Are you sure?",
+    //             //     text: "Your data is changed, are you sure you want to complete?",
+    //             //     icon: "warning",
+    //             //     buttons: true,
+    //             //     dangerMode: true,
+    //             // })
+    //         }
+    //     };
+    // });
+
     // Show "Save" button when any input change
     $(document).ready(function() {
         $("input,textarea,select[name$=\\[field_value\\]]").change(function () {
             if(!autoChangeflag)
                 $("[id^=save-btn"+$(this).attr('id').split('-')[1]+"]").show();
          });
-         
+
          $("input[id^=specified-date]").change(function (){
             if(!autoChangeflag)
                 $("[id^=save-btn"+$(this).attr('id').split('-')[3]+"]").show();

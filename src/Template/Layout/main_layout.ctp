@@ -105,6 +105,7 @@
       </button>
       <div class="dropdown-menu">
         <h6 class="dropdown-header"><?php echo   __("Role: ") ?><b><?php echo $this->request->getSession()->read('Auth.User.role_name'); ?></b></h6>
+        <div class="dropdown-divider"></div>
         <a class="dropdown-item loadingAni" href="/sd-users/myaccount"><i class="far fa-user-circle accountIcon"></i><?php echo __(" My Account");?></a>
         <a class="dropdown-item loadingAni" href="/sd-users/logout"><i class="fas fa-sign-out-alt"></i><?php echo __(" Log Out");?></a>
       </div>
@@ -113,37 +114,42 @@
 </div>
 
 <nav class="navbar navbar-expand-lg mainNav">
-  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="nav navbar-nav container d-flex justify-content-between">
-      <li class="nav-item">
-        <a class="nav-link loadingAni" href="/Dashboards/index">
-          <?php echo __("Dashboard");?>
-          <span class="sr-only">(current)</span>
-        </a>
-      </li>
-      <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("Product");?> </a>
-        <ul class="dropdown-menu">
-          <a class="dropdown-item loadingAni" href="/sd-products/search"><?php echo __("Search Product");?></a>
-        <!-- Admin Permission ONLY -->
-        <?php if($this->request->getSession()->read('Auth.User.sd_role_id') == 2) {
-          echo "<a class=\"dropdown-item loadingAni\" href=\"/sd-products/addproduct\">". __("Add Product")."</a>";
-        }?>
-        </ul>
-      </li>
-      <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("Contact");?></a>
-        <ul class="dropdown-menu">
-          <a class="dropdown-item loadingAni" href="/sd-contacts/search"><?php echo __("Search Contact");?></a>
-          <a class="dropdown-item loadingAni" href="/sd-contacts/addcontact"><?php echo __("Add Contact");?></a>
-        </ul>
-      </li>
-      <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("ICSR");?></a>
-        <ul class="dropdown-menu">
-          <a class="dropdown-item loadingAni" href="/sd-cases/caseregistration"><?php echo __("Register SAE/AE");?></a>
-          <a class="dropdown-item loadingAni" href="/sd-cases/caselist"><?php echo __("Case List");?></a>
-        </ul>
-      </li>
-      <li class="nav-item"><a class="nav-link loadingAni" href="/sd-users/myaccount"><?php echo __("My Account");?></a></li>
-    </ul>
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="nav navbar-nav container d-flex justify-content-between">
+        <li class="nav-item">
+          <a class="nav-link loadingAni" href="/Dashboards/index">
+            <?php echo __("Dashboard");?>
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("Product");?> </a>
+          <ul class="dropdown-menu">
+            <a class="dropdown-item loadingAni" href="/sd-products/search"><?php echo __("Search Product");?></a>
+            <!-- Admin Permission ONLY -->
+            <?php if($this->request->getSession()->read('Auth.User.sd_role_id') == 2) {
+              echo "<a class=\"dropdown-item loadingAni\" href=\"/sd-products/addproduct\">". __("Add Product")."</a>";
+            }?>
+          </ul>
+        </li>
+        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("Contact");?></a>
+          <ul class="dropdown-menu">
+            <a class="dropdown-item loadingAni" href="/sd-contacts/search"><?php echo __("Search Contact");?></a>
+            <a class="dropdown-item loadingAni" href="/sd-contacts/addcontact"><?php echo __("Add Contact");?></a>
+          </ul>
+        </li>
+        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("ICSR");?></a>
+          <ul class="dropdown-menu">
+            <a class="dropdown-item loadingAni" href="/sd-cases/caseregistration"><?php echo __("Register SAE/AE");?></a>
+            <a class="dropdown-item loadingAni" href="/sd-cases/caselist"><?php echo __("Case List");?></a>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link loadingAni" href="/sd-users/myaccount"><?php echo __("My Account");?></a></li>
+      </ul>
+    </div>
   </div>
 </nav>
 

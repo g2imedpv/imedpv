@@ -45,7 +45,7 @@
                 $Products = new AppController;
                 if($distribution_id == null) $distribution_condition = "SdFieldValues.sd_case_distribution_id IS NULL";
                 else $distribution_condition = ['OR' => [["SdFieldValues.sd_case_distribution_id ='".$distribution_id."'"], ["SdFieldValues.sd_case_distribution_id IS NULL"]]];
-                // = "(SdFieldValues.sd_case_distribution_id ='".$distribution_id."') OR (SdFieldValues.sd_case_distribution_id IS NULL)";                  
+                // = "(SdFieldValues.sd_case_distribution_id ='".$distribution_id."') OR (SdFieldValues.sd_case_distribution_id IS NULL)";
                 $writePermission= 0;
                 $userinfo = $this->request->getSession()->read('Auth.User');
                 $sdCasesTable = TableRegistry::get('SdCases');
@@ -59,7 +59,7 @@
                 $Products->configVersion($e2b_version);
                 // $session = $this->getRequest()->getSession();
                 // $session->write('version', $e2b_version);
-                
+
                 if(empty($caseId)){
                     $this->Flash->error(__('Cannot find this case.'));
                     $this->redirect($this->referer());
@@ -80,7 +80,7 @@
                             $set_number = "";
                             $sectionArray = explode(',',$requestSectionArray[$section_id]);
                             for($i = 0;$i<sizeof($sectionArray);$i++){
-                                $set_number = $set_number.explode(':',$sectionArray[$i])[1].","; 
+                                $set_number = $set_number.explode(':',$sectionArray[$i])[1].",";
                             }
                             $set_number = substr($set_number, 0, -1);
                         }
@@ -118,13 +118,13 @@
                                     debug($sdFieldValueEntity);
                                 }
                             }else continue;
-                            
+
                             //TODO ADD Section set
-                            // $sdSectionSetsEntity = $sdSectionSetsTable->newEntity(); 
+                            // $sdSectionSetsEntity = $sdSectionSetsTable->newEntity();
                             // if(empty($requestSectionArray)) continue;
                             // $sectionArray = explode(',',$requestSectionArray[$section_id]);
                             // for($i = 0;$i<sizeof($sectionArray);$i++){
-                            //     $sdSectionSetsEntity['set_array'] = $sdSectionSetsEntity['set_array'].explode(':',$sectionArray[$i])[1].","; 
+                            //     $sdSectionSetsEntity['set_array'] = $sdSectionSetsEntity['set_array'].explode(':',$sectionArray[$i])[1].",";
                             // }
                             // $sdSectionSetsEntity['set_array'] = substr($sdSectionSetsEntity['set_array'], 0, -1);
                             // $sdSectionSetsEntity['sd_section_id'] = $section_id;
@@ -134,15 +134,15 @@
                             // ];
                             // $sdSectionSetsEntity['sd_field_value_id'] = $savedFieldValue['id'];
                             // if(!$sdSectionSetsTable->save($sdSectionSetsEntity)){
-                            //     echo "error in adding sets!" ; 
+                            //     echo "error in adding sets!" ;
                             //     debug($sdSectionSetsEntity);
-                            // }                
+                            // }
                             // $sections = $SdSectionStructuresTable->find()->select(['sd_section_id'])
                             //     ->join(['sections' =>[
                             //         'table' =>'sd_sections',
                             //         'type'=>'INNER',
                             //         'conditions'=>['sections.id = SdSectionStructures.sd_section_id'],
-                            //         ]])            
+                            //         ]])
                             //     ->where(['sd_field_id'=>$sectionFieldValue['sd_field_id'],'sd_section_id !='=>$section_id,'sections.status'=>true]);
                             // foreach($sections as $sectionDetail){
                             //     $sdSectionSetsEntityNew = $sdSectionSetsTable->newEntity();
@@ -151,11 +151,11 @@
                             //     if($sectionFieldValue['sd_field_id'] == '149'){
                             //         $sdSectionSetsEntityNew['set_array'] = $sdSectionSetsEntityNew['set_array'].',*';
                             //     }
-                            //     $sdSectionSetsEntityNew['sd_field_value_id'] = $savedFieldValue['id'];                           
+                            //     $sdSectionSetsEntityNew['sd_field_value_id'] = $savedFieldValue['id'];
                             //     if(!$sdSectionSetsTable->save($sdSectionSetsEntityNew)){
                             //         echo "error in adding NEW sets!" ;// ADD INTO ANOTHER SET
                             //         debug($sdSectionSetsEntityNew);
-                            //     } 
+                            //     }
                             // }
 
                             // store input hisotry
@@ -232,14 +232,14 @@
                 $product_name = $sdCases['sd_product_workflow']['sd_product']['product_name'];
                 //Fetch tab structures
                 //TODO according to model
-                
-                
+
+
                 // debug( TableRegistry::getTableLocator()->setConfig('SdFields', ['table' => 'sd_field_r3']));
                 // debug($sdFieldTable);
                 $sdFieldTable = TableRegistry::get('SdFields');
                 $sdTab = TableRegistry::get('SdSections');
                 $sdSections = $sdTab ->find()->where(['sd_tab_id'=>$tabid,'status'=>true])
-                                    ->order(['SdSections.section_level'=>'ASC','SdSections.display_order'=>'ASC'])
+                                    ->order(['SdSections.section_level'=>'ASC','SdSections.display_order'=>'ASC','SdSections.id'=>'ASC'])
                                     ->contain(['SdSectionSummaries','SdSectionStructures'=>function($q)use($caseId,$distribution_condition){
                                         return $q->order(['SdSectionStructures.row_no'=>'ASC','SdSectionStructures.field_start_at'=>'ASC'])
                                             ->contain(['SdFields'=>['SdFieldValueLookUps','SdFieldValues'=> function ($q)use($caseId,$distribution_condition) {
@@ -290,13 +290,13 @@
                                              'SdFieldValues.status'=>true]);
                         }, 'SdElementTypes'=> function($q){
                         return $q->select('type_name')->where(['SdElementTypes.status'=>true]);
-                            }])->first(); 
+                            }])->first();
                         $foundField['field_label'] = __($foundField['field_label']);
                         foreach($foundField['sd_field_value_look_ups'] as $sd_field_value_look_ups){
                             $sd_field_value_look_ups['caption'] = __($sd_field_value_look_ups['caption']);
                         }
                         array_push($sdFields,$foundField);
-                    }       
+                    }
                     $sdSection->sd_section_summary['sdFields'] = $sdFields;
                 }
                 if($userinfo['sd_role_id']>2){
@@ -307,6 +307,7 @@
                 $this->set(compact('distribution_id','validatedDatas','sdSections','caseNo','version','tabid','caseId','product_name','case_versions','writePermission','dynamic_options'));
                 //get document list
                 $sdDocumentTable = TableRegistry::get('SdDocuments');
+
                 $sdDocList = $sdDocumentTable ->find()
                     ->select(['doc_name'])
                     ->where(['sd_case_id='.$caseId])->toArray();
@@ -314,11 +315,16 @@
                 foreach($sdDocList as $sdDocList_details){
                     $sdDocLists.=$sdDocList_details['doc_name']." ; ";
                 }
-                $this->set(compact('sdDocLists'));
 
-                //get case E2B version
-                $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
-                $this->set(compact('e2b_version'));
+                $sdDocListRep = $sdDocumentTable ->find()
+                    ->select(['doc_name'])
+                    ->where(['sd_case_id='.$caseId])->toArray();
+                $sdDocListsRep="";
+                foreach($sdDocListRep as $sdDocListRep_details){
+                    $sdDocListsRep.=$sdDocListRep_details['doc_name']." ; ";
+                }
+
+                $this->set(compact('sdDocLists','sdDocListsRep'));
             }
             /**
              *

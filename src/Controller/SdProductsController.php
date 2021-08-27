@@ -203,7 +203,7 @@ class SdProductsController extends AppController
             //debug($sdProduct);die();
             $saved_product = $this->SdProducts->save($sdProduct);
             if (!$saved_product) {
-                //debug($sdProduct);
+                debug($sdProduct);
                 $this->Flash->error(__('error in product'));
                 return;
             }
@@ -226,20 +226,20 @@ class SdProductsController extends AppController
             }
 
             //distribution workflow saving
-            $workflows_table=TableRegistry::get("sd_workflows");
-            foreach($this->request->getData()['distribution_workflow'] as $workflow_k => $workflow_detail){
-                if(!empty($workflow_detail['id'])) continue;
+            // $workflows_table=TableRegistry::get("sd_workflows");
+            // foreach($this->request->getData()['distribution_workflow'] as $workflow_k => $workflow_detail){
+            //     if(!empty($workflow_detail['id'])) continue;
 
-            $sdWorkflowEntity = $workflows_table->newEntity();
-                $patchedsdWorkflowEntity = $workflows_table->patchEntity($sdWorkflowEntity,$workflow_detail);
-                $patchedsdWorkflowEntity['status'] = 1;
-                $saved_distribution_workflow[$workflow_k] = $workflows_table->save($patchedsdWorkflowEntity);
-                if (!($saved_distribution_workflow[$workflow_k])) {
-                    debug($patchedsdWorkflowEntity);
-                    $this->Flash->error(__('error in distribution workflow'));
-                    return;
-                }
-            }
+            // $sdWorkflowEntity = $workflows_table->newEntity();
+            //     $patchedsdWorkflowEntity = $workflows_table->patchEntity($sdWorkflowEntity,$workflow_detail);
+            //     $patchedsdWorkflowEntity['status'] = 1;
+            //     $saved_distribution_workflow[$workflow_k] = $workflows_table->save($patchedsdWorkflowEntity);
+            //     if (!($saved_distribution_workflow[$workflow_k])) {
+            //         debug($patchedsdWorkflowEntity);
+            //         $this->Flash->error(__('error in distribution workflow'));
+            //         return;
+            //     }
+            // }
 
             //assessment activity saving
             $workflow_activities_table=TableRegistry::get("sd_workflow_activities");
@@ -279,38 +279,38 @@ class SdProductsController extends AppController
                 }
             }
             //distribution activity saving
-            if(!empty($this->request->getData()['distribution_workflow_activity'])){
-            foreach($this->request->getData()['distribution_workflow_activity'] as $workflow_activity_k => $workflow_activities){
-                    foreach($workflow_activities as $k => $workflow_activity_detail){
-                        $workflow_activity_detail['sd_workflow_id']=$saved_distribution_workflow[$workflow_activity_k]['id'];
-                        $sdWorkflowActivityEntity = $workflow_activities_table->newEntity();
-                        $patchedsdWorkflowActivityEntity = $workflow_activities_table->patchEntity($sdWorkflowActivityEntity,$workflow_activity_detail);
-                        // debug($patchedsdWorkflowActivityEntity);
-                        $saved_activity = $workflow_activities_table->save($patchedsdWorkflowActivityEntity);
-                        if (!$saved_activity) {
-                            debug($patchedsdWorkflowActivityEntity);
-                            $this->Flash->error(__('error in distribution activity'));
-                            return;
-                        }else{
-                            foreach($this->request->getData()['distribution_permission'][$workflow_activity_k][$k+1] as $section_id => $action){
-                                $dataSet = [
-                                    'sd_workflow_activity_id' => $saved_activity['id'],
-                                    'action' => $action['action'],
-                                    'sd_section_id' => $section_id,
-                                ];
-                                $permissionEntity = $permission_table->newEntity();
-                                $patchedpermissionEntity = $permission_table->patchEntity($permissionEntity, $dataSet);
-                                $saved_permission = $permission_table->save($patchedpermissionEntity);
-                                if (!$saved_permission) {
-                                    debug($patchedpermissionEntity);
-                                    $this->Flash->error(__('error in distribution permissions'));
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            // if(!empty($this->request->getData()['distribution_workflow_activity'])){
+            // foreach($this->request->getData()['distribution_workflow_activity'] as $workflow_activity_k => $workflow_activities){
+            //         foreach($workflow_activities as $k => $workflow_activity_detail){
+            //             $workflow_activity_detail['sd_workflow_id']=$saved_distribution_workflow[$workflow_activity_k]['id'];
+            //             $sdWorkflowActivityEntity = $workflow_activities_table->newEntity();
+            //             $patchedsdWorkflowActivityEntity = $workflow_activities_table->patchEntity($sdWorkflowActivityEntity,$workflow_activity_detail);
+            //             // debug($patchedsdWorkflowActivityEntity);
+            //             $saved_activity = $workflow_activities_table->save($patchedsdWorkflowActivityEntity);
+            //             if (!$saved_activity) {
+            //                 debug($patchedsdWorkflowActivityEntity);
+            //                 $this->Flash->error(__('error in distribution activity'));
+            //                 return;
+            //             }else{
+            //                 foreach($this->request->getData()['distribution_permission'][$workflow_activity_k][$k+1] as $section_id => $action){
+            //                     $dataSet = [
+            //                         'sd_workflow_activity_id' => $saved_activity['id'],
+            //                         'action' => $action['action'],
+            //                         'sd_section_id' => $section_id,
+            //                     ];
+            //                     $permissionEntity = $permission_table->newEntity();
+            //                     $patchedpermissionEntity = $permission_table->patchEntity($permissionEntity, $dataSet);
+            //                     $saved_permission = $permission_table->save($patchedpermissionEntity);
+            //                     if (!$saved_permission) {
+            //                         debug($patchedpermissionEntity);
+            //                         $this->Flash->error(__('error in distribution permissions'));
+            //                         return;
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
 
             //assessment product workflow saving
             $product_workflows_table = TableRegistry::get("sd_product_workflows");
@@ -334,25 +334,25 @@ class SdProductsController extends AppController
             }
 
             //distribution product workflow saving
-            $product_workflows_table = TableRegistry::get("sd_product_workflows");
-            foreach($this->request->getData()['distribution_product_workflow'] as $product_workflow_k => $product_workflow_detail)
-            {
-                $product_workflow_detail['sd_product_id'] = $saved_product['id'];
-                if(!empty($this->request->getData()['distribution_workflow'][$product_workflow_k]['id']))
-                $product_workflow_detail['sd_workflow_id'] = $this->request->getData()['distribution_workflow'][$product_workflow_k]['id'];
-                else{
-                    $product_workflow_detail['sd_workflow_id'] = $saved_distribution_workflow[$product_workflow_k]['id'];
-                };
-                $sdProductWorkflowEntity = $product_workflows_table->newEntity();
-                $patchedSdProductWorkflowEntity = $product_workflows_table->patchEntity($sdProductWorkflowEntity,$product_workflow_detail);
-                $savedDistributionProductWorkflow[$product_workflow_k] = $product_workflows_table->save($patchedSdProductWorkflowEntity);
-                if (!($savedDistributionProductWorkflow[$product_workflow_k])) {
-                    debug($savedDistributionProductWorkflow[$product_workflow_k]);
-                    $this->Flash->error(__('error in product_workflow'));
-                    return;
-                }
-                // debug($patchedSdProductWorkflowEntity);
-            }
+            // $product_workflows_table = TableRegistry::get("sd_product_workflows");
+            // foreach($this->request->getData()['distribution_product_workflow'] as $product_workflow_k => $product_workflow_detail)
+            // {
+            //     $product_workflow_detail['sd_product_id'] = $saved_product['id'];
+            //     if(!empty($this->request->getData()['distribution_workflow'][$product_workflow_k]['id']))
+            //     $product_workflow_detail['sd_workflow_id'] = $this->request->getData()['distribution_workflow'][$product_workflow_k]['id'];
+            //     else{
+            //         $product_workflow_detail['sd_workflow_id'] = $saved_distribution_workflow[$product_workflow_k]['id'];
+            //     };
+            //     $sdProductWorkflowEntity = $product_workflows_table->newEntity();
+            //     $patchedSdProductWorkflowEntity = $product_workflows_table->patchEntity($sdProductWorkflowEntity,$product_workflow_detail);
+            //     $savedDistributionProductWorkflow[$product_workflow_k] = $product_workflows_table->save($patchedSdProductWorkflowEntity);
+            //     if (!($savedDistributionProductWorkflow[$product_workflow_k])) {
+            //         debug($savedDistributionProductWorkflow[$product_workflow_k]);
+            //         $this->Flash->error(__('error in product_workflow'));
+            //         return;
+            //     }
+            //     // debug($patchedSdProductWorkflowEntity);
+            // }
             //assessment user_assignment saving
             $user_assignment_table = TableRegistry::get("sd_user_assignments");
             foreach($this->request->getData()['assessment_user_assignment'] as $user_assignment_k => $workflow_users)
@@ -377,44 +377,44 @@ class SdProductsController extends AppController
             }
 
             //distribution user_assignment saving
-            $user_assignment_table = TableRegistry::get("sd_user_assignments");
-            foreach($this->request->getData()['distribution_user_assignment'] as $user_assignment_k => $workflow_users)
-            {
-                foreach($workflow_users as $user_k => $user_detail)
-                {
-                    $user_detail['sd_product_workflow_id'] = $savedDistributionProductWorkflow[$user_assignment_k]['id'];
-                    if(!empty($this->request->getData()['distribution_workflow'][$user_assignment_k]['id']))
-                    $user_detail['sd_workflow_id'] = $this->request->getData()['distribution_workflow'][$user_assignment_k]['id'];
-                    else{
-                        $user_detail['sd_workflow_id'] = $saved_distribution_workflow[$user_assignment_k]['id'];
-                    };
-                    $sd_user_assignmentsEntity = $user_assignment_table->newEntity();
-                    $patchedsd_user_assignmentsEntity = $user_assignment_table->patchEntity($sd_user_assignmentsEntity,$user_detail);
-                    if (!($user_assignment_table->save($patchedsd_user_assignmentsEntity))) {
-                        debug($patchedsd_user_assignmentsEntity);
-                        $this->Flash->error(__('error in user assignments'));
-                        return;
-                    }
-                    // debug($patchedsd_user_assignmentsEntity);
-                }
-            }
+            // $user_assignment_table = TableRegistry::get("sd_user_assignments");
+            // foreach($this->request->getData()['distribution_user_assignment'] as $user_assignment_k => $workflow_users)
+            // {
+            //     foreach($workflow_users as $user_k => $user_detail)
+            //     {
+            //         $user_detail['sd_product_workflow_id'] = $savedDistributionProductWorkflow[$user_assignment_k]['id'];
+            //         if(!empty($this->request->getData()['distribution_workflow'][$user_assignment_k]['id']))
+            //         $user_detail['sd_workflow_id'] = $this->request->getData()['distribution_workflow'][$user_assignment_k]['id'];
+            //         else{
+            //             $user_detail['sd_workflow_id'] = $saved_distribution_workflow[$user_assignment_k]['id'];
+            //         };
+            //         $sd_user_assignmentsEntity = $user_assignment_table->newEntity();
+            //         $patchedsd_user_assignmentsEntity = $user_assignment_table->patchEntity($sd_user_assignmentsEntity,$user_detail);
+            //         if (!($user_assignment_table->save($patchedsd_user_assignmentsEntity))) {
+            //             debug($patchedsd_user_assignmentsEntity);
+            //             $this->Flash->error(__('error in user assignments'));
+            //             return;
+            //         }
+            //         // debug($patchedsd_user_assignmentsEntity);
+            //     }
+            // }
             //link assessment and distribution
-            $links_table = TableRegistry::get("sd_assessment_distribution_links");
-            foreach($this->request->getData()['assessment_distribution'] as $assessment_key => $assessment_links)
-            {
-                foreach($assessment_links as $distribution_key => $status){
-                    $link_entity = $links_table->newEntity();
-                    if(!empty($this->request->getData()['distribution_workflow'][$assessment_key]['id']))
-                        $link_entity['distribution'] = $this->request->getData()['distribution_workflow'][$assessment_key]['id'];
-                    else $link_entity['distribution'] = $saved_distribution_workflow[$distribution_key]['id'];
-                    $link_entity['sd_product_workflow_id'] = $savedAssessmentProductWorkflow[$assessment_key]['id'];
-                    if (!($links_table->save($link_entity))) {
-                        debug($link_entity);
-                        $this->Flash->error(__('error in links'));
-                        return;
-                    }
-                }
-            }
+            // $links_table = TableRegistry::get("sd_assessment_distribution_links");
+            // foreach($this->request->getData()['assessment_distribution'] as $assessment_key => $assessment_links)
+            // {
+            //     foreach($assessment_links as $distribution_key => $status){
+            //         $link_entity = $links_table->newEntity();
+            //         if(!empty($this->request->getData()['distribution_workflow'][$assessment_key]['id']))
+            //             $link_entity['distribution'] = $this->request->getData()['distribution_workflow'][$assessment_key]['id'];
+            //         else $link_entity['distribution'] = $saved_distribution_workflow[$distribution_key]['id'];
+            //         $link_entity['sd_product_workflow_id'] = $savedAssessmentProductWorkflow[$assessment_key]['id'];
+            //         if (!($links_table->save($link_entity))) {
+            //             debug($link_entity);
+            //             $this->Flash->error(__('error in links'));
+            //             return;
+            //         }
+            //     }
+            // }
             $this->Flash->success(__('The sd product has been saved.'));
             return $this->redirect(['action' => 'search']);
         }

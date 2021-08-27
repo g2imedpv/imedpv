@@ -468,6 +468,7 @@ ul.queryBoxLeft > a {
 
 .meddralabel{
     line-height:25px;
+    cursor: pointer;
 }
 
 .meddralabel:hover{
