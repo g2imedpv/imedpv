@@ -118,14 +118,14 @@ echo $this->element('generatepdf');
                     <i class="fas fa-file-export"></i> <?php echo __("Export")?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="export">
-                    <?php if($e2b_version == '3') {
-                            echo "<a class=\"dropdown-item\" href=\"/sd-export/genCIOMSThree/$caseId\">". __("CIOMS-R3")."</a>";
-                            echo "<a class=\"dropdown-item\" href=\"/sd-medwatch-positions-r3/genPdfThree/$caseId\">". __("FDA-R3")."</a>";
-                            echo "<a class=\"dropdown-item\" href=\"/sd-xml-structures/genXMLThree/$caseId\">". __("XML-R3")."</a>";
-                        }else{
+                    <?php if($e2b_version == '2') {
                             echo "<a class=\"dropdown-item\" href=\"/sd-export/genCIOMS/$caseId\">". __("CIOMS-R2")."</a>";
                             echo "<a class=\"dropdown-item\" href=\"/sd-export/genFDApdf/$caseId\">". __("FDA-R2")."</a>";
                             echo "<a class=\"dropdown-item\" href=\"/sd-xml-structures/genXMLTwo/$caseId\">". __("XML-R2")."</a>";
+                        }else{
+                            echo "<a class=\"dropdown-item\" href=\"/sd-export/genCIOMSThree/$caseId\">". __("CIOMS-R3")."</a>";
+                            echo "<a class=\"dropdown-item\" href=\"/sd-medwatch-positions-r3/genPdfThree/$caseId\">". __("FDA-R3")."</a>";
+                            echo "<a class=\"dropdown-item\" href=\"/sd-xml-structures/genXMLThree/$caseId\">". __("XML-R3")."</a>";         
                         }
                     ?>
                 </div>
