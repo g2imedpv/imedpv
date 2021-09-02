@@ -222,7 +222,8 @@ function onQueryClicked(preferrenceId = null){
         'patient_dob':$('#patient_dob').val(),
         'patient_gender':$('#patient_gender').val(),
         'meddra_smq':$('#meddra_smq').val(),
-        'meddra_smq_scope':$('#meddra_smq_scope').val()
+        'meddra_smq_scope':$('#meddra_smq_scope').val(),
+        'meddraResult':$("#meddraResult-496").val(),
     };
     if (preferrenceId!=null)
     request['preferrenceId'] = preferrenceId;

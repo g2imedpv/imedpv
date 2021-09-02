@@ -484,7 +484,7 @@ class SdCasesController extends AppController
                         'sv' => [
                             'table' => 'sd_field_values',
                             'type' => 'INNER',
-                            'conditions' => ['sv.field_value = '.$preferrence_detail['match_value'],'sv.sd_field_id '.$preferrence_detail['sd_field_id'],'sv.sd_case_id = SdCases.id'],
+                            'conditions' => ['sv.field_value = '.$preferrence_detail['match_value'],'sv.sd_field_id = '.$preferrence_detail['sd_field_id'],'sv.sd_case_id = SdCases.id'],
                         ]
                     ])->where(['SdCases.sd_workflow_activity_id !='=>'9999']);
                 }
@@ -522,7 +522,17 @@ class SdCasesController extends AppController
                         ]
                     ]);
                 }
-                // die();
+                if(!empty($searchKey['meddraResult'])){
+                    $searchResult = $searchResult
+                        ->join([
+                        'meddra'=>[
+                            'table' => 'sd_field_values',
+                            'type' => 'INNER',
+                            'conditions' => ['meddra.sd_case_id = SdCases.id', 'meddra.sd_field_id = 496', 'meddra.field_value = \''.$searchKey['meddraResult'].'\'']
+                        ]
+                    ]);
+                    // debug($searchResult);                    
+                }
                 if(!empty($searchKey['patient_dob'])) $searchResult = $searchResult->where(['patient_dob.field_value'=>$searchKey['patient_dob']]);
                 if(!empty($searchKey['patient_gender'])) $searchResult = $searchResult->where(['patient_gender.field_value'=>$searchKey['patient_gender']]);
                 if(!empty($searchKey['patient_id'])) $searchResult = $searchResult->where(['patient_id.field_value LIKE'=>'%'.$searchKey['patient_id'].'%']);
