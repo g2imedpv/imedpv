@@ -84,8 +84,8 @@ class SdProductsTable extends Table
         $validator
             ->scalar('WHODD_decode')
             ->maxLength('WHODD_decode', 50)
-            ->requirePresence('WHODD_decode', 'create')
-            ->notEmpty('WHODD_decode');
+            //->requirePresence('WHODD_decode', 'create')
+            ->allowEmpty('WHODD_decode', 'create');
 
         $validator
             ->scalar('short_desc')
@@ -125,14 +125,14 @@ class SdProductsTable extends Table
         $validator
             ->scalar('WHODD_code')
             ->maxLength('WHODD_code', 50)
-            ->requirePresence('WHODD_code', 'create')
-            ->notEmpty('WHODD_code');
+            //->requirePresence('WHODD_code', 'create')
+            ->allowEmpty('WHODD_code', 'create');
 
         $validator
             ->scalar('WHODD_name')
             ->maxLength('WHODD_name', 100)
-            ->requirePresence('WHODD_name', 'create')
-            ->notEmpty('WHODD_name');
+            //->requirePresence('WHODD_name', 'create')
+            ->allowEmpty('WHODD_name', 'create');
 
         $validator
             ->integer('e2b_version')

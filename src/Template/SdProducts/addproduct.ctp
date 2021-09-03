@@ -23,29 +23,41 @@
     <!-- Add Product -->
     <div class="card-body">
         <span id="errorMsg" class="alert alert-danger" role="alert" style="display:none"></span>
-        <?= $this->Form->create();?>
+        <?= $this->Form->create('addproduct',
+            [
+                'class'=>'needs-validation',
+                'novalidate' => true
+            ]
+        );?>
 
         <h5 class="">Product Info</h5>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label><?php echo __("Product Name")?> (B.4.k.2.1)</label>
                 <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Proprietary Medicinal Product Name")?> (B.4.k.2.1)" data-content="<div><?php echo __("The name should be that used by the reporter. It is recognized that a single product may have different proprietary names in different countries, even when produced by a single manufacturer.");?></div>" ><i class="qco fas fa-info-circle"></i></a>
-                <input type="text" class="form-control" id="product_name" name="product[product_name]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
+                <input type="text" class="form-control" id="product_name" name="product[product_name]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required>
+                <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
             <div class="form-group col-md-6">
                 <label><?php echo __("Short Description")?> </label>
-                <input type="text" class="form-control" id="short_desc" name="product[short_desc]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
+                <input type="text" class="form-control" id="short_desc" name="product[short_desc]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required>
+                <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label><?php echo __("Product Abbreviation")?> </label>
-                <input type="text" class="form-control" id="short_desc" name="product[product_abbreviation]" placeholder="<?php echo __("Product Abbreviati");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
+                <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Product Abbreviation")?>" data-content="<div><?php echo __("Product Abbreviation is required, max length is 5.")?></div>" ><i class="qco fas fa-info-circle"></i></a>
+                <input type="text" class="form-control" id="short_desc" name="product[product_abbreviation]" maxlength=5 placeholder="<?php echo __("Product Abbreviation");?>" required>
+                <div class="invalid-feedback">
+                    Product Abbreviation is required, max length is 5.
+                </div>
             </div>
             <div class="form-group col-md-6">
                 <label><?php echo __("Product Description")?></label>
-                <input type="text" class="form-control" id="product_desc" name="product[product_desc]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required oninvalid="this.setCustomValidity('Product Name is REQUIRED')" oninput="this.setCustomValidity('')">
+                <input type="text" class="form-control" id="product_desc" name="product[product_desc]" placeholder="<?php echo __("Proprietary Medicinal Product Name");?>" required>
+                <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
         </div>
 
@@ -73,7 +85,8 @@
             </div>
             <div class="form-group col-md-3">
                 <label><?php echo __("Mfr. Name")?></label>
-                <input type="text" class="form-control" id="mfr_name" name="product[mfr_name]" placeholder="<?php echo __("Mfr. Name");?>">
+                <input type="text" class="form-control" id="mfr_name" name="product[mfr_name]" placeholder="<?php echo __("Mfr. Name");?>" required>
+                <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
         </div>
 
@@ -81,29 +94,32 @@
             <div class="form-group col-md-4">
                 <label><?php echo __("Drug Role / Product Flag")?> (B.4.k.1)</label>
                 <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Characterization of Drug Role")?> (B.4.k.1)" data-content="<div><?php echo __("Characterization of the drug as provided by primary reporter. All spontaneous reports should have at least one suspect drug. If the reporter indicates a suspected interaction, interacting should be selected. All interacting drugs are considered to be suspect drugs.")?></div>" ><i class="qco fas fa-info-circle"></i></a>
-                <select class="form-control" id="sd_product_flag" name="product[sd_product_flag]" required oninvalid="this.setCustomValidity('Product flag is REQUIRED')" oninput="this.setCustomValidity('')">
+                <select class="form-control" id="sd_product_flag" name="product[sd_product_flag]" required>
                     <option value=""><?php echo __("Select Characterization of Drug Role")?></option>
                     <option value="1"><?php echo __("Suspect")?></option>
                     <option value="2"><?php echo __("Concomitant")?></option>
                     <option value="3"><?php echo __("Interacting")?></option>
                 </select>
+                <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
             <div class="form-group col-md-4">
                 <label><?php echo __("Product Status")?></label>
-                <select class="form-control" id="status" name="product[status]" required oninvalid="this.setCustomValidity('Status is REQUIRED')" oninput="this.setCustomValidity('')">
+                <select class="form-control" id="status" name="product[status]" required>
                     <option value=""><?php echo __("Select Product Status")?></option>
                     <option value="1"><?php echo __("Active")?></option>
                     <option value="2"><?php echo __("Close")?></option>
                 </select>
+                <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
             <div class="form-group col-md-4">
                 <label><?php echo __("Blinding Method")?></label>
-                <select class="form-control" id="blinding_tech" name="product[blinding_tech]">
+                <select class="form-control" id="blinding_tech" name="product[blinding_tech]" required>
                     <option value=""><?php echo __("Select Blinding Method")?></option>
                     <option value="1"><?php echo __("Single blind")?></option>
                     <option value="2"><?php echo __("Double blind")?></option>
                     <option value="3"><?php echo __("Open-label")?></option>
                 </select>
+                <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
         </div>
 
@@ -133,7 +149,8 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label><?php echo __("Study Name")?> (A.2.3.1)</label>
-                <input type="text" class="form-control" id="study_name" name="product[study_name]" placeholder="<?php echo __("Study Name");?>">
+                <input type="text" class="form-control" id="study_name" name="product[study_name]" placeholder="<?php echo __("Study Name");?>" required>
+                <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
         </div>
 
@@ -141,37 +158,42 @@
             <div class="form-group col-md-3">
                 <label><?php echo __("Sponsor Study Number (A.2.3.2)");?></label>
                 <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Sponsor Study Number (A.2.3.2)");?>" data-content="<div><?php echo __("This section would be completed only if the sender is the study sponsor or has been informed of the study number by the sponsor.");?></div>" ><i class="qco fas fa-info-circle"></i></a>
-                <input type="text" class="form-control" id="study_no" name="product[study_no]" placeholder="<?php echo __("Study Number");?>">
+                <input type="text" class="form-control" id="study_no" name="product[study_no]" placeholder="<?php echo __("Study Number");?>" required>
+                <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
             <div class="form-group col-md-3">
                 <label><?php echo __("Study Type");?> (A.2.3.3)</label>
                 <a tabindex="0" role="button" data-toggle="popover" title="" data-original-title="<?php echo __("Study type in which the reaction(s)/event(s) were observed");?> (A.2.3.3)" data-content="<div><li><?php echo __("Clinical trials");?></li><li><?php echo __("Individual patient use");?> <?php echo __("(e.g., compassionate use or named patient basis)");?></li><li><?php echo __("Other studies");?> <?php echo __("(e.g., pharmacoepidemiology, pharmacoeconomics, intensive monitoring, PMS)");?></li></div>" ><i class="qco fas fa-info-circle"></i></a>
-                <select class="form-control" id="sd_study_type_id" name="product[study_type]" required oninvalid="this.setCustomValidity('Study Type is REQUIRED')" oninput="this.setCustomValidity('')">
+                <select class="form-control" id="sd_study_type_id" name="product[study_type]" required>
                     <option value=""><?php echo __("Select Study Type");?></option>
                     <option value="1"><?php echo __("Clinical trials");?></option>
                     <option value="2"><?php echo __("Individual patient use");?></option>
                     <option value="3"><?php echo __("Other studies");?></option>
                 </select>
+                <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
             <div class="form-group col-md-3">
                 <label><?php echo __("E2B Version");?></label>
-                <select class="form-control" id="sd_e2b-version_id" name="product[e2b_version]" required oninvalid="this.setCustomValidity('Study Type is REQUIRED')" oninput="this.setCustomValidity('')">
+                <select class="form-control" id="sd_e2b-version_id" name="product[e2b_version]" required>
                     <option value=""><?php echo __("Select E2B Version");?></option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                 </select>
+                <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
-            
+
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-3">
                 <label><?php echo __("Study Start Date");?></label>
-                <input type="text" class="form-control" name="product[start_date]" id="start_date" placeholder="<?php echo __("dd/mm/yyyy")?>">
+                <input type="text" class="form-control" name="product[start_date]" id="start_date" placeholder="<?php echo __("dd/mm/yyyy")?>" required>
+                <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
             <div class="form-group col-md-3">
                 <label><?php echo __("Study End Date");?></label>
-                <input type="text" class="form-control" name="product[end_date]" id="end_date" placeholder="<?php echo __("dd/mm/yyyy")?>">
+                <input type="text" class="form-control" name="product[end_date]" id="end_date" placeholder="<?php echo __("dd/mm/yyyy")?>" required>
+                <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
         </div>
 
@@ -181,7 +203,7 @@
             <div class="form-row">
                 <div class="form-group col-md-2">
                     <label><?php echo __("Select Element")?></label>
-                    <select class="form-control" id="casenumber1">
+                    <select class="form-control" id="casenumber1" required>
                         <option value=""><?php echo __("Select Element")?></option>
                         <option value="company"><?php echo __("Company Number")?></option>
                         <option value="product"><?php echo __("Product Number")?></option>
@@ -189,10 +211,11 @@
                         <option value="random"><?php echo __("Random")?></option>
                         <option value="sequential"><?php echo __("Sequential")?></option>
                     </select>
+                    <div class="invalid-feedback">This field is REQUIRED</div>
                 </div>
                 <div class="form-group col-md-2">
                     <label><?php echo __("Select Element")?></label>
-                    <select class="form-control" id="casenumber2">
+                    <select class="form-control" id="casenumber2" required>
                         <option value=""><?php echo __("Select Element")?></option>
                         <option value="company"><?php echo __("Company Number")?></option>
                         <option value="product"><?php echo __("Product Number")?></option>
@@ -200,10 +223,11 @@
                         <option value="random"><?php echo __("Random")?></option>
                         <option value="sequential"><?php echo __("Sequential")?></option>
                     </select>
+                    <div class="invalid-feedback">This field is REQUIRED</div>
                 </div>
                 <div class="form-group col-md-2">
                     <label><?php echo __("Select Element")?></label>
-                    <select class="form-control" id="casenumber3">
+                    <select class="form-control" id="casenumber3" required>
                         <option value=""><?php echo __("Select Element")?></option>
                         <option value="company"><?php echo __("Company Number")?></option>
                         <option value="product"><?php echo __("Product Number")?></option>
@@ -211,10 +235,11 @@
                         <option value="random"><?php echo __("Random")?></option>
                         <option value="sequential"><?php echo __("Sequential")?></option>
                     </select>
+                    <div class="invalid-feedback">This field is REQUIRED</div>
                 </div>
                 <div class="form-group col-md-2">
                     <label><?php echo __("Select Element")?></label>
-                    <select class="form-control" id="casenumber4">
+                    <select class="form-control" id="casenumber4" required>
                         <option value=""><?php echo __("Select Element")?></option>
                         <option value="company"><?php echo __("Company Number")?></option>
                         <option value="product"><?php echo __("Product Number")?></option>
@@ -222,10 +247,11 @@
                         <option value="random"><?php echo __("Random")?></option>
                         <option value="sequential"><?php echo __("Sequential")?></option>
                     </select>
+                    <div class="invalid-feedback">This field is REQUIRED</div>
                 </div>
                 <div class="form-group col-md-2">
                     <label><?php echo __("Select Element")?></label>
-                    <select class="form-control" id="casenumber5">
+                    <select class="form-control" id="casenumber5" required>
                         <option value=""><?php echo __("Select Element")?></option>
                         <option value="company"><?php echo __("Company Number")?></option>
                         <option value="product"><?php echo __("Product Number")?></option>
@@ -233,6 +259,7 @@
                         <option value="random"><?php echo __("Random")?></option>
                         <option value="sequential"><?php echo __("Sequential")?></option>
                     </select>
+                    <div class="invalid-feedback">This field is REQUIRED</div>
                 </div>
                 <input name="product[caseNo_convention]" id="caseNo_convention" value="" style="display:none">
             </div>
@@ -862,6 +889,25 @@ var distribution_workflow_structure = <?php echo json_encode($distribution_workf
 var loadTabs = <?php echo json_encode($loadTabs);?>;
 var cro_companies = <?php echo json_encode($cro_companies);?>;
 var call_center_list = <?php echo json_encode($call_ctr_companies);?>;
+
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
 </script>
 <?php function renderTabs($sections, $exsitList, $sdsections,$tabkey){
     if(!array_key_exists($sections['id'], $exsitList)||$exsitList[$sections['id']]==="")
