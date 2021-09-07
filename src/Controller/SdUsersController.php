@@ -544,4 +544,15 @@ class SdUsersController extends AppController
         $this->set(compact('sdUser','sdRolesOptions','sdCompaniesOptions'));
     }
 
+    public function checksession()
+    {
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+            $session = '';
+            $session = $this->request->getSession()->check('Auth.User');
+            print_r($session);
+        }
+
+    }
+
 }

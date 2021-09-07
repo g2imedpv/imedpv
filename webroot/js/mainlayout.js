@@ -334,13 +334,13 @@ function onQueryClicked(preferrenceId = null){
                 text+="</td>";
                 text += "<td class=\"align-middle\">";
                 if(caseDetail.sd_user_id == userId && caseDetail.status != '3') {
-                    if(caseDetail.wa.activity_name=="Triage")text += "<a class=\"btn btn-outline-info m-1\" href=\"/sd-cases/triage/"+caseDetail.caseNo+"/"+caseDetail.versions+"\" role=\"button\">"+i18n.gettext("Continue Triage")+"</a>";
-                    else text += "<a class=\"btn btn-outline-info m-1\" href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\" role=\"button\">"+i18n.gettext("Enter")+"</a>";
-                }else text += "<a class=\"btn btn-info m-1\" href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\" role=\"button\">"+i18n.gettext("Check Detail")+"</a>";
+                    if(caseDetail.wa.activity_name=="Triage")text += "<a class=\"btn btn-outline-info m-1 dashboardBtn\" href=\"/sd-cases/triage/"+caseDetail.caseNo+"/"+caseDetail.versions+"\" role=\"button\">"+i18n.gettext("Continue Triage")+"</a>";
+                    else text += "<a class=\"btn btn-outline-info m-1 dashboardBtn\" href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\" role=\"button\">"+i18n.gettext("Enter")+"</a>";
+                }else text += "<a class=\"btn btn-info m-1 dashboardBtn\" href=\"/sd-tabs/showdetails/"+caseDetail.caseNo+"/"+caseDetail.versions+"\" role=\"button\">"+i18n.gettext("Check Detail")+"</a>";
                 if((caseDetail.status!='1')&&(previous_case!=caseDetail.caseNo))
-                    text += "<button class=\"btn btn-warning m-1\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"versionUp(\'"+caseDetail.caseNo+"\')\">"+i18n.gettext("Version Up")+"</button>";
+                    text += "<button class=\"btn btn-warning m-1 dashboardBtn\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"versionUp(\'"+caseDetail.caseNo+"\')\">"+i18n.gettext("Version Up")+"</button>";
                 else if(caseDetail.status != '3')
-                    text += "<button class=\"btn btn-warning m-1\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"closeCase(\'"+caseDetail.caseNo+"\')\">"+i18n.gettext("Close Case")+"</button>";
+                    text += "<button class=\"btn btn-warning m-1 dashboardBtn\" data-toggle=\"modal\" data-target=\".versionUpFrame\" onclick=\"closeCase(\'"+caseDetail.caseNo+"\')\">"+i18n.gettext("Close Case")+"</button>";
                 text +="</td>";
                 text += "</tr>";
                 previous_case = caseDetail.caseNo;
@@ -352,7 +352,7 @@ function onQueryClicked(preferrenceId = null){
         },
         complete: function () {
             $('.loadingSpinner').hide();
-            $('a').click(function (){
+            $('.dashboardBtn').on('click',function (){
                 $(this).append(` <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`);
             });
 
@@ -429,7 +429,23 @@ jQuery(document).ready(function($) {
             }
         )
         .then(() => {
-            location.href = '/sd-users/logout';
+            $.ajax({
+                headers: {
+                    'X-CSRF-Token': csrfToken
+                },
+                type:'POST',
+                url:'sd-users/checksession',
+                success:function(response){
+                    if (response !== 1) {
+                        location.href = '/sd-users/logout';
+                    }
+                },
+                error:function(response){
+                    console.log(response.responseText);
+                }
+            });
           });
-    },60*60*1000);
+    },60*60*1000
+    );
+
 });
