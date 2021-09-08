@@ -96,13 +96,13 @@ echo $this->element('generatepdf');
                     <i class="fas fa-drafting-compass"></i> <?php echo __("Export DRAFT")?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="exportDRAFT">
-                    <?php if($e2b_version == '3') {
-                                echo "<a class=\"dropdown-item text-warning\" href=\"/sd-export/genCIOMSThreeDRAFT/$caseId\">". __("CIOMS-R3")."</a>";
-                                echo "<a class=\"dropdown-item text-warning\" href=\"/sd-export/sd-medwatch-positions-r3/genPdfThreeDRAFT/$caseId\">". __("FDA-R3")."</a>";
-
-                        }else{
+                    <?php if($e2b_version == '2') {
+                                
                                 echo "<a class=\"dropdown-item text-warning\" href=\"/sd-export/genCIOMSDRAFT/$caseId\">". __("CIOMS-R2")."</a>";
                                 echo "<a class=\"dropdown-item text-warning\" href=\"/sd-export/genFDApdfDRAFT/$caseId\">". __("FDA-R2")."</a>";
+                        }else{
+                            echo "<a class=\"dropdown-item text-warning\" href=\"/sd-export/genCIOMSThreeDRAFT/$caseId\">". __("CIOMS-R3")."</a>";
+                            echo "<a class=\"dropdown-item text-warning\" href=\"/sd-export/sd-medwatch-positions-r3/genPdfThreeDRAFT/$caseId\">". __("FDA-R3")."</a>";
                         }
                     ?>
                     <!--<a class="dropdown-item text-warning" target="_blank" href="/sd-export/genCIOMSDRAFT/<?php echo $caseId ?>"><?php echo __("CIOMS-R2")?></a>-->
