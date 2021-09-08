@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\SdUserTypesTable|\Cake\ORM\Association\BelongsTo $SdUserTypes
  * @property \App\Model\Table\SdProductWorkflowsTable|\Cake\ORM\Association\HasMany $SdProductWorkflows
  * @property \App\Model\Table\SdProductsTable|\Cake\ORM\Association\HasMany $SdProducts
+ * @property |\Cake\ORM\Association\HasMany $SdSenders
  * @property \App\Model\Table\SdUsersTable|\Cake\ORM\Association\HasMany $SdUsers
  *
  * @method \App\Model\Entity\SdCompany get($primaryKey, $options = [])
@@ -48,6 +49,9 @@ class SdCompaniesTable extends Table
             'foreignKey' => 'sd_company_id'
         ]);
         $this->hasMany('SdProducts', [
+            'foreignKey' => 'sd_company_id'
+        ]);
+        $this->hasMany('SdSenders', [
             'foreignKey' => 'sd_company_id'
         ]);
         $this->hasMany('SdUsers', [

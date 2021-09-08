@@ -147,7 +147,15 @@
             <a class="dropdown-item loadingAni" href="/sd-cases/caselist"><?php echo __("Case List");?></a>
           </ul>
         </li>
-        <li class="nav-item"><a class="nav-link loadingAni" href="/sd-users/myaccount"><?php echo __("My Account");?></a></li>
+        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"><?php echo __("My Account");?></a>
+          <ul class="dropdown-menu">
+            <a class="dropdown-item loadingAni" href="/sd-users/myaccount"><?php echo __("My Account");?></a>
+            <!-- Admin Permission ONLY -->
+            <?php if($this->request->getSession()->read('Auth.User.sd_role_id') == 2) {
+              echo "<a class=\"dropdown-item loadingAni\" href=\"/sd-senders/addsender\">". __("Sender Info")."</a>";
+            }?>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>

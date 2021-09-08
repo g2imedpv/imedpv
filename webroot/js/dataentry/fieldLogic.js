@@ -61,6 +61,7 @@ $(document).ready(function(){
     $(".js-example-responsive").select2({
         width: 'resolve'
     });
+    $('select').select2();
     // $("select").select2({
     //     selectOnClose: true
     // });
