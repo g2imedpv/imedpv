@@ -62,10 +62,18 @@
 
     <!-- Language Switcher -->
     <div class="btn-group mx-3 my-auto dropdown">
-      <button type="button" class="btn" title="Language Switcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-language fa-2x"></i>
-      </button>
-
+    <?php
+      $language = $this->request->getSession()->read('Language');
+      if ($language === 'en_US') {
+        echo '<button type="button" class="btn dropdown-toggle" title="Language Switcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="/img/flags/4x3/us.svg" alt="us_flag" class="flag" >
+              </button>';
+      } else {
+        echo '<button type="button" class="btn dropdown-toggle" title="Language Switcher" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src="/img/flags/4x3/cn.svg" alt="cn_flag" class="flag" >
+        </button>' ;
+      }
+    ?>
       <div class="dropdown-menu">
         <a class="dropdown-item loadingAni" class='flag cn_flag' href="/sd-users/setLanguage/en_US">
           <img src="/img/flags/4x3/us.svg" alt="us_flag" class='flag' > <span>English</span>

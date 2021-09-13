@@ -1,4 +1,4 @@
-<title>My Account</title>
+<title><?php echo __("My Account")?></title>
 
 <div class="card text-center w-50 my-3 mx-auto">
   <div class="card-header">
