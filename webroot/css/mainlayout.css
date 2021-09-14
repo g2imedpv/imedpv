@@ -448,12 +448,6 @@ ul.queryBoxLeft > a {
     color:#E63946;
 }
 
-.queryBackBtn {
-    font-size: 30px !important;
-    margin-top: -50px;
-    margin-left: -10px;
-}
-
 .DEpagination {
     display: inherit;
     margin-top: 2px;

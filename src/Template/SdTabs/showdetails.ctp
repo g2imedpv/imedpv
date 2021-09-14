@@ -27,7 +27,7 @@ echo $this->element('generatepdf');
     // });
     // })
 </script>
-<title><?php echo __("Data Entry")?></title>
+<title><?php echo __("Data Entry - ".$sdSections[0]['section_name'])?></title>
 <head>
     <?= $this->Html->css('select2/select2.min.css') ?>
     <?= $this->Html->script('select2/select2.min.js') ?>
@@ -125,7 +125,7 @@ echo $this->element('generatepdf');
                         }else{
                             echo "<a class=\"dropdown-item\" href=\"/sd-export/genCIOMSThree/$caseId\">". __("CIOMS-R3")."</a>";
                             echo "<a class=\"dropdown-item\" href=\"/sd-medwatch-positions-r3/genPdfThree/$caseId\">". __("FDA-R3")."</a>";
-                            echo "<a class=\"dropdown-item\" href=\"/sd-xml-structures/genXMLThree/$caseId\">". __("XML-R3")."</a>";         
+                            echo "<a class=\"dropdown-item\" href=\"/sd-xml-structures/genXMLThree/$caseId\">". __("XML-R3")."</a>";
                         }
                     ?>
                 </div>
