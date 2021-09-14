@@ -54,12 +54,13 @@
                 $sdCases = $sdCasesTable->find()->where(['caseNo'=>$caseNo,'version_no'=>$version])->contain(['SdProductWorkflows.SdProducts'])->first();
                 $caseId = $sdCases['id'];
                 $e2b_version = $sdCases['sd_product_workflow']['sd_product']['e2b_version'];
+                $this->set(compact('e2b_version'));//determine the export e2b version
                 if($e2b_version == 3) $e2b_version = "_r3";
                 else $e2b_version = "";
                 $Products->configVersion($e2b_version);
                 // $session = $this->getRequest()->getSession();
                 // $session->write('version', $e2b_version);
-
+                
                 if(empty($caseId)){
                     $this->Flash->error(__('Cannot find this case.'));
                     $this->redirect($this->referer());
@@ -325,6 +326,7 @@
                 }
 
                 $this->set(compact('sdDocLists','sdDocListsRep'));
+               
             }
             /**
              *
