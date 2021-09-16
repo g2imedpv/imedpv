@@ -784,19 +784,19 @@ class SdXmlStructuresController extends AppController
         $sdCases = TableRegistry::get('sdCases');
         $senderCompany = $this->request->getSession()->read('Auth.User.company_id');
         $senderInfo = TableRegistry::get('sdSenders')->find()->where(['sd_company_id'=>$senderCompany])->first();
-        $event= TableRegistry::get('sdFieldValues')->find()->select(['set_number','field_value'])->where(['sd_case_id='.$caseId,'sd_field_id=149','status=1'])->toArray();   
-        $docs= TableRegistry::get('sddocuments')->find()->select(['doc_name','doc_type'])->where(['sd_case_id='.$caseId,'is_deleted=0'])->toArray();
-        $medHistory = TableRegistry::get('sdFieldValues')->find()->select(['set_number','field_value'])->where(['sd_case_id='.$caseId,'sd_field_id=132','status=1'])->toArray();
-        $pastDrug = TableRegistry::get('sdFieldValues')->find()->select(['set_number','field_value'])->where(['sd_case_id='.$caseId,'sd_field_id=140','status=1'])->toArray();
-        $studyRegistration = TableRegistry::get('sdFieldValues')->find()->select(['set_number','field_value'])->where(['sd_case_id='.$caseId,'sd_field_id=1003','status=1'])->toArray();
-        $medHistoryPatient = TableRegistry::get('sdFieldValues')->find()->select(['set_number','field_value'])->where(['sd_case_id='.$caseId,'sd_field_id=97','status=1'])->toArray();
-        $pastDrugPatient = TableRegistry::get('sdFieldValues')->find()->select(['set_number','field_value'])->where(['sd_case_id='.$caseId,'sd_field_id=105','status=1'])->toArray();
-        $death= TableRegistry::get('sdFieldValues')->find()->select(['set_number','field_value'])->where(['sd_case_id='.$caseId,'sd_field_id=117','status=1'])->toArray();
-        $autopsy= TableRegistry::get('sdFieldValues')->find()->select(['set_number','field_value'])->where(['sd_case_id='.$caseId,'sd_field_id=120','status=1'])->toArray();
-        $test = TableRegistry::get('sdFieldValues')->find()->select(['set_number','field_value'])->where(['sd_case_id='.$caseId,'sd_field_id=1028','status=1'])->toArray();
-        $drugRole = TableRegistry::get('sdFieldValues')->find()->select(['set_number','field_value'])->where(['sd_case_id='.$caseId,'sd_field_id=175','status=1'])->toArray();
-        $senderDiagnosis=TableRegistry::get('sdFieldValues')->find()->select(['set_number','field_value'])->where(['sd_case_id='.$caseId,'sd_field_id=221','status=1'])->toArray();
-        $caseSummary=TableRegistry::get('sdFieldValues')->find()->select(['set_number','field_value'])->where(['sd_case_id='.$caseId,'sd_field_id=1050','status=1'])->toArray();
+        $event= $this->getRepeatSet($caseId,149);   
+        $docs= TableRegistry::get('sdDocuments')->find()->select(['doc_name','doc_type'])->where(['sd_case_id='.$caseId,'is_deleted=0'])->toArray();
+        $medHistory = $this->getRepeatSet($caseId,132);
+        $pastDrug = $this->getRepeatSet($caseId,140);
+        $studyRegistration = $this->getRepeatSet($caseId,1003);
+        $medHistoryPatient = $this->getRepeatSet($caseId,97);
+        $pastDrugPatient = $this->getRepeatSet($caseId,105);
+        $death= $this->getRepeatSet($caseId,117);
+        $autopsy= $this->getRepeatSet($caseId,120);
+        $test = $this->getRepeatSet($caseId,1028);
+        $drugRole = $this->getRepeatSet($caseId,175);
+        $senderDiagnosis=$this->getRepeatSet($caseId,221);
+        $caseSummary=$this->getRepeatSet($caseId,1050);
         $caseIdentifier=$this->getRepeatSet($caseId,20);
         $linkedId =$this->getRepeatSet($caseId,21);
         //debug();
@@ -1586,7 +1586,7 @@ class SdXmlStructuresController extends AppController
                                                     $xml->endElement();//observation
                                                 $xml->endElement();//subjectOf2
                                             }
-                                            if($this->XMLvalue($caseId,91,1)!=null){
+                                            if($this->XMLvalue($caseId,1156,1)!=null){
                                                 $xml->startElement("subjectOf2");
                                                 $xml->writeAttribute('typeCode','SBJ');
                                                     $xml->startElement("observation");
