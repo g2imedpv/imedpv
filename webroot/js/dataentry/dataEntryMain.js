@@ -656,7 +656,6 @@ function setPageChange(section_id, pageNo, addFlag=false, resultflag = null) {
                         }
                         if ((typeof value != "undefined")&&(setMatch)){
 
-                            console.log(thisElement);
                             valueFlag = true;
                             if((thisElement.attr('id').split('-')[2] != 'radio')&&(thisElement.attr('id').split('-')[2]!='checkbox'&&thisElement.attr('id').split('-')[2]!='unspecifieddate'&&thisElement.attr('id').split('-')[2]!='date')){
                                 autoChangeflag = true;
