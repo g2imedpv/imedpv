@@ -175,13 +175,13 @@
                 <label><?php echo __("Latest Received Date")?> (A.1.7.b)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[12][id]\" value=\"".$field_value_set['12']['id']."\">";?>
                 <input type="hidden" class="form-control" name="field_value[12][value]" id="reporterField_latestreceiveddate" value="<?= $field_value_set['12']['field_value']?>">
-                <input type="text" class="form-control"  id="reporterField_latestreceiveddate_plugin" placeholder="<?php echo __("dd/mm/yyyy")?>">
+                <input type="text" class="form-control"  id="reporterField_latestreceiveddate_plugin" placeholder="<?php echo __("yyyy/mm/dd")?>">
             </div>
             <div class="form-group col-md-3" >
                 <label><?php echo __("Initial Received Date")?> (A.1.7.b)</label>
                 <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[10][id]\" value=\"".$field_value_set['10']['id']."\">";?>
                 <input type="hidden" class="form-control" name="field_value[10][value]" id="reporterField_initialreceiveddate" value="<?= $field_value_set['10']['field_value']?>">
-                <input type="text" class="form-control"  id="reporterField_initialreceiveddate_plugin" placeholder="<?php echo __("dd/mm/yyyy")?>">
+                <input type="text" class="form-control"  id="reporterField_initialreceiveddate_plugin" placeholder="<?php echo __("yyyy/mm/dd")?>">
             </div>
             <?php echo "<input type=\"hidden\" id=\"id_reporterField_firstname_id\" name=\"field_value[225][id]\" value=\"".$field_value_set['225']['id']."\">";?>
             <input type="hidden" class="form-control" name="field_value[225][value]" id="reporterField_regulatoryclockstartddate" value="<?= $field_value_set['225']['field_value']?>">
@@ -518,7 +518,7 @@
   <div class="modal-dialog modal-lg" role="document" style="max-width: 1175px !important;">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id=""><?php echo __("MedDRA Browser")?> (<?php echo __("Version")?>: MedDRA 24.0)</h5>
+        <h5 class="modal-title" id=""><?php echo __("MedDRA Browser")?> (<?php echo __("Version")?>: MedDRA 24.1)</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

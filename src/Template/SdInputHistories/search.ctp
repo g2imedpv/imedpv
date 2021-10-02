@@ -38,13 +38,13 @@
                 <label class="col-form-label"><?php echo __("Modified Date")?>:</label>
                 <div class="col-sm-12 row justify-content-start">
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="modified_date_start" placeholder="<?php echo __("dd/mm/yyyy")?>">
+                        <input type="text"  class="form-control" id="modified_date_start" placeholder="<?php echo __("yyyy/mm/dd")?>">
                     </div>
                     <div class="col-sm-2 arrow">
                         <i class="far fa-window-minimize"></i>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control" id="modified_date_end" placeholder="<?php echo __("dd/mm/yyyy")?>">
+                        <input type="text"  class="form-control" id="modified_date_end" placeholder="<?php echo __("yyyy/mm/dd")?>">
                     </div>
                 </div>
             </div>

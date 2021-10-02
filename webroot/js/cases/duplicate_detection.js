@@ -37,7 +37,15 @@ $(document).ready(function(){
                 $(v.sd_product_workflows).each(function(k,v){
                     text +="<option value=\""+v.id+"\">"+v.sd_workflow.country+"</option>"
                 });
+
+                !v ? null : $('.caseRegV').show();
+                if (v.e2b_version == 3) {
+                    $('#e2bV').html('R3');
+                } else {
+                    $('#e2bV').html('R2');
+                }
             }
+
         });
         $('#sd_product_workflow_id').html(text);
         $('#input_product_id').val(product_id);
@@ -258,5 +266,5 @@ function caseDetail(caseNo){
  * Case Registration / Duplicate Detection:Reaction Onset Date (B.2.i.4b):date format
  */
 $(document).ready(function () {
-    $('#event_onset_date_plugin,#datepicker1,#datepicker2,#datepicker3,#datepicker4,#datepicker5').datepicker({dateFormat: 'dd/mm/yy'});
+    $('#event_onset_date_plugin,#datepicker1,#datepicker2,#datepicker3,#datepicker4,#datepicker5').datepicker({dateFormat: 'yy/mm/dd'});
 });

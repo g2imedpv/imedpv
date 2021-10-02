@@ -26,7 +26,10 @@
             <!-- Add Product -->
             <div class="form-row">
                 <div class="form-group col-md-3">
-                    <label><?php echo __("Product Name")?> <i class="fas fa-asterisk reqField"></i></label>
+                    <label>
+                        <?php echo __("Product Name")?> <i class="fas fa-asterisk reqField"></i>
+                        <span class='ml-2 badge badge-info caseRegV' style='display:none;'>E2B <span id='e2bV'></span> </span>
+                    </label>
                     <select type="text" class="form-control" id="product_id">
                         <option value=""><?php echo __("Select Project No.")?></option>
                         <?php
@@ -50,9 +53,10 @@
                     <input type="text" class="form-control" name="field_value[149]" id="event_report_term">
                 </div>
                 <div class="form-group col-md-3">
-                    <label><?php echo __("Reaction Onset Date (B.2.i.4b)")?></label>
+                    <label><?php echo __("Reaction Onset Date")?></label>
+                    <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<?php echo __("Field Helper")?>" data-content="Date of Start of Reaction / Event (B.2.i.4b/E.i.4)"><i class="qco fas fa-info-circle"></i></a>
                     <input type="hidden" class="form-control" name="field_value[156]" id="event_onset_date">
-                    <input type="text" class="form-control"  id="event_onset_date_plugin" placeholder="<?php echo __("dd/mm/yyyy")?>">
+                    <input type="text" class="form-control"  id="event_onset_date_plugin" placeholder="<?php echo __("yyyy/mm/dd")?>">
                 </div>
 
                 <!-- Second Line -->
@@ -67,8 +71,8 @@
                     </select>
                 </div>
                 <div class="form-group col-md-4">
-                    <label><?php echo __("Age at Time of Onset of Reaction/event (B.1.2.2a)")?></label>
-                    <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<?php echo __("Field Helper")?>" data-content="Age at time of onset of reaction or event"><i class="qco fas fa-info-circle"></i></a>
+                    <label><?php echo __("Age at Time of Onset of Reaction/event")?></label>
+                    <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<?php echo __("Field Helper")?>" data-content="Age at time of onset of reaction or event (B.1.2.2a/D.2.2a)"><i class="qco fas fa-info-circle"></i></a>
                     <input type="text" class="form-control" name="field_value[86]" id="patient_age">
                 </div>
                 <div class="form-group col-md-3">

@@ -531,7 +531,7 @@ class SdCasesController extends AppController
                             'conditions' => ['meddra.sd_case_id = SdCases.id', 'meddra.sd_field_id = 496', 'meddra.field_value = \''.$searchKey['meddraResult'].'\'']
                         ]
                     ]);
-                    // debug($searchResult);                    
+                    // debug($searchResult);
                 }
                 if(!empty($searchKey['patient_dob'])) $searchResult = $searchResult->where(['patient_dob.field_value'=>$searchKey['patient_dob']]);
                 if(!empty($searchKey['patient_gender'])) $searchResult = $searchResult->where(['patient_gender.field_value'=>$searchKey['patient_gender']]);
@@ -557,7 +557,7 @@ class SdCasesController extends AppController
                         continue;
                     }
                     if($caseDetail['case_received_date'] != null){
-                        $rcaseTime = Intval(substr($caseDetail['case_received_date'],4))*10000+Intval(substr($caseDetail['case_received_date'],2,2))*100+Intval(substr($caseDetail['case_received_date_start'],0,2));                    
+                        $rcaseTime = Intval(substr($caseDetail['case_received_date'],4))*10000+Intval(substr($caseDetail['case_received_date'],2,2))*100+Intval(substr($caseDetail['case_received_date_start'],0,2));
                         if(!empty($searchKey['case_received_date_end']))
                             if($rcaseTime > Intval(substr($searchKey['case_received_date_end'],6,4))*10000+Intval(substr($searchKey['case_received_date_end'],3,2))*100+Intval(substr($searchKey['case_received_date_end'],0,2))){
                                 unset($output[$key]);
@@ -614,7 +614,7 @@ class SdCasesController extends AppController
         //TODO fetch product_workflow only this user can access
         $productInfo = TableRegistry::get('SdProducts')
             ->find()
-            ->select(['id','product_name'])
+            ->select(['id','product_name','e2b_version'])
             ->contain(['SdProductWorkflows.SdWorkflows'=>['fields'=>['SdWorkflows.country']]])
             ->where(['sd_company_id '=>$userinfo['company_id']])
             ->group(['SdProducts.id']);
@@ -650,20 +650,32 @@ class SdCasesController extends AppController
                         'type'=>'LEFT',
                         'conditions'=>['pwf.sd_workflow_id = wf.id']
                     ]
-                ])->where(['pwf.id'=>$requestData['sd_product_workflow_id'],'SdWorkflowActivities.order_no'=>'1'])->first();
+                ])->where([
+                    'pwf.id'=>$requestData['sd_product_workflow_id'],
+                    'SdWorkflowActivities.order_no'=>'1'
+                ])->first();
+
                 $sdCase = $this->SdCases->newEntity();
                 $savedData['sd_product_workflow_id'] = $requestData['sd_product_workflow_id'];
                 $savedData['status'] = "1";
                 $companyDetail['order'] = $product_data['caseNo_convention'];//TODO
                 $order = explode(",",$companyDetail['order']);
-                $date_str = $this->caseNoGenerator($order,$sdWorkflowActivities['id'], $requestData['sd_product_workflow_id'], $companyDetail['company_abbreviation'],$product_data['product_abbreviation']);
+
+                $date_str = $this->caseNoGenerator(
+                    $order,
+                    $sdWorkflowActivities['id'],
+                    $requestData['sd_product_workflow_id'],
+                    $companyDetail['company_abbreviation'],
+                    $product_data['product_abbreviation']
+                );
+
                 $savedData['caseNo'] = $date_str;
                 $savedData['version_no'] = "1";
                 //TODO VERSION UP MIGHT BE INCLUDED
                 $savedData['sd_user_id'] = $userinfo['id'];
                 $savedData['sd_workflow_activity_id'] = $sdWorkflowActivities['id'];
                 $sdCase = $this->SdCases->patchEntity($sdCase, $savedData);
-                // debug($sdCase);
+                //debug($sdCase);die();
                 $savedCase=$this->SdCases->save($sdCase);
                 if (!$savedCase) {
                     debug($sdCase);
@@ -701,6 +713,7 @@ class SdCasesController extends AppController
                         'field_value' =>$product_data[$product_info],
                         'status' =>'1',
                     ];
+                    //debug($product_data[$product_info]);die();
                     $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
                     $savedFieldValue = $sdFieldValueTable->save($savedFieldValueEntity);
                     if(!$savedFieldValue){
@@ -748,15 +761,16 @@ class SdCasesController extends AppController
                     // }
                 }
 
-                //save latest Recieved date
                 //TODO logic according to versiiiion
+
+                //save Latest Received Date
                 $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                 $dataSet = [
                     'sd_case_id' => $savedCase->id,
                     'sd_field_id' => '12',
                     'set_number' => '1',
                     'created_time' =>date("Y-m-d H:i:s"),
-                    'field_value' =>date("dmY"),
+                    'field_value' =>date("Ymd"),
                     'status' =>'1',
                 ];
                 $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
@@ -764,13 +778,15 @@ class SdCasesController extends AppController
                     echo "problem in saving latest received date sdfields";
                     return null;
                 }
+
+                // Regulatory Clock Start Date
                 $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                 $dataSet = [
                     'sd_case_id' => $savedCase->id,
                     'sd_field_id' => '225',
                     'set_number' => '1',
                     'created_time' =>date("Y-m-d H:i:s"),
-                    'field_value' =>date("dmY"),
+                    'field_value' =>date("Ymd"),
                     'status' =>'1',
                 ];
                 $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
@@ -778,13 +794,15 @@ class SdCasesController extends AppController
                     echo "problem in saving regulatory clock start date sdfields";
                     return null;
                 }
+
+                // Initial Received Date
                 $sdFieldValueEntity = $sdFieldValueTable->newEntity();
                 $dataSet = [
                     'sd_case_id' => $savedCase->id,
                     'sd_field_id' => '10',
                     'set_number' => '1',
                     'created_time' =>date("Y-m-d H:i:s"),
-                    'field_value' =>date("dmY"),
+                    'field_value' =>date("Ymd"),
                     'status' =>'1',
                 ];
                 $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
@@ -792,6 +810,39 @@ class SdCasesController extends AppController
                     echo "problem in saving initial received date sdfields";
                     return null;
                 }
+
+                // C.1.2 Date of Creation
+                $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                $dataSet = [
+                    'sd_case_id' => $savedCase->id,
+                    'sd_field_id' => '5',
+                    'set_number' => '1',
+                    'created_time' =>date("Y-m-d H:i:s"),
+                    'field_value' =>date("YmdHis"),
+                    'status' =>'1',
+                ];
+                $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                if(!$sdFieldValueTable->save($savedFieldValueEntity)){
+                    echo "problem in saving Date of Creation sdfields";
+                    return null;
+                }
+
+                // N.2.r.4 Date of Message Creation
+                // $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+                // $dataSet = [
+                //     'sd_case_id' => $savedCase->id,
+                //     'sd_field_id' => '1059',
+                //     'set_number' => '1',
+                //     'created_time' =>date("Y-m-d H:i:s"),
+                //     'field_value' =>date("YmdHis"),
+                //     'status' =>'1',
+                // ];
+                // $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+                // if(!$sdFieldValueTable->save($savedFieldValueEntity)){
+                //     echo "problem in saving Date of Message Creation sdfields";
+                //     return null;
+                // }
+
                 foreach($requestData['field_value'] as $field_id => $detail_data){
                     if($detail_data!=""){
                         $sdFieldValueEntity = $sdFieldValueTable->newEntity();
@@ -803,6 +854,7 @@ class SdCasesController extends AppController
                             'field_value' =>$detail_data,
                             'status' =>'1',
                         ];
+                        //debug($requestData['field_value']);die();
                         $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
                         // debug($sdFieldValueEntity);
                         if(!$sdFieldValueTable->save($savedFieldValueEntity)) {
@@ -900,30 +952,30 @@ class SdCasesController extends AppController
                         'SdCases.caseNO',
                         'SdCases.version_no',
                         'SdCases.id',
-                        'country_r3' => 'country_1026.field_value', 
-                        'country' => 'country_3.field_value', 
+                        'country_r3' => 'country_1026.field_value',
+                        'country' => 'country_3.field_value',
                         'suspectDrug' => 'product_name_176.field_value',
                         'reportType' => 'report_type_6.field_value',
                         'reportTypeValue' => 'report_value.caption',
-                        'ageCount' => 'age_count_86.field_value', 
+                        'ageCount' => 'age_count_86.field_value',
                         'ageUnitValue' => 'age_unit_value.caption',
-                        'sex' => 'sex_93.field_value', 
+                        'sex' => 'sex_93.field_value',
                         'sexValue' => 'sex_value.caption',
-                        'dose' => 'dose_190.field_value', 
+                        'dose' => 'dose_190.field_value',
                         'durationStart' => 'duration_Start_199.field_value',
-                        'durationReaction' => 'duration_Reaction_156.field_value', 
-                        'reaction' => 'reaction_149.field_value', 
+                        'durationReaction' => 'duration_Reaction_156.field_value',
+                        'reaction' => 'reaction_149.field_value',
                         'meddra_llt' => 'llt_496.field_value',
-                        'outcome' => 'outcome_165.field_value', 
+                        'outcome' => 'outcome_165.field_value',
                         'outcomeValue' => 'outcome_value.caption',
                         'serverity' => 'serverity_302.field_value',
                         'serverityValue' => 'serverity_value.caption',
-                        'causeOfDeath' => 'death.field_value', 
-                        'causeOfDeath1019' => 'death_1019.field_value', 
-                        'causeOfDeath1020' => 'death_1020.field_value', 
+                        'causeOfDeath' => 'death.field_value',
+                        'causeOfDeath1019' => 'death_1019.field_value',
+                        'causeOfDeath1020' => 'death_1020.field_value',
                         'causeOfDeath1021' => 'death_1021.field_value',
                         'causeOfDeath1022' => 'death_1022.field_value',
-                        'causeOfDeath1023' => 'death_1023.field_value', 
+                        'causeOfDeath1023' => 'death_1023.field_value',
                         'causeOfDeath1024' => 'death_1024.field_value',
                         'labeled' => 'label_382.field_value',
                         'labeledValue' => 'label_value.caption',
@@ -939,7 +991,7 @@ class SdCasesController extends AppController
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
                             'conditions'=>['country_3.sd_field_id = 3','country_3.sd_case_id = SdCases.id','country_3.status = 1']
-                        ],                        
+                        ],
                         'country_1026'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
@@ -959,7 +1011,7 @@ class SdCasesController extends AppController
                             'table'=>'sd_field_value_look_ups_r3',
                             'type'=>'LEFT',
                             'conditions'=>['report_value.sd_field_id = 6','report_value.value = report_type_6.field_value']
-                        ],   
+                        ],
                         'age_count_86'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
@@ -974,7 +1026,7 @@ class SdCasesController extends AppController
                             'table'=>'sd_field_value_look_ups_r3',
                             'type'=>'LEFT',
                             'conditions'=>['age_unit_value.sd_field_id = 87','age_unit_value.value = age_unit_87.field_value']
-                        ],                        
+                        ],
                         'sex_93'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
@@ -984,7 +1036,7 @@ class SdCasesController extends AppController
                             'table'=>'sd_field_value_look_ups_r3',
                             'type'=>'LEFT',
                             'conditions'=>['sex_value.sd_field_id = 93','sex_value.value = sex_93.field_value']
-                        ],  
+                        ],
                         'dose_190'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
@@ -1019,7 +1071,7 @@ class SdCasesController extends AppController
                             'table'=>'sd_field_value_look_ups_r3',
                             'type'=>'LEFT',
                             'conditions'=>['outcome_value.sd_field_id = 165','outcome_value.value = outcome_165.field_value']
-                        ],     
+                        ],
                         'serverity_302'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
@@ -1029,12 +1081,12 @@ class SdCasesController extends AppController
                             'table'=>'sd_field_value_look_ups_r3',
                             'type'=>'LEFT',
                             'conditions'=>['serverity_value.sd_field_id = 302','serverity_value.value = serverity_302.field_value']
-                        ],     
+                        ],
                         'death'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
                             'conditions'=>['death.sd_field_id = 354','death.sd_case_id = SdCases.id','death.status = 1']
-                        ],   
+                        ],
                         'death_1019'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
@@ -1074,7 +1126,7 @@ class SdCasesController extends AppController
                             'table'=>'sd_field_value_look_ups_r3',
                             'type'=>'LEFT',
                             'conditions'=>['label_value.sd_field_id = 382','label_value.value = label_382.field_value']
-                        ],   
+                        ],
                         'causality_378'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
@@ -1084,7 +1136,7 @@ class SdCasesController extends AppController
                             'table'=>'sd_field_value_look_ups_r3',
                             'type'=>'LEFT',
                             'conditions'=>['causality_value.sd_field_id = 378','causality_value.value = causality_378.field_value']
-                        ],     
+                        ],
                         'history_445'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
@@ -1099,7 +1151,7 @@ class SdCasesController extends AppController
                             'table'=>'sd_field_value_look_ups_r3',
                             'type'=>'LEFT',
                             'conditions'=>['concomitant_value.sd_field_id = 378','concomitant_value.value = concomitant_175.field_value']
-                        ],   
+                        ],
                         'concomitantDrug_176'=>[
                             'table'=>'sd_field_values',
                             'type'=>'LEFT',
@@ -1121,50 +1173,50 @@ class SdCasesController extends AppController
                     // $event_pt = $sdFieldValueTable->find()
                     //     ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
                     //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'496'])->toArray();
-            
+
                     // $event_start_date = $sdFieldValueTable->find()
                     //     ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
                     //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'199'])->toArray();
-                    
+
                     // $event_reaction_date = $sdFieldValueTable->find()
                     //     ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
-                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'156'])->toArray();      
-                    
+                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'156'])->toArray();
+
                     // $event_dose = $sdFieldValueTable->find()
                     //     ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
-                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'190'])->toArray();      
-                    
+                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'190'])->toArray();
+
                     // $event_labeling_db = $sdFieldValueTable->find()
                     //     ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
-                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'382'])->toArray(); 
+                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'382'])->toArray();
 
                     // //TODO labeling
 
-                    // //find all products                    
+                    // //find all products
                     // $product = $sdFieldValueTable->find()
                     // ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
                     // ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'176'])->order(['set_number' => 'ASC'])->toArray();
 
                     // $event_casuality_db = $sdFieldValueTable->find()
                     //     ->select(['set_number', 'field_value','status','sd_case_id', 'sd_field_id'])
-                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'378'])->order(['set_number' => 'ASC'])->toArray(); 
-                    
+                    //     ->where(['sd_case_id'=>$caseDetail['id'], 'status'=> '1', 'sd_field_id' =>'378'])->order(['set_number' => 'ASC'])->toArray();
+
                     // for($i = 0; $i < count($product); $i++){
                     //     $caseAllFields[$caseDetail['id']]['product']['product_name'] = $product[$i];
                     // }
-                    
+
                     // for($i = 0; $i < count($event_reaction) | $i < count($event_pt) | $i < count($event_start_date)|$i < count($event_reaction_date); $i++){
-                    //     if(array_key_exists($i, $event_reaction)) 
+                    //     if(array_key_exists($i, $event_reaction))
                     //         $caseAllFields[$caseDetail['id']]['Events'][$i]['event_reaction'] = $event_reaction[$i]['field_value'];
-                    //     if(array_key_exists($i, $event_pt)) 
+                    //     if(array_key_exists($i, $event_pt))
                     //         $caseAllFields[$caseDetail['id']]['Events'][$i]['event_pt'] = $event_pt[$i]['field_value'];
-                    //     if(array_key_exists($i, $event_start_date)) 
+                    //     if(array_key_exists($i, $event_start_date))
                     //         $caseAllFields[$caseDetail['id']]['Events'][$i]['event_start_date'] = $event_start_date[$i]['field_value'];
-                    //     if(array_key_exists($i, $event_reaction_date)) 
+                    //     if(array_key_exists($i, $event_reaction_date))
                     //         $caseAllFields[$caseDetail['id']]['Events'][$i]['event_reaction_date'] = $event_reaction_date[$i]['field_value'];
-                    //     if(array_key_exists($i, $event_dose)) 
+                    //     if(array_key_exists($i, $event_dose))
                     //         $caseAllFields[$caseDetail['id']]['Events'][$i]['event_dose'] = $event_dose[$i]['field_value'];
-                    // } 
+                    // }
             }
             // debug($caseFields);
             $this->set(compact('caseFields', 'extraFields','cimosFields'));
@@ -1173,7 +1225,7 @@ class SdCasesController extends AppController
     }
 
     public function caselist(){
-        $this->viewBuilder()->setLayout('main_layout');        
+        $this->viewBuilder()->setLayout('main_layout');
     }
     /**
      * Version Up cases
@@ -1220,6 +1272,26 @@ class SdCasesController extends AppController
                 $patchedFieldValue = $sdFieldValuesTable->save($newFieldValue);
                 if(!$patchedFieldValue) {print_r($patchedFieldValue);return;}
             }
+
+            // Overwrite C.1.2 Date of Creation on version up time
+            // $sdFieldValues;
+            // if($sdFieldValues == null){
+            //     $sdFieldValueEntity = $sdFieldValueTable->newEntity();
+            // }
+            // $dataSet = [
+            //     'sd_case_id' => $savedCase->id,
+            //     'sd_field_id' => '5',
+            //     'set_number' => '1',
+            //     'created_time' =>date("Y-m-d H:i:s"),
+            //     'field_value' =>date("YmdHis"),
+            //     'status' =>'1',
+            // ];
+            // $savedFieldValueEntity = $sdFieldValueTable->patchEntity($sdFieldValueEntity, $dataSet);
+            // if(!$sdFieldValueTable->save($savedFieldValueEntity)){
+            //     echo "problem in saving Date of Creation sdfields";
+            //     return null;
+            // }
+
             $caseHistoriesTable = TableRegistry::get('SdCaseHistories');
             $newCaseHistory = $caseHistoriesTable->newEntity();
             $dataSet =[

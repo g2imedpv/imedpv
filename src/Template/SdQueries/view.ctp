@@ -1,9 +1,9 @@
-<title><?php echo __("Query Content")?></title>
+<title><?php echo __("Notification")?></title>
 
 <div class="card text-center w-75 my-3 mx-auto">
     <div class="card-header">
         <button type="button" class="btn btn-link float-left" onclick="window.history.back();"><i class="fas fa-arrow-left"></i></button>
-        <h3><?php echo __("Query Content")?></h3>
+        <h3><?php echo __("Notification")?></h3>
     </div>
     <div class="card-body">
         <h1 class="display-4 text-left"><?= h($sdQuery->title) ?></h1>

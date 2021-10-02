@@ -22,7 +22,7 @@ $(document).ready(function() {
      /**
      * dashboard advanced search:activity due date and submission due date calendar
      */
-    $('#start_date,#end_date').datepicker({dateFormat: 'dd/mm/yy'});
+    $('#start_date,#end_date').datepicker({dateFormat: 'yy/mm/dd'});
 
     //generate caseNo format
     $("[id^=casenumber]").change(function(){
