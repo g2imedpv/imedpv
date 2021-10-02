@@ -668,6 +668,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                     //  $text =$text. "<input id= \"section-".$section->id."-set_number-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][set_number]\" value=".$setNo." type=\"hidden\">";
                     $text =$text. "<input id= \"section-".$section->id."-sd_field_id-".$sd_section_structure_detail->sd_field->id."\" name=\"sd_field_values[".$section->id."][".$sd_section_structureK."][sd_field_id]\" value=".$sd_section_structure_detail->sd_field->id." type=\"hidden\">";
                 }
+                //build up field based on its element_type
                     switch($sd_section_structure_detail->sd_field->sd_element_type->type_name){
                         case 'select':
                             $text =$text. "<select class=\"form-control\" id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."\" name=".$field_value_nameHolder.">";
@@ -817,7 +818,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                             $text =$text. "readonly=\"readonly\">";
                             continue;
                         case "dynamic select":
-                            $text =$text. "<select class=\"form-control\" id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."\" name=".$field_value_nameHolder.">";
+                            $text =$text."<select class=\"form-control\" id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."\" name=".$field_value_nameHolder.">";
                             $text =$text."<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-null\" value=\"\" ></option>";
                             foreach($dynamic_options[explode('-',$sd_section_structure_detail->sd_field->descriptor)[1]] as $option_no=>$option_detail){
                                 $text =$text. "<option id=\"section-".$section->id."-select-".$sd_section_structure_detail->sd_field->id."-option-".$option_no."\" value=".$option_no;
@@ -827,6 +828,12 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                                 $text =$text. ">".$option_detail."</option>";
                             };
                             $text =$text."</select>";
+                            continue;
+                        case "detailedDate":
+                            $text =$text. "<input id=\"section-".$section->id."-detailedDate-".$sd_section_structure_detail->sd_field->id."\" class=\"form-control\" name=".$field_value_nameHolder." type=\"text\"";
+                            if($permission==2) $text =$text. " disabled ";
+                            (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?$text =$text."value=\"".str_replace("\"","&quot;",$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value)."\"":$text =$text.null;
+                            $text =$text. ">";
                             continue;
                     }
                     $text =$text."</div>";
