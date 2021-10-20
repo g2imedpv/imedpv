@@ -254,12 +254,12 @@ class MedDraController extends AppController
                 }else{
                         $qptb = $conn->newQuery();
                             $qptb->select(['meddra'.$language.'.llt_name','meddra'.$language.'.llt_code','meddra'.$language.'.pt_name',
-                                        'meddra'.$language.'.pt_code','meddra'.$language.'.hlt_name','meddra'.$language.'.hlt_code','meddra'.$language.'.hlgt_name','meddra'.$language.'.hlgt_name',
+                                        'meddra'.$language.'.pt_code','meddra'.$language.'.hlt_name','meddra'.$language.'.hlt_code','meddra'.$language.'.hlgt_name','meddra'.$language.'.hlgt_code',
                                         'meddra'.$language.'.soc_name','meddra'.$language.'.soc_code'])->from("meddra".$language);
                             foreach($formats as $exisitKey => $exisitValue){
                                 if(array_key_exists($exisitValue, $searchKey))$qptb->where(['meddra'.$language.'.llt_name LIKE \''.$searchKey['llt_name'].'\'']);
                             }
-                            $drugList['primary'] = $conn->execute($qptb->distinct())->fetchAll();
+                            $drugList['primary'] = $conn->execute($qptb->distinct())->fetchAll()[0];
                     }
                     $drugList['type']=$searchKey['type'];
                 echo json_encode($drugList);
