@@ -762,6 +762,24 @@ class SdXmlStructuresController extends AppController
         return $directValue;
     }
 
+    public function doubleSetValue($caseId,$field_id,$set_one,$set_two){ 
+            $sdFieldValues = TableRegistry::get('sdFieldValues');
+            $direct =$sdFieldValues->find()
+            ->select(['field_value'])
+            ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'status=1','substr(set_number,-1)='.$set_one,'substr(set_number,1)='.$set_two])->first();
+             $directValue=$direct['field_value'];
+        return $directValue;
+    }
+
+    public function thirdSetValue($caseId,$field_id,$set_one,$set_two,$set_three){ 
+        $sdFieldValues = TableRegistry::get('sdFieldValues');
+        $direct =$sdFieldValues->find()
+        ->select(['field_value'])
+        ->where(['sd_case_id='.$caseId,'sd_field_id='.$field_id,'status=1','substr(set_number,-1)='.$set_one,'substr(set_number,-3,1)='.$set_two,'substr(set_number,1)='.$set_three])->first();
+         $directValue=$direct['field_value'];
+    return $directValue;
+    }
+
     public function getMaxSet($caseId,$fieldId){
         $sdFieldValues = TableRegistry::get('sdFieldValues');
         $ICSR = $sdFieldValues ->find()
@@ -773,12 +791,28 @@ class SdXmlStructuresController extends AppController
     public function getRepeatSet($caseId,$fieldId){
         $sdFieldValues = TableRegistry::get('sdFieldValues')->find()
         ->select(['set_number','field_value'])
-        ->where(['sd_case_id='.$caseId,'sd_field_id=20','status=1'])
+        ->where(['sd_case_id='.$caseId,'sd_field_id='.$fieldId,'status=1'])
+        ->toArray();
+        return $sdFieldValues; 
+    }
+    public function getSecondLevel($caseId,$fieldId,$mainSet){
+        $sdFieldValues=TableRegistry::get('sdFieldValues')
+        ->find() 
+        ->select(['set_number','field_value'])
+        ->where(['sd_case_id='.$caseId,'sd_field_id='.$fieldId,'substr(set_number,-1)='.$mainSet,'status=1'])
+        ->toArray();
+        return $sdFieldValues; 
+    }
+    public function getThirdLevel($caseId,$fieldId,$set_one,$set_two){
+        $sdFieldValues=TableRegistry::get('sdFieldValues')
+        ->find() 
+        ->select(['set_number','field_value'])
+        ->where(['sd_case_id='.$caseId,'sd_field_id='.$fieldId,'substr(set_number,-1)='.$set_one,'substr(set_number,-3,1)='.$set_two,'status=1'])
         ->toArray();
         return $sdFieldValues; 
     }
 
-    public function genXMLThree($caseId){   
+    public function genXMLThree($caseId){
         $this->autoRender = false;
         //set file name with caseNo and create time
         $sdCases = TableRegistry::get('sdCases');
@@ -799,7 +833,10 @@ class SdXmlStructuresController extends AppController
         $caseSummary=$this->getRepeatSet($caseId,1050);
         $caseIdentifier=$this->getRepeatSet($caseId,20);
         $linkedId =$this->getRepeatSet($caseId,21);
-        //debug();
+        $product = $this->getRepeatSet($caseId,176);
+        $drugSet =$this->getMaxSet($caseId,176);
+        $eventSet =$this->getMaxSet($caseId,149);
+        //debug($this->thirdSetValue($caseId,216,2,4,1));
         //die();
         $name=$sdCases->find()->select(['caseNo'])->where(['id='.$caseId,'status=1'])->first();
         $fileName=$name['caseNo'];
@@ -2458,14 +2495,16 @@ class SdXmlStructuresController extends AppController
                                                         $xml->writeAttribute('codeSystemVersion','1.0');
                                                         $xml->writeAttribute('displayName','drugInformation');
                                                         $xml->endElement();
-                                                        $xml->writeComment(" G.k Drug(s) Information (repeat as necessary) #1 ");
+                                                if($product!=null){
+                                                    foreach($product as $product_details){
+                                                        $xml->writeComment(" G.k Drug(s) Information (repeat as necessary) #".$product_details['set_number']);
                                                         $xml->startElement("component");
                                                         $xml->writeAttribute('typeCode','COMP');
                                                             $xml->startElement("substanceAdministration");
                                                             $xml->writeAttribute('classCode','SBADM');
                                                             $xml->writeAttribute('moodCode','EVN');
                                                                 $xml->startElement("id");
-                                                                $xml->writeAttribute('root','3c91b4d5-e039-4a7a-9c30-67671b0ef9e4');
+                                                                $xml->writeAttribute('root','3c91b4d5-e039-4a7a-9c30-67671b0ef9e4');//how to determine root???
                                                                 $xml->endElement();
                                                                 $xml->startElement("consumable");
                                                                 $xml->writeAttribute('typeCode','CSM');
@@ -2474,16 +2513,19 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->startElement("kindOfProduct");
                                                                         $xml->writeAttribute('classCode','MMAT');
                                                                         $xml->writeAttribute('determinerCode','KIND');
+                                                                        if($this->XMLvalue($caseId,1033,$product_details['set_number'])!=null){
                                                                             $xml->startElement("code");
-                                                                            $xml->writeAttribute('code',$this->XMLvalue($caseId,1033,1));
+                                                                            $xml->writeAttribute('code',$this->XMLvalue($caseId,1033,$product_details['set_number']));
                                                                             $xml->writeAttribute('codeSystem','TBD-MPID');
-                                                                            $xml->writeAttribute('codeSystemVersion',$this->XMLvalue($caseId,1032,1));
+                                                                            $xml->writeAttribute('codeSystemVersion',$this->XMLvalue($caseId,1032,$product_details['set_number']));
                                                                             $xml->endElement();
                                                                             $xml->writeComment(" Example MPID and Version ");
-                                                                            $xml->writeComment(" G.k.2.1.1a: MPID Version Date / Number #1");
-                                                                            $xml->writeComment(" G.k.2.1.1b: Medicinal Product Identifier (MPID) #1");
-                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,176,1));
-                                                                            $xml->writeComment(" G.k.2.2: Medicinal Product Name as Reported by the Primary Source #1 ");
+                                                                            $xml->writeComment(" G.k.2.1.1a: MPID Version Date / Number #".$product_details['set_number']);
+                                                                            $xml->writeComment(" G.k.2.1.1b: Medicinal Product Identifier (MPID) #".$product_details['set_number']);
+                                                                        }
+                                                                            $xml->writeElement('name',$this->XMLvalue($caseId,176,$product_details['set_number']));
+                                                                            $xml->writeComment(" G.k.2.2: Medicinal Product Name as Reported by the Primary Source #".$product_details['set_number']);
+                                                                        if($this->XMLvalue($caseId,180,$product_details['set_number'])!=null){
                                                                             $xml->startElement("asManufacturedProduct");
                                                                             $xml->writeAttribute('classCode','MANU');
                                                                                 $xml->startElement("subjectOf");
@@ -2492,10 +2534,11 @@ class SdXmlStructuresController extends AppController
                                                                                     $xml->writeAttribute('classCode','CNTRCT');
                                                                                     $xml->writeAttribute('moodCode','EVN');
                                                                                         $xml->startElement("id");
-                                                                                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,180,1));
+                                                                                        $xml->writeAttribute('extension',$this->XMLvalue($caseId,180,$product_details['set_number']));
                                                                                         $xml->writeAttribute('root','2.16.840.1.113883.3.989.2.1.3.4');
                                                                                         $xml->endElement();
-                                                                                        $xml->writeComment(" G.k.3.1: Authorisation / Application Number #1 ");
+                                                                                        $xml->writeComment(" G.k.3.1: Authorisation / Application Number #".$product_details['set_number']);
+                                                                                    if($this->XMLvalue($caseId,182,$product_details['set_number'])!=null){
                                                                                         $xml->startElement("holder");
                                                                                         $xml->writeAttribute('typeCode','HLD');
                                                                                             $xml->startElement("role");
@@ -2503,11 +2546,13 @@ class SdXmlStructuresController extends AppController
                                                                                                 $xml->startElement("playingOrganization");
                                                                                                 $xml->writeAttribute('classCode','ORG');
                                                                                                 $xml->writeAttribute('determinerCode','INSTANCE');
-                                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,182,1));
-                                                                                                    $xml->writeComment(" G.k.3.3: Name of Holder / Applicant #1");
+                                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,182,$product_details['set_number']));
+                                                                                                    $xml->writeComment(" G.k.3.3: Name of Holder / Applicant #".$product_details['set_number']);
                                                                                                 $xml->endElement();//playingOrganization
                                                                                             $xml->endElement();//role
                                                                                         $xml->endElement();//holder
+                                                                                    }
+                                                                                    if($this->XMLvalue($caseId,180,$product_details['set_number'])!=null){
                                                                                         $xml->startElement("author");
                                                                                         $xml->writeAttribute('typeCode','AUT');
                                                                                             $xml->startElement("territorialAuthority");
@@ -2516,25 +2561,31 @@ class SdXmlStructuresController extends AppController
                                                                                                 $xml->writeAttribute('classCode','NAT');
                                                                                                 $xml->writeAttribute('determinerCode','INSTANCE');
                                                                                                     $xml->startElement("code");
-                                                                                                    $xml->writeAttribute('code',$this->XMLvalue($caseId,181,1));
+                                                                                                    $xml->writeAttribute('code',$this->XMLvalue($caseId,181,$product_details['set_number']));
                                                                                                     $xml->writeAttribute('codeSystem','1.0.3166.1.2.2');
                                                                                                     $xml->endElement();
-                                                                                                    $xml->writeComment("  G.k.3.2: Country of Authorisation / Application #1 ");
+                                                                                                    $xml->writeComment("  G.k.3.2: Country of Authorisation / Application #".$product_details['set_number']);
                                                                                                 $xml->endElement();//territory
                                                                                             $xml->endElement();//territorialAuthority
                                                                                         $xml->endElement();//author
+                                                                                    }
                                                                                     $xml->endElement();//approval
                                                                                 $xml->endElement();//subjectOf
                                                                             $xml->endElement();//asManufacturedProduct
+                                                                        }
+                                                                    if($this->getSecondLevel($caseId,1038,$product_details['set_number'])!=null){
+                                                                        $strength=$this->getSecondLevel($caseId,1038,$product_details['set_number']);
+                                                                        $i=1;
+                                                                        foreach($strength as $strength_details){
                                                                             $xml->startElement("ingredient");
                                                                             $xml->writeAttribute('classCode','ACTI');
                                                                                 $xml->startElement("quantity");
                                                                                     $xml->startElement("numerator");
-                                                                                    $xml->writeAttribute('value',$this->XMLvalue($caseId,1038,1));
-                                                                                    $xml->writeAttribute('unit',$this->XMLvalue($caseId,1039,1));
+                                                                                    $xml->writeAttribute('value',$this->doubleSetValue($caseId,1038,$product_details['set_number'],$i));
+                                                                                    $xml->writeAttribute('unit',$this->doubleSetValue($caseId,1039,$product_details['set_number'],$i));
                                                                                     $xml->endElement();//numerator
-                                                                                    $xml->writeComment(" G.k.2.3.r.3a: Strength (number) #1-1 ");
-                                                                                    $xml->writeComment(" G.k.2.3.r.3b: Strength (unit) #1-1");
+                                                                                    $xml->writeComment(" G.k.2.3.r.3a: Strength (number) #".$product_details['set_number'].'-'.$i);
+                                                                                    $xml->writeComment(" G.k.2.3.r.3b: Strength (unit) #".$product_details['set_number'].'-'.$i);
                                                                                     $xml->startElement("denominator");
                                                                                     $xml->writeAttribute('value','1');
                                                                                     $xml->endElement();
@@ -2543,18 +2594,22 @@ class SdXmlStructuresController extends AppController
                                                                                 $xml->writeAttribute('classCode','MMAT');
                                                                                 $xml->writeAttribute('determinerCode','KIND');
                                                                                     $xml->startElement("code");
-                                                                                    $xml->writeAttribute('code',$this->XMLvalue($caseId,1037,1));
+                                                                                    $xml->writeAttribute('code',$this->doubleSetValue($caseId,1037,$product_details['set_number'],$i));
                                                                                     $xml->writeAttribute('codeSystem','TBD-Substance');
-                                                                                    $xml->writeAttribute('codeSystemVersion',$this->XMLvalue($caseId,1036,1));
+                                                                                    $xml->writeAttribute('codeSystemVersion',$this->doubleSetValue($caseId,1036,$product_details['set_number'],$i));
                                                                                     $xml->endElement();
                                                                                     $xml->writeComment(" Example Substance ID and Version ");
-                                                                                    $xml->writeComment(" G.k.2.3.r.2a Substance / Specified Substance TermID Version Date/Number #1-1");
-                                                                                    $xml->writeComment(" G.k.2.3.r.2b: Substance / Specified Substance TermID #1-1");
-                                                                                    $xml->writeElement('name',$this->XMLvalue($caseId,177,1));
-                                                                                    $xml->writeComment(" G.k.2.3.r.1: Substance / Specified Substance Name #1-1");
+                                                                                    $xml->writeComment(" G.k.2.3.r.2a Substance / Specified Substance TermID Version Date/Number #".$product_details['set_number'].'-'.$i);
+                                                                                    $xml->writeComment(" G.k.2.3.r.2b: Substance / Specified Substance TermID #".$product_details['set_number'].'-'.$i);
+                                                                                    $xml->writeElement('name',$this->doubleSetValue($caseId,177,$product_details['set_number'],$i));
+                                                                                    $xml->writeComment(" G.k.2.3.r.1: Substance / Specified Substance Name #".$product_details['set_number'].'-'.$i);
                                                                                 $xml->endElement();//ingredientSubstance
                                                                             $xml->endElement();//ingredient
+                                                                            $i=$i+1;
+                                                                        }
+                                                                    }
                                                                         $xml->endElement();//kindOfProduct
+                                                                    if($this->XMLvalue($caseId,178,$product_details['set_number'])){
                                                                         $xml->startElement("subjectOf");
                                                                         $xml->writeAttribute('typeCode','SBJ');
                                                                             $xml->startElement("productEvent");
@@ -2574,24 +2629,26 @@ class SdXmlStructuresController extends AppController
                                                                                         $xml->writeAttribute('classCode','ORG');
                                                                                         $xml->writeAttribute('determinerCode','INSTANCE');
                                                                                             $xml->startElement("addr");
-                                                                                                $xml->writeElement("country",$this->XMLvalue($caseId,178,1));
-                                                                                                $xml->writeComment(" G.k.2.4: Identification of the Country Where the Drug Was Obtained #1");
+                                                                                                $xml->writeElement("country",$this->XMLvalue($caseId,178,$product_details['set_number']));
+                                                                                                $xml->writeComment(" G.k.2.4: Identification of the Country Where the Drug Was Obtained #".$product_details['set_number']);
                                                                                             $xml->endElement();
                                                                                         $xml->endElement();
                                                                                     $xml->endElement();
                                                                                 $xml->endElement();
                                                                             $xml->endElement();
                                                                         $xml->endElement();//subjectOf
+                                                                    }
                                                                     $xml->endElement();//instanceOfKind
                                                                 $xml->endElement();//consumable
+                                                            if($this->doubleSetValue($caseId,200,$product_details['set_number'],1)!=null){
                                                                 $xml->startElement("outboundRelationship1");
                                                                 $xml->writeAttribute('typeCode','SAS');
                                                                     $xml->startElement("pauseQuantity");
-                                                                    $xml->writeAttribute('value',$this->XMLvalue($caseId,200,1));
-                                                                    $xml->writeAttribute('unit',$this->XMLvalue($caseId,201,1));
+                                                                    $xml->writeAttribute('value',$this->doubleSetValue($caseId,200,$product_details['set_number'],1));
+                                                                    $xml->writeAttribute('unit',$this->doubleSetValue($caseId,201,$product_details['set_number'],1));
                                                                     $xml->endElement();//pauseQuantity
-                                                                    $xml->writeComment(" G.k.9.i.3.1a: Time Interval between Beginning of Drug Administration and Start of Reaction / Event (number) Drug #1, Reaction #1");
-                                                                    $xml->writeComment(" G.k.9.i.3.1b: Time Interval between Beginning of Drug Administration and Start of Reaction / Event (unit)  Drug #1, Reaction #1");
+                                                                    $xml->writeComment(" G.k.9.i.3.1a: Time Interval between Beginning of Drug Administration and Start of Reaction / Event (number) Drug #".$product_details['set_number'].",Reaction #1");
+                                                                    $xml->writeComment(" G.k.9.i.3.1b: Time Interval between Beginning of Drug Administration and Start of Reaction / Event (unit)  Drug #".$product_details['set_number'].", Reaction #1");
                                                                     $xml->startElement("actReference");
                                                                     $xml->writeAttribute('classCode','OBS');
                                                                     $xml->writeAttribute('moodCode','EVN');
@@ -2600,14 +2657,16 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                     $xml->endElement();//actReference
                                                                 $xml->endElement();//outboundRelationship1
+                                                            }
+                                                            if($this->doubleSetValue($caseId,202,$product_details['set_number'],1)!=null){
                                                                 $xml->startElement("outboundRelationship1");
                                                                 $xml->writeAttribute('typeCode','SAE');
                                                                     $xml->startElement("pauseQuantity");
-                                                                    $xml->writeAttribute('value',$this->XMLvalue($caseId,202,1));
-                                                                    $xml->writeAttribute('unit',$this->XMLvalue($caseId,203,1));
+                                                                    $xml->writeAttribute('value',$this->doubleSetValue($caseId,202,$product_details['set_number'],1));
+                                                                    $xml->writeAttribute('unit',$this->doubleSetValue($caseId,203,$product_details['set_number'],1));
                                                                     $xml->endElement();//pauseQuantity
-                                                                    $xml->writeComment(" G.k.9.i.3.2a: Time Interval between Last Dose of Drug and Start of Reaction / Event (number)  Drug #1, Reaction #1");
-                                                                    $xml->writeComment(" G.k.9.i.3.2b: Time Interval between Last Dose of Drug and Start of Reaction / Event (unit)  Drug #1, Reaction #1");
+                                                                    $xml->writeComment(" G.k.9.i.3.2a: Time Interval between Last Dose of Drug and Start of Reaction / Event (number)  Drug #".$product_details['set_number'].",Reaction #1");
+                                                                    $xml->writeComment(" G.k.9.i.3.2b: Time Interval between Last Dose of Drug and Start of Reaction / Event (unit)  Drug #".$product_details['set_number'].",Reaction #1");
                                                                     $xml->startElement("actReference");
                                                                     $xml->writeAttribute('classCode','OBS');
                                                                     $xml->writeAttribute('moodCode','EVN');
@@ -2616,6 +2675,8 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                     $xml->endElement();//actReference
                                                                 $xml->endElement();//outboundRelationship1
+                                                            }
+                                                            if($this->XMLvalue($caseId,1040,$product_details['set_number'])!=null){
                                                                 $xml->startElement("outboundRelationship2");
                                                                 $xml->writeAttribute('typeCode','PERT');
                                                                     $xml->startElement("observation");
@@ -2629,93 +2690,113 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();//code
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','BL');
-                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1040,1));
+                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1040,$product_details['set_number']));
                                                                         $xml->endElement();//value
-                                                                        $xml->writeComment(" G.k.2.5: Investigational Product Blinded #1");
+                                                                        $xml->writeComment(" G.k.2.5: Investigational Product Blinded #".$product_details['set_number']);
                                                                     $xml->endElement();//observation
                                                                 $xml->endElement();//outboundRelationship2
+                                                            }
                                                                 $xml->startElement("outboundRelationship2");
                                                                 $xml->writeAttribute('typeCode','COMP');
-                                                                $xml->writeComment(" G.k.4.r: Dosage and Relevant Information (repeat as necessary) #1-1");
+                                                                $xml->writeComment(" G.k.4.r: Dosage and Relevant Information (repeat as necessary) #".$product_details['set_number']."-1");
                                                                     $xml->startElement("substanceAdministration");
                                                                     $xml->writeAttribute('classCode','SBADM');
                                                                     $xml->writeAttribute('moodCode','EVN');
-                                                                        $xml->writeElement("text",$this->XMLvalue($caseId,190,1));
-                                                                        $xml->writeComment(" G.k.4.r.8: Dosage Text #1-1 ");
+                                                                    if($this->doubleSetValue($caseId,190,$product_details['set_number'],1)!=null){
+                                                                        $xml->writeElement("text",$this->doubleSetValue($caseId,190,$product_details['set_number'],1));
+                                                                        $xml->writeComment(" G.k.4.r.8: Dosage Text #".$product_details['set_number']."-1");
+                                                                    }
                                                                         $xml->startElement("effectiveTime");
                                                                         $xml->writeAttribute('xsi:type','SXPR_TS');
+                                                                        if($this->doubleSetValue($caseId,186,$product_details['set_number'],1)!=null){
                                                                             $xml->startElement("comp");
                                                                             $xml->writeAttribute('xsi:type','PIVL_TS');
                                                                                 $xml->startElement("period");
-                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,186,1));
-                                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,187,1));
+                                                                                $xml->writeAttribute('value',$this->doubleSetValue($caseId,186,$product_details['set_number'],1));
+                                                                                $xml->writeAttribute('unit',$this->doubleSetValue($caseId,187,$product_details['set_number'],1));
                                                                                 $xml->endElement();
-                                                                                $xml->writeComment(" G.k.4.r.2: Number of Units in the Interval #1-1");
-                                                                                $xml->writeComment(" G.k.4.r.3: Definition of the Time Interval Unit #1-1");
+                                                                                $xml->writeComment(" G.k.4.r.2: Number of Units in the Interval #".$product_details['set_number']."-1");
+                                                                                $xml->writeComment(" G.k.4.r.3: Definition of the Time Interval Unit #".$product_details['set_number']."-1");
                                                                             $xml->endElement();//comp
+                                                                        }
+                                                                        if($this->doubleSetValue($caseId,199,$product_details['set_number'],1)!=null){
                                                                             $xml->startElement("comp");
                                                                             $xml->writeAttribute('xsi:type','IVL_TS');
                                                                             $xml->writeAttribute('operator','A');
                                                                                 $xml->startElement("low");
-                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,199,1));
+                                                                                $xml->writeAttribute('value',$this->doubleSetValue($caseId,199,$product_details['set_number'],1));
                                                                                 $xml->endElement();
-                                                                                $xml->writeComment(" G.k.4.r.4: Date and Time of Start of Drug #1-1");
+                                                                                $xml->writeComment(" G.k.4.r.4: Date and Time of Start of Drug #".$product_details['set_number']."-1");
                                                                                 $xml->startElement("high");
-                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,205,1));
+                                                                                $xml->writeAttribute('value',$this->doubleSetValue($caseId,205,$product_details['set_number'],1));
                                                                                 $xml->endElement();
-                                                                                $xml->writeComment(" G.k.4.r.5: Date and Time of Last Administration #1-1");
+                                                                                $xml->writeComment(" G.k.4.r.5: Date and Time of Last Administration #".$product_details['set_number']."-1");
                                                                             $xml->endElement();//comp
+                                                                        }
+                                                                        if($this->doubleSetValue($caseId,206,$product_details['set_number'],1)!=null){
                                                                             $xml->startElement("comp");
                                                                             $xml->writeAttribute('xsi:type','IVL_TS');
                                                                             $xml->writeAttribute('operator','A');
                                                                                 $xml->startElement("width");
-                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,206,1));
-                                                                                $xml->writeAttribute('unit',$this->XMLvalue($caseId,207,1));
+                                                                                $xml->writeAttribute('value',$this->doubleSetValue($caseId,206,$product_details['set_number'],1));
+                                                                                $xml->writeAttribute('unit',$this->doubleSetValue($caseId,207,$product_details['set_number'],1));
                                                                                 $xml->endElement();
-                                                                                $xml->writeComment(" G.k.4.r.6a: Duration of Drug Administration (number) #1-1");
-                                                                                $xml->writeComment(" G.k.4.r.6b: Duration of Drug Administration (unit) #1-1");
+                                                                                $xml->writeComment(" G.k.4.r.6a: Duration of Drug Administration (number) #".$product_details['set_number']."-1");
+                                                                                $xml->writeComment(" G.k.4.r.6b: Duration of Drug Administration (unit) #".$product_details['set_number']."-1");
                                                                             $xml->endElement();//comp
+                                                                        }
                                                                         $xml->endElement();//effectiveTime
+                                                                    if($this->doubleSetValue($caseId,1122,$product_details['set_number'],1)!=null){
                                                                         $xml->startElement("routeCode");
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1044,1));
+                                                                        $xml->writeAttribute('code',$this->doubleSetValue($caseId,1044,$product_details['set_number'],1));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.14');
-                                                                        $xml->writeAttribute('codeSystemVersion',$this->XMLvalue($caseId,1043,1));
-                                                                        $xml->writeComment(" G.k.4.r.10.2a: Route of Administration TermID Version Date / Number #1-1 ");
-                                                                        $xml->writeComment(" G.k.4.r.10.2b: Route of Administration TermID #1-1 ");
-                                                                            $xml->writeElement("originalText",$this->XMLvalue($caseId,1122,1));
-                                                                            $xml->writeComment(" G.k.4.r.10.1: Route of Administration (free text) #1-1 ");
+                                                                        $xml->writeAttribute('codeSystemVersion',$this->doubleSetValue($caseId,1043,$product_details['set_number'],1));
+                                                                        $xml->writeComment(" G.k.4.r.10.2a: Route of Administration TermID Version Date / Number #1".$product_details['set_number']."-1");
+                                                                        $xml->writeComment(" G.k.4.r.10.2b: Route of Administration TermID #".$product_details['set_number']."-1");
+                                                                            $xml->writeElement("originalText",$this->doubleSetValue($caseId,1122,$product_details['set_number'],1));
+                                                                            $xml->writeComment(" G.k.4.r.10.1: Route of Administration (free text) #".$product_details['set_number']."-1");
                                                                         $xml->endElement();//routeCode
+                                                                    }
+                                                                    if($this->doubleSetValue($caseId,183,$product_details['set_number'],1)!=null){
                                                                         $xml->startElement("doesQuantity");
-                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,183,1));
-                                                                            $xml->writeAttribute('unit',$this->XMLvalue($caseId,184,1));
+                                                                        $xml->writeAttribute('value',$this->doubleSetValue($caseId,183,$product_details['set_number'],1));
+                                                                            $xml->writeAttribute('unit',$this->doubleSetValue($caseId,184,$product_details['set_number'],1));
                                                                         $xml->endElement();//doesQuantity
-                                                                        $xml->writeComment(" G.k.4.r.1a Dose (number) #1-1");
-                                                                        $xml->writeComment(" G.k.4.r.1b: Dose (unit) #1-1");
+                                                                        $xml->writeComment(" G.k.4.r.1a Dose (number) #".$product_details['set_number']."-1");
+                                                                        $xml->writeComment(" G.k.4.r.1b: Dose (unit) #".$product_details['set_number']."-1");
+                                                                    }
+                                                                    if($this->doubleSetValue($caseId,191,$product_details['set_number'],1)!=null){
                                                                         $xml->startElement("consumable");
                                                                         $xml->writeAttribute('type','CSM');
                                                                             $xml->startElement("instanceOfKind");
                                                                             $xml->writeAttribute('classCode','INST');
+                                                                            if($this->doubleSetValue($caseId,179,$product_details['set_number'],1)!=null){
                                                                                 $xml->startElement("productInstanceInstance");
                                                                                 $xml->writeAttribute('classCode','MMAT');
                                                                                 $xml->writeAttribute('determinerCode','INSTANCE');
-                                                                                    $xml->writeElement("lotNumberText",$this->XMLvalue($caseId,179,1));
-                                                                                    $xml->writeComment("  G.k.4.r.7: Batch / Lot Number #1-1");
+                                                                                    $xml->writeElement("lotNumberText",$this->doubleSetValue($caseId,179,$product_details['set_number'],1));
+                                                                                    $xml->writeComment("  G.k.4.r.7: Batch / Lot Number #".$product_details['set_number']."-1");
                                                                                 $xml->endElement();//productInstanceInstance
+                                                                            }
+                                                                            if($this->doubleSetValue($caseId,191,$product_details['set_number'],1)!=null){
                                                                                 $xml->startElement("kindOfProduct");
                                                                                 $xml->writeAttribute('classCode','MMAT');
                                                                                 $xml->writeAttribute('determinerCode','KIND');
                                                                                     $xml->startElement("formCode");
-                                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1042,1));
+                                                                                        $xml->writeAttribute('code',$this->doubleSetValue($caseId,1042,$product_details['set_number'],1));
                                                                                         $xml->writeAttribute('codeSystem','TBD-DoseForm');
-                                                                                        $xml->writeAttribute('codeSystemVersion',$this->XMLvalue($caseId,1041,1));
-                                                                                        $xml->writeComment(" G.k.4.r.9.2a: Pharmaceutical Dose Form TermID Version Date / Number #1-1 ");
-                                                                                        $xml->writeComment(" G.k.4.r.9.2b: Pharmaceutical Dose Form TermID #1-1 ");
-                                                                                        $xml->writeElement('originalText',$this->XMLvalue($caseId,191,1));
-                                                                                        $xml->writeComment(" G.k.4.r.9.1: Pharmaceutical Dose Form (free text) #1-1 ");
+                                                                                        $xml->writeAttribute('codeSystemVersion',$this->doubleSetValue($caseId,1041,$product_details['set_number'],1));
+                                                                                        $xml->writeComment(" G.k.4.r.9.2a: Pharmaceutical Dose Form TermID Version Date / Number #".$product_details['set_number']."-1");
+                                                                                        $xml->writeComment(" G.k.4.r.9.2b: Pharmaceutical Dose Form TermID #".$product_details['set_number']."-1");
+                                                                                        $xml->writeElement('originalText',$this->doubleSetValue($caseId,191,$product_details['set_number'],1));
+                                                                                        $xml->writeComment(" G.k.4.r.9.1: Pharmaceutical Dose Form (free text) #".$product_details['set_number']."-1");
                                                                                     $xml->endElement();//formCode
                                                                                 $xml->endElement();//kindOfProduct
+                                                                            }
                                                                             $xml->endElement();//instanceOfKind 
                                                                         $xml->endElement();//consumable
+                                                                    }
+                                                                    if($this->doubleSetValue($caseId,1046,$product_details['set_number'],1)!=null){
                                                                         $xml->startElement("inboundRelationship");
                                                                         $xml->writeAttribute('typeCode','REFR');
                                                                             $xml->startElement("observation");
@@ -2729,16 +2810,18 @@ class SdXmlStructuresController extends AppController
                                                                                 $xml->endElement();
                                                                                 $xml->startElement("value");
                                                                                 $xml->writeAttribute('xsi:type','CE');
-                                                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1046,1));
+                                                                                $xml->writeAttribute('code',$this->doubleSetValue($caseId,1046,$product_details['set_number'],1));
                                                                                 $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.14');
-                                                                                $xml->writeAttribute('codeSystemVersion',$this->XMLvalue($caseId,1045,1));
-                                                                                $xml->writeComment(" G.k.4.r.11.2a: Parent Route of Administration TermID Version Date / Number #1-1 ");
-                                                                                $xml->writeComment(" G.k.4.r.11.2b: Parent Route of Administration TermID #1-1 ");
-                                                                                    $xml->writeElement('originalText',$this->XMLvalue($caseId,193,2));
-                                                                                    $xml->writeComment(" G.k.4.r.11.1: Parent Route of Administration (free text) #1-1");
+                                                                                $xml->writeAttribute('codeSystemVersion',$this->doubleSetValue($caseId,1045,$product_details['set_number'],1));
+                                                                                $xml->writeComment(" G.k.4.r.11.2a: Parent Route of Administration TermID Version Date / Number #".$product_details['set_number']."-1");
+                                                                                $xml->writeComment(" G.k.4.r.11.2b: Parent Route of Administration TermID #".$product_details['set_number']."-1");
+                                                                                    $xml->writeElement('originalText',$this->doubleSetValue($caseId,193,$product_details['set_number'],1));
+                                                                                    $xml->writeComment(" G.k.4.r.11.1: Parent Route of Administration (free text) #".$product_details['set_number']."-1");
                                                                                 $xml->endElement();//value
                                                                             $xml->endElement();//observation       
                                                                         $xml->endElement();//inboundRelationship
+                                                                    }
+                                                                    if($this->doubleSetValue($caseId,1164,$product_details['set_number'],1)!=null){
                                                                         $xml->startElement("inboundRelationship");
                                                                         $xml->writeAttribute('typeCode','REFR');
                                                                             $xml->startElement("observation");
@@ -2752,13 +2835,15 @@ class SdXmlStructuresController extends AppController
                                                                                 $xml->endElement();
                                                                                 $xml->startElement("value");
                                                                                 $xml->writeAttribute('xsi:type','TS');
-                                                                                $xml->writeAttribute('value',$this->XMLvalue($caseId,1046,1));
+                                                                                $xml->writeAttribute('value',$this->doubleSetValue($caseId,1164,$product_details['set_number'],1));
                                                                                 $xml->endElement();//value
-                                                                                $xml->writeComment(" G.k.4.r.CN.1 药品失效日期");
+                                                                                $xml->writeComment(" G.k.4.r.CN.1 药品失效日期 #".$product_details['set_number']."-1");
                                                                             $xml->endElement();//observation       
                                                                         $xml->endElement();//inboundRelationship
+                                                                    }
                                                                     $xml->endElement();//substanceAdministration
                                                                 $xml->endElement();//outboundRelationship2
+                                                            if($this->doubleSetValue($caseId,188,$product_details['set_number'],1)!=null){
                                                                 $xml->startElement("outboundRelationship2");
                                                                 $xml->writeAttribute('typeCode','SUMM');
                                                                     $xml->startElement("observation");
@@ -2772,13 +2857,15 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','PQ');
-                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,188,1));
-                                                                        $xml->writeAttribute('unit',$this->XMLvalue($caseId,189,1));
+                                                                        $xml->writeAttribute('value',$this->doubleSetValue($caseId,188,$product_details['set_number'],1));
+                                                                        $xml->writeAttribute('unit',$this->doubleSetValue($caseId,189,$product_details['set_number'],1));
                                                                         $xml->endElement();
-                                                                        $xml->writeComment(" G.k.5a: Cumulative Dose to First Reaction (number) #1 ");
-                                                                        $xml->writeComment(" G.k.5b: Cumulative Dose to First Reaction (unit) #1 ");
+                                                                        $xml->writeComment(" G.k.5a: Cumulative Dose to First Reaction (number) #".$product_details['set_number']);
+                                                                        $xml->writeComment(" G.k.5b: Cumulative Dose to First Reaction (unit) #".$product_details['set_number']);
                                                                     $xml->endElement();//observation
                                                                 $xml->endElement();//outboundRelationship2
+                                                            }
+                                                            if($this->doubleSetValue($caseId,194,$product_details['set_number'],1)!=null){
                                                                 $xml->startElement("outboundRelationship2");
                                                                 $xml->writeAttribute('typeCode','PERT');
                                                                     $xml->startElement("observation");
@@ -2792,15 +2879,16 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','PQ');
-                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,194,1));
-                                                                        $xml->writeAttribute('unit',$this->XMLvalue($caseId,195,1));
+                                                                        $xml->writeAttribute('value',$this->doubleSetValue($caseId,194,$product_details['set_number'],1));
+                                                                        $xml->writeAttribute('unit',$this->doubleSetValue($caseId,195,$product_details['set_number'],1));
                                                                         $xml->endElement();
-                                                                        $xml->writeComment(" G.k.6a: Gestation Period at Time of Exposure (number) #1");
-                                                                        $xml->writeComment(" G.k.6b: Gestation Period at Time of Exposure (unit) #1 ");
+                                                                        $xml->writeComment(" G.k.6a: Gestation Period at Time of Exposure (number) #".$product_details['set_number']);
+                                                                        $xml->writeComment(" G.k.6b: Gestation Period at Time of Exposure (unit) #".$product_details['set_number']);
                                                                     $xml->endElement();//observation
                                                                 $xml->endElement();//outboundRelationship2
-
+                                                            }
                                                                 $xml->writeComment(" china extention start ");
+                                                            if($this->doubleSetValue($caseId,1165,$product_details['set_number'],1)!=null){
                                                                 $xml->startElement("outboundRelationship2");
                                                                 $xml->writeAttribute('typeCode','PERT');
                                                                     $xml->startElement("observation");
@@ -2814,9 +2902,9 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','CE');
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,194,1));
+                                                                        $xml->writeAttribute('code',$this->doubleSetValue($caseId,1165,$product_details['set_number'],1));
                                                                         $xml->endElement();
-                                                                        $xml->writeComment(" G.k.9.i.CN.1: Is it unexpected? Drug #1, Reaction #1");
+                                                                        $xml->writeComment(" G.k.9.i.CN.1: Is it unexpected? Drug #".$product_details['set_number'].", Reaction #1");
                                                                         $xml->startElement("outboundRelationship1");
                                                                         $xml->writeAttribute('typeCode','REFR');
                                                                             $xml->startElement("actReference");
@@ -2829,6 +2917,8 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();//outboundRelationship1 
                                                                     $xml->endElement();//observation
                                                                 $xml->endElement();//outboundRelationship2
+                                                            }
+                                                            if($this->doubleSetValue($caseId,1166,$product_details['set_number'],1)!=null){
                                                                 $xml->startElement("outboundRelationship2");
                                                                 $xml->writeAttribute('typeCode','PERT');
                                                                     $xml->startElement("observation");
@@ -2842,9 +2932,9 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','CE');
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,194,1));
+                                                                        $xml->writeAttribute('code',$this->doubleSetValue($caseId,1166,$product_details['set_number'],1));
                                                                         $xml->endElement();
-                                                                        $xml->writeComment(" G.k.9.i.CN.1: Is it unexpected? Drug #1, Reaction #1");
+                                                                        $xml->writeComment("G.k.9.i.CN.2: Does the reaction disappear or decrease after withdrawal or reduction of dosage？ Drug #".$product_details['set_number'].", Reaction #1");
                                                                         $xml->startElement("outboundRelationship1");
                                                                         $xml->writeAttribute('typeCode','REFR');
                                                                             $xml->startElement("actReference");
@@ -2857,8 +2947,9 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();//outboundRelationship1 
                                                                     $xml->endElement();//observation
                                                                 $xml->endElement();//outboundRelationship2
+                                                            }
                                                                 $xml->writeComment(" china extention end ");
-
+                                                            if($this->doubleSetValue($caseId,209,$product_details['set_number'],1)!=null){
                                                                 $xml->startElement("outboundRelationship2");
                                                                 $xml->writeAttribute('typeCode','PERT');
                                                                     $xml->startElement("observation");
@@ -2875,8 +2966,8 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->writeAttribute('code',$this->XMLvalue($caseId,209,1));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.16');
                                                                         $xml->writeAttribute('codeSystemVersion','1.0');
-                                                                        $xml->endElement();
-                                                                        $xml->writeComment(" G.k.9.i.4: Did Reaction Recur on Re-administration? Drug #1, Reaction #1");
+                                                                        $xml->endElement();//value
+                                                                        $xml->writeComment(" G.k.9.i.4: Did Reaction Recur on Re-administration? Drug #".$product_details['set_number'].", Reaction #1");
                                                                         $xml->startElement("outboundRelationship1");
                                                                         $xml->writeAttribute('typeCode','REFR');
                                                                             $xml->startElement("actReference");
@@ -2884,10 +2975,12 @@ class SdXmlStructuresController extends AppController
                                                                             $xml->writeAttribute('moodCode','EVN');
                                                                                 $xml->startElement("id");
                                                                                 $xml->writeAttribute('root','154eb889-958b-45f2-a02f-42d4d6f4657f');
+                                                                                $xml->endElement();//id
                                                                             $xml->endElement();//actReference
                                                                         $xml->endElement();//outboundRelationship1
                                                                     $xml->endElement();//observation
-                                                                $xml->endElement();//outboundRelationship2  
+                                                                $xml->endElement();//outboundRelationship2
+                                                            }  
                                                                 $xml->startElement("outboundRelationship2");
                                                                 $xml->writeAttribute('typeCode','REFR');
                                                                     $xml->startElement("observation");
@@ -2908,6 +3001,7 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->writeComment(" G.k.10.r: Additional Information on Drug (coded)(repeat as necessary) #1-1");
                                                                     $xml->endElement();//observation
                                                                 $xml->endElement();//outboundRelationship2
+                                                            if($this->XMLvalue($caseId,209,$product_details['set_number'])!=null){
                                                                 $xml->startElement("outboundRelationship2");
                                                                 $xml->writeAttribute('typeCode','PERT');
                                                                     $xml->startElement("observation");
@@ -2921,11 +3015,13 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','ST');
-                                                                        $xml->text($this->XMLvalue($caseId,217,1));
+                                                                        $xml->text($this->XMLvalue($caseId,209,$product_details['set_number']));
                                                                         $xml->endElement();
-                                                                        $xml->writeComment(" G.k.11: Additional Information on Drug (free text) #1");
+                                                                        $xml->writeComment(" G.k.11: Additional Information on Drug (free text) #".$product_details['set_number']);
                                                                     $xml->endElement();//observation
                                                                 $xml->endElement();//outboundRelationship2
+                                                            }
+                                                            if($this->XMLvalue($caseId,1160,$product_details['set_number'])!=null){
                                                                 $xml->startElement("outboundRelationship2");
                                                                 $xml->writeAttribute('typeCode','REFR');
                                                                     $xml->startElement("observation");
@@ -2939,11 +3035,13 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','ST');
-                                                                        $xml->text($this->XMLvalue($caseId,217,1));
+                                                                        $xml->text($this->XMLvalue($caseId,1160,$product_details['set_number']));
                                                                         $xml->endElement();
-                                                                        $xml->writeComment(" G.k.CN.1 药品通用名称");
+                                                                        $xml->writeComment(" G.k.CN.1 药品通用名称 #".$product_details['set_number']);
                                                                     $xml->endElement();//observation
                                                                 $xml->endElement();//outboundRelationship2
+                                                            }
+                                                            if($this->XMLvalue($caseId,1161,$product_details['set_number'])!=null){
                                                                 $xml->startElement("outboundRelationship2");
                                                                 $xml->writeAttribute('typeCode','REFR');
                                                                     $xml->startElement("observation");
@@ -2957,11 +3055,13 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','ST');
-                                                                        $xml->text($this->XMLvalue($caseId,217,1));
+                                                                        $xml->text($this->XMLvalue($caseId,1161,$product_details['set_number']));
                                                                         $xml->endElement();
-                                                                        $xml->writeComment(" G.k.CN.2 相关器械 ");
+                                                                        $xml->writeComment(" G.k.CN.2 相关器械 #".$product_details['set_number']);
                                                                     $xml->endElement();//observation
                                                                 $xml->endElement();//outboundRelationship2
+                                                            }
+                                                            if($this->XMLvalue($caseId,1162,$product_details['set_number'])!=null){
                                                                 $xml->startElement("outboundRelationship2");
                                                                 $xml->writeAttribute('typeCode','REFR');
                                                                     $xml->startElement("observation");
@@ -2975,11 +3075,13 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','BL');
-                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,217,1));
+                                                                        $xml->writeAttribute('value',$this->XMLvalue($caseId,1162,$product_details['set_number']));
                                                                         $xml->endElement();
-                                                                        $xml->writeComment(" G.k.CN.3 是否为本持有人产品 ");
+                                                                        $xml->writeComment(" G.k.CN.3 是否为本持有人产品 #".$product_details['set_number']);
                                                                     $xml->endElement();//observation
                                                                 $xml->endElement();//outboundRelationship2 
+                                                            }
+                                                            if($this->XMLvalue($caseId,1163,$product_details['set_number'])!=null){
                                                                 $xml->startElement("outboundRelationship2");
                                                                 $xml->writeAttribute('typeCode','REFR');
                                                                     $xml->startElement("observation");
@@ -2993,11 +3095,16 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','ST');
-                                                                        $xml->text($this->XMLvalue($caseId,217,1));
+                                                                        $xml->text($this->XMLvalue($caseId,1163,$product_details['set_number']));
                                                                         $xml->endElement();
-                                                                        $xml->writeComment(" G.k.CN.4 批准文号/受理号 ");
+                                                                        $xml->writeComment(" G.k.CN.4 批准文号/受理号 #".$product_details['set_number']);
                                                                     $xml->endElement();//observation
-                                                                $xml->endElement();//outboundRelationship2                
+                                                                $xml->endElement();//outboundRelationship2   
+                                                            } 
+                                                        if($this->getSecondLevel($caseId,196,$product_details['set_number'])!=null){
+                                                            $indicarion=$this->getSecondLevel($caseId,196,$product_details['set_number']);
+                                                            $i=1;
+                                                            foreach($indicarion as $indicarion_details){            
                                                                 $xml->startElement("inboundRelationship");
                                                                 $xml->writeAttribute('typeCode','RSON');
                                                                     $xml->startElement("observation");
@@ -3011,15 +3118,15 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();
                                                                         $xml->startElement("value");
                                                                         $xml->writeAttribute('xsi:type','CE');
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,197,1));
+                                                                        $xml->writeAttribute('code',$this->doubleSetValue($caseId,197,$product_details['set_number'],$i));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.6.163');
-                                                                        $xml->writeAttribute('codeSystemVersion',$this->XMLvalue($caseId,196,1));
-                                                                        $xml->writeComment(" G.k.7.r.2a: MedDRA Version for Indication #1-1 ");
-                                                                        $xml->writeComment("G.k.7.r.2b: Indication (MedDRA code)  #1-1 ");
+                                                                        $xml->writeAttribute('codeSystemVersion',$this->doubleSetValue($caseId,196,$product_details['set_number'],$i));
+                                                                        $xml->writeComment(" G.k.7.r.2a: MedDRA Version for Indication #".$product_details['set_number']."-".$i);
+                                                                        $xml->writeComment("G.k.7.r.2b: Indication (MedDRA code)  #".$product_details['set_number']."-".$i);
                                                                             $xml->startElement("originalText");
-                                                                            $xml->text($this->XMLvalue($caseId,1047,1));
+                                                                            $xml->text($this->doubleSetValue($caseId,1047,$product_details['set_number'],$i));
                                                                             $xml->endElement();
-                                                                            $xml->writeComment(" G.k.7.r.1: Indication as Reported by the Primary Source #1-1");
+                                                                            $xml->writeComment(" G.k.7.r.1: Indication as Reported by the Primary Source #".$product_details['set_number']."-".$i);
                                                                         $xml->endElement();
                                                                         $xml->startElement("performer");
                                                                         $xml->writeAttribute('typeCode','PRF');
@@ -3035,21 +3142,33 @@ class SdXmlStructuresController extends AppController
                                                                         $xml->endElement();//performer
                                                                     $xml->endElement();//observation       
                                                                 $xml->endElement();//inboundRelationship
+                                                                $i=$i+1;
+                                                            }
+                                                        }
+                                                        if($this->getSecondLevel($caseId,208,$product_details['set_number'])!=null){
+                                                            $action=$this->getSecondLevel($caseId,208,$product_details['set_number']);
+                                                            $i=1;
+                                                            foreach($action as $action_details){     
                                                                 $xml->startElement("inboundRelationship");
                                                                 $xml->writeAttribute('typeCode','CAUS');
                                                                     $xml->startElement("act");
                                                                     $xml->writeAttribute('classCode','ACT');
                                                                     $xml->writeAttribute('moodCode','EVN');
                                                                         $xml->startElement("code");
-                                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,208,1));
+                                                                        $xml->writeAttribute('code',$this->doubleSetValue($caseId,208,$product_details['set_number'],$i));
                                                                         $xml->writeAttribute('codeSystem','2.16.840.1.113883.3.989.2.1.1.15');
                                                                         $xml->writeAttribute('codeSystemVersion','1.0');
                                                                         $xml->endElement();
-                                                                        $xml->writeComment(" G.k.8: Action(s) Taken with Drug #1 ");
+                                                                        $xml->writeComment(" G.k.8: Action(s) Taken with Drug #".$product_details['set_number'].'-'.$i);
                                                                     $xml->endElement();//act       
                                                                 $xml->endElement();//inboundRelationship
+                                                                $i=$i+1;
+                                                            }
+                                                        }
                                                             $xml->endElement();//substanceAdministration
                                                         $xml->endElement();//component
+                                                    }
+                                                }
                                                     $xml->endElement();//organizer
                                                 $xml->endElement();//subjectOf2
                                             $xml->endElement();//primaryRole
@@ -3085,6 +3204,7 @@ class SdXmlStructuresController extends AppController
                                         $xml->endElement();//component
                                     }
                                 }
+                                    if($this->XMLvalue($caseId,1167,$product_details['set_number'])!=null){
                                         $xml->startElement("component");
                                         $xml->writeAttribute('typeCode','COMP');
                                             $xml->startElement("causalityAssessment");
@@ -3098,12 +3218,12 @@ class SdXmlStructuresController extends AppController
                                                 $xml->endElement();
                                                 $xml->startElement("value");
                                                 $xml->writeAttribute('xsi:type','CE');
-                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,215,1));
+                                                $xml->writeAttribute('code',$this->XMLvalue($caseId,1167,$product_details['set_number']));
                                                 $xml->writeAttribute('codeSystem','CN-CSV');
                                                 $xml->writeAttribute('codeSystemVersion','1.0');
                                                 $xml->writeAttribute('displayName','Reasonable possibility');
                                                 $xml->endElement();
-                                                $xml->writeComment(" G.k.9.i.2.r.CN.2 评估结果 ");
+                                                $xml->writeComment(" G.k.9.i.2.r.CN.2 评估结果 Drug#".$product_details['set_number']);
                                                 $xml->startElement("methodCode");
                                                 $xml->writeElement('originalText','WHO');
                                                 $xml->endElement();//methodCode
@@ -3112,12 +3232,12 @@ class SdXmlStructuresController extends AppController
                                                     $xml->startElement("assignedEntity");
                                                     $xml->writeAttribute('classCode','ASSIGNED');
                                                         $xml->startElement("code");
-                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,215,1));
+                                                        $xml->writeAttribute('code',$this->XMLvalue($caseId,1168,$product_details['set_number']));
                                                         $xml->writeAttribute('codeSystem','CN-CSV');
                                                         $xml->writeAttribute('codeSystemVersion','1.0');
                                                         $xml->writeAttribute('displayName','first reporter or mah');
                                                         $xml->endElement();//code
-                                                        $xml->writeComment(" G.k.9.i.2.r.CN.1 评估来源 ");
+                                                        $xml->writeComment(" G.k.9.i.2.r.CN.1 评估来源 Drug#".$product_details['set_number']);
                                                     $xml->endElement();//assignedEntity
                                                 $xml->endElement();//author
                                                 $xml->startElement("subject1");
@@ -3142,6 +3262,13 @@ class SdXmlStructuresController extends AppController
                                                 $xml->endElement();//subject2
                                             $xml->endElement();//causalityAssessment
                                         $xml->endElement();//component
+                                    }
+                        for($i=1;$i<=$drugSet;$i++){
+                            for($j=1;$j<=$eventSet;$j++){
+                                if($this->getThirdLevel($caseId,216,$i,$j)!=null){
+                                    $resultAssessment=$this->getThirdLevel($caseId,216,$i,$j);
+                                    $a=1;
+                                    foreach($resultAssessment as $resultAssessment_details){         
                                         $xml->startElement("component");
                                         $xml->writeAttribute('typeCode','COMP');
                                             $xml->startElement("causalityAssessment");
@@ -3155,20 +3282,20 @@ class SdXmlStructuresController extends AppController
                                                 $xml->endElement();
                                                 $xml->startElement("value");
                                                 $xml->writeAttribute('xsi:type','ST');
-                                                $xml->text($this->XMLvalue($caseId,216,2));
+                                                $xml->text($this->thirdSetValue($caseId,216,$i,$j,$a));
                                                 $xml->endElement();
-                                                $xml->writeComment(" G.k.9.i.2.r.3: Result of Assessment Drug #1, Reaction #1, Assessment #1 ");
+                                                $xml->writeComment(" G.k.9.i.2.r.3: Result of Assessment Drug #".$i.", Reaction #".$j.", Assessment #".$a);
                                                 $xml->startElement("methodCode");
-                                                $xml->writeElement('originalText',$this->XMLvalue($caseId,215,2));
-                                                $xml->writeComment(" G.k.9.i.2.r.2: Method of Assessment Drug #1, Reaction #1, Assessment #1 ");
+                                                $xml->writeElement('originalText',$this->thirdSetValue($caseId,215,$i,$j,$a));
+                                                $xml->writeComment(" G.k.9.i.2.r.2: Method of Assessment Drug #".$i.", Reaction #".$j.", Assessment #".$a);
                                                 $xml->endElement();//methodCode
                                                 $xml->startElement("author");
                                                     $xml->writeAttribute('typeCode','AUT');
                                                     $xml->startElement("assignedEntity");
                                                     $xml->writeAttribute('classCode','ASSIGNED');
                                                         $xml->startElement("code");
-                                                        $xml->writeElement('originalText',$this->XMLvalue($caseId,214,2));
-                                                        $xml->writeComment(" G.k.9.i.2.r.1: Source of Assessment Drug #1, Reaction #1, Assessment #1 ");
+                                                        $xml->writeElement('originalText',$this->thirdSetValue($caseId,214,$i,$j,$a));
+                                                        $xml->writeComment(" G.k.9.i.2.r.1: Source of Assessment Drug #".$i.", Reaction #".$j.", Assessment #".$a);
                                                         $xml->endElement();//code
                                                     $xml->endElement();//assignedEntity
                                                 $xml->endElement();//author
@@ -3194,6 +3321,11 @@ class SdXmlStructuresController extends AppController
                                                 $xml->endElement();//subject2
                                             $xml->endElement();//causalityAssessment
                                         $xml->endElement();//component
+                                        $a=$a+1;
+                                    }
+                                }
+                            }
+                        }
                                     if($this->XMLvalue($caseId,219,1)!=null){
                                         $xml->startElement("component1");
                                         $xml->writeAttribute('typeCode','COMP');

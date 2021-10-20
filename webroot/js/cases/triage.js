@@ -45,7 +45,7 @@ $(document).ready(function(){
       dateListner('reporterField_latestreceiveddate_plugin');
       dateListner('reporterField_initialreceiveddate_plugin');
     $('#docTable').DataTable();
-    $('#reporterField_latestreceiveddate_plugin,#reporterField_initialreceiveddate_plugin').datepicker({dateFormat: 'dd/mm/yy',maxDate: new Date});
+    $('#reporterField_latestreceiveddate_plugin,#reporterField_initialreceiveddate_plugin').datepicker({dateFormat: 'yy/mm/dd',maxDate: new Date});
     $(function(){
         // function fileUrlSwitcher () {
         //     $('[id^=doc_source]').each(function(s,v){
@@ -266,7 +266,7 @@ $(document).ready(function(){
         var date=$(target).val();
         if(date!=''){
             var fieldId=$(target).attr('id');
-            var dateInformat=date.substring(0,2)+'/'+date.substring(2,4)+'/'+date.substring(4,8);
+            var dateInformat=date.substring(0,4)+" / "+date.substring(4,6)+" / "+date.substring(6,8);
             $("#"+fieldId+"_plugin").val(dateInformat);
         }else{
             return ;

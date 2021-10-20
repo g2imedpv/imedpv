@@ -241,12 +241,13 @@ function onQueryClicked(preferrenceId = null){
         },
         success:function(response){
             $("#textHint").html("");
-            console.log(response);
+            //console.log(response);
             if (response==false) {
                 $("#textHint").html(i18n.gettext("Sorry, no case matches"));
                 return}
             var result = $.parseJSON(response);
             var text = "";
+            console.log('Dashboard result :>> ', result);
             text +="<form method=\"post\" target=\"_blank\" action=\"/sd-cases/checkfieldsdetail\" id=\"checkdetail_form\">";
             text +="<input type=\"hidden\" name=\"_csrfToken\" value=\""+csrfToken+"\">"
             $.each(result, function(k,caseDetail){

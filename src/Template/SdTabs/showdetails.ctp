@@ -97,7 +97,7 @@ echo $this->element('generatepdf');
                 </a>
                 <div class="dropdown-menu" aria-labelledby="exportDRAFT">
                     <?php if($e2b_version == '2') {
-                                
+
                                 echo "<a class=\"dropdown-item text-warning\" href=\"/sd-export/genCIOMSDRAFT/$caseId\">". __("CIOMS-R2")."</a>";
                                 echo "<a class=\"dropdown-item text-warning\" href=\"/sd-export/genFDApdfDRAFT/$caseId\">". __("FDA-R2")."</a>";
                         }else{
@@ -248,7 +248,7 @@ echo $this->element('generatepdf');
   <div class="modal-dialog modal-lg" role="document" style="max-width: 1175px !important;">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id=""><?php echo __("MedDRA Browser")?> (<?php echo __("Version")?>: MedDRA 24.0)</h5>
+        <h5 class="modal-title" id=""><?php echo __("MedDRA Browser")?> (<?php echo __("Version")?>: MedDRA 24.1)</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -786,7 +786,7 @@ function displaySingleSection($section, $setArray, $sectionKey, $html, $permissi
                             $text =$text. "value=\"";
                             (!empty($sd_section_structure_detail->sd_field->sd_field_values[$j]))?$text =$text.$sd_section_structure_detail->sd_field->sd_field_values[$j]->field_value:$text =$text.null;
                             $text =$text. "\" type=\"hidden\">";
-                            $text =$text. "<input type=\"text\" class=\"form-control\" placeholder=\"dd / mm / yyyy\" id=\"specified-date-section-".$section->id."-date-".$sd_section_structure_detail->sd_field->id."\" value=\"\" >";
+                            $text =$text. "<input type=\"text\" class=\"form-control\" placeholder=\"yyyy / mm / dd\" id=\"specified-date-section-".$section->id."-date-".$sd_section_structure_detail->sd_field->id."\" value=\"\" >";
                             continue;
                         case 'whodra browser':
                             if($permission==1){

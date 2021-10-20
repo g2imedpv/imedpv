@@ -38,7 +38,7 @@ class SdCompaniesController extends AppController
      */
     public function view($id = null)
     {
-        
+
         $sdCompany = $this->SdCompanies->get($id, [
             'contain' => ['SdUserTypes', 'SdProductWorkflows', 'SdProducts', 'SdUsers']
         ]);
@@ -111,7 +111,7 @@ class SdCompaniesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
-    }    
+    }
     /**
     *
     * After Login, select Company that user work for
@@ -140,7 +140,7 @@ class SdCompaniesController extends AppController
            ],
            'ua'=>[
                'table'=>'sd_user_assignments',
-               'type'=>'LEFT',
+               'type'=>'INNER',
                'conditions'=>['ua.sd_user_id ='.$userinfo['id'],'ua.sd_product_workflow_id = pwf.id']
            ]
        ])->where(['SdCompanies.id NOT LIKE'=>$userinfo['sd_company_id']])->distinct();

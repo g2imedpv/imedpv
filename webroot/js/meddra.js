@@ -146,7 +146,7 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
                     let mappedId = fieldDetail.split(':')[1];
                     let mappedLabel = fieldDetail.split(':')[0].split('-');
                     if(mappedLabel=="ver") {
-                        $('[id$=meddrashow-'+mappedId+']').val('24.0');
+                        $('[id$=meddrashow-'+mappedId+']').val('24.1');
                         return true;
                     }console.log(result);
                     switch(mappedLabel[0]){
@@ -274,7 +274,7 @@ function selectMeddraButton(meddraFieldId){
         let mappedId = fieldDetail.split(':')[1];
         let mappedLabel = fieldDetail.split(':')[0];
         if(mappedLabel=="ver"){
-            $('[id$=meddrashow-'+mappedId+']').val('24.0');
+            $('[id$=meddrashow-'+mappedId+']').val('24.1');
             return true;
         }
         $('[id$=meddrashow-'+mappedId+']').val($('#select-'+mappedLabel.split('-')[0]+'-'+mappedLabel.split('-')[1]).val()).trigger('change');
