@@ -187,12 +187,12 @@
         <div class="form-row">
             <div class="form-group col-md-3">
                 <label><?php echo __("Study Start Date");?></label>
-                <input type="text" class="form-control" name="product[start_date]" id="start_date" placeholder="<?php echo __("dd/mm/yyyy")?>" required>
+                <input type="text" class="form-control" name="product[start_date]" id="start_date" placeholder="<?php echo __("yyyy/mm/dd")?>" required>
                 <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
             <div class="form-group col-md-3">
                 <label><?php echo __("Study End Date");?></label>
-                <input type="text" class="form-control" name="product[end_date]" id="end_date" placeholder="<?php echo __("dd/mm/yyyy")?>" required>
+                <input type="text" class="form-control" name="product[end_date]" id="end_date" placeholder="<?php echo __("yyyy/mm/dd")?>" required>
                 <div class="invalid-feedback">This field is REQUIRED</div>
             </div>
         </div>

@@ -139,7 +139,7 @@ $(document).ready(function(){
         var fieldId=$(target).attr('id').split('-')[3];
         var date=$(target).val();
         if((typeof date!="undefined")&&(date!="")){
-            var dateInformat=date.substring(0,2)+" / "+date.substring(2,4)+" / "+date.substring(4,8);
+            var dateInformat=date.substring(0,4)+" / "+date.substring(4,6)+" / "+date.substring(6,8);
             $("#specified-date-section-"+sectionId+"-date-"+fieldId).val(dateInformat);
         }else{
             $("#specified-date-section-"+sectionId+"-date-"+fieldId).val("");

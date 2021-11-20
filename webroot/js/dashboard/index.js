@@ -40,5 +40,5 @@ $(document).ready(function(){
         #case_received_date_start,
         #case_received_date_end,
         #patient_dob
-    `).datepicker({dateFormat: 'dd/mm/yy'});
+    `).datepicker({dateFormat: 'yy/mm/dd'});
 });

@@ -1,6 +1,7 @@
 
 var meddraFieldId = 0;
 var formats = ['llt_name','pt_name','hlt_name','hlgt_name','soc_name'];
+var lastSearchId;
 $(document).ready(function(){
     $('[id^=meddraBtn_]').click(function(){
 
@@ -12,7 +13,7 @@ $(document).ready(function(){
         meddraFieldId = $(this).attr('id').split('_')[1];
         console.log(meddraFieldId);
         if($('[id$=meddraResult-'+meddraFieldId+']').val()!=""){
-            $.each($('[id$=meddraResult-'+meddraFieldId+']').val().split(','), function(k,fieldDetail){
+            $.each($('[id$=meddraResult-'+meddraFieldId+']').val().split(';'), function(k,fieldDetail){
                 switch(k){
                     case 0:
                         $('#select-llt-n').val(fieldDetail);
@@ -124,7 +125,6 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
             console.log(response);
             var result = $.parseJSON(response);
             console.log(meddraFieldId);
-            $('[id$=meddraResult-'+meddraFieldId+']').val(result['primary']);
             if(result['type']==3){
                 let text = "<ul>";
                 $.each(result['llt_name']['codes'],function(k,details){
@@ -146,33 +146,40 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
                     let mappedId = fieldDetail.split(':')[1];
                     let mappedLabel = fieldDetail.split(':')[0].split('-');
                     if(mappedLabel=="ver") {
-                        $('[id$=meddrashow-'+mappedId+']').val('24.0');
+                        $('[id$=meddrashow-'+mappedId+']').val('24.1');
                         return true;
                     }console.log(result);
                     switch(mappedLabel[0]){
                         case "llt":
-                            if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][1]);
-                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][0]).trigger('change');
+                            if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][1]);
+                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0]).trigger('change');
+                            $('[id=llt-searchbar_'+meddraFieldId+']').val(result['primary'][0]);
                             return true;
                         case "pt":
-                            if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][3]);
-                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][2]).trigger('change');
+                            if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][3]);
+                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][2]).trigger('change');
                             return true;
                         case "hlt":
-                            if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][5]);
-                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][4]).trigger('change');
+                            if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][5]);
+                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][4]).trigger('change');
                             return true;
                         case "hlgt":
-                            if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][7]);
-                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][6]).trigger('change');
+                            if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][7]);
+                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][6]).trigger('change');
                             return true;
                         case "soc":
-                            if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][0][9]);
-                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][8][0]).trigger('change');
+                            if(mappedLabel[1] == "c") $('[id$=meddrashow-'+mappedId+']').val(result['primary'][9]);
+                            else $('[id$=meddrashow-'+mappedId+']').val(result['primary'][8]).trigger('change');
                             return true;
                     }
 
                 });
+                $('[id$=meddraResult-'+meddraFieldId+']').val("");
+                $.each(result['primary'],function(k,details){
+                    $('[id$=meddraResult-'+meddraFieldId+']').val($('[id$=meddraResult-'+meddraFieldId+']').val()+details+';');
+                });
+                var result = $('[id$=meddraResult-'+meddraFieldId+']').val();
+                $('[id$=meddraResult-'+meddraFieldId+']').val(result.substring(0, result.length - 1));
                 return false;
             }
             $(formats).each(function(formatK,formatV){
@@ -200,6 +207,7 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
                 $('[id^=meddradiv-'+formatV+']').each(function(){
                     var hasP = 0;
                     if($(this).hasClass('bg-primary')){
+                        //selected column
                         console.log($('#select-'+formatV.split('_')[0]+'-n'));
                         console.log($('#select-'+formatV.split('_')[0]+'-c'));
                         $('#select-'+formatV.split('_')[0]+'-n').val($(this).find('label').text());
@@ -207,14 +215,15 @@ function searchMedDra(meddraFieldId, type, llt_name=null) {
                         hasP = 1;
                         return false;
                     }
-                    if(hasP) return true;
+                    if(hasP) return false;
                     else if($(this).hasClass('bg-warning')){
+                        //unselected columns are based on warning class
                         $('#select-'+formatV.split('_')[0]+'-n').val($(this).find('label').text());
                         $('#select-'+formatV.split('_')[0]+'-c').val($(this).find('[id^=meddracode]').val());
                         return false;
                     }
                 });
-            });
+            })
         },
         complete: function () {
             $('.loadingSpinner').hide();
@@ -251,6 +260,11 @@ function clickOption(term, key){
 }
 function meddrabrowser(meddraFieldId){
     $("#meddraSelectBtn").attr("onclick","selectMeddraButton("+meddraFieldId+")");
+    if(meddraFieldId == lastSearchId) return true;
+    lastSearchId = meddraFieldId;
+    $(formats).each(function(formatK,formatV){
+        $('#field-'+formatV).html("");
+    });
 }
 function selectMeddraButton(meddraFieldId){
     console.log($('#whodrug-code'+meddraFieldId));
@@ -260,10 +274,17 @@ function selectMeddraButton(meddraFieldId){
         let mappedId = fieldDetail.split(':')[1];
         let mappedLabel = fieldDetail.split(':')[0];
         if(mappedLabel=="ver"){
-            $('[id$=meddrashow-'+mappedId+']').val('24.0');
+            $('[id$=meddrashow-'+mappedId+']').val('24.1');
             return true;
         }
         $('[id$=meddrashow-'+mappedId+']').val($('#select-'+mappedLabel.split('-')[0]+'-'+mappedLabel.split('-')[1]).val()).trigger('change');
     });
+    $('[id$=meddraResult-'+meddraFieldId+']').val("");
+    $(formats).each(function(formatK,formatV){
+        $('[id$=meddraResult-'+meddraFieldId+']').val($('[id$=meddraResult-'+meddraFieldId+']').val()+$('#select-'+formatV.split('_')[0]+'-n').val()+';'+$('#select-'+formatV.split('_')[0]+'-c').val()+';');
+    });
+    var result = $('[id$=meddraResult-'+meddraFieldId+']').val();
+    $('[id$=meddraResult-'+meddraFieldId+']').val(result.substring(0, result.length - 1));
+    $('[id=llt-searchbar_'+meddraFieldId+']').val("");
     return false;
 }
